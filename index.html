@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Machine Learning with R</title>
+  <title>Machine Learning with R - Part 2</title>
   <meta charset="utf-8">
-  <meta name="description" content="Machine Learning with R">
+  <meta name="description" content="Machine Learning with R - Part 2">
   <meta name="author" content="Ilan Man">
   <meta name="generator" content="slidify" />
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,7 +31,7 @@
     <!-- Should I move this to a Local Layout File? -->
     <slide class="title-slide segue nobackground">
       <hgroup class="auto-fadein">
-        <h1>Machine Learning with R</h1>
+        <h1>Machine Learning with R - Part 2</h1>
         <h2></h2>
         <p>Ilan Man<br/>Strategy Operations  @ Squarespace</p>
       </hgroup>
@@ -46,12 +46,10 @@
     <p><space></p>
 
 <ol>
-<li>Machine Learning Overview</li>
-<li>Exploring Data</li>
-<li>Nearest Neighbors</li>
-<li>Naive Bayes</li>
-<li>Measuring Performance</li>
-<li>Linear Regression</li>
+<li>Logistic Regression</li>
+<li>Principle Component Analysis</li>
+<li>Clustering</li>
+<li>Trees</li>
 </ol>
 
   </article>
@@ -60,20 +58,16 @@
 
       <slide class="" id="slide-2" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Objectives</h2>
   </hgroup>
   <article>
-    <h1>What is it?</h1>
+    <p><space></p>
 
-<p><space></p>
-
-<ul>
-<li>Field of study interested in transforming data into intelligent actions</li>
-<li>Intersection of statistics, available data and computing power</li>
-<li>It is NOT data mining</li>
-<li>Data mining is an exploratory exercise, whereas most machine learning has a known answer</li>
-<li>Data mining is a subset of machine learning (unsupervised)</li>
-</ul>
+<ol>
+<li>Understand some popular algorithms and techniques</li>
+<li>Learn how to tune parameters</li>
+<li>Practice R</li>
+</ol>
 
   </article>
   <!-- Presenter Notes -->
@@ -81,21 +75,12 @@
 
       <slide class="" id="slide-3" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Uses</h1>
+    <h1>Motivation</h1>
 
 <p><space></p>
-
-<ul>
-<li>Predict outcome of elections</li>
-<li>Email filtering - spam or not</li>
-<li>Credit fraud prediction</li>
-<li>Image processing</li>
-<li>Customer churn</li>
-<li>Customer subscription rates</li>
-</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -103,22 +88,49 @@
 
       <slide class="" id="slide-4" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>How do machines learn?</h1>
+    <h1>Motivation</h1>
 
 <p><space></p>
 
-<ul>
-<li>Data input 
+<pre><code class="r">library(&quot;MASS&quot;)
+data(menarche)
+log_data &lt;- data.frame(Y=menarche$Menarche/menarche$Total)
+log_data$X &lt;- menarche$Age
 
-<ul>
-<li>Provides a factual basis for reasoning</li>
-</ul></li>
-<li>Abstraction </li>
-<li>Generalization </li>
-</ul>
+glm.out &lt; glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
+</code></pre>
+
+<pre><code>## Error: object &#39;glm.out&#39; not found
+</code></pre>
+
+<pre><code class="r">lm.out &lt;- lm(Y~X, data=log_data)
+
+log_data$fitted &lt;- glm.out$fitted
+</code></pre>
+
+<pre><code>## Error: object &#39;glm.out&#39; not found
+</code></pre>
+
+<pre><code class="r">data_points &lt;- ggplot(log_data) + geom_point(aes(x=X,y=Y),color=&#39;blue&#39;,size=3)
+</code></pre>
+
+<pre><code>## Error: could not find function &quot;ggplot&quot;
+</code></pre>
+
+<pre><code class="r">line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color=&#39;green&#39;,size=1)
+</code></pre>
+
+<pre><code>## Error: object &#39;data_points&#39; not found
+</code></pre>
+
+<pre><code class="r">curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;,size=1) 
+</code></pre>
+
+<pre><code>## Error: object &#39;line_points&#39; not found
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -126,18 +138,15 @@
 
       <slide class="" id="slide-5" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Abstraction</h1>
+    <h1>Notation</h1>
 
 <p><space></p>
 
 <ul>
-<li>Assign meaning to the data</li>
-<li>Formulas, graphs, logic, etc...</li>
-<li>Your model</li>
-<li>Fitting model is called training</li>
+<li>introduce notation: hypothesis function, cost function, objective function, sigmoid</li>
 </ul>
 
   </article>
@@ -146,26 +155,14 @@
 
       <slide class="" id="slide-6" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Generalization</h1>
+    <h1>Motivation</h1>
 
 <p><space></p>
 
-<ul>
-<li>Turn abstracted knowledge into something that can be utilized</li>
-<li>Model user heuristics since it cannot see every example
-
-<ul>
-<li>When hueristics are systematically wrong, the algorithm has a bias</li>
-</ul></li>
-<li>Very simple models have high bias
-
-<ul>
-<li>Some bias is good - let&#39;s us ignore the noise</li>
-</ul></li>
-</ul>
+<h1>logistic function - odds ratio - log odds</h1>
 
   </article>
   <!-- Presenter Notes -->
@@ -173,2332 +170,21 @@
 
       <slide class="" id="slide-7" style="background:;">
   <hgroup>
-    <h2>Machine Learning Overview</h2>
+    <h2>Regression example</h2>
   </hgroup>
   <article>
-    <h1>Generalization</h1>
+    <h1>Gradient descent</h1>
 
 <p><space></p>
 
-<ul>
-<li>After training, the model is tested on unseen data</li>
-<li>Perfect generalization is exceedingly rare
-
-<ul>
-<li>Partly due to noise</li>
-<li>Measurement error</li>
-<li>Change in user behavior</li>
-<li>Incorrect data, erroneous values, etc...</li>
-</ul></li>
-<li>Fitting too closesly to the noise leads to overfitting
-
-<ul>
-<li>Complex models have high variance</li>
-<li>Good on training, bad on testing</li>
-</ul></li>
-</ul>
+<pre><code>## Error: could not find function &quot;ggplot&quot;
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-8" style="background:;">
-  <hgroup>
-    <h2>Machine Learning Overview</h2>
-  </hgroup>
-  <article>
-    <h1>Steps to apply Machine Learning</h1>
-
-<p><space></p>
-
-<ol>
-<li>Collect data</li>
-<li>Explore and preprocess data 
-
-<ul>
-<li>Majority of the time is spent in this stage</li>
-</ul></li>
-<li>Train the model
-
-<ul>
-<li>Specific tasks will inform which algorithm is appropriate</li>
-</ul></li>
-<li>Evaluate model performance
-
-<ul>
-<li>Performance measures depend on use case</li>
-</ul></li>
-<li>Improve model performance as necessary</li>
-</ol>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-9" style="background:;">
-  <hgroup>
-    <h2>Machine Learning Overview</h2>
-  </hgroup>
-  <article>
-    <h1>Choosing an algorithm</h1>
-
-<p><space></p>
-
-<ul>
-<li>Consider input data</li>
-<li>An <strong>example</strong> is one data point that the machine is intended to learn </li>
-<li>A feature is a characteristic of the example
-
-<ul>
-<li>e.g. Number of times the word &quot;viagra&quot; appears in an email</li>
-</ul></li>
-<li>For classification problems, a label is the example&#39;s classification</li>
-<li>Most algorithms require data in matrix format because Math said so</li>
-<li>Features can be numeric, categorical/nominal or ordinal</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-10" style="background:;">
-  <hgroup>
-    <h2>Machine Learning Overview</h2>
-  </hgroup>
-  <article>
-    <h1>Types of algorithms</h1>
-
-<p><space></p>
-
-<ul>
-<li>Supervised
-
-<ul>
-<li>Discover relationship between known, target feature and other features</li>
-<li>Predictive</li>
-<li>Classification and numeric prediction tasks</li>
-</ul></li>
-<li>Unsupervised
-
-<ul>
-<li>Unkown answer</li>
-<li>Descriptive</li>
-<li>Pattern discovery and clustering into groups</li>
-<li>Requires human intervention to interpret clusters</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-11" style="background:;">
-  <hgroup>
-    <h2>Machine Learning Overview</h2>
-  </hgroup>
-  <article>
-    <h1>Summary</h1>
-
-<p><space></p>
-
-<ol>
-<li>Generalization and Abstraction</li>
-<li>Overfitting vs underfitting</li>
-<li>The right algorithm will be informed by the problem to be solved</li>
-<li>Terminology</li>
-</ol>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-12" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Exploring and understanding data</h1>
-
-<p><space></p>
-
-<ul>
-<li>Load and explore the data</li>
-</ul>
-
-<pre><code class="r">data(iris)
-
-# inspect the structure of the dataset
-str(iris)
-</code></pre>
-
-<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
-##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
-##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
-##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
-##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
-##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-13" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Exploring and understanding data</h1>
-
-<p><space></p>
-
-<pre><code class="r"># summarize the data  - five number summary
-summary(iris[,1:4])
-</code></pre>
-
-<pre><code>##   Sepal.Length   Sepal.Width    Petal.Length   Petal.Width 
-##  Min.   :4.30   Min.   :2.00   Min.   :1.00   Min.   :0.1  
-##  1st Qu.:5.10   1st Qu.:2.80   1st Qu.:1.60   1st Qu.:0.3  
-##  Median :5.80   Median :3.00   Median :4.35   Median :1.3  
-##  Mean   :5.84   Mean   :3.06   Mean   :3.76   Mean   :1.2  
-##  3rd Qu.:6.40   3rd Qu.:3.30   3rd Qu.:5.10   3rd Qu.:1.8  
-##  Max.   :7.90   Max.   :4.40   Max.   :6.90   Max.   :2.5
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-14" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Exploring and understanding data</h1>
-
-<p><space></p>
-
-<ul>
-<li>Measures of central tendency: mean and median
-
-<ul>
-<li>Mean is sensitive to outliers</li>
-<li>Trimmed mean</li>
-<li>Median is resistant</li>
-</ul></li>
-</ul>
-
-<p><img src="figure/skew.png" alt="plot of chunk skew"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-15" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Exploring and understanding data</h1>
-
-<p><space></p>
-
-<ul>
-<li>Measures of dispersion
-
-<ul>
-<li>Range is the <code>max()</code> - <code>min()</code></li>
-<li>Interquartile range (IQR) is the <code>Q3</code> - <code>Q1</code></li>
-<li>Quantile</li>
-</ul></li>
-</ul>
-
-<pre><code class="r">quantile(iris$Sepal.Length, probs = c(0.10,0.50,0.99))
-</code></pre>
-
-<pre><code>10% 50% 99% 
-4.8 5.8 7.7 
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-16" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Visualizing - Boxplots</h1>
-
-<p><space></p>
-
-<ul>
-<li>Lets you see the spread in the data</li>
-</ul>
-
-<p><img src="figure/boxplot.png" title="plot of chunk boxplot" alt="plot of chunk boxplot" style="display: block; margin: auto;" /></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-17" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Visualizing - histograms</h1>
-
-<p><space></p>
-
-<ul>
-<li>Each bar is a &#39;bin&#39;</li>
-<li>Height of bar is the frequency (count of) that bin</li>
-<li>Some distributions are normally distributed (bell shaped) or skewed (heavy tails)</li>
-</ul>
-
-<p><img src="figure/histogram.png" title="plot of chunk histogram" alt="plot of chunk histogram" style="display: block; margin: auto;" /></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-18" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Visualizing - scatterplots</h1>
-
-<p><space></p>
-
-<ul>
-<li>Useful for visualizing bivariate relationships (2 variables)</li>
-</ul>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-19" style="background:;">
-  <hgroup>
-    <h2>Exploring Data</h2>
-  </hgroup>
-  <article>
-    <h1>Summary</h1>
-
-<p><space></p>
-
-<ul>
-<li>Measures of central tendency and dispersion</li>
-<li>Visualizing data using histograms, boxplots, scatterplots</li>
-<li>Skewed vs normally distributed data</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-20" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Classification using kNN</h1>
-
-<p><space></p>
-
-<ul>
-<li>Understanding the algorithm</li>
-<li>Data Preparation</li>
-<li>Case study: diagnosing breast cancer</li>
-<li>Summary</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-21" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Concept</h1>
-
-<p><space></p>
-
-<ul>
-<li>Things that are similar are probably of the same class</li>
-<li>Good for: when it&#39;s difficult to define, but &quot;you know it when you see it&quot;</li>
-<li>Bad for: when a clear distinction doesn&#39;t exist</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-22" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Algorithm</h1>
-
-<p><space></p>
-
-<pre><code>## Warning: package &#39;plyr&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-23" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Algorithm</h1>
-
-<p><space></p>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
-
-<pre><code>## function (x, y, ...) 
-## UseMethod(&quot;plot&quot;)
-## &lt;bytecode: 0x7fa56a13d6d8&gt;
-## &lt;environment: namespace:graphics&gt;
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-24" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Algorithm</h1>
-
-<p><space></p>
-
-<pre><code>## Error: could not find function &quot;geom_point&quot;
-</code></pre>
-
-<ul>
-<li>Suppose we had a new point with Sepal Length of 7 and Petal Length of 4</li>
-<li>Which species will it probably belong to?</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-25" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Algorithm</h1>
-
-<p><space></p>
-
-<ul>
-<li>Calculate its nearest neighbor
-
-<ul>
-<li>Euclidean distance</li>
-<li>\(dist(p,q) = \sqrt{(p_1-q_1)^2+(p_2-q_2)^2+ ... + (p_n-q_n)^2}\)</li>
-<li>Closest neighbor -&gt; 1-NN</li>
-<li>3 closest neighbors -&gt; 3-NN. </li>
-<li>Winner is the majority class of all neighbors</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-26" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>The Algorithm</h1>
-
-<p><space></p>
-
-<ul>
-<li>Calculate its nearest neighbor
-
-<ul>
-<li>Euclidean distance</li>
-<li>\(dist(p,q) = \sqrt{(p_1-q_1)^2+(p_2-q_2)^2+ ... + (p_n-q_n)^2}\)</li>
-<li>Closest neighbor -&gt; 1-NN</li>
-<li>3 closest neighbors -&gt; 3-NN. </li>
-<li>Winner is the majority class of all neighbors</li>
-</ul></li>
-<li>Why not just fit to all data points?</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-27" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Bias vs. Variance</h1>
-
-<p><space></p>
-
-<ul>
-<li>Fitting to every point results in an overfit model
-
-<ul>
-<li>High variance problem</li>
-</ul></li>
-<li>Fitting to only 1 point results in an underfit model
-
-<ul>
-<li>High bias problem</li>
-</ul></li>
-<li>Choosing the right \(k\) is a balance between bias and variance</li>
-<li>Rule of thumb: \(k = \sqrt{N}\)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-28" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data preparation</h1>
-
-<p><space></p>
-
-<ul>
-<li>Classify houses based on prices and square footage</li>
-</ul>
-
-<pre><code class="r">library(scales)  # format ggplot() axis
-</code></pre>
-
-<pre><code>## Warning: package &#39;scales&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code class="r">price &lt;- seq(300000,600000,by=10000)
-size &lt;- price/1000 + rnorm(length(price),10,50)
-houses &lt;- data.frame(price,size)
-ex &lt;- ggplot(houses,aes(price,size))+geom_point()+scale_x_continuous(labels = comma)+
-  xlab(&quot;Price&quot;)+ylab(&quot;Size&quot;)+ggtitle(&quot;Square footage vs Price&quot;)
-</code></pre>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-29" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;ex&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-30" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;ex&#39; not found
-</code></pre>
-
-<pre><code>## Error: object &#39;center_plot&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-31" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;center_plot&#39; not found
-</code></pre>
-
-<pre><code>## Error: object &#39;new_plot&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-32" style="background:;">
-  <hgroup>
-    <h2>K-Nearest neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code class="r"># 1) using loops
-loop_dist &lt;- 0
-for(i in 1:nrow(houses)){
-  loop_dist[i] &lt;- sqrt(sum((new_p-houses[i,])^2))
-  }
-
-# 2) vectorized
-vec_dist &lt;- sqrt(rowSums(t(new_p-t(houses))^2))
-closest &lt;- data.frame(houses[which.min(vec_dist),])
-print(closest)
-</code></pre>
-
-<pre><code>   price  size
-11 4e+05 397.8
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-33" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;new_plot&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-34" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;new_plot&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-35" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<ul>
-<li>Feature scaling. Two common approaches:</li>
-<li>min-max normalization
-
-<ul>
-<li>\(X_{new} = \frac{X-min(X)}{max(X) - min(X)}\)</li>
-</ul></li>
-<li>z-score standardization
-
-<ul>
-<li>\(X_{new} = \frac{X-mean(X)}{sd(X)}\)</li>
-</ul></li>
-<li>Euclidean distance doesn&#39;t discriminate between important and noisy features
-
-<ul>
-<li>can add weights</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-36" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code class="r">new_house &lt;- scale(houses)
-new_new &lt;- c((new[1]-mean(houses[,1]))/sd(houses[,1]),(new[2]-mean(houses[,2]))/sd(houses[,2]))
-</code></pre>
-
-<pre><code>Error: object of type &#39;closure&#39; is not subsettable
-</code></pre>
-
-<pre><code class="r">vec_dist &lt;- sqrt(rowSums(t(new_new-t(new_house))^2))
-</code></pre>
-
-<pre><code>Error: object &#39;new_new&#39; not found
-</code></pre>
-
-<pre><code class="r">which.min(vec_dist)
-</code></pre>
-
-<pre><code>[1] 11
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-37" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Data Preparation</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;new_plot&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-38" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Lazy learner</h1>
-
-<p><space></p>
-
-<ul>
-<li>kNN doesn&#39;t actually learn anything!</li>
-<li>Stores training data and applies it - verbatim - to new examples</li>
-<li>Known as instance-based learning</li>
-<li>Non-parametric learning method</li>
-<li>Harder for us to understand how the classifier is using the data</li>
-<li>However kNN finds natural patterns </li>
-<li>Don&#39;t need to fit aribtrarily to a model</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-39" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">data &lt;- read.table(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data&#39;, sep=&#39;,&#39;, stringsAsFactors=FALSE, header=FALSE)
-
-# first column has the ID which is not useful
-data &lt;- data[,-1]
-# names taken from the .names file online
-n &lt;- c(&quot;radius&quot;,&quot;texture&quot;,&quot;perimeter&quot;,&quot;area&quot;,&quot;smoothness&quot;,&quot;compactness&quot;,
-   &quot;concavity&quot;,&quot;concave_points&quot;,&quot;symmetry&quot;,&quot;fractal&quot;)
-ind &lt;- c(&quot;mean&quot;,&quot;std&quot;,&quot;worst&quot;)
-
-headers&lt;-as.character()
-for(i in ind){
-  headers&lt;-c(headers,paste(n,i))
-  }
-names(data)&lt;-c(&quot;diagnosis&quot;,headers)
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-40" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">str(data[,1:10])
-</code></pre>
-
-<pre><code>&#39;data.frame&#39;:   569 obs. of  10 variables:
- $ diagnosis          : chr  &quot;M&quot; &quot;M&quot; &quot;M&quot; &quot;M&quot; ...
- $ radius mean        : num  18 20.6 19.7 11.4 20.3 ...
- $ texture mean       : num  10.4 17.8 21.2 20.4 14.3 ...
- $ perimeter mean     : num  122.8 132.9 130 77.6 135.1 ...
- $ area mean          : num  1001 1326 1203 386 1297 ...
- $ smoothness mean    : num  0.1184 0.0847 0.1096 0.1425 0.1003 ...
- $ compactness mean   : num  0.2776 0.0786 0.1599 0.2839 0.1328 ...
- $ concavity mean     : num  0.3001 0.0869 0.1974 0.2414 0.198 ...
- $ concave_points mean: num  0.1471 0.0702 0.1279 0.1052 0.1043 ...
- $ symmetry mean      : num  0.242 0.181 0.207 0.26 0.181 ...
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-41" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r"># inspect remaining data more closely
-prop.table(table(data$diagnosis)); head(data)[2:6]
-</code></pre>
-
-<pre><code>
-     B      M 
-0.6274 0.3726 
-</code></pre>
-
-<pre><code>  radius mean texture mean perimeter mean area mean smoothness mean
-1       17.99        10.38         122.80    1001.0         0.11840
-2       20.57        17.77         132.90    1326.0         0.08474
-3       19.69        21.25         130.00    1203.0         0.10960
-4       11.42        20.38          77.58     386.1         0.14250
-5       20.29        14.34         135.10    1297.0         0.10030
-6       12.45        15.70          82.57     477.1         0.12780
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-42" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r"># scale each numeric value
-scaled_data &lt;- as.data.frame(lapply(data[,-1], scale))
-scaled_data &lt;- cbind(diagnosis=data$diagnosis, scaled_data)
-head(scaled_data[2:6])
-</code></pre>
-
-<pre><code>  radius.mean texture.mean perimeter.mean area.mean smoothness.mean
-1      1.0961      -2.0715         1.2688    0.9835          1.5671
-2      1.8282      -0.3533         1.6845    1.9070         -0.8262
-3      1.5785       0.4558         1.5651    1.5575          0.9414
-4     -0.7682       0.2535        -0.5922   -0.7638          3.2807
-5      1.7488      -1.1508         1.7750    1.8246          0.2801
-6     -0.4760      -0.8346        -0.3868   -0.5052          2.2355
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-43" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">library(class)  # get k-NN classifier
-</code></pre>
-
-<pre><code>Warning: package &#39;class&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code class="r">predict_1 &lt;- knn(train = scaled_data[,2:31], test = scaled_data[,2:31],
-                 cl = scaled_data[,1],
-                 k = floor(sqrt(nrow(scaled_data))))                  
-table(predict_1)
-</code></pre>
-
-<pre><code>predict_1
-  B   M 
-378 191 
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-44" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">pred_B &lt;- which(predict_1==&quot;B&quot;)
-actual_B &lt;- which(scaled_data[,1]==&quot;B&quot;)
-pred_M &lt;- which(predict_1==&quot;M&quot;)
-actual_M &lt;- which(scaled_data[,1]==&quot;M&quot;)
-true_positive &lt;- sum(pred_B %in% actual_B)
-true_negative &lt;- sum(pred_M %in% actual_M)
-false_positive &lt;- sum(pred_B %in% actual_M)
-false_negative &lt;- sum(pred_M %in% actual_B)
-
-conf_mat &lt;- matrix(c(true_positive,false_positive,false_negative,true_negative),nrow=2,ncol=2)
-
-acc &lt;- sum(diag(conf_mat))/sum(conf_mat)
-tpr &lt;- conf_mat[1,1]/sum(conf_mat[1,])
-tn &lt;- conf_mat[2,2]/sum(conf_mat[2,])
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-45" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code>   acc    tpr     tn 
-0.9596 0.9972 0.8962 
-</code></pre>
-
-<pre><code>    tp  fp
-fn 356   1
-tn  22 190
-</code></pre>
-
-<ul>
-<li>Is that right?</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-46" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r"># create randomized training and testing sets
-total_n &lt;- nrow(scaled_data)
-
-# train on 2/3 of the data
-train_ind &lt;- sample(total_n,total_n*2/3)
-train_labels &lt;- scaled_data[train_ind,1]
-test_labels &lt;- scaled_data[-train_ind,1]
-train_set &lt;- scaled_data[train_ind,2:31]
-test_set &lt;- scaled_data[-train_ind,2:31]
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-47" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">library(class)
-predict_1 &lt;- knn(train = train_set, test = test_set, cl = train_labels,
-                 k = floor(sqrt(nrow(train_set))))                  
-table(predict_1)
-</code></pre>
-
-<pre><code>predict_1
-  B   M 
-134  56 
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-48" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code class="r">pred_B &lt;- which(predict_1==&quot;B&quot;)
-test_B &lt;- which(test_labels==&quot;B&quot;)
-pred_M &lt;- which(predict_1==&quot;M&quot;)
-test_M &lt;- which(test_labels==&quot;M&quot;)
-true_positive &lt;- sum(pred_B %in% test_B)
-true_negative &lt;- sum(pred_M %in% test_M)
-false_positive &lt;- sum(pred_B %in% test_M)
-false_negative &lt;- sum(pred_M %in% test_B)
-
-conf_mat &lt;- matrix(c(true_positive,false_negative,false_positive,true_negative),nrow=2,ncol=2)
-
-acc &lt;- sum(diag(conf_mat))/sum(conf_mat)
-tpr &lt;- conf_mat[1,1]/sum(conf_mat[1,])
-tn &lt;- conf_mat[2,2]/sum(conf_mat[2,])
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-49" style="background:;">
-  <hgroup>
-    <h2>K-Nearest Neighbors</h2>
-  </hgroup>
-  <article>
-    <h1>Case study</h1>
-
-<p><space></p>
-
-<pre><code>   acc    tpr     tn 
-0.9684 0.9552 1.0000 
-</code></pre>
-
-<pre><code>       Actual B Actual M
-Pred B      128        6
-Pred M        0       56
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-50" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Probability and Bayes Theorem</h1>
-
-<p><space></p>
-
-<ul>
-<li>Terminology: 
-
-<ul>
-<li><code>probability</code></li>
-<li><code>event</code> </li>
-<li><code>trial</code> - e.g. 1 flip of a coin, 1 toss of a die</li>
-</ul></li>
-<li>\(X_{i}\) is an event</li>
-<li>The set of all events is \(\{X_{1},X_{2},...,X_{n}\}\)</li>
-<li>The probability of an event is the frequency of its occurrence
-
-<ul>
-<li>\(0 \leq P(X) \leq 1\)</li>
-<li>\(P(\sum_{i=1}^{n} X_{i}) = \sum_{i=1}^{n} P(X_{i})\)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-51" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Probability and Bayes Theorem</h1>
-
-<p><space></p>
-
-<ul>
-<li>\(A \cap B\) is &quot;A and B&quot;</li>
-<li>Independent events
-
-<ul>
-<li>\(P(A \cap B) = P(A) \times P(B)\)</li>
-</ul></li>
-<li>\(A \mid B\) is &quot;A given B&quot;</li>
-<li>Conditional probability
-
-<ul>
-<li>\(P(A \mid B) = \frac{P(A \cap B)}{P(B)}\)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-52" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Probability and Bayes Theorem</h1>
-
-<p><space></p>
-
-<ul>
-<li>Independent events
-
-<ul>
-<li>\(A \cap B\) is &quot;A and B&quot;</li>
-<li>\(P(A \cap B) = P(A) \times P(B)\)</li>
-</ul></li>
-<li>Conditional probability
-
-<ul>
-<li>\(A \mid B\) is &quot;A given B&quot;</li>
-<li>\(P(A \mid B) = \frac{P(A \cap B)}{P(B)}\) </li>
-<li>\(P(B \mid A) = \frac{P(B \cap A)}{P(A)}\)</li>
-<li>\(P(B \mid A) \times P(A) = P(B \cap A)\)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-53" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Probability and Bayes Theorem</h1>
-
-<p><space></p>
-
-<ul>
-<li>Independent events
-
-<ul>
-<li>\(A \cap B\) is &quot;A and B&quot;</li>
-<li>\(P(A \cap B) = P(A) \times P(B)\)</li>
-</ul></li>
-<li>Conditional probability
-
-<ul>
-<li>\(A \mid B\) is &quot;A given B&quot;</li>
-<li>\(P(A \mid B) = \frac{P(A \cap B)}{P(B)}\) </li>
-<li>\(P(B \mid A) = \frac{P(B \cap A)}{P(A)}\)</li>
-<li>\(P(B \mid A) \times P(A) = P(B \cap A)\)</li>
-<li>but... \(P(B \cap A) = P(A \cap B)\)</li>
-</ul></li>
-</ul>
-
-<hr>
-
-<h2>Naive Bayes</h2>
-
-<h1>Probability and Bayes Theorem</h1>
-
-<p><space></p>
-
-<ul>
-<li>Independent events
-
-<ul>
-<li>\(A \cap B\) is &quot;A and B&quot;</li>
-<li>\(P(A \cap B) = P(A) \times P(B)\)</li>
-</ul></li>
-<li>Conditional probability
-
-<ul>
-<li>\(A \mid B\) is &quot;A given B&quot;</li>
-<li>\(P(A \mid B) = \frac{P(A \cap B)}{P(B)}\) </li>
-<li>\(P(B \mid A) = \frac{P(B \cap A)}{P(A)}\)</li>
-<li>\(P(B \mid A) \times P(A) = P(B \cap A)\)</li>
-<li>but... \(P(B \cap A) = P(A \cap B)\)</li>
-<li>so.... \(P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}\) &lt;-- <em>Bayes Theorem!</em></li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-54" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Bayes Example</h1>
-
-<p><space></p>
-
-<ul>
-<li>A decision should be made using all available information
-
-<ul>
-<li>As new information enters, the decision might be changed</li>
-</ul></li>
-<li>Example: Email filtering
-
-<ul>
-<li>spam and non-spam (AKA ham)</li>
-<li>classify emails depending on what words they contain</li>
-<li>\(P(spam \mid CASH!)\) = ?</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-55" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Bayes Example</h1>
-
-<p><space></p>
-
-<pre><code class="r"># data frame with frequency of emails with the word &quot;cash&quot;
-bayes_ex &lt;- data.frame(cash_yes=c(10,3,13),
-                      cash_no=c(20,67,87),
-                      total=c(30,70,100),
-                      row.names=c(&#39;spam&#39;,&#39;ham&#39;,&#39;total&#39;))
-bayes_ex
-</code></pre>
-
-<pre><code>      cash_yes cash_no total
-spam        10      20    30
-ham          3      67    70
-total       13      87   100
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-56" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Bayes Example</h1>
-
-<p><space></p>
-
-<ul>
-<li>Recall Bayes Theorem: 
-
-<ul>
-<li>\(P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}\)</li>
-</ul></li>
-<li>A = event that email is spam<br></li>
-<li>B = event that &quot;CASH&quot; exists in the email<br>
-\(P(spam \mid cash=yes) = P(cash=yes \mid spam) \times \frac{P(spam)}{P(cash=yes)}\)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-57" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Bayes Example</h1>
-
-<p><space></p>
-
-<ul>
-<li>Recall Bayes Theorem: 
-
-<ul>
-<li>\(P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}\)</li>
-</ul></li>
-<li>A = event that email is spam<br></li>
-<li>B = event that &quot;CASH&quot; exists in the email<br>
-\(P(spam \mid cash=yes) = P(cash=yes \mid spam) \times \frac{P(spam)}{P(cash=yes)}\)<br>
-\(P(cash = yes \mid spam) = \frac{10}{30}\)<br>
-\(P(spam) =  \frac{30}{100}\)<br>
-\(P(cash = yes) = \frac{13}{100}\)<br>
-= \(\frac{10}{30} \times \frac{\frac{30}{100}}{\frac{13}{100}} = 0.769\) </li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-58" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Bayes Example</h1>
-
-<p><space></p>
-
-<ul>
-<li>Recall Bayes Theorem: 
-
-<ul>
-<li>\(P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}\)</li>
-</ul></li>
-<li>A = event that email is spam<br></li>
-<li>B = event that &quot;CASH&quot; exists in the email<br>
-\(P(spam \mid cash=yes) = P(cash=yes \mid spam) \times \frac{P(spam)}{P(cash=yes)}\)<br>
-\(P(cash = yes \mid spam) = \frac{10}{30}\)<br>
-\(P(spam) =  \frac{30}{100}\)<br>
-\(P(cash = yes) = \frac{13}{100}\)<br>
-= \(\frac{10}{30} \times \frac{\frac{30}{100}}{\frac{13}{100}} = 0.769\) </li>
-</ul>
-
-<p><code>Exercise:</code> \(P(ham \mid cash = no)\) = ?</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-59" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Why Naive?</h1>
-
-<p><space></p>
-
-<ul>
-<li>Assumes all features are independent and equally important</li>
-<li>NB still performs very well out of the box</li>
-</ul>
-
-<pre><code>      cash_yes cash_no furniture_yes furniture_no total
-spam        10      20             6           24    30
-ham          3      67            20           50    70
-total       13      87            26           74   100
-</code></pre>
-
-<p>\(P(spam \mid cash=yes \cap furniture=no) = \frac{P(cash=yes \cap furniture=no \mid spam) \times P(spam)}{P(cash=yes \cap furniture=no)}\)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-60" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Why Naive?</h1>
-
-<p><space></p>
-
-<ul>
-<li>As features increase, formula becomes very expensive</li>
-<li>Solution: assume each feature is independent of any other feature, given they are in the same class 
-
-<ul>
-<li>Independence formula: \(P(A \cap B) = P(A) \times P(B)\)</li>
-<li>Called &quot;class conditional independence&quot;:<br></li>
-<li>\(P(spam \mid cash=yes \cap furniture=no) =\) </li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-61" style="background:;">
-  <hgroup>
-    <h2>Naive Bayes</h2>
-  </hgroup>
-  <article>
-    <h1>Summary</h1>
-
-<p><space></p>
-
-<ul>
-<li>Probabalistic approach</li>
-<li>Naive Bayes assumes features are independent, conditioned on being in the same class</li>
-<li>Useful for text classification</li>
-<li>Strengths
-
-<ul>
-<li>simple, fast</li>
-<li>Does well with noisy and missing data</li>
-<li>Doesn&#39;t need large training set</li>
-</ul></li>
-<li>Weaknesses
-
-<ul>
-<li>Assumes all features are independent and equally important</li>
-<li>Not well suited for numeric data sets</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-62" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Measuring performance</h1>
-
-<p><space></p>
-
-<ul>
-<li>Classification</li>
-<li>Regression (more on this later)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-63" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Classification problems</h1>
-
-<p><space></p>
-
-<ul>
-<li>Accuracy is not enough
-
-<ul>
-<li>e.g. drug testing</li>
-<li>class imbalance</li>
-</ul></li>
-<li>Best performance measure: Is classifier successful at intend purpose?</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-64" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Classification problems</h1>
-
-<p><space></p>
-
-<ul>
-<li>3 types of data used for measuring performance
-
-<ul>
-<li>actual values</li>
-<li>predicted value</li>
-<li>probability of prediction, i.e. confidence in prediction</li>
-</ul></li>
-<li>most R packages have a <code>predict()</code> function </li>
-<li>confidence in predicted value matters
-
-<ul>
-<li>all else equal, choose the model that is more confident in its predictions</li>
-<li>more confident + accuracy = better generalizer</li>
-<li>set a paramter in <code>predict()</code> to <code>probability</code>, <code>prob</code>, <code>raw</code>, ...</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-65" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Classification problems</h1>
-
-<p><space></p>
-
-<pre><code class="r"># estimate a probability for each class
-confidence &lt;- predict(naive_model, corpus_test_set, type=&#39;raw&#39;)
-</code></pre>
-
-<pre><code>Error: object &#39;naive_model&#39; not found
-</code></pre>
-
-<pre><code class="r">as.data.frame(format(head(confidence),digits=2,scientific=FALSE))
-</code></pre>
-
-<pre><code>Error: object &#39;confidence&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-66" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Classification problems</h1>
-
-<p><space></p>
-
-<pre><code class="r"># estimate a probability for each class
-spam_conf &lt;- confidence[,2]
-</code></pre>
-
-<pre><code>Error: object &#39;confidence&#39; not found
-</code></pre>
-
-<pre><code class="r">comparison &lt;- data.frame(predict=predict_naive,
-                         actual=raw_test_set[,1],
-                         prob_spam=spam_conf)
-</code></pre>
-
-<pre><code>Error: object &#39;predict_naive&#39; not found
-</code></pre>
-
-<pre><code class="r">comparison[,3] &lt;- format(comparison[,3],digits=2,scientific=FALSE)
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-<pre><code class="r">head(comparison)
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-67" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Classification problems</h1>
-
-<p><space></p>
-
-<pre><code class="r">head(comparison[with(comparison,predict!=actual),])
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-<pre><code class="r">head(comparison[with(comparison,predict==actual),])
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-<pre><code class="r">mean(as.numeric(comparison[with(comparison,predict!=&#39;spam&#39;),]$prob_spam))
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-<pre><code class="r">mean(as.numeric(comparison[with(comparison,predict==&#39;spam&#39;),]$prob_spam))
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-68" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Confusion Matrix</h1>
-
-<p><space></p>
-
-<ul>
-<li>Categorize predictions on whether they match actual values or not</li>
-<li>Can be more than two classes</li>
-<li>Count the number of predictions falling on and off the diagonals</li>
-</ul>
-
-<pre><code class="r">predicted &lt;- sample(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;),1000,TRUE)
-actual &lt;- sample(c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;),1000,TRUE)
-fabricated &lt;- table(predicted,actual)
-
-# for our Naive Bayes classifier
-table(comparison$predict,comparison$actual)
-</code></pre>
-
-<pre><code>Error: object &#39;comparison&#39; not found
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-69" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Confusion Matrix</h1>
-
-<p><space></p>
-
-<ul>
-<li>True Positive (TP)</li>
-<li>False Positive (FP)</li>
-<li>True Negative (TN)</li>
-<li>False Negative (FN)</li>
-<li>\(Accuracy = \frac{TN + TP}{TN + TP + FN + FP}\)</li>
-<li>\(Error = 1 - Accuracy\)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-70" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Kappa</h1>
-
-<p><space></p>
-
-<ul>
-<li>Adjusts the accuracy by the probability of getting a correct prediction by chance alone</li>
-<li>\(k = \frac{P(A) - P(E)}{1 - P(E)}\)
-
-<ul>
-<li>Poor &lt; 0.2</li>
-<li>Fair &lt; 0.4</li>
-<li>Moderate &lt; 0.6</li>
-<li>Good &lt; 0.8</li>
-<li>Excellent &gt; 0.8</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-71" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Kappa</h1>
-
-<p><space></p>
-
-<ul>
-<li>P(A) is the accuracy</li>
-<li>P(E) is the proportion of results where actual = predicted
-
-<ul>
-<li>\(P(E) = P(E = class 1 ) + P(E = class 2)\)</li>
-<li>\(P(E = class 1) = P(actual = class 1 \cap predicted = class 1)\)</li>
-<li>actual and predicted are independent so...</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-72" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Kappa</h1>
-
-<p><space></p>
-
-<ul>
-<li>P(A) is the accuracy</li>
-<li>P(E) is the probability that actual = predicted, i.e. the proportion of each class
-
-<ul>
-<li>\(P(E) = P(E = class 1 ) + P(E = class 2)\)</li>
-<li>\(P(E = class 1) = P(actual = class 1 \cap predicted = class 1)\)</li>
-<li>actual and predicted are independent so...</li>
-<li>\(P(E = class 1) = P(actual = class 1 ) \times P(predicted = class 1)\)<br></li>
-<li>putting it all together... </li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-73" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Kappa</h1>
-
-<p><space></p>
-
-<ul>
-<li>P(A) is the accuracy</li>
-<li>P(E) is the probability that actual = predicted, i.e. the proportion of each class
-
-<ul>
-<li>\(P(E) = P(E = class 1 ) + P(E = class 2)\)</li>
-<li>\(P(E = class 1) = P(actual = class 1 \cap predicted = class 1)\)</li>
-<li>actual and predicted are independent so...</li>
-<li>\(P(E = class 1) = P(actual = class 1 ) \times P(predicted = class 1)\)<br></li>
-<li>putting it all together...</li>
-<li>\(P(E) = P(actual = class 1) \times P(predicted = class 1) + P(actual = class 2) \times P(predicted = class 2)\)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-74" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Kappa</h1>
-
-<p><space></p>
-
-<ul>
-<li>P(A) is the accuracy</li>
-<li>P(E) is the probability that actual = predicted, i.e. the proportion of each class
-
-<ul>
-<li>\(P(E) = P(E = class 1 ) + P(E = class 2)\)</li>
-<li>\(P(E = class 1) = P(actual = class 1 \cap predicted = class 1)\)</li>
-<li>actual and predicted are independent so...</li>
-<li>\(P(E = class 1) = P(actual = class 1 ) \times P(predicted = class 1)\)<br></li>
-<li>putting it all together...</li>
-<li>\(P(E) = P(actual = class 1) \times P(predicted = class 1) + P(actual = class 2) \times P(predicted = class 2)\)</li>
-</ul></li>
-</ul>
-
-<p><code>Exercise: Calculate the kappa statistic for the naive classifier.</code></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-75" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Specificity and Sensitivity</h1>
-
-<p><space></p>
-
-<ul>
-<li>Sensitivity: proportion of positive examples that were correctly classified (True Positive Rate)
-
-<ul>
-<li>\(sensitivity = \frac{TP}{TP + FN}\)</li>
-</ul></li>
-<li>Specificity: proportion of negative examples correctly classified (True Negative Rate)
-
-<ul>
-<li>\(specificity = \frac{TN}{FP + TN}\)</li>
-</ul></li>
-<li>Balance aggressiveness and conservativeness</li>
-<li>Found in the confusion matrix</li>
-<li>Values range from 0 to 1</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-76" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Precision and Recall</h1>
-
-<p><space></p>
-
-<ul>
-<li>Used in information retrieval: are the values retrieved useful or clouded by noise?</li>
-<li>Precision: proportion of positives that are truly positive
-
-<ul>
-<li>\(precision = \frac{TP}{TP + FP}\)</li>
-<li>Precise model only predicts positive when it is sure. Very trustworthy model.</li>
-</ul></li>
-<li>Recall: proportion of true positives of all positives
-
-<ul>
-<li>\(recall = \frac{TP}{TP + FN}\)</li>
-<li>High recall model will capture a large proportion of positives. Returns relevant results</li>
-</ul></li>
-<li>Easy to have high recall (cast a wide net) or high precision (low hanging fruit) but hard to have both high</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-77" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>Precision and Recall</h1>
-
-<p><space></p>
-
-<ul>
-<li>Used in information retrieval: are the values retrieved useful or clouded by noise?</li>
-<li>Precision: proportion of positives that are truly positive
-
-<ul>
-<li>\(precision = \frac{TP}{TP + FP}\)</li>
-<li>Precise model only predicts positive when it is sure. Very trustworthy model.</li>
-</ul></li>
-<li>Recall: proportion of true positives of all positives
-
-<ul>
-<li>\(recall = \frac{TP}{TP + FN}\)</li>
-<li>High recall model will capture a large proportion of positives. Returns relevant results</li>
-</ul></li>
-<li>Easy to have high recall (cast a wide net) or high precision (low hanging fruit) but hard to have both high</li>
-</ul>
-
-<p><code>Exercise: Find the specificity, sensitivity, precision and recall for the Naive classifier.</code></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-78" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>F-score</h1>
-
-<p><space></p>
-
-<ul>
-<li>Also called the F1-score, combines both precision and recall into 1 measure</li>
-<li>\(F_{1} = \frac{2 \times precision + recall}{precision + recall}\)</li>
-<li>Assumes equal weight to precision and recall</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-79" style="background:;">
-  <hgroup>
-    <h2>Model Performance</h2>
-  </hgroup>
-  <article>
-    <h1>F-score</h1>
-
-<p><space></p>
-
-<ul>
-<li>Also called the F1-score, combines both precision and recall into 1 measure</li>
-<li>\(F_{1} = \frac{2 \times precision + recall}{precision + recall}\)</li>
-<li>Assumes equal weight to precision and recall</li>
-</ul>
-
-<p><code>Exercise: Calculate the F-score for the Naive classifier.</code></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-80" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Understanding Regression</h1>
-
-<p><space></p>
-
-<ul>
-<li>predicting continuous value - not classification</li>
-<li>concerned about relationship between independent and dependent variables</li>
-<li>regressions can be linear, non-linear, using decision trees, etc...</li>
-<li>linear and non-linear regressions are called generalized linear models</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-81" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Linear regression</h1>
-
-<p><space></p>
-
-<ul>
-<li>\(Y = \alpha + \beta X\)</li>
-<li>\(\alpha\) and \(\beta\) are just estimates</li>
-</ul>
-
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.0.2
-</code></pre>
-
-<p><img src="figure/best_fit.png" alt="plot of chunk best_fit"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-82" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Linear regression</h1>
-
-<p><space></p>
-
-<ul>
-<li>Distance between the line and each point is the error, or residual term</li>
-<li>Line of best fit: \(Y = \alpha + \beta X + \epsilon\). Assumes:
-
-<ul>
-<li>\(\epsilon\) ~ \(N(0, \sigma^{2})\)</li>
-<li>Each point is IID (independent and identically distributed)</li>
-<li>\(\alpha\) is the intercept</li>
-<li>\(\beta\) is the coefficient</li>
-<li>\(X\) is the parameter</li>
-<li>Both are usually made up of multiple elements - matrices</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-83" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Linear regression</h1>
-
-<p><space></p>
-
-<ul>
-<li>Minimize \(\epsilon\) by minimizing the mean squared error:
-
-<ul>
-<li>\(MSE = \sum_{i=1}^{n}\epsilon_{i}^{2} = \sum_{i=1}^{n}(y_{i} - \hat{y})^{2}\)</li>
-<li>\(y_{i}\) is the true/observed value</li>
-<li>\(\hat{y}\) is the approximation to/prediction of the true \(y\)</li>
-</ul></li>
-<li>Minimization of MSE yields an unbiased estimator with the least variance</li>
-<li>2 common ways to minimize MSE:
-
-<ul>
-<li>analytical solution (e.g. <code>lm()</code> function does this)</li>
-<li>approximation (e.g. gradient descent)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-84" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>In Machine Learning, regression equation is called the hypothesis function
-
-<ul>
-<li>Linear hypothesis function \(h_{\theta}(x) = \theta_{0} + \theta_{1}x\)</li>
-<li>\(\theta\) is \(\beta\)</li>
-</ul></li>
-</ul>
-
-<hr>
-
-<h2>Regression</h2>
-
-<h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>In Machine Learning, regression equation is called the hypothesis function
-
-<ul>
-<li>Linear hypothesis function \(h_{\theta}(x) = \theta_{0} + \theta_{1}x\)</li>
-<li>\(\theta\) is \(\beta\)</li>
-</ul></li>
-<li>Goal remains the same: minimize MSE
-
-<ul>
-<li>define a cost (aka objective) function</li>
-<li>\(J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2\)</li>
-<li>\(m\) is the number of examples</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-85" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>In Machine Learning, regression equation is called the hypothesis function
-
-<ul>
-<li>Linear hypothesis function \(h_{\theta}(x) = \theta_{0} + \theta_{1}x\)</li>
-<li>\(\theta\) is \(\beta\)</li>
-</ul></li>
-<li>Goal remains the same: minimize MSE
-
-<ul>
-<li>define a cost (aka objective) function</li>
-<li>\(J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2\)</li>
-<li>\(m\) is the number of examples</li>
-</ul></li>
-<li>Find a value for theta that minimizes \(J\)
-
-<ul>
-<li>can use calculus or...gradient descent</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-86" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>given a starting value, take a step along the slope</li>
-<li>continue taking a step until minimum is reached</li>
-</ul>
-
-<p><img src="figure/unnamed-chunk-6.png" alt="plot of chunk unnamed-chunk-6"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-87" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>given a starting value, take a step along the slope</li>
-<li>continue taking a step until minimum is reached</li>
-</ul>
-
-<p><img src="figure/unnamed-chunk-7.png" alt="plot of chunk unnamed-chunk-7"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-88" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>given a starting value, take a step along the slope</li>
-<li>continue taking a step until minimum is reached</li>
-</ul>
-
-<p><img src="figure/unnamed-chunk-8.png" alt="plot of chunk unnamed-chunk-8"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-89" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>given a starting value, take a step along the slope</li>
-<li>continue taking a step until minimum is reached</li>
-</ul>
-
-<p><img src="figure/unnamed-chunk-9.png" alt="plot of chunk unnamed-chunk-9"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-90" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>Start with a point (guess)</li>
-<li>Repeat
-
-<ul>
-<li>Determine a descent direction </li>
-<li>Choose a step</li>
-<li>Update</li>
-</ul></li>
-<li>Until stopping criterion is satisfied</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-91" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>Start with a point (guess)    \(x\)</li>
-<li>Repeat
-
-<ul>
-<li>Determine a descent direction   \(-f^\prime\)</li>
-<li>Choose a step    \(\alpha\)</li>
-<li>Update    \(x:=x - \alpha f^\prime\)</li>
-</ul></li>
-<li>Until stopping criterion is satisfied   \(f^\prime ~ 0\)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-92" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>update the value of \(\theta\) by subtracting the first derivative of the cost function</li>
-<li>\(\theta_{j}\) := \(\theta_{j} - \alpha \frac{\partial}{\partial \theta_{j}}J(\theta_{0},\theta_{1})\)
-
-<ul>
-<li>\(j = 1, ..., p\) the number of coefficients, or features</li>
-<li>\(\alpha\) is the step</li>
-<li>\(\frac{\partial}{\partial \theta_{j}}J(\theta_{0},\theta_{1})\) is the gradient</li>
-</ul></li>
-<li>repeat until \(J(\theta)\) is minimized</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-93" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>using math, it turns out that </li>
-<li>\(\frac{\partial}{\partial \theta_{j}}J(\theta_{0},\theta_{1})\)
-\(=\frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x^{i}) - y^{i})(x^{i}_{j})\)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-94" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>and gradient descent formula becomes:</li>
-<li>\(\theta_{j}\) := \(\theta_{j} - \alpha\frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x^{i}) - y^{i})(x_{j}^{i})^{2}\)</li>
-<li>repeating until the cost function is minimized</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-95" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<ul>
-<li>choose the learning rate, alpha</li>
-<li>choose the stopping point</li>
-<li>local vs. global minimum</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-96" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<p><img src="figure/grad_ex_plot.png" alt="plot of chunk grad_ex_plot"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-97" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2517,7 +203,7 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-98" style="background:;">
+      <slide class="" id="slide-9" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2546,7 +232,7 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-99" style="background:;">
+      <slide class="" id="slide-10" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2563,10 +249,10 @@ init_theta&lt;-as.matrix(c(0))
 grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 5244
+<pre><code>[1] 5236
 </code></pre>
 
-<pre><code class="r">iterations = 1000
+<pre><code class="r">iterations = 10000
 alpha = 0.1
 results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 </code></pre>
@@ -2575,7 +261,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-100" style="background:;">
+      <slide class="" id="slide-11" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2584,14 +270,14 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 <p><space></p>
 
-<pre><code>## Error: object &#39;cost.df&#39; not found
+<pre><code>## Error: could not find function &quot;ggplot&quot;
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-101" style="background:;">
+      <slide class="" id="slide-12" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2603,7 +289,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 <pre><code class="r">grad_cost(X1,Y1,theta[[1]])
 </code></pre>
 
-<pre><code>[1] 341.1
+<pre><code>[1] 338.1
 </code></pre>
 
 <pre><code class="r">## Make some predictions
@@ -2617,7 +303,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-102" style="background:;">
+      <slide class="" id="slide-13" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2629,18 +315,20 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 <pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
 </code></pre>
 
-<p><img src="figure/new_point1.png" alt="plot of chunk new_point"> </p>
+<pre><code>## Error: could not find function &quot;ggplot&quot;
+</code></pre>
 
 <pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color=&#39;red&#39;),size=3)+scale_colour_discrete(guide = FALSE)
 </code></pre>
 
-<p><img src="figure/new_point2.png" alt="plot of chunk new_point"> </p>
+<pre><code>## Error: could not find function &quot;ggplot&quot;
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-103" style="background:;">
+      <slide class="" id="slide-14" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -2661,314 +349,890 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-104" style="background:;">
+      <slide class="" id="slide-15" style="background:;">
   <hgroup>
-    <h2>Learning Curves</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>How many parameters are too many?</h1>
+    <h1>Motivation</h1>
 
 <p><space></p>
 
-<pre><code>## Warning: package &#39;gridExtra&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code>## Loading required package: grid
-</code></pre>
-
-<p><img src="figure/multi_plot.png" alt="plot of chunk multi_plot"> </p>
+<h1>example</h1>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-105" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
-    <h2>Learning Curves</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>How many parameters are too many?</h1>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>Summary</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>motivation for PCA</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>brief overview of important linear algebra theorems</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>where L is our eigenvalues and x is eigenvectors and A is our square matrix</h1>
+
+<h1>Ax = Lx</h1>
+
+<h1>Ax - LIx = 0</h1>
+
+<h1>(A-LI)x = 0</h1>
+
+<h1>what is x such that x is not all zero?</h1>
+
+<h1>determinant of A - LI must be 0</h1>
+
+<h1>the solution</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>A = matrix(c(5,2,2,5),nrow=2)
+|A - L<em>diag(nrow(A))| = 0
+det(c(5-l,2,2,5-l))
+(5-l)</em>(5-l) - 4 = 0
+25 - 10l + l<sup>2</sup> - 4 = 0
+l<sup>2</sup> - 10l + 21 = 0
+roots &lt;- Re(polyroot(c(21,-10,1)))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>when lambda = -3</h1>
+
+<p>Ax = 3x
+5x1 + 2x2 = 3x1
+2x1 + 5x2 = 3x2
+x1=-x2</p>
+
+<h1>one eigenvector = [1 -1]. any scalar multiple of this counts.</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>when lambda = 7</h1>
+
+<p>5x1 + 2x2 = 7x1
+2x2 + 5x2 = 7x2
+x1 = x2</p>
+
+<h1>another eigenvector = [1 1]. any scalar multiple of this counts.</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>A%<em>%c(1,-1) == 3 * as.matrix(c(1,-1))
+A%</em>%c(1,1) == 7 * as.matrix(c(1,1))
+roots</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
 
 <p><space></p>
 
 <ul>
-<li>a simple linear model won&#39;t fit</li>
+<li>check
+m &lt;- matrix(c(1,-1,1,1),ncol=2)
+m &lt;- m/sqrt(norm(m))
+A == as.matrix(m%<em>%diag(roots)%</em>%t(m))
+# lambda is a diagonal matrix, with 0 off diagonals</li>
 </ul>
-
-<p><img src="figure/multi_plot_2.png" alt="plot of chunk multi_plot_2"> </p>
-
-<pre><code>[1] 0.0509
-</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-106" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
-    <h2>Learning Curves</h2>
+    <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>How many parameters are too many?</h1>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>PX = Y</p>
+
+<p>CY = (1/(n-1))*YYt
+=PX(PX)t
+=PXXtPt
+=PAPt</p>
+
+<h1>P is a matrix with columns that are eigenvectors</h1>
+
+<h1>A is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric</h1>
+
+<p>A = EDEt</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<h1>each row of P should be an eigenvector of A</h1>
+
+<p>P=Et</p>
+
+<h1>also note that Pt = P-1 (linear algebra)</h1>
+
+<p>A = PtDP
+CY = PPtDPPt
+= (1/(n-1))*D</p>
+
+<h1>D is a diagonal matrix, depending on how we choose P</h1>
+
+<h1>therefore CY is diagonalized</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>data &lt;- read.csv(&#39;tennis_data_2013.csv&#39;)
+data$Player1 &lt;- as.character(data$Player1)
+data$Player2 &lt;- as.character(data$Player2)</p>
+
+<p>tennis &lt;- data
+m &lt;- length(data)</p>
+
+<p>for (i in 10:m){
+  tennis[,i] &lt;- ifelse(is.na(data[,i]),0,data[,i])
+}</p>
+
+<p>str(tennis)</p>
+
+<p>features &lt;- tennis[,10:m]</p>
+
+<p>head(features)
+str(features)
+dim(features)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>scaled_features &lt;- as.matrix(scale(features))
+Cx &lt;- cov(scaled_features)
+eigenvalues &lt;- eigen(Cx)$values
+eigenvectors &lt;- eigen(Cx)$vectors
+PC &lt;- scaled_features %*% eigenvectors</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-29" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>Cy &lt;- cov(PC)
+sum(round(diag(Cy) - eigenvalues,5))
+sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC&#39;s are orthogonal</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-30" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>var_explained &lt;- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
+cum_var_explained &lt;- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)</p>
+
+<p>var_explained &lt;- as.data.frame(var_explained)
+names(var_explained) &lt;- &quot;variance_explained&quot;
+var_explained$PC &lt;- as.numeric(rownames(var_explained))
+var_explained &lt;- cbind(var_explained,cum_var_explained)</p>
+
+<p>library(ggplot2)
+ggplot(var_explained) +
+  geom_bar(aes(x=PC,y=variance_explained),stat=&#39;identity&#39;) +
+  geom_line(aes(x=PC,y=cum_var_explained))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-31" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>eigenvalues = (pca.df$sdev)<sup>2</sup>
+eigenvectors are the loadings - linear combination of the variables
+eigenvectors[,1] = pca.df$rotation[,1]
+sum((eigenvectors[,1])<sup>2)</sup></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-32" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>pca.df &lt;- prcomp(scaled_features)
+rows &lt;- nrow(tennis)
+pca.plot &lt;- as.data.frame(pca.df$x[,1:2])
+pca.plot$gender &lt;- data$Gender
+ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
 
 <p><space></p>
 
 <ul>
-<li>let&#39;s add some features</li>
+<li>how accurate is the first PC at dividing the dataset?
+gen &lt;- ifelse(pca.df$x[,1] &gt; abs(mean(pca.df$x[,1]))*2,&quot;F&quot;,&quot;M&quot;)
+sum(diag(table(gen,as.character(data$Gender))))/rows</li>
 </ul>
 
-<pre><code class="r">df &lt;- transform(df, X2=X^2, X3=X^3)
-summary(lm(Y~X+X2+X3,df))$coef[,1]
-</code></pre>
-
-<pre><code>(Intercept)           X          X2          X3 
-     0.3291      6.4051    -26.3663     21.5161 
-</code></pre>
-
-<pre><code class="r">summary(lm(Y~X + X2 + X3,df))$adj.r.squared
-</code></pre>
-
-<pre><code>[1] 0.8161
-</code></pre>
-
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-107" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
-    <h2>Learning Curves</h2>
-  </hgroup>
-  <article>
-    <h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<ul>
-<li>let&#39;s add even more features</li>
-</ul>
-
-<pre><code>(Intercept)           X          X2          X3          X4          X5 
-  7.829e-02   1.081e+01  -2.297e+02   4.613e+03  -4.999e+04   3.263e+05 
-         X6          X7          X8          X9         X10         X11 
- -1.391e+06   4.005e+06  -7.876e+06   1.051e+07  -9.241e+06   4.960e+06 
-        X12         X14 
- -1.306e+06   5.596e+04 
-</code></pre>
-
-<pre><code>[1] 0.08335
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-108" style="background:;">
-  <hgroup>
-    <h2>Learning Curves</h2>
-  </hgroup>
-  <article>
-    <h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<ul>
-<li>use orthogonal polynomials to avoid correlated features</li>
-<li><code>poly()</code> function</li>
-</ul>
-
-<pre><code class="r">ortho.coefs &lt;- with(df,cor(poly(X,degree=3)))
-sum(ortho.coefs[upper.tri(ortho.coefs)]) # polynomials are uncorrelated
-</code></pre>
-
-<pre><code>[1] -1.415e-16
-</code></pre>
-
-<pre><code class="r">linear.fit &lt;- lm(Y~poly(X,degree=15),df)
-summary(linear.fit)$coef[,1]
-</code></pre>
-
-<pre><code>           (Intercept)  poly(X, degree = 15)1  poly(X, degree = 15)2 
-               0.12683               -2.32246                6.30508 
- poly(X, degree = 15)3  poly(X, degree = 15)4  poly(X, degree = 15)5 
-               5.85066               -3.55499               -1.70624 
- poly(X, degree = 15)6  poly(X, degree = 15)7  poly(X, degree = 15)8 
-               0.74261                0.14294                0.02795 
- poly(X, degree = 15)9 poly(X, degree = 15)10 poly(X, degree = 15)11 
-               0.08263               -0.11572               -0.08504 
-poly(X, degree = 15)12 poly(X, degree = 15)13 poly(X, degree = 15)14 
-               0.01652                0.10939               -0.01993 
-poly(X, degree = 15)15 
-              -0.03974 
-</code></pre>
-
-<pre><code class="r">summary(linear.fit)$adj.r.squared # R^2 is 98% and no errors
-</code></pre>
-
-<pre><code>[1] 0.9845
-</code></pre>
-
-<pre><code class="r">sqrt(mean((predict(linear.fit)-df$Y)^2)) # RMSE = 0.472
-</code></pre>
-
-<pre><code>[1] 0.08329
-</code></pre>
-
-<hr>
-
-<h2>Learning Curves</h2>
-
-<h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<ul>
-<li>when to stop adding othogonal features?</li>
-</ul>
-
-<p><img src="figure/polt_2.png" alt="plot of chunk polt_2"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-109" style="background:;">
-  <hgroup>
-    <h2>Learning Curves</h2>
-  </hgroup>
-  <article>
-    <h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<ul>
-<li>use cross-validation to determine best degree</li>
-</ul>
-
-<pre><code class="r">x &lt;- seq(0,1,by=0.005)
-y &lt;- sin(3*pi*x) + rnorm(length(x),0,0.1)
-
-indices &lt;- sort(sample(1:length(x), round(0.5 * length(x))))
-training.x &lt;- x[indices] 
-training.y &lt;- y[indices]
-test.x &lt;- x[-indices] 
-test.y &lt;- y[-indices]
-training.df &lt;- data.frame(X = training.x, Y = training.y) 
-test.df &lt;- data.frame(X = test.x, Y = test.y)
-
-rmse &lt;- function(y,h) return(sqrt(mean((y-h)^2)))
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-110" style="background:;">
-  <hgroup>
-    <h2>Learning Curves</h2>
-  </hgroup>
-  <article>
-    <h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<pre><code class="r">performance &lt;- data.frame()
-for (d in 1:20){
-  fits &lt;- lm(Y~poly(X,degree=d),data=training.df)
-  performance &lt;- rbind(performance, data.frame(Degree = d,
-                                               Data = &#39;Training&#39;,
-                                               RMSE = rmse(training.y, predict(fits))))
-  performance &lt;- rbind(performance, data.frame(Degree = d,
-                                             Data = &#39;Test&#39;,
-                                             RMSE = rmse(test.y, predict(fits,
-                                                                         newdata = test.df))))
-}
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-111" style="background:;">
-  <hgroup>
-    <h2>Learning Curves</h2>
-  </hgroup>
-  <article>
-    <h1>How many parameters are too many?</h1>
-
-<p><space></p>
-
-<p><img src="figure/unnamed-chunk-11.png" alt="plot of chunk unnamed-chunk-11"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-112" style="background:;">
-  <hgroup>
-    <h2>Regression</h2>
+    <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Summary</h1>
 
 <p><space></p>
 
-<ul>
-<li>Minimize MSE of target function</li>
-<li>Analytically vs. approximation</li>
-<li>Gradient descent preferrable when lots of examples</li>
-<li>Use learning curves to determine optimal number of parameters (or data points)</li>
-</ul>
-
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-113" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
-    <h2>Summary</h2>
+    <h2>Clustering</h2>
   </hgroup>
   <article>
-    <p><space></p>
+    <h1>Motivation</h1>
+
+<p><space></p>
 
 <ul>
-<li>Machine learning overview and concepts</li>
-<li>Exploring data using R</li>
-<li>kNN algorithm and use case </li>
-<li>Naive Bayes
-
-<ul>
-<li>Probability concepts</li>
-<li>Mobile Spam case study</li>
-</ul></li>
-<li>Model performance measures</li>
-<li>Regression</li>
+<li>what is clustering</li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-114" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
-    <h2>Next Time</h2>
+    <h2>Clustering</h2>
   </hgroup>
   <article>
-    <p><space></p>
+    <h1>Kmeans</h1>
+
+<p><space></p>
 
 <ul>
-<li>Logistic regression</li>
-<li>Decision Trees</li>
-<li>Clustering</li>
-<li>Dimensionality reduction (PCA, ICA)</li>
-<li>Regularization</li>
+<li>k means algorithm</li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-115" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Kmeans</h1>
+
+<p><space></p>
+
+<ul>
+<li>k means algorithm</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-38" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Kmeans</h1>
+
+<p><space></p>
+
+<ul>
+<li>k means algorithm</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-39" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Kmeans</h1>
+
+<p><space></p>
+
+<p>tennis_kmean &lt;- kmeans(features, centers=5)</p>
+
+<h1>K MEANS DOES A GOOD JOB IN CLUSTERING GENDERS</h1>
+
+<p>table(tennis$Gender,tennis_kmean$cluster)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-40" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Kmeans animation</h1>
+
+<p><space></p>
+
+<h1>animate kmean algorithm</h1>
+
+<p>install.packages(&#39;animation&#39;)
+library(animation)</p>
+
+<p>oopt = ani.options(interval = 1)</p>
+
+<h2>the kmeans() example; very fast to converge!</h2>
+
+<p>ani_ex = rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), 
+          matrix(rnorm(100, sd = 0.3), 
+          ncol = 2))
+colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
+
+<p>kmeans.an = function(
+  x = cbind(X1 = runif(50), X2 = runif(50)), centers = 4, hints = c(&#39;Move centers!&#39;, &#39;Find cluster?&#39;),
+  pch = 1:5, col = 1:5
+) {
+  x = as.matrix(x)
+  ocluster = sample(centers, nrow(x), replace = TRUE)
+  if (length(centers) == 1) centers = x[sample(nrow(x), centers), ] else
+    centers = as.matrix(centers)
+  numcent = nrow(centers)
+  dst = matrix(nrow = nrow(x), ncol = numcent)
+  j = 1
+  pch = rep(pch, length = numcent)
+  col = rep(col, length = numcent)</p>
+
+<p>for (j in 1:ani.options(&#39;nmax&#39;)) {
+    dev.hold()
+    plot(x, pch = pch[ocluster], col = col[ocluster], panel.first = grid())
+    mtext(hints[1], 4)
+    points(centers, pch = pch[1:numcent], cex = 3, lwd = 2, col = col[1:numcent])
+    ani.pause()
+    for (i in 1:numcent) {
+      dst[, i] = sqrt(apply((t(t(x) - unlist(centers[i, ])))<sup>2,</sup> 1, sum))
+    }
+    ncluster = apply(dst, 1, which.min)
+    plot(x, type = &#39;n&#39;)
+    mtext(hints[2], 4)
+    grid()
+    ocenters = centers
+    for (i in 1:numcent) {
+      xx = subset(x, ncluster == i)
+      polygon(xx[chull(xx), ], density = 10, col = col[i], lty = 2)
+      points(xx, pch = pch[i], col = col[i])
+      centers[i, ] = apply(xx, 2, mean)
+    }
+    points(ocenters, cex = 3, col = col[1:numcent], pch = pch[1:numcent], lwd = 2)
+    ani.pause()
+    if (all(ncluster == ocluster)) break
+    ocluster = ncluster
+  }
+  invisible(list(cluster = ncluster, centers = centers))
+}</p>
+
+<p>kmeans.an(ani_ex, centers = 5, hints = c(&quot;Move centers&quot;,&quot;Cluster found?&quot;))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-41" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>DBSCAN</h1>
+
+<p><space></p>
+
+<p>x &lt;- c(2,2,8,5,7,6,1,4)
+y &lt;- c(10,5,4,8,5,4,2,9)
+cluster &lt;- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
+plot(cluster)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-42" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>DBSCAN</h1>
+
+<p><space></p>
+
+<p>install.packages(&#39;fpc&#39;)
+library(fpc)
+cluster_DBSCAN&lt;-dbscan(cluster, eps=3, MinPts=2, method=&quot;hybrid&quot;)
+plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=3, MinPts=3)&quot;)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-43" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Summary</h1>
+
+<p><space></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-44" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-45" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Algorithm(s)</h1>
+
+<p><space></p>
+
+<p>ID3
+C4.5
+C5.0</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-46" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy calculation</h1>
+
+<p><space></p>
+
+<ul>
+<li>what is entropy?</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-47" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy calculation</h1>
+
+<p><space></p>
+
+<p>entropy_function &lt;- function(p)
+  {
+    if (min(p) &lt; 0 || sum(p) &lt;= 0)
+      return(NA)
+    p.norm &lt;- p[p&gt;0]/sum(p)
+    -sum(log2(p.norm)*p.norm)
+  }</p>
+
+<p>entropy_function(c(0.99,1))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-48" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>voting_data &lt;- read.csv(&#39;<a href="http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#x27;">http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#39;</a>)
+str(voting_data)
+names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;water-project-cost-sharing&#39;,
+                        &#39;adoption-of-the-budget-resolution&#39;,&#39;physician-fee-freeze&#39;,
+                        &#39;el-salvador-aid&#39;,&#39;religious-groups-in-schools&#39;,
+                        &#39;anti-satellite-test-ban&#39;,&#39;aid-to-nicaraguan-contras&#39;,
+                        &#39;mx-missile&#39;,&#39;immigration&#39;,&#39;synfuels-corporation-cutback&#39;,
+                        &#39;education-spending&#39;,&#39;superfund-right-to-sue&#39;,&#39;crime&#39;,
+                        &#39;duty-free-exports&#39;,&#39;export-administration-act-south-africa&#39;)</p>
+
+<p>prop.table(table(voting_data[,1]))
+n &lt;- nrow(voting_data)
+train_ind &lt;- sample(n,2/3*n)
+voting_train &lt;- voting_data[train_ind,]
+voting_test &lt;- voting_data[-train_ind,]</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-49" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p>install.packages(&quot;party&quot;)
+library(C50)
+library(party)
+library(gmodels)
+head(voting_train)</p>
+
+<h1>plot tree using party package</h1>
+
+<p>tree_formula &lt;- with(voting_train,voting_train$party ~ .)
+p_tree &lt;- ctree(tree_formula,data=voting_train)
+plot(p_tree,
+     inner_panel=node_inner(p_tree,pval = FALSE,id = TRUE),
+     terminal_panel=node_terminal(p_tree, digits = 1, id = TRUE))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-50" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<h1>make tree using C5.0</h1>
+
+<p>tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=1)
+tree_predict &lt;- predict(tree_model, newdata=voting_test[,-1])
+conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
+                   prop.c = FALSE, prop.r = FALSE,
+                   dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-51" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<h1>most important variables</h1>
+
+<p>C5imp(tree_model)</p>
+
+<h1>in-sample error rate</h1>
+
+<p>summary(tree_model)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-52" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example - Boosting</h1>
+
+<p><space></p>
+
+<h1>boosting is rooted in the notion that by combining a number of weak performing learners,</h1>
+
+<h1>you can create a team that is much stronger than any one of the learners alone.</h1>
+
+<h1>this is where C5.0 improves on C4.5</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-53" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example - Boosting</h1>
+
+<p><space></p>
+
+<p>boosted_tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=25)
+boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])</p>
+
+<p>boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
+                           prop.c = FALSE, prop.r = FALSE, 
+                           dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))</p>
+
+<h1>in-sample error rate</h1>
+
+<p>summary(boosted_tree_model)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-54" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example - Error Cost</h1>
+
+<p><space></p>
+
+<h1>still getting too many false positives (predict republican but actually democrat)</h1>
+
+<h1>introduce higher cost to getting this wrong</h1>
+
+<p>error_cost &lt;- matrix(c(0,1,2,0),nrow=2)
+cost_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
+cost_predict &lt;- predict(cost_model, newdata=voting_test[,-1])
+conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
+                   prop.c = FALSE, prop.r = FALSE,
+                   dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-55" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example - Error Cost</h1>
+
+<p><space></p>
+
+<p>tris &lt;- seq(1,50,by=2)
+boost_acc &lt;- NULL
+for (i in tris){<br>
+  temp &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=i, costs = error_cost)
+  temp_pred &lt;- predict(temp,voting_test[,-1])
+  boost_acc &lt;- append(boost_acc,sum(diag(table(temp_pred,voting_test[,1]))))
+}</p>
+
+<p>plot(boost_acc,type=&#39;l&#39;)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-56" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Pros and Cons</h1>
+
+<p><space></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -2985,7 +1249,7 @@ for (d in 1:20){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-116" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     
   </hgroup>
