@@ -64,9 +64,18 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 # Notation
 <space>
 
-- Binary outcome: 1 or 0
-- want function bounded between 1 and 0
-  - sigmoid or logistic function: $g_(z) = \frac{1}{1+\e^{-z}}$
+- type of regression to predict the probability of being in a class
+  - typical to set threshold to 0.5
+- assumes error terms are Binomially distributed
+  - which generates 1's and 0's as the error term
+- sigmoid or logistic function: $g_(z) = \frac{1}{1+\e^{-z}}$
+  - interpret the output as P(Y=1|X)
+  - bounded by 0 and 1
+
+```{r}
+curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
+abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
+```
   
 ----
 
@@ -74,8 +83,12 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 # Find parameters
 <space>
 
+
 - Goal remains the same: Minimize MSE
 - set cost function to be large when guess is wrong - either guess 1 and actual is 0 or vice verse
+- What if we are wrong? Penalize the cost function
+- in Linear Regression, hypothesis function was Y = h(x) = theta * x
+- in Logistic Regression, hypothesis function is Y = g(h(x)) = 1/(1+e(-h(x))) = 1/(1+e(-theta * x))
 
 cost = -log(x), when predict y = 1
 cost = log(1-x) when predict y = 0
@@ -88,7 +101,7 @@ curve(-log(1-x),from = -100, to = 0)
 - $\theta$ is $\{\beta_{0}, \beta{1}\}$, where $\beta_{0}$ is $\alpha$ from before
 - $X = \{x_{0}, x_{1}\}$
 - Make $x_{0}$ = 1
-- $h_{\theta}(x) = \beta \times t(X)$
+- $h_{\theta}(x) = \theta \times t(X)$ <- also known as the link function
 - $J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2$
 
 
@@ -98,10 +111,13 @@ curve(-log(1-x),from = -100, to = 0)
 # Motivation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+\e^{-\theta \times X}}$ yields
-$\ln{\frac{Y}{1 - Y)}} = \theta \times X$
-
-curve(1/(1+exp(-x)),from = -10,to = 10)
+- Re-arranging $Y = \frac{1}{1+e^{-\theta \times X}}$ yields
+$\frac{Y}{1 - Y)}} = e^{\theta \times X}$
+  - odds of a particular class between 0 and infinite
+  - take the log of both sides, to get log-odds, or logit
+    - this is the link function that relates P(Y) and X    
+- using Maximum Likelihood Estimation, it can be shown that the cost function for logistic regression is
+-y*log(z) + (1-y)log(1-z)
 
 ----
 
@@ -887,12 +903,11 @@ plot(boost_acc,type='l')
 # Pros and Cons
 <space>
 
-
 - trees are non-parametric, rule based classification or regression method
 - simple to understand and interpret
 - little data preparation
 - easy to overfit (need to prune to avoid that, or have max tree depth)
-- the global optimum is known as NP-complete unless greedy search is employed, which is then only locally optimum. Can mitigate this with an ensemble of trees
+- usually finds local optimum. Can mitigate this with an ensemble of trees
 - difficult concepts that are not easily expressed by trees (XOR) are hard to learn
 - for class imbalance, trees can be biased - should balance dataset before fitting
 - trees tend to overfit, so use PCA beforehand

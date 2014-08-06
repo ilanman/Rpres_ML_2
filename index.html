@@ -129,13 +129,30 @@ curve_points &lt;- line_points + geom_line(aes(x = X, y = fitted), color = &quot
 <p><space></p>
 
 <ul>
-<li>Binary outcome: 1 or 0</li>
-<li>want function bounded between 1 and 0
+<li>type of regression to predict the probability of being in a class
 
 <ul>
-<li>sigmoid or logistic function: \(g_(z) = \frac{1}{1+\e^{-z}}\)</li>
+<li>typical to set threshold to 0.5</li>
+</ul></li>
+<li>assumes error terms are Binomially distributed
+
+<ul>
+<li>which generates 1&#39;s and 0&#39;s as the error term</li>
+</ul></li>
+<li>sigmoid or logistic function: \(g_(z) = \frac{1}{1+\e^{-z}}\)
+
+<ul>
+<li>interpret the output as P(Y=1|X)</li>
+<li>bounded by 0 and 1</li>
 </ul></li>
 </ul>
+
+<pre><code class="r">curve(1/(1 + exp(-x)), from = -10, to = 10, ylab = &quot;P(Y=1|X)&quot;, col = &quot;red&quot;, 
+    lwd = 3)
+abline(a = 0.5, b = 0, lty = 2, col = &quot;blue&quot;, lwd = 3)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
 
 <hr>
 
@@ -148,6 +165,9 @@ curve_points &lt;- line_points + geom_line(aes(x = X, y = fitted), color = &quot
 <ul>
 <li>Goal remains the same: Minimize MSE</li>
 <li>set cost function to be large when guess is wrong - either guess 1 and actual is 0 or vice verse</li>
+<li>What if we are wrong? Penalize the cost function</li>
+<li>in Linear Regression, hypothesis function was Y = h(x) = theta * x</li>
+<li>in Logistic Regression, hypothesis function is Y = g(h(x)) = 1/(1+e(-h(x))) = 1/(1+e(-theta * x))</li>
 </ul>
 
 <p>cost = -log(x), when predict y = 1
@@ -160,7 +180,7 @@ curve(-log(1-x),from = -100, to = 0)</p>
 <li>\(\theta\) is \(\{\beta_{0}, \beta{1}\}\), where \(\beta_{0}\) is \(\alpha\) from before</li>
 <li>\(X = \{x_{0}, x_{1}\}\)</li>
 <li>Make \(x_{0}\) = 1</li>
-<li>\(h_{\theta}(x) = \beta \times t(X)\)</li>
+<li>\(h_{\theta}(x) = \theta \times t(X)\) &lt;- also known as the link function</li>
 <li>\(J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2\)</li>
 </ul>
 
@@ -178,11 +198,17 @@ curve(-log(1-x),from = -100, to = 0)</p>
 <p><space></p>
 
 <ul>
-<li>Re-arranging \(Y = \frac{1}{1+\e^{-\theta \times X}}\) yields
-\(\ln{\frac{Y}{1 - Y)}} = \theta \times X\)</li>
-</ul>
+<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta \times X}}\) yields
+\(\frac{Y}{1 - Y)}} = e^{\theta \times X}\)
 
-<p>curve(1/(1+exp(-x)),from = -10,to = 10)</p>
+<ul>
+<li>odds of a particular class between 0 and infinite</li>
+<li>take the log of both sides, to get log-odds, or logit</li>
+<li>this is the link function that relates P(Y) and X<br></li>
+</ul></li>
+<li>using Maximum Likelihood Estimation, it can be shown that the cost function for logistic regression is
+-y*log(z) + (1-y)log(1-z)</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -1433,7 +1459,7 @@ for (i in tris){<br>
 <li>simple to understand and interpret</li>
 <li>little data preparation</li>
 <li>easy to overfit (need to prune to avoid that, or have max tree depth)</li>
-<li>the global optimum is known as NP-complete unless greedy search is employed, which is then only locally optimum. Can mitigate this with an ensemble of trees</li>
+<li>usually finds local optimum. Can mitigate this with an ensemble of trees</li>
 <li>difficult concepts that are not easily expressed by trees (XOR) are hard to learn</li>
 <li>for class imbalance, trees can be biased - should balance dataset before fitting</li>
 <li>trees tend to overfit, so use PCA beforehand</li>
