@@ -249,10 +249,10 @@ init_theta&lt;-as.matrix(c(0))
 grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 5236
+<pre><code>[1] 5256
 </code></pre>
 
-<pre><code class="r">iterations = 10000
+<pre><code class="r">iterations = 100
 alpha = 0.1
 results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 </code></pre>
@@ -289,7 +289,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 <pre><code class="r">grad_cost(X1,Y1,theta[[1]])
 </code></pre>
 
-<pre><code>[1] 338.1
+<pre><code>[1] 314.6
 </code></pre>
 
 <pre><code class="r">## Make some predictions
@@ -764,7 +764,27 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
 <p><space></p>
 
 <ul>
-<li>what is clustering</li>
+<li>used to separate data into meaningful or useful groups (or both)
+
+<ul>
+<li>capture natural structure of the data</li>
+<li>useful starting point for further analysis</li>
+</ul></li>
+<li>customer segmentation</li>
+<li><p>cluster for utility</p>
+
+<ul>
+<li>summarizing data for less expensive computation</li>
+<li>data compression</li>
+<li>nearest neighbors - distance between two cluster centers (centroids)</li>
+</ul></li>
+<li><p>types of clusters</p>
+
+<ul>
+<li>data points that are more similar to one another than points outside of the cluster - most intuitive definition</li>
+<li>prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.</li>
+<li>density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.</li>
+</ul></li>
 </ul>
 
   </article>
@@ -781,7 +801,81 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
 <p><space></p>
 
 <ul>
-<li>k means algorithm</li>
+<li>k-means
+
+<ul>
+<li>prototype, partitional based</li>
+<li>choose K initial centroids/clusters</li>
+<li>points are assigned to the closest centroid</li>
+<li>centroid is then updated based on the points in that cluster</li>
+<li>update steps until no point changes or centroids remain the same</li>
+</ul></li>
+</ul>
+
+<ol>
+<li>Select K points as initial centroids. </li>
+<li>repeat</li>
+<li>    Form K clusters by assigning each point to its closest centroid.</li>
+<li>    Recompute the centroid of each cluster. </li>
+<li><p>until Centroids do not change, or change very minimally, i.e. &lt;1%</p></li>
+<li><p>Use similarity measures such as Euclidean or cosine similarity depending on the data</p></li>
+<li><p>Minimize the squared distance of each point to closest centroid, minimize the objective function</p>
+
+<ul>
+<li>the centroid that minimizes the SSE of the cluster is the mean</li>
+<li>Kmeans leads to local minimum, not global, since you’re optimizing based on the centroids you chose, not all possible centroids</li>
+<li></li>
+</ul></li>
+<li><p>choose K randomly - can lead to poor centroids</p>
+
+<ul>
+<li>run k-means multiple times - still doesn’t solve problems</li>
+</ul></li>
+</ol>
+
+<ul>
+<li>can reduce the total SSE by increasing the K
+
+<ul>
+<li>can increase the cluster with largest SSE</li>
+</ul></li>
+<li>can decrease K and minimize SSE
+
+<ul>
+<li>split up a cluster into other clusters. the centroid that is split will increase total SSE the least</li>
+</ul></li>
+<li><p>bisecting K means</p>
+
+<ul>
+<li>less susceptible to initialization problems</li>
+<li>split points into 2 clusters
+
+<ul>
+<li>take cluster with largest SSE - split that into two clusters</li>
+</ul></li>
+<li>rerun bisecting K mean on resulting clusters</li>
+<li>stop when you have K clusters</li>
+</ul></li>
+<li><p>K mean fails</p>
+
+<ul>
+<li>if some clusters are much bigger than other clusters - it cannot distinguish between natural clusters</li>
+<li>if clusters have different densities, K means cannot tell </li>
+<li>distance metric doesn’t account for non-globular clusters, i.e. if they follow a distribution</li>
+</ul></li>
+<li><p>K means will still work if user accepts sub clusters of the natural cluster</p></li>
+<li><p>strengths</p>
+
+<ul>
+<li>simple, efficient computationally</li>
+<li>not useful for non-globular, different density, different sized data</li>
+<li>outlier detection and removal can help address outlier problem</li>
+</ul></li>
+<li><p>can derive K mean algorithm using gradient descent</p>
+
+<ul>
+<li>can use calculus to show that the mean of the cluster is the best choice of centroid, i.e. minimizes SSE</li>
+</ul></li>
 </ul>
 
   </article>
@@ -789,40 +883,6 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
 </slide>
 
       <slide class="" id="slide-37" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>Kmeans</h1>
-
-<p><space></p>
-
-<ul>
-<li>k means algorithm</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-38" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>Kmeans</h1>
-
-<p><space></p>
-
-<ul>
-<li>k means algorithm</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -841,7 +901,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -912,12 +972,32 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
   <article>
     <h1>DBSCAN</h1>
+
+<p><space></p>
+
+<ul>
+<li>density based
+
+<ul>
+<li>center based approach to finding density</li>
+<li>count the number of points within some radius of a point, the radius is call Eps</li>
+<li>if Eps is too big, there will be m points, if eps is too small, there will be 1 point</li>
+<li>core point has X points within a radius of Eps, border points are within a radius of Eps of core point, and noise points are not within Eps of border or core points</li>
+<li>if p is density connected to q, they are part of the same cluster, if not, then they are not; if p is not density connected to any other point, its considered noise</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h2>Clustering</h2>
+
+<h1>DBSCAN</h1>
 
 <p><space></p>
 
@@ -930,7 +1010,7 @@ plot(cluster)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -948,7 +1028,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -961,7 +1041,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -970,11 +1050,22 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
 
 <p><space></p>
 
+<ul>
+<li>A root node that has no incoming edges and zero or more outgoing edges.</li>
+<li>Internal nodes, each of which has exactly one incoming edge and two or more outgoing edges</li>
+<li><p>Leaf or terminal nodes, each of which has exactly one incoming edge and no outgoing edges. </p></li>
+<li><p>The non- terminal nodes, which include the root and other internal nodes, contain attribute test conditions to separate records that have different characteristics</p></li>
+<li><p>trees work best with categorical values</p></li>
+<li><p>descriptions are disjoint</p></li>
+<li><p>trees are robust to data errors</p></li>
+<li><p>training data is missing values</p></li>
+</ul>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -991,7 +1082,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1001,14 +1092,36 @@ C5.0</p>
 <p><space></p>
 
 <ul>
-<li>what is entropy?</li>
+<li>The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.
+
+<ul>
+<li>draw curve for entropy</li>
+</ul></li>
+<li>InfoGain = Entropy (pre split) - Entropy (post split)
+
+<ul>
+<li>Entropy is weighted by the Entropy of each feature split
+
+<ul>
+<li>avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)</li>
+</ul></li>
+</ul></li>
+<li><p>hard to know optimal length of tree without growing it there first</p></li>
+<li><p>Entropy = expected amount of information contained in a random variable -&gt; information is synonymous with &quot;bits&quot; which is why is log, base 2 </p>
+
+<ul>
+<li>the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower</li>
+<li>the more the feature splits the data, the higher the entropy and hence information gained by splitting at that feature</li>
+<li>Entropy is minimized when one of the events has a P(X)=1</li>
+<li>Entropy is maximized when each event has a P(X)=1/n of happening</li>
+</ul></li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1031,7 +1144,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1060,7 +1173,7 @@ voting_test &lt;- voting_data[-train_ind,]</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1087,7 +1200,7 @@ plot(p_tree,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1108,7 +1221,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1129,7 +1242,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1148,7 +1261,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1172,7 +1285,7 @@ boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1196,7 +1309,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1219,7 +1332,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1228,11 +1341,22 @@ for (i in tris){<br>
 
 <p><space></p>
 
+<ul>
+<li>trees are non-parametric, rule based classification or regression method</li>
+<li>simple to understand and interpret</li>
+<li>little data preparation</li>
+<li>easy to overfit (need to prune to avoid that, or have max tree depth)</li>
+<li>the global optimum is known as NP-complete unless greedy search is employed, which is then only locally optimum. Can mitigate this with an ensemble of trees</li>
+<li>difficult concepts that are not easily expressed by trees (XOR) are hard to learn</li>
+<li>for class imbalance, trees can be biased - should balance dataset before fitting</li>
+<li>trees tend to overfit, so use PCA beforehand</li>
+</ul>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -1249,7 +1373,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-58" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     
   </hgroup>

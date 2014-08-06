@@ -171,11 +171,11 @@ grad_cost(X1,Y1,init_theta)
 ```
 
 ```
-[1] 5236
+[1] 5256
 ```
 
 ```r
-iterations = 10000
+iterations = 100
 alpha = 0.1
 results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 ```
@@ -203,7 +203,7 @@ grad_cost(X1,Y1,theta[[1]])
 ```
 
 ```
-[1] 338.1
+[1] 314.6
 ```
 
 ```r
@@ -498,7 +498,19 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Motivation
 <space>
 
-- what is clustering
+- used to separate data into meaningful or useful groups (or both)
+     - capture natural structure of the data
+     - useful starting point for further analysis
+- customer segmentation
+- cluster for utility
+     - summarizing data for less expensive computation
+     - data compression
+     - nearest neighbors - distance between two cluster centers (centroids)
+     
+- types of clusters
+     - data points that are more similar to one another than points outside of the cluster - most intuitive definition
+     - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
+     - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
 
 ----
 
@@ -506,23 +518,52 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmeans
 <space>
 
-- k means algorithm
+- k-means
+     - prototype, partitional based
+     - choose K initial centroids/clusters
+     - points are assigned to the closest centroid
+     - centroid is then updated based on the points in that cluster
+     - update steps until no point changes or centroids remain the same
 
-----
 
-## Clustering
-# Kmeans
-<space>
 
-- k means algorithm
+1. Select K points as initial centroids. 
+2. repeat
+3.     Form K clusters by assigning each point to its closest centroid.
+4.     Recompute the centroid of each cluster. 
+5. until Centroids do not change, or change very minimally, i.e. <1%
 
-----
 
-## Clustering
-# Kmeans
-<space>
+3. Use similarity measures such as Euclidean or cosine similarity depending on the data
+4. Minimize the squared distance of each point to closest centroid, minimize the objective function
+     - the centroid that minimizes the SSE of the cluster is the mean
+     - Kmeans leads to local minimum, not global, since you’re optimizing based on the centroids you chose, not all possible centroids
+     - 
+- choose K randomly - can lead to poor centroids
+     - run k-means multiple times - still doesn’t solve problems
 
-- k means algorithm
+- can reduce the total SSE by increasing the K
+     - can increase the cluster with largest SSE
+- can decrease K and minimize SSE
+     - split up a cluster into other clusters. the centroid that is split will increase total SSE the least
+- bisecting K means
+     - less susceptible to initialization problems
+     - split points into 2 clusters
+          - take cluster with largest SSE - split that into two clusters
+     - rerun bisecting K mean on resulting clusters
+     - stop when you have K clusters
+
+- K mean fails
+     - if some clusters are much bigger than other clusters - it cannot distinguish between natural clusters
+     - if clusters have different densities, K means cannot tell 
+     - distance metric doesn’t account for non-globular clusters, i.e. if they follow a distribution
+- K means will still work if user accepts sub clusters of the natural cluster
+- strengths
+     - simple, efficient computationally
+     - not useful for non-globular, different density, different sized data
+     - outlier detection and removal can help address outlier problem
+- can derive K mean algorithm using gradient descent
+     - can use calculus to show that the mean of the cluster is the best choice of centroid, i.e. minimizes SSE
 
 ----
 
@@ -602,6 +643,19 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 # DBSCAN
 <space>
 
+- density based
+     - center based approach to finding density
+     - count the number of points within some radius of a point, the radius is call Eps
+     - if Eps is too big, there will be m points, if eps is too small, there will be 1 point
+     - core point has X points within a radius of Eps, border points are within a radius of Eps of core point, and noise points are not within Eps of border or core points
+     - if p is density connected to q, they are part of the same cluster, if not, then they are not; if p is not density connected to any other point, its considered noise
+     
+----
+
+## Clustering
+# DBSCAN
+<space>
+
 x <- c(2,2,8,5,7,6,1,4)
 y <- c(10,5,4,8,5,4,2,9)
 cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
@@ -630,6 +684,17 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Motivation
 <space>
 
+- A root node that has no incoming edges and zero or more outgoing edges.
+- Internal nodes, each of which has exactly one incoming edge and two or more outgoing edges
+- Leaf or terminal nodes, each of which has exactly one incoming edge and no outgoing edges. 
+
+- The non- terminal nodes, which include the root and other internal nodes, contain attribute test conditions to separate records that have different characteristics
+
+- trees work best with categorical values
+- descriptions are disjoint
+- trees are robust to data errors
+- training data is missing values
+
 ----
 
 ## Trees
@@ -646,7 +711,20 @@ C5.0
 # Entropy calculation
 <space>
 
-- what is entropy?
+
+- The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.
+     - draw curve for entropy
+- InfoGain = Entropy (pre split) - Entropy (post split)
+     - Entropy is weighted by the Entropy of each feature split
+ - avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)
+- hard to know optimal length of tree without growing it there first
+
+- Entropy = expected amount of information contained in a random variable -> information is synonymous with "bits" which is why is log, base 2 
+     - the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower
+     - the more the feature splits the data, the higher the entropy and hence information gained by splitting at that feature
+     - Entropy is minimized when one of the events has a P(X)=1
+     - Entropy is maximized when each event has a P(X)=1/n of happening
+
 
 ----
 
@@ -794,6 +872,16 @@ plot(boost_acc,type='l')
 ## Trees
 # Pros and Cons
 <space>
+
+
+- trees are non-parametric, rule based classification or regression method
+- simple to understand and interpret
+- little data preparation
+- easy to overfit (need to prune to avoid that, or have max tree depth)
+- the global optimum is known as NP-complete unless greedy search is employed, which is then only locally optimum. Can mitigate this with an ensemble of trees
+- difficult concepts that are not easily expressed by trees (XOR) are hard to learn
+- for class imbalance, trees can be biased - should balance dataset before fitting
+- trees tend to overfit, so use PCA beforehand
 
 ----
 
