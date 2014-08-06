@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Machine Learning with R - Part 2</title>
+  <title>Machine Learning with R - II</title>
   <meta charset="utf-8">
-  <meta name="description" content="Machine Learning with R - Part 2">
+  <meta name="description" content="Machine Learning with R - II">
   <meta name="author" content="Ilan Man">
   <meta name="generator" content="slidify" />
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,7 +31,7 @@
     <!-- Should I move this to a Local Layout File? -->
     <slide class="title-slide segue nobackground">
       <hgroup class="auto-fadein">
-        <h1>Machine Learning with R - Part 2</h1>
+        <h1>Machine Learning with R - II</h1>
         <h2></h2>
         <p>Ilan Man<br/>Strategy Operations  @ Squarespace</p>
       </hgroup>
@@ -96,40 +96,23 @@
 <p><space></p>
 
 <pre><code class="r">library(&quot;MASS&quot;)
+library(ggplot2)
 data(menarche)
-log_data &lt;- data.frame(Y=menarche$Menarche/menarche$Total)
+log_data &lt;- data.frame(Y = menarche$Menarche/menarche$Total)
 log_data$X &lt;- menarche$Age
 
-glm.out &lt; glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-</code></pre>
-
-<pre><code>## Error: object &#39;glm.out&#39; not found
-</code></pre>
-
-<pre><code class="r">lm.out &lt;- lm(Y~X, data=log_data)
+glm.out &lt;- glm(cbind(Menarche, Total - Menarche) ~ Age, family = binomial(logit), 
+    data = menarche)
+lm.out &lt;- lm(Y ~ X, data = log_data)
 
 log_data$fitted &lt;- glm.out$fitted
-</code></pre>
 
-<pre><code>## Error: object &#39;glm.out&#39; not found
-</code></pre>
-
-<pre><code class="r">data_points &lt;- ggplot(log_data) + geom_point(aes(x=X,y=Y),color=&#39;blue&#39;,size=3)
-</code></pre>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
-
-<pre><code class="r">line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color=&#39;green&#39;,size=1)
-</code></pre>
-
-<pre><code>## Error: object &#39;data_points&#39; not found
-</code></pre>
-
-<pre><code class="r">curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;,size=1) 
-</code></pre>
-
-<pre><code>## Error: object &#39;line_points&#39; not found
+data_points &lt;- ggplot(log_data) + geom_point(aes(x = X, y = Y), color = &quot;blue&quot;, 
+    size = 3)
+line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2], 
+    color = &quot;green&quot;, size = 1)
+curve_points &lt;- line_points + geom_line(aes(x = X, y = fitted), color = &quot;red&quot;, 
+    size = 1)
 </code></pre>
 
   </article>
@@ -146,7 +129,39 @@ log_data$fitted &lt;- glm.out$fitted
 <p><space></p>
 
 <ul>
-<li>introduce notation: hypothesis function, cost function, objective function, sigmoid</li>
+<li>Binary outcome: 1 or 0</li>
+<li>want function bounded between 1 and 0
+
+<ul>
+<li>sigmoid or logistic function: \(g_(z) = \frac{1}{1+\e^{-z}}\)</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h2>Logistic Regression</h2>
+
+<h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>Goal remains the same: Minimize MSE</li>
+<li>set cost function to be large when guess is wrong - either guess 1 and actual is 0 or vice verse</li>
+</ul>
+
+<p>cost = -log(x), when predict y = 1
+cost = log(1-x) when predict y = 0</p>
+
+<p>curve(-log(x),from = 0, to = 100)
+curve(-log(1-x),from = -100, to = 0)</p>
+
+<ul>
+<li>\(\theta\) is \(\{\beta_{0}, \beta{1}\}\), where \(\beta_{0}\) is \(\alpha\) from before</li>
+<li>\(X = \{x_{0}, x_{1}\}\)</li>
+<li>Make \(x_{0}\) = 1</li>
+<li>\(h_{\theta}(x) = \beta \times t(X)\)</li>
+<li>\(J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2\)</li>
 </ul>
 
   </article>
@@ -162,7 +177,12 @@ log_data$fitted &lt;- glm.out$fitted
 
 <p><space></p>
 
-<h1>logistic function - odds ratio - log odds</h1>
+<ul>
+<li>Re-arranging \(Y = \frac{1}{1+\e^{-\theta \times X}}\) yields
+\(\ln{\frac{Y}{1 - Y)}} = \theta \times X\)</li>
+</ul>
+
+<p>curve(1/(1+exp(-x)),from = -10,to = 10)</p>
 
   </article>
   <!-- Presenter Notes -->
@@ -177,8 +197,7 @@ log_data$fitted &lt;- glm.out$fitted
 
 <p><space></p>
 
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
+<p><img src="figure/grad_ex_plot.png" alt="plot of chunk grad_ex_plot"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -193,10 +212,10 @@ log_data$fitted &lt;- glm.out$fitted
 
 <p><space></p>
 
-<pre><code class="r">x &lt;- cbind(1,x)  #Add ones to x  
-theta&lt;- c(0,0)  # initalize theta vector 
+<pre><code class="r">x &lt;- cbind(1, x)  #Add ones to x  
+theta &lt;- c(0, 0)  # initalize theta vector 
 m &lt;- nrow(x)  # Number of the observations 
-grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
+grad_cost &lt;- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
 </code></pre>
 
   </article>
@@ -212,19 +231,19 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 
 <p><space></p>
 
-<pre><code class="r">gradDescent&lt;-function(X,y,theta,iterations,alpha){
-  m &lt;- length(y)
-  grad &lt;- rep(0,length(theta))
-  cost.df &lt;- data.frame(cost=0,theta=0)
+<pre><code class="r">gradDescent &lt;- function(X, y, theta, iterations, alpha) {
+    m &lt;- length(y)
+    grad &lt;- rep(0, length(theta))
+    cost.df &lt;- data.frame(cost = 0, theta = 0)
 
-  for (i in 1:iterations){
-    h &lt;- X%*%theta
-    grad &lt;-  (t(X)%*%(h - y))/m
-    theta &lt;- theta - alpha * grad
-    cost.df &lt;- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
-  }  
+    for (i in 1:iterations) {
+        h &lt;- X %*% theta
+        grad &lt;- (t(X) %*% (h - y))/m
+        theta &lt;- theta - alpha * grad
+        cost.df &lt;- rbind(cost.df, c(grad_cost(X, y, theta), theta))
+    }
 
-  return(list(theta,cost.df))
+    return(list(theta, cost.df))
 }
 </code></pre>
 
@@ -242,19 +261,20 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 <p><space></p>
 
 <pre><code class="r">## initialize X, y and theta
-X1&lt;-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
-Y1&lt;-matrix(ncol=1,nrow=nrow(df),df$Y)
+X1 &lt;- matrix(ncol = 1, nrow = nrow(df), cbind(1, df$X))
+Y1 &lt;- matrix(ncol = 1, nrow = nrow(df), df$Y)
 
-init_theta&lt;-as.matrix(c(0))
-grad_cost(X1,Y1,init_theta)
+init_theta &lt;- as.matrix(c(0))
+grad_cost(X1, Y1, init_theta)
 </code></pre>
 
-<pre><code>[1] 5256
+<pre><code>[1] 5309
 </code></pre>
 
-<pre><code class="r">iterations = 100
+<pre><code class="r">
+iterations = 100
 alpha = 0.1
-results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
+results &lt;- gradDescent(X1, Y1, init_theta, iterations, alpha)
 </code></pre>
 
   </article>
@@ -270,7 +290,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 <p><space></p>
 
-<pre><code>## Error: could not find function &quot;ggplot&quot;
+<pre><code>## Error: object &#39;cost.df&#39; not found
 </code></pre>
 
   </article>
@@ -286,17 +306,17 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 <p><space></p>
 
-<pre><code class="r">grad_cost(X1,Y1,theta[[1]])
+<pre><code class="r">grad_cost(X1, Y1, theta[[1]])
 </code></pre>
 
-<pre><code>[1] 314.6
+<pre><code>[1] 323
 </code></pre>
 
 <pre><code class="r">## Make some predictions
-intercept &lt;- df[df$X==0,]$Y
-pred &lt;- function (x) return(intercept+c(x)%*%theta)
-new_points &lt;- c(0.1,0.5,0.8,1.1)
-new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
+intercept &lt;- df[df$X == 0, ]$Y
+pred &lt;- function(x) return(intercept + c(x) %*% theta)
+new_points &lt;- c(0.1, 0.5, 0.8, 1.1)
+new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
 </code></pre>
 
   </article>
@@ -312,17 +332,16 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <p><space></p>
 
-<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
+<pre><code class="r">ggplot(data = df, aes(x = X, y = Y)) + geom_point(size = 2)
 </code></pre>
 
-<pre><code>## Error: could not find function &quot;ggplot&quot;
+<p><img src="figure/new_point1.png" alt="plot of chunk new_point"> </p>
+
+<pre><code class="r">ggplot(data = df, aes(x = X, y = Y)) + geom_point() + geom_point(data = new_preds, 
+    aes(x = X, y = Y, color = &quot;red&quot;), size = 3) + scale_colour_discrete(guide = FALSE)
 </code></pre>
 
-<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color=&#39;red&#39;),size=3)+scale_colour_discrete(guide = FALSE)
-</code></pre>
-
-<pre><code>## Error: could not find function &quot;ggplot&quot;
-</code></pre>
+<p><img src="figure/new_point2.png" alt="plot of chunk new_point"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -388,7 +407,12 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <p><space></p>
 
-<h1>motivation for PCA</h1>
+<ul>
+<li>used widely in modern data analysis</li>
+<li>not well understood</li>
+<li>intuition: reduce data into only relevant dimensions</li>
+<li>the goal of PCA is to compute the most meaningful was to re-express noisy data, revealing the hidden structure</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -399,11 +423,24 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Concepts</h1>
 
 <p><space></p>
 
-<h1>brief overview of important linear algebra theorems</h1>
+<ul>
+<li>first big assumption: linearity</li>
+<li>\(PX=Y\)
+
+<ul>
+<li>\(X\) is original dataset, \(P\) is a transformation of \(X\) into \(Y\)</li>
+</ul></li>
+<li>how do we choose \(P\)?
+
+<ul>
+<li>reduce noise</li>
+<li>maximize variance</li>
+</ul></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -414,23 +451,44 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Concepts</h1>
 
 <p><space></p>
 
-<h1>where L is our eigenvalues and x is eigenvectors and A is our square matrix</h1>
+<ul>
+<li><p>covariance matrix</p>
 
-<h1>Ax = Lx</h1>
+<ul>
+<li>\(C = X*X^{T}\)</li>
+</ul></li>
+<li><p>restated goals are</p>
 
-<h1>Ax - LIx = 0</h1>
+<ul>
+<li>minimize covariance and maximize variance</li>
+<li>the optimizal \(C\) is a diagonal matrix, off diagonals are = 0</li>
+</ul></li>
+</ul>
 
-<h1>(A-LI)x = 0</h1>
+<hr>
 
-<h1>what is x such that x is not all zero?</h1>
+<h2>Principle Component Analysis</h2>
 
-<h1>determinant of A - LI must be 0</h1>
+<h1>Concepts</h1>
 
-<h1>the solution</h1>
+<p><space></p>
+
+<ul>
+<li>summary of assumptions
+
+<ul>
+<li>linearity (non-linear is a kernel PCA)</li>
+<li>largest variance indicates most signal, low variance = noise</li>
+<li>orthogonal components - makes the linear algebra easier</li>
+<li>assumes data is normally distributed, otherwise PCA might not diagonalize matrix</li>
+<li>can use ICA</li>
+<li>but most data is normal and PCA is robust to slight deviance from normality</li>
+</ul></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -441,23 +499,52 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
-<p>A = matrix(c(5,2,2,5),nrow=2)
-|A - L<em>diag(nrow(A))| = 0
-det(c(5-l,2,2,5-l))
-(5-l)</em>(5-l) - 4 = 0
-25 - 10l + l<sup>2</sup> - 4 = 0
-l<sup>2</sup> - 10l + 21 = 0
-roots &lt;- Re(polyroot(c(21,-10,1)))</p>
+<ul>
+<li>\(Ax = \lambdax\)
+
+<ul>
+<li>\(\lambda\) is an eigenvalue of \(A\) and \(x\) is an eigenvector of \(A\)</li>
+</ul></li>
+<li>\(Ax - \lambdaIx = 0\)</li>
+<li>\((A - \lambdaI)x = 0\)</li>
+<li>\(\det(A - \lambdaI)\) = 0</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>\(\[A=\left[{\begin{array}{cc}5 & 2 \\2 & 5\\\end{array}\right ]\]\)</p>
+
+<p>A = matrix(c(5,2,2,5),nrow=2)
+I = diag(nrow(A))
+|A - L<em>I| = 0
+det(c(5-l,2,2,5-l))
+(5-l)</em>(5-l) - 4 = 0
+25 - 10l + l<sup>2</sup> - 4 = 0
+l<sup>2</sup> - 10l + 21 = 0
+roots &lt;- Re(polyroot(c(21,-10,1)))</p>
+
+<pre><code></code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -479,7 +566,7 @@ x1=-x2</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -500,7 +587,7 @@ x1 = x2</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-23" style="background:;">
+      <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -517,7 +604,7 @@ roots</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-24" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -538,7 +625,7 @@ A == as.matrix(m%<em>%diag(roots)%</em>%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -564,7 +651,7 @@ A == as.matrix(m%<em>%diag(roots)%</em>%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -591,7 +678,7 @@ CY = PPtDPPt
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -623,7 +710,7 @@ dim(features)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -642,7 +729,7 @@ PC &lt;- scaled_features %*% eigenvectors</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -659,7 +746,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC&#39;s are orthog
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -685,7 +772,7 @@ ggplot(var_explained) +
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -703,7 +790,7 @@ sum((eigenvectors[,1])<sup>2)</sup></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -722,7 +809,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -741,7 +828,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -754,7 +841,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -791,7 +878,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -882,7 +969,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -901,7 +988,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -972,7 +1059,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1010,7 +1097,7 @@ plot(cluster)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1028,7 +1115,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1041,7 +1128,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1065,7 +1152,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1082,7 +1169,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1121,7 +1208,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1144,7 +1231,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1173,7 +1260,7 @@ voting_test &lt;- voting_data[-train_ind,]</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1200,7 +1287,7 @@ plot(p_tree,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1221,7 +1308,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1242,7 +1329,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1261,7 +1348,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1285,7 +1372,7 @@ boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1309,7 +1396,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1332,7 +1419,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1356,7 +1443,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -1373,7 +1460,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     
   </hgroup>

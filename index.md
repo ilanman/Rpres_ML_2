@@ -1,6 +1,6 @@
 ---
 
-title       : Machine Learning with R - Part 2
+title       : Machine Learning with R - II
 author      : Ilan Man
 job         : Strategy Operations  @ Squarespace
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
@@ -44,50 +44,25 @@ mode        : selfcontained # {standalone, draft}
 
 ```r
 library("MASS")
+library(ggplot2)
 data(menarche)
-log_data <- data.frame(Y=menarche$Menarche/menarche$Total)
+log_data <- data.frame(Y = menarche$Menarche/menarche$Total)
 log_data$X <- menarche$Age
 
-glm.out < glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-```
-
-```
-## Error: object 'glm.out' not found
-```
-
-```r
-lm.out <- lm(Y~X, data=log_data)
+glm.out <- glm(cbind(Menarche, Total - Menarche) ~ Age, family = binomial(logit), 
+    data = menarche)
+lm.out <- lm(Y ~ X, data = log_data)
 
 log_data$fitted <- glm.out$fitted
+
+data_points <- ggplot(log_data) + geom_point(aes(x = X, y = Y), color = "blue", 
+    size = 3)
+line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2], 
+    color = "green", size = 1)
+curve_points <- line_points + geom_line(aes(x = X, y = fitted), color = "red", 
+    size = 1)
 ```
 
-```
-## Error: object 'glm.out' not found
-```
-
-```r
-data_points <- ggplot(log_data) + geom_point(aes(x=X,y=Y),color='blue',size=3)
-```
-
-```
-## Error: could not find function "ggplot"
-```
-
-```r
-line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color='green',size=1)
-```
-
-```
-## Error: object 'data_points' not found
-```
-
-```r
-curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1) 
-```
-
-```
-## Error: object 'line_points' not found
-```
 
 ----
 
@@ -95,7 +70,33 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 # Notation
 <space>
 
-- introduce notation: hypothesis function, cost function, objective function, sigmoid
+- Binary outcome: 1 or 0
+- want function bounded between 1 and 0
+  - sigmoid or logistic function: $g_(z) = \frac{1}{1+\e^{-z}}$
+  
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- Goal remains the same: Minimize MSE
+- set cost function to be large when guess is wrong - either guess 1 and actual is 0 or vice verse
+
+cost = -log(x), when predict y = 1
+cost = log(1-x) when predict y = 0
+
+curve(-log(x),from = 0, to = 100)
+curve(-log(1-x),from = -100, to = 0)
+
+
+
+- $\theta$ is $\{\beta_{0}, \beta{1}\}$, where $\beta_{0}$ is $\alpha$ from before
+- $X = \{x_{0}, x_{1}\}$
+- Make $x_{0}$ = 1
+- $h_{\theta}(x) = \beta \times t(X)$
+- $J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2$
+
 
 ----
 
@@ -103,7 +104,10 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 # Motivation
 <space>
 
-# logistic function - odds ratio - log odds
+- Re-arranging $Y = \frac{1}{1+\e^{-\theta \times X}}$ yields
+$\ln{\frac{Y}{1 - Y)}} = \theta \times X$
+
+curve(1/(1+exp(-x)),from = -10,to = 10)
 
 ----
 
@@ -111,10 +115,8 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 # Gradient descent
 <space>
 
+![plot of chunk grad_ex_plot](figure/grad_ex_plot.png) 
 
-```
-## Error: could not find function "ggplot"
-```
 
 ----
 
@@ -124,11 +126,12 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 
 
 ```r
-x <- cbind(1,x)  #Add ones to x  
-theta<- c(0,0)  # initalize theta vector 
+x <- cbind(1, x)  #Add ones to x  
+theta <- c(0, 0)  # initalize theta vector 
 m <- nrow(x)  # Number of the observations 
-grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
+grad_cost <- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
 ```
+
 
 ----
 
@@ -138,21 +141,22 @@ grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 
 
 ```r
-gradDescent<-function(X,y,theta,iterations,alpha){
-  m <- length(y)
-  grad <- rep(0,length(theta))
-  cost.df <- data.frame(cost=0,theta=0)
-  
-  for (i in 1:iterations){
-    h <- X%*%theta
-    grad <-  (t(X)%*%(h - y))/m
-    theta <- theta - alpha * grad
-    cost.df <- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
-  }  
-  
-  return(list(theta,cost.df))
+gradDescent <- function(X, y, theta, iterations, alpha) {
+    m <- length(y)
+    grad <- rep(0, length(theta))
+    cost.df <- data.frame(cost = 0, theta = 0)
+    
+    for (i in 1:iterations) {
+        h <- X %*% theta
+        grad <- (t(X) %*% (h - y))/m
+        theta <- theta - alpha * grad
+        cost.df <- rbind(cost.df, c(grad_cost(X, y, theta), theta))
+    }
+    
+    return(list(theta, cost.df))
 }
 ```
+
 
 ----
 
@@ -163,22 +167,24 @@ gradDescent<-function(X,y,theta,iterations,alpha){
 
 ```r
 ## initialize X, y and theta
-X1<-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
-Y1<-matrix(ncol=1,nrow=nrow(df),df$Y)
+X1 <- matrix(ncol = 1, nrow = nrow(df), cbind(1, df$X))
+Y1 <- matrix(ncol = 1, nrow = nrow(df), df$Y)
 
-init_theta<-as.matrix(c(0))
-grad_cost(X1,Y1,init_theta)
+init_theta <- as.matrix(c(0))
+grad_cost(X1, Y1, init_theta)
 ```
 
 ```
-[1] 5256
+[1] 5309
 ```
 
 ```r
+
 iterations = 100
 alpha = 0.1
-results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
+results <- gradDescent(X1, Y1, init_theta, iterations, alpha)
 ```
+
 
 ----
 
@@ -188,8 +194,9 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 
 ```
-## Error: could not find function "ggplot"
+## Error: object 'cost.df' not found
 ```
+
 
 ----
 
@@ -199,20 +206,21 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 
 ```r
-grad_cost(X1,Y1,theta[[1]])
+grad_cost(X1, Y1, theta[[1]])
 ```
 
 ```
-[1] 314.6
+[1] 323
 ```
 
 ```r
 ## Make some predictions
-intercept <- df[df$X==0,]$Y
-pred <- function (x) return(intercept+c(x)%*%theta)
-new_points <- c(0.1,0.5,0.8,1.1)
-new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
+intercept <- df[df$X == 0, ]$Y
+pred <- function(x) return(intercept + c(x) %*% theta)
+new_points <- c(0.1, 0.5, 0.8, 1.1)
+new_preds <- data.frame(X = new_points, Y = sapply(new_points, pred))
 ```
+
 
 ----
 
@@ -222,20 +230,18 @@ new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 
 ```r
-ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
+ggplot(data = df, aes(x = X, y = Y)) + geom_point(size = 2)
 ```
 
-```
-## Error: could not find function "ggplot"
-```
+![plot of chunk new_point](figure/new_point1.png) 
 
 ```r
-ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color='red'),size=3)+scale_colour_discrete(guide = FALSE)
+ggplot(data = df, aes(x = X, y = Y)) + geom_point() + geom_point(data = new_preds, 
+    aes(x = X, y = Y, color = "red"), size = 3) + scale_colour_discrete(guide = FALSE)
 ```
 
-```
-## Error: could not find function "ggplot"
-```
+![plot of chunk new_point](figure/new_point2.png) 
+
 
 ----
 
@@ -271,7 +277,63 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,
 # Motivation
 <space>
 
-# motivation for PCA
+- used widely in modern data analysis
+- not well understood
+- intuition: reduce data into only relevant dimensions
+- the goal of PCA is to compute the most meaningful was to re-express noisy data, revealing the hidden structure
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+- first big assumption: linearity
+- $PX=Y$
+  - $X$ is original dataset, $P$ is a transformation of $X$ into $Y$
+- how do we choose $P$?
+  - reduce noise
+  - maximize variance
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+- covariance matrix
+     - $C = X*X^{T}$
+
+- restated goals are
+  - minimize covariance and maximize variance
+  - the optimizal $C$ is a diagonal matrix, off diagonals are = 0
+  
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+- summary of assumptions
+  - linearity (non-linear is a kernel PCA)
+  - largest variance indicates most signal, low variance = noise
+  - orthogonal components - makes the linear algebra easier
+  - assumes data is normally distributed, otherwise PCA might not diagonalize matrix
+    - can use ICA
+    - but most data is normal and PCA is robust to slight deviance from normality
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- $Ax = \lambdax$
+  - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$
+- $Ax - \lambdaIx = 0$
+- $(A - \lambdaI)x = 0$
+- $\det(A - \lambdaI)$ = 0
+
 
 ----
 
@@ -279,35 +341,17 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,
 # Motivation
 <space>
 
-# brief overview of important linear algebra theorems
-
-----
-
-## Principle Component Analysis
-# Motivation
-<space>
-
-# where L is our eigenvalues and x is eigenvectors and A is our square matrix
-# Ax = Lx
-# Ax - LIx = 0
-# (A-LI)x = 0
-# what is x such that x is not all zero?
-# determinant of A - LI must be 0
-# the solution 
-
-----
-
-## Principle Component Analysis
-# Motivation
-<space>
+$\[A=\left[{\begin{array}{cc}5 & 2 \\2 & 5\\\end{array}\right ]\]$
 
 A = matrix(c(5,2,2,5),nrow=2)
-|A - L*diag(nrow(A))| = 0
+I = diag(nrow(A))
+|A - L*I| = 0
 det(c(5-l,2,2,5-l))
 (5-l)*(5-l) - 4 = 0
 25 - 10l + l^2 - 4 = 0
 l^2 - 10l + 21 = 0
 roots <- Re(polyroot(c(21,-10,1)))
+```
 
 ----
 
