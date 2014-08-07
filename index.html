@@ -82,44 +82,27 @@
 
 <p><space></p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-4" style="background:;">
-  <hgroup>
-    <h2>Logistic Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
 <pre><code class="r">library(&quot;MASS&quot;)
 library(ggplot2)
 data(menarche)
-log_data &lt;- data.frame(Y = menarche$Menarche/menarche$Total)
+log_data &lt;- data.frame(Y=menarche$Menarche/menarche$Total)
 log_data$X &lt;- menarche$Age
 
-glm.out &lt;- glm(cbind(Menarche, Total - Menarche) ~ Age, family = binomial(logit), 
-    data = menarche)
-lm.out &lt;- lm(Y ~ X, data = log_data)
+glm.out &lt;- glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
+lm.out &lt;- lm(Y~X, data=log_data)
 
 log_data$fitted &lt;- glm.out$fitted
 
-data_points &lt;- ggplot(log_data) + geom_point(aes(x = X, y = Y), color = &quot;blue&quot;, 
-    size = 3)
-line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2], 
-    color = &quot;green&quot;, size = 1)
-curve_points &lt;- line_points + geom_line(aes(x = X, y = fitted), color = &quot;red&quot;, 
-    size = 1)
+data_points &lt;- ggplot(log_data) + geom_point(aes(x=X,y=Y),color=&#39;blue&#39;,size=3)
+line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color=&#39;green&#39;,size=1)
+curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;,size=1) 
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-5" style="background:;">
+      <slide class="" id="slide-4" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -139,49 +122,41 @@ curve_points &lt;- line_points + geom_line(aes(x = X, y = fitted), color = &quot
 <ul>
 <li>which generates 1&#39;s and 0&#39;s as the error term</li>
 </ul></li>
-<li>sigmoid or logistic function: \(g_(z) = \frac{1}{1+\e^{-z}}\)
+<li>sigmoid or logistic function: \(g(z) = \frac{1}{1+e^{-z}}\)
 
 <ul>
-<li>interpret the output as P(Y=1|X)</li>
+<li>interpret the output as \(P(Y=1 | X)\)</li>
 <li>bounded by 0 and 1</li>
 </ul></li>
 </ul>
 
-<pre><code class="r">curve(1/(1 + exp(-x)), from = -10, to = 10, ylab = &quot;P(Y=1|X)&quot;, col = &quot;red&quot;, 
-    lwd = 3)
-abline(a = 0.5, b = 0, lty = 2, col = &quot;blue&quot;, lwd = 3)
+<pre><code class="r">curve(1/(1+exp(-x)), from = -10, to = 10, ylab=&quot;P(Y=1|X)&quot;, col = &#39;red&#39;, lwd = 3.0)
+abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
 </code></pre>
 
 <p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
 
-<hr>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
 
-<h2>Logistic Regression</h2>
-
-<h1>Find parameters</h1>
+      <slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
 
 <p><space></p>
 
 <ul>
-<li>Goal remains the same: Minimize MSE</li>
-<li>set cost function to be large when guess is wrong - either guess 1 and actual is 0 or vice verse</li>
-<li>What if we are wrong? Penalize the cost function</li>
-<li>in Linear Regression, hypothesis function was Y = h(x) = theta * x</li>
-<li>in Logistic Regression, hypothesis function is Y = g(h(x)) = 1/(1+e(-h(x))) = 1/(1+e(-theta * x))</li>
-</ul>
-
-<p>cost = -log(x), when predict y = 1
-cost = log(1-x) when predict y = 0</p>
-
-<p>curve(-log(x),from = 0, to = 100)
-curve(-log(1-x),from = -100, to = 0)</p>
-
-<ul>
-<li>\(\theta\) is \(\{\beta_{0}, \beta{1}\}\), where \(\beta_{0}\) is \(\alpha\) from before</li>
-<li>\(X = \{x_{0}, x_{1}\}\)</li>
-<li>Make \(x_{0}\) = 1</li>
-<li>\(h_{\theta}(x) = \theta \times t(X)\) &lt;- also known as the link function</li>
-<li>\(J(\theta_{0},\theta_{1}) = \frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x_{i}) - y_{i})^2\)</li>
+<li>The hypothesis function, \(h_{\theta}(x)\), is P(Y=1|X)</li>
+<li>Linear Regression --&gt; \(h_{\theta}(x) = \theta x^{T}\)</li>
+<li>Logistic Regression --&gt; \(h_{\theta}(x) = g(\theta x^{T})\) 
+<br>
+where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
+<li>So \(h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}\)</li>
+<li>What is the cost function?</li>
 </ul>
 
   </article>
@@ -193,22 +168,19 @@ curve(-log(1-x),from = -100, to = 0)</p>
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Find parameters</h1>
 
 <p><space></p>
 
 <ul>
-<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta \times X}}\) yields
-\(\frac{Y}{1 - Y)}} = e^{\theta \times X}\)
-
-<ul>
-<li>odds of a particular class between 0 and infinite</li>
-<li>take the log of both sides, to get log-odds, or logit</li>
-<li>this is the link function that relates P(Y) and X<br></li>
-</ul></li>
-<li>using Maximum Likelihood Estimation, it can be shown that the cost function for logistic regression is
--y*log(z) + (1-y)log(1-z)</li>
+<li>Define cost function as:</li>
 </ul>
+
+<p>\(cost(h_{\theta}(x)):\)<br>
+\(= -\log(x),   y = 1\)<br>
+\(= -\log(1-x),   y = 0\)</p>
+
+<p><img src="figure/cost_curves1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves2.png" alt="plot of chunk cost_curves"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -216,14 +188,20 @@ curve(-log(1-x),from = -100, to = 0)</p>
 
       <slide class="" id="slide-7" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Find parameters</h1>
 
 <p><space></p>
 
-<p><img src="figure/grad_ex_plot.png" alt="plot of chunk grad_ex_plot"> </p>
+<ul>
+<li>using statistics, it can be shown that<br>
+\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
+<li>Logistic regression cost function is then<br>
+\(cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)</li>
+<li>Minimize the cost</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -231,18 +209,18 @@ curve(-log(1-x),from = -100, to = 0)</p>
 
       <slide class="" id="slide-8" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Motivation</h1>
 
 <p><space></p>
 
-<pre><code class="r">x &lt;- cbind(1, x)  #Add ones to x  
-theta &lt;- c(0, 0)  # initalize theta vector 
-m &lt;- nrow(x)  # Number of the observations 
-grad_cost &lt;- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
-</code></pre>
+<ul>
+<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta x^{T}}}\) yields
+<br>
+\(\log{\frac{Y}{1 - Y}} = \theta x^{T}\)<br></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -257,21 +235,7 @@ grad_cost &lt;- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
 
 <p><space></p>
 
-<pre><code class="r">gradDescent &lt;- function(X, y, theta, iterations, alpha) {
-    m &lt;- length(y)
-    grad &lt;- rep(0, length(theta))
-    cost.df &lt;- data.frame(cost = 0, theta = 0)
-
-    for (i in 1:iterations) {
-        h &lt;- X %*% theta
-        grad &lt;- (t(X) %*% (h - y))/m
-        theta &lt;- theta - alpha * grad
-        cost.df &lt;- rbind(cost.df, c(grad_cost(X, y, theta), theta))
-    }
-
-    return(list(theta, cost.df))
-}
-</code></pre>
+<p><img src="figure/grad_ex_plot.png" alt="plot of chunk grad_ex_plot"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -286,21 +250,10 @@ grad_cost &lt;- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
 
 <p><space></p>
 
-<pre><code class="r">## initialize X, y and theta
-X1 &lt;- matrix(ncol = 1, nrow = nrow(df), cbind(1, df$X))
-Y1 &lt;- matrix(ncol = 1, nrow = nrow(df), df$Y)
-
-init_theta &lt;- as.matrix(c(0))
-grad_cost(X1, Y1, init_theta)
-</code></pre>
-
-<pre><code>[1] 5309
-</code></pre>
-
-<pre><code class="r">
-iterations = 100
-alpha = 0.1
-results &lt;- gradDescent(X1, Y1, init_theta, iterations, alpha)
+<pre><code class="r">x &lt;- cbind(1,x)  #Add ones to x  
+theta&lt;- c(0,0)  # initalize theta vector 
+m &lt;- nrow(x)  # Number of the observations 
+grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 </code></pre>
 
   </article>
@@ -316,7 +269,20 @@ results &lt;- gradDescent(X1, Y1, init_theta, iterations, alpha)
 
 <p><space></p>
 
-<pre><code>## Error: object &#39;cost.df&#39; not found
+<pre><code class="r">gradDescent&lt;-function(X,y,theta,iterations,alpha){
+  m &lt;- length(y)
+  grad &lt;- rep(0,length(theta))
+  cost.df &lt;- data.frame(cost=0,theta=0)
+
+  for (i in 1:iterations){
+    h &lt;- X%*%theta
+    grad &lt;-  (t(X)%*%(h - y))/m
+    theta &lt;- theta - alpha * grad
+    cost.df &lt;- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
+  }  
+
+  return(list(theta,cost.df))
+}
 </code></pre>
 
   </article>
@@ -332,17 +298,20 @@ results &lt;- gradDescent(X1, Y1, init_theta, iterations, alpha)
 
 <p><space></p>
 
-<pre><code class="r">grad_cost(X1, Y1, theta[[1]])
+<pre><code class="r">## initialize X, y and theta
+X1&lt;-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
+Y1&lt;-matrix(ncol=1,nrow=nrow(df),df$Y)
+
+init_theta&lt;-as.matrix(c(0))
+grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 323
+<pre><code>[1] 5380
 </code></pre>
 
-<pre><code class="r">## Make some predictions
-intercept &lt;- df[df$X == 0, ]$Y
-pred &lt;- function(x) return(intercept + c(x) %*% theta)
-new_points &lt;- c(0.1, 0.5, 0.8, 1.1)
-new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
+<pre><code class="r">iterations = 100
+alpha = 0.1
+results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 </code></pre>
 
   </article>
@@ -358,13 +327,54 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
 
 <p><space></p>
 
-<pre><code class="r">ggplot(data = df, aes(x = X, y = Y)) + geom_point(size = 2)
+<pre><code>## Error: object &#39;cost.df&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Regression example</h2>
+  </hgroup>
+  <article>
+    <h1>Gradient descent</h1>
+
+<p><space></p>
+
+<pre><code class="r">grad_cost(X1,Y1,theta[[1]])
+</code></pre>
+
+<pre><code>[1] 344.6
+</code></pre>
+
+<pre><code class="r">## Make some predictions
+intercept &lt;- df[df$X==0,]$Y
+pred &lt;- function (x) return(intercept+c(x)%*%theta)
+new_points &lt;- c(0.1,0.5,0.8,1.1)
+new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Regression example</h2>
+  </hgroup>
+  <article>
+    <h1>Gradient descent</h1>
+
+<p><space></p>
+
+<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
 </code></pre>
 
 <p><img src="figure/new_point1.png" alt="plot of chunk new_point"> </p>
 
-<pre><code class="r">ggplot(data = df, aes(x = X, y = Y)) + geom_point() + geom_point(data = new_preds, 
-    aes(x = X, y = Y, color = &quot;red&quot;), size = 3) + scale_colour_discrete(guide = FALSE)
+<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color=&#39;red&#39;),size=3)+scale_colour_discrete(guide = FALSE)
 </code></pre>
 
 <p><img src="figure/new_point2.png" alt="plot of chunk new_point"> </p>
@@ -373,7 +383,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-14" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -394,7 +404,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-15" style="background:;">
+      <slide class="" id="slide-17" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -409,7 +419,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-16" style="background:;">
+      <slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -424,7 +434,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-17" style="background:;">
+      <slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -444,7 +454,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-18" style="background:;">
+      <slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -472,7 +482,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-19" style="background:;">
+      <slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -520,7 +530,7 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-20" style="background:;">
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -544,12 +554,12 @@ new_preds &lt;- data.frame(X = new_points, Y = sapply(new_points, pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-21" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
@@ -570,55 +580,55 @@ roots &lt;- Re(polyroot(c(21,-10,1)))</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
-<h1>when lambda = -3</h1>
-
-<p>Ax = 3x
-5x1 + 2x2 = 3x1
-2x1 + 5x2 = 3x2
-x1=-x2</p>
-
-<h1>one eigenvector = [1 -1]. any scalar multiple of this counts.</h1>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-23" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
-<h1>when lambda = 7</h1>
-
-<p>5x1 + 2x2 = 7x1
-2x2 + 5x2 = 7x2
-x1 = x2</p>
-
-<h1>another eigenvector = [1 1]. any scalar multiple of this counts.</h1>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
+
+<p><space></p>
+
+<ul>
+<li>when lambda = -3
+Ax = 3x
+5x1 + 2x2 = 3x1
+2x1 + 5x2 = 3x2
+x1=-x2</li>
+<li>one eigenvector = [1 -1]</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Eigenwhat?</h1>
+
+<p><space></p>
+
+<ul>
+<li>when lambda = 7
+5x1 + 2x2 = 7x1
+2x2 + 5x2 = 7x2
+x1 = x2</li>
+<li>another eigenvector = [1 1]</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
@@ -630,12 +640,12 @@ roots</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
@@ -643,15 +653,15 @@ roots</p>
 <li>check
 m &lt;- matrix(c(1,-1,1,1),ncol=2)
 m &lt;- m/sqrt(norm(m))
-A == as.matrix(m%<em>%diag(roots)%</em>%t(m))
-# lambda is a diagonal matrix, with 0 off diagonals</li>
+as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
+<li>lambda is a diagonal matrix, with 0 off diagonals</li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -677,7 +687,7 @@ A == as.matrix(m%<em>%diag(roots)%</em>%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -704,7 +714,7 @@ CY = PPtDPPt
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -736,7 +746,7 @@ dim(features)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -755,7 +765,7 @@ PC &lt;- scaled_features %*% eigenvectors</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -772,7 +782,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC&#39;s are orthog
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -798,7 +808,7 @@ ggplot(var_explained) +
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -816,7 +826,7 @@ sum((eigenvectors[,1])<sup>2)</sup></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -835,7 +845,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -854,7 +864,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -867,7 +877,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -904,7 +914,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -995,7 +1005,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1014,7 +1024,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1085,7 +1095,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1123,7 +1133,7 @@ plot(cluster)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1141,7 +1151,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1154,7 +1164,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1178,7 +1188,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1195,7 +1205,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1234,7 +1244,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1257,7 +1267,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1286,7 +1296,7 @@ voting_test &lt;- voting_data[-train_ind,]</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1313,7 +1323,7 @@ plot(p_tree,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1334,7 +1344,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1355,7 +1365,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1374,7 +1384,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1398,7 +1408,7 @@ boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1422,7 +1432,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1445,7 +1455,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1469,7 +1479,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -1486,7 +1496,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-59" style="background:;">
   <hgroup>
     
   </hgroup>
