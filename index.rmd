@@ -81,8 +81,32 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 - Logistic Regression --> $h_{\theta}(x) = g(\theta x^{T})$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
+<br>
+<br>
+$\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
+- log odds are linear in X
+- this is called the logit of theta - this is linear in X
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
 - What is the cost function?
+- Why can't we use the same cost function as before?
+  - logistic residuals are Binomially distributed - not NORMAL
+  - the regression function is not linear in X
+
 
 ----
 
@@ -112,18 +136,6 @@ $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 - Minimize the cost
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
-<br>
-<br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
-- log odds are linear in X
 
 ----
 

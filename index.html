@@ -155,8 +155,6 @@ abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
 <li>Logistic Regression --&gt; \(h_{\theta}(x) = g(\theta x^{T})\) 
 <br>
 where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
-<li>So \(h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}\)</li>
-<li>What is the cost function?</li>
 </ul>
 
   </article>
@@ -164,6 +162,52 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 </slide>
 
       <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<ul>
+<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta x^{T}}}\) yields
+<br>
+<br>
+\(\log{\frac{Y}{1 - Y}} = \theta x^{T}\)<br></li>
+<li>log odds are linear in X</li>
+<li>this is called the logit of theta - this is linear in X</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>So \(h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}\)</li>
+<li>What is the cost function?</li>
+<li>Why can&#39;t we use the same cost function as before?
+
+<ul>
+<li>logistic residuals are Binomially distributed - not NORMAL</li>
+<li>the regression function is not linear in X</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -186,7 +230,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-7" style="background:;">
+      <slide class="" id="slide-9" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -207,26 +251,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-8" style="background:;">
-  <hgroup>
-    <h2>Logistic Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
-<ul>
-<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta x^{T}}}\) yields
-<br>
-\(\log{\frac{Y}{1 - Y}} = \theta x^{T}\)<br></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-9" style="background:;">
+      <slide class="" id="slide-10" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -241,7 +266,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-10" style="background:;">
+      <slide class="" id="slide-11" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -260,7 +285,7 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-11" style="background:;">
+      <slide class="" id="slide-12" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -289,7 +314,7 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-12" style="background:;">
+      <slide class="" id="slide-13" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -306,28 +331,12 @@ init_theta&lt;-as.matrix(c(0))
 grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 5380
+<pre><code>[1] 5426
 </code></pre>
 
 <pre><code class="r">iterations = 100
 alpha = 0.1
 results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-13" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<pre><code>## Error: object &#39;cost.df&#39; not found
 </code></pre>
 
   </article>
@@ -343,10 +352,26 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 <p><space></p>
 
+<pre><code>## Error: object &#39;cost.df&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Regression example</h2>
+  </hgroup>
+  <article>
+    <h1>Gradient descent</h1>
+
+<p><space></p>
+
 <pre><code class="r">grad_cost(X1,Y1,theta[[1]])
 </code></pre>
 
-<pre><code>[1] 344.6
+<pre><code>[1] 367
 </code></pre>
 
 <pre><code class="r">## Make some predictions
@@ -360,7 +385,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-15" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -383,7 +408,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-16" style="background:;">
+      <slide class="" id="slide-17" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -404,7 +429,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-17" style="background:;">
+      <slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -419,7 +444,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-18" style="background:;">
+      <slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -434,7 +459,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-19" style="background:;">
+      <slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -454,7 +479,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-20" style="background:;">
+      <slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -482,7 +507,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-21" style="background:;">
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -530,7 +555,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -554,7 +579,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-23" style="background:;">
+      <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -580,7 +605,7 @@ roots &lt;- Re(polyroot(c(21,-10,1)))</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-24" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -602,7 +627,7 @@ x1=-x2</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -623,7 +648,7 @@ x1 = x2</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -640,7 +665,7 @@ roots</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -661,7 +686,7 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -687,7 +712,7 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -714,7 +739,7 @@ CY = PPtDPPt
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -746,7 +771,7 @@ dim(features)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -765,7 +790,7 @@ PC &lt;- scaled_features %*% eigenvectors</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -782,7 +807,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC&#39;s are orthog
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -808,7 +833,7 @@ ggplot(var_explained) +
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -826,7 +851,7 @@ sum((eigenvectors[,1])<sup>2)</sup></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -845,7 +870,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -864,7 +889,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -877,7 +902,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -914,7 +939,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1005,7 +1030,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1024,7 +1049,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1095,7 +1120,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1133,7 +1158,7 @@ plot(cluster)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1151,7 +1176,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1164,7 +1189,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1188,7 +1213,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1205,7 +1230,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1244,7 +1269,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1267,7 +1292,7 @@ C5.0</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1296,7 +1321,7 @@ voting_test &lt;- voting_data[-train_ind,]</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1323,7 +1348,7 @@ plot(p_tree,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1344,7 +1369,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1365,7 +1390,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1384,7 +1409,7 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1408,7 +1433,7 @@ boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1432,7 +1457,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1455,7 +1480,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1479,7 +1504,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-58" style="background:;">
+      <slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -1496,7 +1521,7 @@ for (i in tris){<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-59" style="background:;">
+      <slide class="" id="slide-60" style="background:;">
   <hgroup>
     
   </hgroup>
