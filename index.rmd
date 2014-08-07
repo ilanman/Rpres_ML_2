@@ -34,6 +34,16 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
+x <- 1:10
+log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
+ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
 ```{r}
 library("MASS")
 library(ggplot2)
@@ -441,6 +451,7 @@ CY = PPtDPPt
 # Example
 <space>
 
+```{r tennis_data}
 data <- read.csv('tennis_data_2013.csv')
 data$Player1 <- as.character(data$Player1)
 data$Player2 <- as.character(data$Player2)
@@ -459,6 +470,7 @@ features <- tennis[,10:m]
 head(features)
 str(features)
 dim(features)
+```
 
 ----
 
@@ -466,11 +478,13 @@ dim(features)
 # Example
 <space>
 
+```{r}
 scaled_features <- as.matrix(scale(features))
 Cx <- cov(scaled_features)
 eigenvalues <- eigen(Cx)$values
 eigenvectors <- eigen(Cx)$vectors
 PC <- scaled_features %*% eigenvectors
+```
 
 ----
 
@@ -478,9 +492,11 @@ PC <- scaled_features %*% eigenvectors
 # Example
 <space>
 
+```{r}
 Cy <- cov(PC)
 sum(round(diag(Cy) - eigenvalues,5))
 sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
+```
 
 ----
 
@@ -488,6 +504,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 # Example
 <space>
 
+```{r}
 var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
 cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
 
@@ -500,6 +517,7 @@ library(ggplot2)
 ggplot(var_explained) +
   geom_bar(aes(x=PC,y=variance_explained),stat='identity') +
   geom_line(aes(x=PC,y=cum_var_explained))
+```
 
 ----
 
@@ -507,22 +525,25 @@ ggplot(var_explained) +
 # Example
 <space>
 
-eigenvalues = (pca.df$sdev)^2
-eigenvectors are the loadings - linear combination of the variables
-eigenvectors[,1] = pca.df$rotation[,1]
-sum((eigenvectors[,1])^2)
-
-----
-
-## Principle Component Analysis
-# Example
-<space>
-
+```{r}
 pca.df <- prcomp(scaled_features)
+eigenvalues == (pca.df$sdev)^2
+eigenvectors[,1] == pca.df$rotation[,1]
+sum((eigenvectors[,1])^2)
+```
+
+----
+
+## Principle Component Analysis
+# Example
+<space>
+
+```{r}
 rows <- nrow(tennis)
 pca.plot <- as.data.frame(pca.df$x[,1:2])
 pca.plot$gender <- data$Gender
 ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
+```
 
 ----
 
@@ -554,7 +575,13 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
      - summarizing data for less expensive computation
      - data compression
      - nearest neighbors - distance between two cluster centers (centroids)
-     
+
+----
+
+## Clustering
+# Motivation
+<space>
+
 - types of clusters
      - data points that are more similar to one another than points outside of the cluster - most intuitive definition
      - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
@@ -573,7 +600,11 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
      - centroid is then updated based on the points in that cluster
      - update steps until no point changes or centroids remain the same
 
+----
 
+## Clustering
+# Kmeans
+<space>
 
 1. Select K points as initial centroids. 
 2. repeat
@@ -586,7 +617,13 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 4. Minimize the squared distance of each point to closest centroid, minimize the objective function
      - the centroid that minimizes the SSE of the cluster is the mean
      - Kmeans leads to local minimum, not global, since you’re optimizing based on the centroids you chose, not all possible centroids
-     - 
+
+----
+
+## Clustering
+# Kmeans
+<space>
+
 - choose K randomly - can lead to poor centroids
      - run k-means multiple times - still doesn’t solve problems
 
@@ -600,6 +637,12 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
           - take cluster with largest SSE - split that into two clusters
      - rerun bisecting K mean on resulting clusters
      - stop when you have K clusters
+
+----
+
+## Clustering
+# Kmeans
+<space>
 
 - K mean fails
      - if some clusters are much bigger than other clusters - it cannot distinguish between natural clusters
@@ -704,10 +747,12 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 # DBSCAN
 <space>
 
+```{r}
 x <- c(2,2,8,5,7,6,1,4)
 y <- c(10,5,4,8,5,4,2,9)
 cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
 plot(cluster)
+```
 
 ----
 
@@ -715,10 +760,11 @@ plot(cluster)
 # DBSCAN
 <space>
 
-install.packages('fpc')
+```{r dbscan_ex, message=FALSE}
 library(fpc)
 cluster_DBSCAN<-dbscan(cluster, eps=3, MinPts=2, method="hybrid")
 plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
+```
 
 ----
 
@@ -759,13 +805,34 @@ C5.0
 # Entropy calculation
 <space>
 
-
 - The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.
-     - draw curve for entropy
+
+entropy_function <- function(p) {
+
+  if (min(p) < 0 || sum(p) <= 0) {
+    return(NA)
+  } else {
+    p.norm <- p[p>0]/sum(p)
+    -sum(log2(p.norm)*p.norm)
+    }
+}
+
+----
+
+## Trees
+# Entropy calculation
+<space>
+
 - InfoGain = Entropy (pre split) - Entropy (post split)
      - Entropy is weighted by the Entropy of each feature split
  - avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)
 - hard to know optimal length of tree without growing it there first
+
+----
+
+## Trees
+# Entropy calculation
+<space>
 
 - Entropy = expected amount of information contained in a random variable -> information is synonymous with "bits" which is why is log, base 2 
      - the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower
@@ -780,15 +847,7 @@ C5.0
 # Entropy calculation
 <space>
 
-entropy_function <- function(p)
-  {
-    if (min(p) < 0 || sum(p) <= 0)
-      return(NA)
-    p.norm <- p[p>0]/sum(p)
-    -sum(log2(p.norm)*p.norm)
-  }
 
-entropy_function(c(0.99,1))
 
 ----
 
@@ -796,6 +855,7 @@ entropy_function(c(0.99,1))
 # Example
 <space>
 
+```{r tree_example, results='hide'}
 voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
 str(voting_data)
 names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
@@ -812,6 +872,7 @@ n <- nrow(voting_data)
 train_ind <- sample(n,2/3*n)
 voting_train <- voting_data[train_ind,]
 voting_test <- voting_data[-train_ind,]
+```
 
 ----
 
@@ -819,7 +880,7 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-install.packages("party")
+```{r tree_plot, results='asis',message=FALSE,echo=FALSE}
 library(C50)
 library(party)
 library(gmodels)
@@ -831,6 +892,7 @@ p_tree <- ctree(tree_formula,data=voting_train)
 plot(p_tree,
      inner_panel=node_inner(p_tree,pval = FALSE,id = TRUE),
      terminal_panel=node_terminal(p_tree, digits = 1, id = TRUE))
+```
 
 ----
 
@@ -838,12 +900,14 @@ plot(p_tree,
 # Example
 <space>
 
+```{r}
 # make tree using C5.0
 tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1)
 tree_predict <- predict(tree_model, newdata=voting_test[,-1])
 conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
                    prop.c = FALSE, prop.r = FALSE,
                    dnn = c("actual class", "predicted class"))
+```
 
 ----
 
@@ -851,11 +915,13 @@ conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
 # Example
 <space>
 
+```{r most_imp}
 # most important variables
 C5imp(tree_model)
 
 # in-sample error rate
 summary(tree_model)
+```
 
 ----
 
@@ -863,9 +929,9 @@ summary(tree_model)
 # Example - Boosting
 <space>
 
-# boosting is rooted in the notion that by combining a number of weak performing learners, 
-# you can create a team that is much stronger than any one of the learners alone.
-# this is where C5.0 improves on C4.5
+- rooted in the notion that by combining a number of weak performing learners, 
+- you can create a team that is much stronger than any one of the learners alone.
+- this is where C5.0 improves on C4.5
 
 ----
 
@@ -873,6 +939,7 @@ summary(tree_model)
 # Example - Boosting
 <space>
 
+```{r boost, echo=TRUE,message=FALSE, results='asis'}
 boosted_tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=25)
 boosted_tennis_predict <- predict(boosted_tree_model,voting_test[,-1])
 
@@ -882,6 +949,7 @@ boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq =
 
 # in-sample error rate
 summary(boosted_tree_model)
+```
 
 ----
 
@@ -889,15 +957,17 @@ summary(boosted_tree_model)
 # Example - Error Cost
 <space>
 
-# still getting too many false positives (predict republican but actually democrat)
-# introduce higher cost to getting this wrong
+- still getting too many false positives (predict republican but actually democrat)
+- introduce higher cost to getting this wrong
 
+```{r tree_cost}
 error_cost <- matrix(c(0,1,2,0),nrow=2)
 cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
 cost_predict <- predict(cost_model, newdata=voting_test[,-1])
 conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
                    prop.c = FALSE, prop.r = FALSE,
                    dnn = c("actual class", "predicted class"))
+```
 
 ----
 
@@ -905,6 +975,7 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 # Example - Error Cost
 <space>
 
+```{r}
 tris <- seq(1,50,by=2)
 boost_acc <- NULL
 for (i in tris){  
@@ -914,6 +985,7 @@ for (i in tris){
 }
 
 plot(boost_acc,type='l')
+```
 
 ----
 
