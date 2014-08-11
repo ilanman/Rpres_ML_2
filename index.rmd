@@ -18,6 +18,7 @@ mode        : selfcontained # {standalone, draft}
 2. Principle Component Analysis
 3. Clustering
 4. Trees
+5. Missing data
 
 ----
 
@@ -272,18 +273,12 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,
 ----
 
 ## Logistic Regression
-# Motivation
-<space>
-
-# example
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
 # Summary
+<space>
+
+- very popular classification algorithm
+- based on Binomial error terms, i.e. 1's and 0's
+- 
 
 ----
 
@@ -586,6 +581,16 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
      - data points that are more similar to one another than points outside of the cluster - most intuitive definition
      - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
      - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
+
+----
+
+## Clustering
+# Motivation
+<space>
+
+- example of density based cluster
+
+
 
 ----
 
@@ -1004,6 +1009,17 @@ plot(boost_acc,type='l')
 
 ----
 
+## Missing Data
+# Types
+<space>
+
+Missingness that...
+- is completely at random; no bias in missing data
+- is random
+- depends on unobserved features
+- depends on the missing value itself
+http://www.stat.columbia.edu/~gelman/arm/missing.pdf
+----
 ## Resources
 <space>
 
