@@ -563,13 +563,13 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 <space>
 
 - used to separate data into meaningful or useful groups (or both)
-     - capture natural structure of the data
-     - useful starting point for further analysis
+  - capture natural structure of the data
+  - useful starting point for further analysis
 - customer segmentation
 - cluster for utility
-     - summarizing data for less expensive computation
-     - data compression
-     - nearest neighbors - distance between two cluster centers (centroids)
+  - summarizing data for less expensive computation
+  - data compression
+  - nearest neighbors - distance between two cluster centers (centroids)
 
 ----
 
@@ -578,9 +578,9 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 <space>
 
 - types of clusters
-     - data points that are more similar to one another than points outside of the cluster - most intuitive definition
-     - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
-     - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
+  - data points that are more similar to one another than points outside of the cluster - most intuitive definition
+  - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
+  - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
 
 ----
 
@@ -590,38 +590,41 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 - example of density based cluster
 
-
-
 ----
 
 ## Clustering
 # Kmeans
 <space>
 
-- k-means
-     - prototype, partitional based
-     - choose K initial centroids/clusters
-     - points are assigned to the closest centroid
-     - centroid is then updated based on the points in that cluster
-     - update steps until no point changes or centroids remain the same
+- prototype, partitional based
+- choose K initial centroids/clusters
+- points are assigned to the closest centroid
+- centroid is then updated based on the points in that cluster
+- update steps until no point changes or centroids remain the same
 
 ----
 
 ## Clustering
-# Kmeans
+# Kmeans algorithm
 <space>
 
 1. Select K points as initial centroids. 
-2. repeat
-3.     Form K clusters by assigning each point to its closest centroid.
-4.     Recompute the centroid of each cluster. 
+2. Repeat
+3. &nbsp;&nbsp; Form K clusters by assigning each point to its closest centroid.
+4. &nbsp;&nbsp; Recompute the centroid of each cluster. 
 5. until Centroids do not change, or change very minimally, i.e. <1%
 
+----
 
-3. Use similarity measures such as Euclidean or cosine similarity depending on the data
-4. Minimize the squared distance of each point to closest centroid, minimize the objective function
-     - the centroid that minimizes the SSE of the cluster is the mean
-     - Kmeans leads to local minimum, not global, since you’re optimizing based on the centroids you chose, not all possible centroids
+## Clustering
+# Kmeans algorithm
+<space>
+
+- Use similarity measures (Euclidean or cosine) depending on the data
+- Minimize the squared distance of each point to closest centroid
+  - minimize the objective function
+  - the centroid that minimizes the SSE of the cluster is the mean
+  - leads to local minimum - not global - since optimizing based on chosen centroids
 
 ----
 
@@ -632,16 +635,41 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 - choose K randomly - can lead to poor centroids
      - run k-means multiple times - still doesn’t solve problems
 
-- can reduce the total SSE by increasing the K
+- can reduce the total SSE by increasing K
      - can increase the cluster with largest SSE
 - can decrease K and minimize SSE
-     - split up a cluster into other clusters. the centroid that is split will increase total SSE the least
+     - split up a cluster into other clusters
+     - the centroid that is split will increase total SSE the least
 - bisecting K means
-     - less susceptible to initialization problems
-     - split points into 2 clusters
-          - take cluster with largest SSE - split that into two clusters
-     - rerun bisecting K mean on resulting clusters
-     - stop when you have K clusters
+   - less susceptible to initialization problems
+   - split points into 2 clusters
+        - take cluster with largest SSE - split that into two clusters
+   - rerun bisecting K mean on resulting clusters
+   - stop when you have K clusters
+
+----
+
+## Clustering
+# Kmean fails
+<space>
+
+![different_density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_density.png)
+
+----
+
+## Clustering
+# Kmean fails
+<space>
+
+![different_size_clusters](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_size_clusters.png)
+
+----
+
+## Clustering
+# Kmean fails
+<space>
+
+![non-globular](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/non-globular.png)
 
 ----
 
@@ -649,28 +677,10 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmeans
 <space>
 
-- K mean fails
-     - if some clusters are much bigger than other clusters - it cannot distinguish between natural clusters
-     - if clusters have different densities, K means cannot tell 
-     - distance metric doesn’t account for non-globular clusters, i.e. if they follow a distribution
-- K means will still work if user accepts sub clusters of the natural cluster
-- strengths
-     - simple, efficient computationally
-     - not useful for non-globular, different density, different sized data
-     - outlier detection and removal can help address outlier problem
-- can derive K mean algorithm using gradient descent
-     - can use calculus to show that the mean of the cluster is the best choice of centroid, i.e. minimizes SSE
-
-----
-
-## Clustering
-# Kmeans
-<space>
-
+```{r}
 tennis_kmean <- kmeans(features, centers=5)
-
-# K MEANS DOES A GOOD JOB IN CLUSTERING GENDERS
 table(tennis$Gender,tennis_kmean$cluster)
+```
 
 ----
 
@@ -678,12 +688,10 @@ table(tennis$Gender,tennis_kmean$cluster)
 # Kmeans animation
 <space>
 
-# animate kmean algorithm
 install.packages('animation')
 library(animation)
 
 oopt = ani.options(interval = 1)
-## the kmeans() example; very fast to converge!
 ani_ex = rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), 
           matrix(rnorm(100, sd = 0.3), 
           ncol = 2))
@@ -783,16 +791,17 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Motivation
 <space>
 
-- A root node that has no incoming edges and zero or more outgoing edges.
-- Internal nodes, each of which has exactly one incoming edge and two or more outgoing edges
-- Leaf or terminal nodes, each of which has exactly one incoming edge and no outgoing edges. 
+- representation of decisions made in order to classify or predict
+![overview](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png)
 
-- The non- terminal nodes, which include the root and other internal nodes, contain attribute test conditions to separate records that have different characteristics
 
-- trees work best with categorical values
-- descriptions are disjoint
-- trees are robust to data errors
-- training data is missing values
+----
+
+## Trees
+# Structure
+<space>
+
+![structure](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_structure.png)
 
 ----
 
@@ -800,9 +809,18 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Algorithm(s)
 <space>
 
-ID3
+- ID3
+  - original, popular, DT implementation
 C4.5
+  - like ID3 +
+  - handles continuous cases
+  - imputing missing values
+  - weighing costs
+  - pruning post creation
 C5.0
+  - like C4.5 + 
+  - faster, less memory usage
+  - boosting
 
 ----
 
