@@ -18,7 +18,6 @@ mode        : selfcontained # {standalone, draft}
 2. Principle Component Analysis
 3. Clustering
 4. Trees
-5. Missing data
 
 ----
 
@@ -35,9 +34,14 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
+
+```r
 x <- 1:10
 log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
 ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
+```
+
+![plot of chunk log_bad_fit](figure/log_bad_fit.png) 
 
 ----
 
@@ -77,13 +81,19 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
   - interpret the output as $P(Y=1 | X)$
   - bounded by 0 and 1
 
+----
+
+## Logistic Regression
+# Notation
+<space>
+
 
 ```r
 curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
 abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk log_curve](figure/log_curve.png) 
 
 ----
 
@@ -100,15 +110,13 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 ----
 
 ## Logistic Regression
-# Motivation
+# Notation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
-<br>
-<br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
-- log odds are linear in X
-- this is called the logit of theta - this is linear in X
+- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
+- "log odds"" are linear in X
+- this is called the logit of theta
+  - links X linearly with some function of Y
 
 ----
 
@@ -118,10 +126,9 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
 - What is the cost function?
-- Why can't we use the same cost function as before?
-  - logistic residuals are Binomially distributed - not NORMAL
+- Why can't we use the same cost function as for the linear hypothesis?
+  - logistic residuals are Binomially distributed - not Normal
   - the regression function is not linear in X
-
 
 ----
 
@@ -129,13 +136,33 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
 # Find parameters
 <space>
 
-- Define cost function as:
+- Define logistic cost function as:
 
 $cost(h_{\theta}(x)):$<br>
-$= -\log(x),   y = 1$<br>
-$= -\log(1-x),   y = 0$
+&nbsp;&nbsp; $= -\log(x),$ &nbsp;&nbsp;&nbsp;  $y = 1$<br>
+&nbsp;&nbsp; $= -\log(1-x),$ &nbsp;   $y = 0$
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- using statistics, it can be shown that<br>
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- using statistics, it can be shown that<br>
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- Logistic regression cost function is then<br>
+$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 
 ----
 
@@ -151,7 +178,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -159,7 +186,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -173,7 +200,7 @@ grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -197,7 +224,7 @@ gradDescent<-function(X,y,theta,iterations,alpha){
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -212,7 +239,7 @@ grad_cost(X1,Y1,init_theta)
 ```
 
 ```
-[1] 5114
+[1] 5243
 ```
 
 ```r
@@ -223,7 +250,7 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -234,7 +261,7 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -244,7 +271,7 @@ grad_cost(X1,Y1,theta[[1]])
 ```
 
 ```
-[1] 290.3
+[1] 335.3
 ```
 
 ```r
@@ -257,7 +284,7 @@ new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -294,7 +321,6 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,
 
 - very popular classification algorithm
 - based on Binomial error terms, i.e. 1's and 0's
-- 
 
 ----
 
@@ -617,7 +643,7 @@ ggplot(var_explained) +
   geom_line(aes(x=PC,y=cum_var_explained))
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 ----
 
@@ -903,7 +929,7 @@ cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
 plot(cluster)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
 
 ----
 
@@ -935,7 +961,6 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 - representation of decisions made in order to classify or predict
 ![overview](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png)
 
-
 ----
 
 ## Trees
@@ -947,18 +972,40 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 ----
 
 ## Trees
-# Algorithm(s)
+# Structure
+<space>
+
+- recursive partitioning -> "divide and conquer"
+- going down, choose feature that is most *predictive* of target class
+  - split the data according to feature
+  - continue...
+
+----
+
+## Trees
+# Structure
+<space>
+
+until...
+- all examples at a node are in same class
+- no more features left to distinguish (prone to overfitting)
+- tree has grown to some prespecified limit (prune)
+
+----
+
+## Trees
+# Algorithms
 <space>
 
 - ID3
   - original, popular, DT implementation
-C4.5
+- C4.5
   - like ID3 +
   - handles continuous cases
   - imputing missing values
   - weighing costs
   - pruning post creation
-C5.0
+- C5.0
   - like C4.5 + 
   - faster, less memory usage
   - boosting
@@ -966,52 +1013,146 @@ C5.0
 ----
 
 ## Trees
-# Entropy calculation
+# Selecting features
 <space>
 
-- The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.
+- How does tree decide how to select feature?
+  - purity of resulting split
+- __Entropy__: amount of information contained in a random variable
+  - For a feature with N classes:
+    - 0 = purely homogenous
+    - $\log_{2}(N)$ = completely mixed
 
-entropy_function <- function(p) {
+----
 
-  if (min(p) < 0 || sum(p) <= 0) {
-    return(NA)
-  } else {
-    p.norm <- p[p>0]/sum(p)
-    -sum(log2(p.norm)*p.norm)
-    }
+## Trees
+# Entropy
+<space>
+
+$Entropy(S) = \sum_{i=1}^{c} -p_{i}\log_{2}(p_{i})$
+  - where $S$ is a dataset
+  - $c$ is the number of levels in that data
+  - $p_{i}$ is the proportion of values in that level
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+What is the entropy of a fair, 6 sided die?
+
+
+```r
+entropy <- function(probs){
+  ent <- 0
+  for(i in probs){
+    ent_temp <- -i*log2(i)
+    ent <- ent + ent_temp
+  }
+  return(ent)
 }
+```
 
 ----
 
 ## Trees
-# Entropy calculation
+# Entropy - example
 <space>
 
+
+```r
+fair <- rep(1/6,6)
+entropy(fair)
+```
+
+```
+## [1] 2.585
+```
+
+```r
+log2(6)
+```
+
+```
+## [1] 2.585
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+What is the entropy of a biased, 6 sided die?
+- $P(X=1) = P(X=2) = P(X=3) = 1/9$
+- $P(X=4) = P(X=5) = P(X=6) = 2/9$
+
+
+```r
+biased <- c(rep(1/9,3),rep(2/9,3))
+entropy(biased)
+```
+
+```
+[1] 2.503
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+
+```r
+more_biased <- c(rep(1/18,3),rep(5/18,3))
+entropy(more_biased)
+```
+
+```
+[1] 2.235
+```
+
+```r
+most_biased <- c(rep(1/100,5),rep(95/100,1))
+entropy(most_biased)
+```
+
+```
+[1] 0.4025
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+
+```r
+curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
+      lwd = 4, main='Entropy of a coin toss')
+```
+
+![plot of chunk entropy_curve](figure/entropy_curve.png) 
+
+----
+
+## Trees
+# Entropy
+<space>
+
+- C5.0 uses the change in entropy to determine the change in purity
 - InfoGain = Entropy (pre split) - Entropy (post split)
-     - Entropy is weighted by the Entropy of each feature split
- - avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)
-- hard to know optimal length of tree without growing it there first
+  - Entropy (pre split) = current Entropy
+  - Entropy (post split) is trickier
+    - need to consider Entropy of each possible split
+  - $E(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})$
 
-----
-
-## Trees
-# Entropy calculation
-<space>
-
-- Entropy = expected amount of information contained in a random variable -> information is synonymous with "bits" which is why is log, base 2 
-     - the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower
-     - the more the feature splits the data, the higher the entropy and hence information gained by splitting at that feature
-     - Entropy is minimized when one of the events has a P(X)=1
-     - Entropy is maximized when each event has a P(X)=1/n of happening
-
-
-----
-
-## Trees
-# Entropy calculation
-<space>
-
-
+- Notes:
+  - The more a feature splits the data in obvious ways, the less informative it is, entropy is lower
+  - The more a feature splits the data - in general - the higher the entropy and hence information gained by splitting at that feature
 
 ----
 
@@ -1022,7 +1163,6 @@ entropy_function <- function(p) {
 
 ```r
 voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
-str(voting_data)
 names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
                         'adoption-of-the-budget-resolution','physician-fee-freeze',
                         'el-salvador-aid','religious-groups-in-schools',
@@ -1030,9 +1170,26 @@ names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharin
                         'mx-missile','immigration','synfuels-corporation-cutback',
                         'education-spending','superfund-right-to-sue','crime',
                         'duty-free-exports','export-administration-act-south-africa')
+```
+
+----
+
+## Trees
+# Example
+<space>
 
 
+```r
 prop.table(table(voting_data[,1]))
+```
+
+```
+
+  democrat republican 
+    0.6152     0.3848 
+```
+
+```r
 n <- nrow(voting_data)
 train_ind <- sample(n,2/3*n)
 voting_train <- voting_data[train_ind,]
@@ -1045,49 +1202,8 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-         party handicapped-infants water-project-cost-sharing
-125 republican                   n                          ?
-420 republican                   y                          y
-305 republican                   n                          n
-104   democrat                   ?                          ?
-177   democrat                   n                          n
-246   democrat                   n                          n
-    adoption-of-the-budget-resolution physician-fee-freeze el-salvador-aid
-125                                 n                    y               y
-420                                 y                    y               y
-305                                 n                    y               y
-104                                 ?                    ?               n
-177                                 y                    n               n
-246                                 y                    n               y
-    religious-groups-in-schools anti-satellite-test-ban
-125                           y                       n
-420                           y                       y
-305                           y                       n
-104                           y                       y
-177                           n                       y
-246                           n                       y
-    aid-to-nicaraguan-contras mx-missile immigration
-125                         n          n           y
-420                         y          n           y
-305                         n          n           y
-104                         y          y           y
-177                         y          y           y
-246                         y          y           n
-    synfuels-corporation-cutback education-spending superfund-right-to-sue
-125                            n                  y                      y
-420                            n                  n                      y
-305                            n                  y                      y
-104                            ?                  n                      y
-177                            y                  ?                      n
-246                            n                  n                      n
-    crime duty-free-exports export-administration-act-south-africa
-125     y                 n                                      y
-420     y                 n                                      y
-305     y                 n                                      n
-104     y                 n                                      ?
-177     n                 y                                      y
-246     y                 ?                                      y
-![plot of chunk tree_plot](figure/tree_plot.png) 
+<img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+
 
 ----
 
@@ -1096,41 +1212,32 @@ voting_test <- voting_data[-train_ind,]
 <space>
 
 
-```r
-# make tree using C5.0
-tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1)
-tree_predict <- predict(tree_model, newdata=voting_test[,-1])
-conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c("actual class", "predicted class"))
 ```
 
-```
-## 
-##  
-##    Cell Contents
-## |-------------------------|
-## |                       N |
-## |         N / Table Total |
-## |-------------------------|
-## 
-##  
-## Total Observations in Table:  145 
-## 
-##  
-##              | predicted class 
-## actual class |   democrat | republican |  Row Total | 
-## -------------|------------|------------|------------|
-##     democrat |         87 |          4 |         91 | 
-##              |      0.600 |      0.028 |            | 
-## -------------|------------|------------|------------|
-##   republican |          2 |         52 |         54 | 
-##              |      0.014 |      0.359 |            | 
-## -------------|------------|------------|------------|
-## Column Total |         89 |         56 |        145 | 
-## -------------|------------|------------|------------|
-## 
-## 
+ 
+   Cell Contents
+|-------------------------|
+|                       N |
+|         N / Table Total |
+|-------------------------|
+
+ 
+Total Observations in Table:  145 
+
+ 
+             | predicted class 
+actual class |   democrat | republican |  Row Total | 
+-------------|------------|------------|------------|
+    democrat |         84 |          5 |         89 | 
+             |      0.579 |      0.034 |            | 
+-------------|------------|------------|------------|
+  republican |          5 |         51 |         56 | 
+             |      0.034 |      0.352 |            | 
+-------------|------------|------------|------------|
+Column Total |         89 |         56 |        145 | 
+-------------|------------|------------|------------|
+
+ 
 ```
 
 ----
@@ -1142,28 +1249,25 @@ conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
 
 ```r
 # most important variables
-C5imp(tree_model)
+head(C5imp(tree_model))
 ```
 
 ```
-##                                        Overall
-## physician-fee-freeze                     96.89
-## synfuels-corporation-cutback             41.18
-## mx-missile                               10.73
-## handicapped-infants                       0.00
-## water-project-cost-sharing                0.00
-## adoption-of-the-budget-resolution         0.00
-## el-salvador-aid                           0.00
-## religious-groups-in-schools               0.00
-## anti-satellite-test-ban                   0.00
-## aid-to-nicaraguan-contras                 0.00
-## immigration                               0.00
-## education-spending                        0.00
-## superfund-right-to-sue                    0.00
-## crime                                     0.00
-## duty-free-exports                         0.00
-## export-administration-act-south-africa    0.00
+##                                   Overall
+## physician-fee-freeze                97.58
+## education-spending                  39.45
+## immigration                         10.03
+## handicapped-infants                  0.00
+## water-project-cost-sharing           0.00
+## adoption-of-the-budget-resolution    0.00
 ```
+
+----
+
+## Trees
+# Example
+<space>
+
 
 ```r
 # in-sample error rate
@@ -1176,7 +1280,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Mon Aug 11 20:43:25 2014
+## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 13 22:17:23 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1185,12 +1289,12 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (168.2/2.7)
+## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (95.7/3)
-##     synfuels-corporation-cutback = y:
-##     :...mx-missile in {?,n}: republican (22.1/4.5)
-##         mx-missile = y: democrat (3)
+## :...education-spending in {?,y}: republican (97/3.2)
+##     education-spending = n:
+##     :...immigration = n: democrat (8/2.6)
+##         immigration in {?,y}: republican (12.8/1.4)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -1204,15 +1308,15 @@ summary(tree_model)
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   170     6    (a): class democrat
-## 	     4   109    (b): class republican
+## 	   174     4    (a): class democrat
+## 	     6   105    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 96.89%	physician-fee-freeze
-## 	 41.18%	synfuels-corporation-cutback
-## 	 10.73%	mx-missile
+## 	 97.58%	physician-fee-freeze
+## 	 39.45%	education-spending
+## 	 10.03%	immigration
 ## 
 ## 
 ## Time: 0.0 secs
@@ -1221,11 +1325,10 @@ summary(tree_model)
 ----
 
 ## Trees
-# Example - Boosting
+# Boosting
 <space>
 
-- rooted in the notion that by combining a number of weak performing learners, 
-- you can create a team that is much stronger than any one of the learners alone.
+- by combining a number of weak performing learners create a team that is much stronger than any one of the learners alone.
 - this is where C5.0 improves on C4.5
 
 ----
@@ -1244,394 +1347,388 @@ boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq =
                            dnn = c("actual class", "predicted class"))
 ```
 
+```
+## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  145 
+## 
+##  
+##              | predicted class 
+## actual class |   democrat | republican |  Row Total | 
+## -------------|------------|------------|------------|
+##     democrat |         84 |          5 |         89 | 
+##              |      0.579 |      0.034 |            | 
+## -------------|------------|------------|------------|
+##   republican |          1 |         55 |         56 | 
+##              |      0.007 |      0.379 |            | 
+## -------------|------------|------------|------------|
+## Column Total |         85 |         60 |        145 | 
+## -------------|------------|------------|------------|
+## 
+## 
+```
 
- 
-   Cell Contents
-|-------------------------|
-|                       N |
-|         N / Table Total |
-|-------------------------|
+----
 
- 
-Total Observations in Table:  145 
+## Trees
+# Example - Boosting
+<space>
 
- 
-             | predicted class 
-actual class |   democrat | republican |  Row Total | 
--------------|------------|------------|------------|
-    democrat |         89 |          2 |         91 | 
-             |      0.614 |      0.014 |            | 
--------------|------------|------------|------------|
-  republican |          2 |         52 |         54 | 
-             |      0.014 |      0.359 |            | 
--------------|------------|------------|------------|
-Column Total |         91 |         54 |        145 | 
--------------|------------|------------|------------|
-
- 
 
 ```r
 # in-sample error rate
 summary(boosted_tree_model)
 ```
 
-
-Call:
-C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
-
-
-C5.0 [Release 2.07 GPL Edition]  	Mon Aug 11 20:43:25 2014
--------------------------------
-
-Class specified by attribute `outcome'
-
-Read 289 cases (17 attributes) from undefined.data
-
------  Trial 0:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (168.2/2.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (95.7/3)
-    synfuels-corporation-cutback = y:
-    :...mx-missile in {?,n}: republican (22.1/4.5)
-        mx-missile = y: democrat (3)
-
------  Trial 1:  -----
-
-Decision tree:
-
-adoption-of-the-budget-resolution in {?,y}: democrat (162.4/23.6)
-adoption-of-the-budget-resolution = n:
-:...synfuels-corporation-cutback in {?,n}: republican (88.3/12.7)
-    synfuels-corporation-cutback = y: democrat (38.3/14.4)
-
------  Trial 2:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (126.8/17.9)
-physician-fee-freeze = y: republican (162.2/43.5)
-
------  Trial 3:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (114.1/23.1)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (55.6/1)
-    immigration = n:
-    :...crime = ?: democrat (0)
-        crime = n: republican (8.2/0.6)
-        crime = y:
-        :...anti-satellite-test-ban in {?,n}: democrat (95/33.5)
-            anti-satellite-test-ban = y: republican (16.2/3.6)
-
------  Trial 4:  -----
-
-Decision tree:
-
-adoption-of-the-budget-resolution in {?,n}: republican (163.9/43.5)
-adoption-of-the-budget-resolution = y: democrat (125.1/32.8)
-
------  Trial 5:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (101.4/18.3)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (113.9/19)
-    synfuels-corporation-cutback = y: democrat (73.7/30.9)
-
------  Trial 6:  -----
-
-Decision tree:
-
-physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (88/19.3)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (64.3/3)
-    immigration = n:
-    :...superfund-right-to-sue = ?: republican (0)
-        superfund-right-to-sue = n: democrat (20.2/5.1)
-        superfund-right-to-sue = y:
-        :...adoption-of-the-budget-resolution in {?,n}: republican (88.5/20.7)
-            adoption-of-the-budget-resolution = y: democrat (28/9)
-
------  Trial 7:  -----
-
-Decision tree:
-
-el-salvador-aid = ?: republican (0)
-el-salvador-aid = n: democrat (66.4/13.1)
-el-salvador-aid = y:
-:...anti-satellite-test-ban in {?,y}: republican (63.7/6.6)
-    anti-satellite-test-ban = n:
-    :...physician-fee-freeze = ?: republican (0)
-        physician-fee-freeze = n: democrat (12.5/0.8)
-        physician-fee-freeze = y:
-        :...mx-missile = ?: republican (0)
-            mx-missile = y: democrat (10.6/0.9)
-            mx-missile = n:
-            :...adoption-of-the-budget-resolution = ?: republican (0)
-                adoption-of-the-budget-resolution = y: democrat (25.2/6.4)
-                adoption-of-the-budget-resolution = n:
-                :...duty-free-exports in {?,n}: republican (90.8/16.7)
-                    duty-free-exports = y: democrat (19.8/3.6)
-
------  Trial 8:  -----
-
-Decision tree:
-
-physician-fee-freeze = n: democrat (97.3/18.3)
-physician-fee-freeze in {?,y}: republican (191.7/64.9)
-
------  Trial 9:  -----
-
-Decision tree:
-
-synfuels-corporation-cutback in {?,y}: democrat (136.2/34.9)
-synfuels-corporation-cutback = n:
-:...physician-fee-freeze = n: democrat (49.5/17.1)
-    physician-fee-freeze in {?,y}: republican (103.3/28.5)
-
------  Trial 10:  -----
-
-Decision tree:
-
-education-spending = n: democrat (120.4/38.1)
-education-spending in {?,y}: republican (168.6/60.4)
-
------  Trial 11:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (88.1/18.1)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (65.6/10.5)
-    immigration = n:
-    :...anti-satellite-test-ban in {?,n}: democrat (110.1/43.9)
-        anti-satellite-test-ban = y: republican (25.2/5.5)
-
------  Trial 12:  -----
-
-Decision tree:
-
-physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (79.2/18.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (105.1/25.4)
-    synfuels-corporation-cutback = y:
-    :...mx-missile in {?,n}: republican (84.3/30.8)
-        mx-missile = y: democrat (20.3/1.1)
-
------  Trial 13:  -----
-
-Decision tree:
-
-adoption-of-the-budget-resolution in {?,y}: democrat (119.1/30.5)
-adoption-of-the-budget-resolution = n:
-:...mx-missile = ?: republican (0)
-    mx-missile = y: democrat (22/6.8)
-    mx-missile = n:
-    :...anti-satellite-test-ban in {?,y}: republican (26.7/3.7)
-        anti-satellite-test-ban = n:
-        :...duty-free-exports in {?,n}: republican (98.9/30.4)
-            duty-free-exports = y: democrat (22.4/4.2)
-
------  Trial 14:  -----
-
-Decision tree:
-
-synfuels-corporation-cutback = n: republican (151.5/51.2)
-synfuels-corporation-cutback in {?,y}: democrat (137.5/42.9)
-
------  Trial 15:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (86.7/18.6)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (60.5/9.7)
-    immigration = n:
-    :...anti-satellite-test-ban in {?,n}: democrat (121/50.2)
-        anti-satellite-test-ban = y: republican (20.8/3.9)
-
------  Trial 16:  -----
-
-Decision tree:
-
-physician-fee-freeze = n: democrat (78.6/19.1)
-physician-fee-freeze in {?,y}: republican (210.4/77.4)
-
------  Trial 17:  -----
-
-Decision tree:
-
-adoption-of-the-budget-resolution = n: republican (169.3/65.5)
-adoption-of-the-budget-resolution in {?,y}: democrat (119.7/32.8)
-
------  Trial 18:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (78.4/18.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (108.7/29.8)
-    synfuels-corporation-cutback = y: democrat (101.9/38.6)
-
------  Trial 19:  -----
-
-Decision tree:
-
-el-salvador-aid = ?: republican (0)
-el-salvador-aid = n: democrat (56.7/13.4)
-el-salvador-aid = y:
-:...anti-satellite-test-ban in {?,y}: republican (58.1/11.6)
-    anti-satellite-test-ban = n:
-    :...adoption-of-the-budget-resolution = ?: republican (0)
-        adoption-of-the-budget-resolution = y: democrat (39.6/8.7)
-        adoption-of-the-budget-resolution = n:
-        :...physician-fee-freeze = ?: republican (0)
-            physician-fee-freeze = n: democrat (9/0.6)
-            physician-fee-freeze = y:
-            :...immigration in {?,y}: republican (25.3/0.3)
-                immigration = n:
-                :...superfund-right-to-sue = n: democrat (15.2/2.6)
-                    superfund-right-to-sue in {?,y}: republican (85/29.4)
-
------  Trial 20:  -----
-
-Decision tree:
-
-physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (92.8/19.3)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (88.3/13.4)
-    synfuels-corporation-cutback = y:
-    :...mx-missile = n: republican (89.4/37)
-        mx-missile in {?,y}: democrat (17.4/0.9)
-
------  Trial 21:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (65.7/4.2)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback = ?: democrat (0)
-    synfuels-corporation-cutback = n: republican (86.5/23.6)
-    synfuels-corporation-cutback = y:
-    :...immigration in {?,n}: democrat (104.2/25.7)
-        immigration = y: republican (30.6/10.4)
-
------  Trial 22:  -----
-
-Decision tree:
-
-physician-fee-freeze in {?,n}: democrat (63.6/5.2)
-physician-fee-freeze = y:
-:...adoption-of-the-budget-resolution = ?: republican (0)
-    adoption-of-the-budget-resolution = n:
-    :...superfund-right-to-sue = n: democrat (25.3/6.7)
-    :   superfund-right-to-sue in {?,y}: republican (88.9/5.6)
-    adoption-of-the-budget-resolution = y:
-    :...water-project-cost-sharing = n: republican (21/1.5)
-        water-project-cost-sharing in {?,y}: democrat (87.2/17.9)
-
------  Trial 23:  -----
-
-Decision tree:
-
-physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (48.1/0.7)
-physician-fee-freeze = y:
-:...water-project-cost-sharing in {?,n}: republican (63.5/3.9)
-    water-project-cost-sharing = y:
-    :...el-salvador-aid = ?: republican (0)
-        el-salvador-aid = n: democrat (16.8/2.5)
-        el-salvador-aid = y:
-        :...anti-satellite-test-ban in {?,y}: republican (28.2/0.3)
-            anti-satellite-test-ban = n:
-            :...adoption-of-the-budget-resolution = n: republican (61.9/17.3)
-                adoption-of-the-budget-resolution in {?,
-                                                      y}: democrat (65.5/12.3)
-
------  Trial 24:  -----
-
-Decision tree:
-
-physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (40.1/2.1)
-physician-fee-freeze = y:
-:...water-project-cost-sharing in {?,n}: republican (56.4/5)
-    water-project-cost-sharing = y:
-    :...synfuels-corporation-cutback in {?,n}: republican (88.5/25)
-        synfuels-corporation-cutback = y: democrat (98.9/34.9)
-
-
-Evaluation on training data (289 cases):
-
-Trial	    Decision Tree   
------	  ----------------  
-	  Size      Errors  
-
-   0	     4   10( 3.5%)
-   1	     3   40(13.8%)
-   2	     2   12( 4.2%)
-   3	     5   46(15.9%)
-   4	     2   37(12.8%)
-   5	     3   22( 7.6%)
-   6	     5   13( 4.5%)
-   7	     7   25( 8.7%)
-   8	     2   15( 5.2%)
-   9	     3   22( 7.6%)
-  10	     2   56(19.4%)
-  11	     4   46(15.9%)
-  12	     4    9( 3.1%)
-  13	     5   34(11.8%)
-  14	     2   99(34.3%)
-  15	     4   46(15.9%)
-  16	     2   15( 5.2%)
-  17	     2   36(12.5%)
-  18	     3   22( 7.6%)
-  19	     7   26( 9.0%)
-  20	     4    8( 2.8%)
-  21	     4   16( 5.5%)
-  22	     5   20( 6.9%)
-  23	     6    8( 2.8%)
-  24	     4   20( 6.9%)
-boost	          6( 2.1%)   <<
-
-
-	   (a)   (b)    <-classified as
-	  ----  ----
-	   173     3    (a): class democrat
-	     3   110    (b): class republican
-
-
-	Attribute usage:
-
-	 97.58%	adoption-of-the-budget-resolution
-	 96.89%	physician-fee-freeze
-	 96.19%	el-salvador-aid
-	 95.16%	synfuels-corporation-cutback
-	 92.04%	education-spending
-	 52.25%	anti-satellite-test-ban
-	 44.98%	mx-missile
-	 42.21%	immigration
-	 37.02%	water-project-cost-sharing
-	 35.99%	superfund-right-to-sue
-	 29.76%	duty-free-exports
-	 20.07%	crime
-
-
-Time: 0.0 secs
+```
+## 
+## Call:
+## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
+## 
+## 
+## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 13 22:17:23 2014
+## -------------------------------
+## 
+## Class specified by attribute `outcome'
+## 
+## Read 289 cases (17 attributes) from undefined.data
+## 
+## -----  Trial 0:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
+## physician-fee-freeze = y:
+## :...education-spending in {?,y}: republican (97/3.2)
+##     education-spending = n:
+##     :...immigration = n: democrat (8/2.6)
+##         immigration in {?,y}: republican (12.8/1.4)
+## 
+## -----  Trial 1:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (125/25.7)
+## adoption-of-the-budget-resolution in {?,y}: democrat (164/26.8)
+## 
+## -----  Trial 2:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (145.1/21.5)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (86.7/2.8)
+##     synfuels-corporation-cutback = y: democrat (57.2/24.1)
+## 
+## -----  Trial 3:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (122.8/24.6)
+## physician-fee-freeze in {?,y}: republican (166.2/33.6)
+## 
+## -----  Trial 4:  -----
+## 
+## Decision tree:
+## 
+## crime in {?,n}: democrat (69.4/9.6)
+## crime = y:
+## :...adoption-of-the-budget-resolution in {?,n}: republican (139.3/44)
+##     adoption-of-the-budget-resolution = y: democrat (80.3/30.9)
+## 
+## -----  Trial 5:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (112.1/25.2)
+## physician-fee-freeze = y:
+## :...immigration = n: democrat (103.7/46.4)
+##     immigration in {?,y}: republican (73.2/8.7)
+## 
+## -----  Trial 6:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (100/26.2)
+## physician-fee-freeze in {?,y}: republican (189/59.1)
+## 
+## -----  Trial 7:  -----
+## 
+## Decision tree:
+## 
+## synfuels-corporation-cutback = ?: democrat (0)
+## synfuels-corporation-cutback = n: republican (139.2/45.1)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (38/0.9)
+##     physician-fee-freeze = y:
+##     :...water-project-cost-sharing = n: republican (14.1)
+##         water-project-cost-sharing in {?,y}: democrat (97.7/31.2)
+## 
+## -----  Trial 8:  -----
+## 
+## Decision tree:
+## 
+## crime in {?,n}: democrat (71.7/9.7)
+## crime = y:
+## :...education-spending = ?: republican (0)
+##     education-spending = n:
+##     :...anti-satellite-test-ban in {?,n}: democrat (53.6/12.2)
+##     :   anti-satellite-test-ban = y: republican (50.2/19.5)
+##     education-spending = y:
+##     :...physician-fee-freeze = n: democrat (22.4/6.2)
+##         physician-fee-freeze in {?,y}: republican (91.1/20.6)
+## 
+## -----  Trial 9:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (125/25.5)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (49.9/9)
+##     immigration = n:
+##     :...mx-missile = n: republican (81.8/31.5)
+##         mx-missile in {?,y}: democrat (32.3/5.4)
+## 
+## -----  Trial 10:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution in {?,y}: democrat (135.9/32.1)
+## adoption-of-the-budget-resolution = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (84.9/19.4)
+##     synfuels-corporation-cutback = y: democrat (68.2/29.7)
+## 
+## -----  Trial 11:  -----
+## 
+## Decision tree:
+## 
+## education-spending = ?: democrat (0)
+## education-spending = y:
+## :...physician-fee-freeze = n: democrat (22.8/7.8)
+## :   physician-fee-freeze in {?,y}: republican (104.8/24.7)
+## education-spending = n:
+## :...crime in {?,n}: democrat (36.6/1.5)
+##     crime = y:
+##     :...religious-groups-in-schools = n: republican (30.8/9.1)
+##         religious-groups-in-schools in {?,y}: democrat (94/31.5)
+## 
+## -----  Trial 12:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (104.8/28.7)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (45.5/3.2)
+##     water-project-cost-sharing = y:
+##     :...synfuels-corporation-cutback in {?,n}: republican (42.7/11)
+##         synfuels-corporation-cutback = y: democrat (96/38.7)
+## 
+## -----  Trial 13:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = ?: republican (0)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (51.5/2.9)
+## :   physician-fee-freeze = y: republican (67.3/29.3)
+## adoption-of-the-budget-resolution = n:
+## :...superfund-right-to-sue in {?,n}: republican (64.3/30.3)
+##     superfund-right-to-sue = y:
+##     :...duty-free-exports in {?,n}: republican (92/9.9)
+##         duty-free-exports = y: democrat (13.9/1.9)
+## 
+## -----  Trial 14:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (107.5/27.4)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (58.2/10)
+##     immigration = n:
+##     :...superfund-right-to-sue in {?,n}: democrat (26.9/2.5)
+##         superfund-right-to-sue = y: republican (96.4/41)
+## 
+## -----  Trial 15:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (176.8/73)
+## adoption-of-the-budget-resolution in {?,y}: democrat (112.2/33.6)
+## 
+## -----  Trial 16:  -----
+## 
+## Decision tree:
+## 
+## synfuels-corporation-cutback = ?: democrat (0)
+## synfuels-corporation-cutback = n: republican (140.2/53.9)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (38.8/1.5)
+##     physician-fee-freeze = y:
+##     :...water-project-cost-sharing = n: republican (7.3)
+##         water-project-cost-sharing in {?,y}: democrat (102.7/41.6)
+## 
+## -----  Trial 17:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (116.6/28.5)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (54.9/10.6)
+##     immigration = n:
+##     :...mx-missile = n: republican (81.6/33.1)
+##         mx-missile in {?,y}: democrat (36/7.8)
+## 
+## -----  Trial 18:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (170.2/73.5)
+## adoption-of-the-budget-resolution in {?,y}: democrat (118.8/35.8)
+## 
+## -----  Trial 19:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (112.7/34)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (42.9/6.9)
+##     water-project-cost-sharing = y:
+##     :...synfuels-corporation-cutback = n: republican (38.1/13.4)
+##         synfuels-corporation-cutback in {?,y}: democrat (95.3/37.7)
+## 
+## -----  Trial 20:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (108.2/38.7)
+## physician-fee-freeze in {?,y}: republican (179.8/61.1)
+## 
+## -----  Trial 21:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (88.8/22.8)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (58.6/13.6)
+##     synfuels-corporation-cutback = y:
+##     :...water-project-cost-sharing = ?: democrat (0)
+##         water-project-cost-sharing = n: republican (4.9)
+##         water-project-cost-sharing = y:
+##         :...adoption-of-the-budget-resolution = n: republican (84.1/36)
+##             adoption-of-the-budget-resolution in {?,y}: democrat (50.6/10.2)
+## 
+## -----  Trial 22:  -----
+## 
+## Decision tree:
+## 
+## duty-free-exports in {?,y}: democrat (80.7/13.7)
+## duty-free-exports = n:
+## :...immigration = ?: republican (0)
+##     immigration = n: democrat (103.2/43)
+##     immigration = y:
+##     :...export-administration-act-south-africa = n: democrat (14.4/3.6)
+##         export-administration-act-south-africa in {?,y}: republican (86.7/16.1)
+## 
+## -----  Trial 23:  -----
+## 
+## Decision tree:
+## 
+## education-spending = ?: democrat (0)
+## education-spending = y:
+## :...physician-fee-freeze = n: democrat (18.5/1.2)
+## :   physician-fee-freeze in {?,y}: republican (90.8/14)
+## education-spending = n:
+## :...crime in {?,n}: democrat (38.1/1.5)
+##     crime = y:
+##     :...export-administration-act-south-africa in {?,n}: democrat (22.4/1.7)
+##         export-administration-act-south-africa = y:
+##         :...immigration = n: democrat (46.2/12.8)
+##             immigration in {?,y}: republican (69/22.3)
+## 
+## -----  Trial 24:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (93.6/2)
+## physician-fee-freeze = y:
+## :...mx-missile = ?: republican (0)
+##     mx-missile = y: democrat (67.9/23.7)
+##     mx-missile = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (69.8/1)
+##         adoption-of-the-budget-resolution = y: democrat (52.7/22)
+## 
+## 
+## Evaluation on training data (289 cases):
+## 
+## Trial	    Decision Tree   
+## -----	  ----------------  
+## 	  Size      Errors  
+## 
+##    0	     4   10( 3.5%)
+##    1	     2   36(12.5%)
+##    2	     3   23( 8.0%)
+##    3	     2   15( 5.2%)
+##    4	     3   33(11.4%)
+##    5	     3   51(17.6%)
+##    6	     2   15( 5.2%)
+##    7	     4   97(33.6%)
+##    8	     5   37(12.8%)
+##    9	     4   11( 3.8%)
+##   10	     3   38(13.1%)
+##   11	     5   17( 5.9%)
+##   12	     4   16( 5.5%)
+##   13	     5   22( 7.6%)
+##   14	     4   14( 4.8%)
+##   15	     2   36(12.5%)
+##   16	     4   95(32.9%)
+##   17	     4   11( 3.8%)
+##   18	     2   36(12.5%)
+##   19	     4   18( 6.2%)
+##   20	     2   15( 5.2%)
+##   21	     5   10( 3.5%)
+##   22	     4  109(37.7%)
+##   23	     6   33(11.4%)
+##   24	     4   28( 9.7%)
+## boost	          7( 2.4%)   <<
+## 
+## 
+## 	   (a)   (b)    <-classified as
+## 	  ----  ----
+## 	   176     2    (a): class democrat
+## 	     5   106    (b): class republican
+## 
+## 
+## 	Attribute usage:
+## 
+## 	 97.58%	adoption-of-the-budget-resolution
+## 	 97.58%	physician-fee-freeze
+## 	 96.89%	crime
+## 	 95.16%	synfuels-corporation-cutback
+## 	 94.12%	duty-free-exports
+## 	 92.04%	education-spending
+## 	 70.59%	immigration
+## 	 41.52%	mx-missile
+## 	 41.52%	superfund-right-to-sue
+## 	 39.10%	export-administration-act-south-africa
+## 	 38.06%	water-project-cost-sharing
+## 	 22.49%	religious-groups-in-schools
+## 	 22.15%	anti-satellite-test-ban
+## 
+## 
+## Time: 0.0 secs
+```
 
 ----
 
 ## Trees
-# Example - Error Cost
+# Error Cost
 <space>
 
 - still getting too many false positives (predict republican but actually democrat)
@@ -1671,13 +1768,13 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         83 |          8 |         91 | 
-##              |      0.572 |      0.055 |            | 
+##     democrat |         80 |          9 |         89 | 
+##              |      0.552 |      0.062 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         53 |         54 | 
-##              |      0.007 |      0.366 |            | 
+##   republican |          0 |         56 |         56 | 
+##              |      0.000 |      0.386 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         84 |         61 |        145 | 
+## Column Total |         80 |         65 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -1686,20 +1783,10 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ----
 
 ## Trees
-# Example - Error Cost
+# Error Cost
 <space>
 
 
-```r
-tris <- seq(1,50,by=2)
-boost_acc <- NULL
-for (i in tris){  
-  temp <- C5.0(voting_train[,-1],voting_train[,1], trials=i, costs = error_cost)
-  temp_pred <- predict(temp,voting_test[,-1])
-  boost_acc <- append(boost_acc,sum(diag(table(temp_pred,voting_test[,1]))))
-}
-```
-
 ```
 ## Warning: 
 ## no dimnames were given for the cost matrix; the factor levels will be used
@@ -1777,11 +1864,7 @@ for (i in tris){
 ## no dimnames were given for the cost matrix; the factor levels will be used
 ```
 
-```r
-plot(boost_acc,type='l')
-```
-
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+![plot of chunk plot_boost_acc](figure/plot_boost_acc.png) 
 
 ----
 
@@ -1792,25 +1875,17 @@ plot(boost_acc,type='l')
 - trees are non-parametric, rule based classification or regression method
 - simple to understand and interpret
 - little data preparation
-- easy to overfit (need to prune to avoid that, or have max tree depth)
-- usually finds local optimum. Can mitigate this with an ensemble of trees
-- difficult concepts that are not easily expressed by trees (XOR) are hard to learn
-- for class imbalance, trees can be biased - should balance dataset before fitting
-- trees tend to overfit, so use PCA beforehand
+- works well with small or large number of features
+<br>
+- easy to overfit
+- biased towards splits on features with large number of levels
+- usually finds local optimum
+- difficult concepts are hard to learn
+- avoid pre-pruning
+- hard to know optimal length of tree without growing it there first
 
 ----
 
-## Missing Data
-# Types
-<space>
-
-Missingness that...
-- is completely at random; no bias in missing data
-- is random
-- depends on unobserved features
-- depends on the missing value itself
-http://www.stat.columbia.edu/~gelman/arm/missing.pdf
-----
 ## Resources
 <space>
 

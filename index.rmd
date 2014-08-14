@@ -18,7 +18,6 @@ mode        : selfcontained # {standalone, draft}
 2. Principle Component Analysis
 3. Clustering
 4. Trees
-5. Missing data
 
 ----
 
@@ -35,9 +34,11 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
+```{r log_bad_fit, fig.height=5,fig.width=5}
 x <- 1:10
 log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
 ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
+```
 
 ----
 
@@ -76,7 +77,13 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
   - interpret the output as $P(Y=1 | X)$
   - bounded by 0 and 1
 
-```{r}
+----
+
+## Logistic Regression
+# Notation
+<space>
+
+```{r log_curve, fig.height=5,fig.width=5}
 curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
 abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 ```
@@ -96,15 +103,13 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 ----
 
 ## Logistic Regression
-# Motivation
+# Notation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
-<br>
-<br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
-- log odds are linear in X
-- this is called the logit of theta - this is linear in X
+- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
+- "log odds"" are linear in X
+- this is called the logit of theta
+  - links X linearly with some function of Y
 
 ----
 
@@ -114,10 +119,9 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
 - What is the cost function?
-- Why can't we use the same cost function as before?
-  - logistic residuals are Binomially distributed - not NORMAL
+- Why can't we use the same cost function as for the linear hypothesis?
+  - logistic residuals are Binomially distributed - not Normal
   - the regression function is not linear in X
-
 
 ----
 
@@ -125,16 +129,36 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
 # Find parameters
 <space>
 
-- Define cost function as:
+- Define logistic cost function as:
 
 $cost(h_{\theta}(x)):$<br>
-$= -\log(x),   y = 1$<br>
-$= -\log(1-x),   y = 0$
+&nbsp;&nbsp; $= -\log(x),$ &nbsp;&nbsp;&nbsp;  $y = 1$<br>
+&nbsp;&nbsp; $= -\log(1-x),$ &nbsp;   $y = 0$
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=1")
 curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=0")
 ```
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- using statistics, it can be shown that<br>
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- using statistics, it can be shown that<br>
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- Logistic regression cost function is then<br>
+$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 
 ----
 
@@ -150,7 +174,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -165,7 +189,7 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -178,7 +202,7 @@ grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -201,7 +225,7 @@ gradDescent<-function(X,y,theta,iterations,alpha){
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -220,7 +244,7 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -234,7 +258,7 @@ ggplot(cost.df,aes(x=cost.df$theta,y=cost.df$cost)) + geom_point()+
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -249,7 +273,7 @@ new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 ----
 
-## Regression example
+## Logistic Regression
 # Gradient descent
 <space>
 
@@ -278,7 +302,6 @@ ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,
 
 - very popular classification algorithm
 - based on Binomial error terms, i.e. 1's and 0's
-- 
 
 ----
 
@@ -794,7 +817,6 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 - representation of decisions made in order to classify or predict
 ![overview](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png)
 
-
 ----
 
 ## Trees
@@ -806,18 +828,40 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 ----
 
 ## Trees
-# Algorithm(s)
+# Structure
+<space>
+
+- recursive partitioning -> "divide and conquer"
+- going down, choose feature that is most *predictive* of target class
+  - split the data according to feature
+  - continue...
+
+----
+
+## Trees
+# Structure
+<space>
+
+until...
+- all examples at a node are in same class
+- no more features left to distinguish (prone to overfitting)
+- tree has grown to some prespecified limit (prune)
+
+----
+
+## Trees
+# Algorithms
 <space>
 
 - ID3
   - original, popular, DT implementation
-C4.5
+- C4.5
   - like ID3 +
   - handles continuous cases
   - imputing missing values
   - weighing costs
   - pruning post creation
-C5.0
+- C5.0
   - like C4.5 + 
   - faster, less memory usage
   - boosting
@@ -825,52 +869,114 @@ C5.0
 ----
 
 ## Trees
-# Entropy calculation
+# Selecting features
 <space>
 
-- The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.
+- How does tree decide how to select feature?
+  - purity of resulting split
+- __Entropy__: amount of information contained in a random variable
+  - For a feature with N classes:
+    - 0 = purely homogenous
+    - $\log_{2}(N)$ = completely mixed
 
-entropy_function <- function(p) {
+----
 
-  if (min(p) < 0 || sum(p) <= 0) {
-    return(NA)
-  } else {
-    p.norm <- p[p>0]/sum(p)
-    -sum(log2(p.norm)*p.norm)
-    }
+## Trees
+# Entropy
+<space>
+
+$Entropy(S) = \sum_{i=1}^{c} -p_{i}\log_{2}(p_{i})$
+  - where $S$ is a dataset
+  - $c$ is the number of levels in that data
+  - $p_{i}$ is the proportion of values in that level
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+What is the entropy of a fair, 6 sided die?
+
+```{r entropy_function}
+entropy <- function(probs){
+  ent <- 0
+  for(i in probs){
+    ent_temp <- -i*log2(i)
+    ent <- ent + ent_temp
+  }
+  return(ent)
 }
+```
 
 ----
 
 ## Trees
-# Entropy calculation
+# Entropy - example
 <space>
 
+```{r entropy_fair}
+fair <- rep(1/6,6)
+entropy(fair)
+log2(6)
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+What is the entropy of a biased, 6 sided die?
+- $P(X=1) = P(X=2) = P(X=3) = 1/9$
+- $P(X=4) = P(X=5) = P(X=6) = 2/9$
+
+```{r entropy_biased,comment=""}
+biased <- c(rep(1/9,3),rep(2/9,3))
+entropy(biased)
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+```{r more_biased,comment=""}
+more_biased <- c(rep(1/18,3),rep(5/18,3))
+entropy(more_biased)
+
+most_biased <- c(rep(1/100,5),rep(95/100,1))
+entropy(most_biased)
+```
+
+----
+
+## Trees
+# Entropy - example
+<space>
+
+```{r entropy_curve, fig.height=5, fig.width=5}
+curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
+      lwd = 4, main='Entropy of a coin toss')
+```
+
+----
+
+## Trees
+# Entropy
+<space>
+
+- C5.0 uses the change in entropy to determine the change in purity
 - InfoGain = Entropy (pre split) - Entropy (post split)
-     - Entropy is weighted by the Entropy of each feature split
- - avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)
-- hard to know optimal length of tree without growing it there first
+  - Entropy (pre split) = current Entropy
+  - Entropy (post split) is trickier
+    - need to consider Entropy of each possible split
+  - $E(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})$
 
-----
-
-## Trees
-# Entropy calculation
-<space>
-
-- Entropy = expected amount of information contained in a random variable -> information is synonymous with "bits" which is why is log, base 2 
-     - the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower
-     - the more the feature splits the data, the higher the entropy and hence information gained by splitting at that feature
-     - Entropy is minimized when one of the events has a P(X)=1
-     - Entropy is maximized when each event has a P(X)=1/n of happening
-
-
-----
-
-## Trees
-# Entropy calculation
-<space>
-
-
+- Notes:
+  - The more a feature splits the data in obvious ways, the less informative it is, entropy is lower
+  - The more a feature splits the data - in general - the higher the entropy and hence information gained by splitting at that feature
 
 ----
 
@@ -878,9 +984,8 @@ entropy_function <- function(p) {
 # Example
 <space>
 
-```{r tree_example, results='hide'}
+```{r tree_example, echo=TRUE}
 voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
-str(voting_data)
 names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
                         'adoption-of-the-budget-resolution','physician-fee-freeze',
                         'el-salvador-aid','religious-groups-in-schools',
@@ -888,8 +993,15 @@ names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharin
                         'mx-missile','immigration','synfuels-corporation-cutback',
                         'education-spending','superfund-right-to-sue','crime',
                         'duty-free-exports','export-administration-act-south-africa')
+```
 
+----
 
+## Trees
+# Example
+<space>
+
+```{r voting_data_clean_2,comment=""}
 prop.table(table(voting_data[,1]))
 n <- nrow(voting_data)
 train_ind <- sample(n,2/3*n)
@@ -903,18 +1015,18 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-```{r tree_plot, results='asis',message=FALSE,echo=FALSE}
+<img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+```{r tree_plot,message=FALSE,echo=FALSE, results='hide'}
 library(C50)
 library(party)
 library(gmodels)
-head(voting_train)
 
 # plot tree using party package
 tree_formula <- with(voting_train,voting_train$party ~ .)
 p_tree <- ctree(tree_formula,data=voting_train)
-plot(p_tree,
-     inner_panel=node_inner(p_tree,pval = FALSE,id = TRUE),
-     terminal_panel=node_terminal(p_tree, digits = 1, id = TRUE))
+#plot(p_tree,
+#     inner_panel=node_inner(p_tree,pval = FALSE,id = TRUE),
+#     terminal_panel=node_terminal(p_tree, digits = 1, id = TRUE))
 ```
 
 ----
@@ -923,7 +1035,7 @@ plot(p_tree,
 # Example
 <space>
 
-```{r}
+```{r tree_conf_mat, comment="",echo=FALSE}
 # make tree using C5.0
 tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1)
 tree_predict <- predict(tree_model, newdata=voting_test[,-1])
@@ -940,8 +1052,16 @@ conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
 
 ```{r most_imp}
 # most important variables
-C5imp(tree_model)
+head(C5imp(tree_model))
+```
 
+----
+
+## Trees
+# Example
+<space>
+
+```{r summary_tree}
 # in-sample error rate
 summary(tree_model)
 ```
@@ -949,11 +1069,10 @@ summary(tree_model)
 ----
 
 ## Trees
-# Example - Boosting
+# Boosting
 <space>
 
-- rooted in the notion that by combining a number of weak performing learners, 
-- you can create a team that is much stronger than any one of the learners alone.
+- by combining a number of weak performing learners create a team that is much stronger than any one of the learners alone.
 - this is where C5.0 improves on C4.5
 
 ----
@@ -962,14 +1081,22 @@ summary(tree_model)
 # Example - Boosting
 <space>
 
-```{r boost, echo=TRUE,message=FALSE, results='asis'}
+```{r boost, echo=TRUE,message=FALSE}
 boosted_tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=25)
 boosted_tennis_predict <- predict(boosted_tree_model,voting_test[,-1])
 
 boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
                            prop.c = FALSE, prop.r = FALSE, 
                            dnn = c("actual class", "predicted class"))
+```
 
+----
+
+## Trees
+# Example - Boosting
+<space>
+
+```{r boost_summary}
 # in-sample error rate
 summary(boosted_tree_model)
 ```
@@ -977,13 +1104,13 @@ summary(boosted_tree_model)
 ----
 
 ## Trees
-# Example - Error Cost
+# Error Cost
 <space>
 
 - still getting too many false positives (predict republican but actually democrat)
 - introduce higher cost to getting this wrong
 
-```{r tree_cost}
+```{r tree_cost, message=FALSE}
 error_cost <- matrix(c(0,1,2,0),nrow=2)
 cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
 cost_predict <- predict(cost_model, newdata=voting_test[,-1])
@@ -995,10 +1122,10 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ----
 
 ## Trees
-# Example - Error Cost
+# Error Cost
 <space>
 
-```{r}
+```{r plot_boost_acc, echo=FALSE}
 tris <- seq(1,50,by=2)
 boost_acc <- NULL
 for (i in tris){  
@@ -1019,25 +1146,17 @@ plot(boost_acc,type='l')
 - trees are non-parametric, rule based classification or regression method
 - simple to understand and interpret
 - little data preparation
-- easy to overfit (need to prune to avoid that, or have max tree depth)
-- usually finds local optimum. Can mitigate this with an ensemble of trees
-- difficult concepts that are not easily expressed by trees (XOR) are hard to learn
-- for class imbalance, trees can be biased - should balance dataset before fitting
-- trees tend to overfit, so use PCA beforehand
+- works well with small or large number of features
+<br>
+- easy to overfit
+- biased towards splits on features with large number of levels
+- usually finds local optimum
+- difficult concepts are hard to learn
+- avoid pre-pruning
+- hard to know optimal length of tree without growing it there first
 
 ----
 
-## Missing Data
-# Types
-<space>
-
-Missingness that...
-- is completely at random; no bias in missing data
-- is random
-- depends on unobserved features
-- depends on the missing value itself
-http://www.stat.columbia.edu/~gelman/arm/missing.pdf
-----
 ## Resources
 <space>
 

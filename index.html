@@ -50,7 +50,6 @@
 <li>Principle Component Analysis</li>
 <li>Clustering</li>
 <li>Trees</li>
-<li>Missing data</li>
 </ol>
 
   </article>
@@ -83,9 +82,12 @@
 
 <p><space></p>
 
-<p>x &lt;- 1:10
+<pre><code class="r">x &lt;- 1:10
 log_ex &lt;- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-ggplot(log_ex,aes(X,Y)) + geom_point(color=&#39;blue&#39;,size=3) + stat_smooth(method=&#39;lm&#39;,se=F,color=&#39;green&#39;,size=1)</p>
+ggplot(log_ex,aes(X,Y)) + geom_point(color=&#39;blue&#39;,size=3) + stat_smooth(method=&#39;lm&#39;,se=F,color=&#39;green&#39;,size=1)
+</code></pre>
+
+<p><img src="figure/log_bad_fit.png" alt="plot of chunk log_bad_fit"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -148,17 +150,30 @@ curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;
 </ul></li>
 </ul>
 
-<pre><code class="r">curve(1/(1+exp(-x)), from = -10, to = 10, ylab=&quot;P(Y=1|X)&quot;, col = &#39;red&#39;, lwd = 3.0)
-abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
-</code></pre>
-
-<p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
-
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Notation</h1>
+
+<p><space></p>
+
+<pre><code class="r">curve(1/(1+exp(-x)), from = -10, to = 10, ylab=&quot;P(Y=1|X)&quot;, col = &#39;red&#39;, lwd = 3.0)
+abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
+</code></pre>
+
+<p><img src="figure/log_curve.png" alt="plot of chunk log_curve"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -179,45 +194,22 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-7" style="background:;">
-  <hgroup>
-    <h2>Logistic Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
-<ul>
-<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta x^{T}}}\) yields
-<br>
-<br>
-\(\log{\frac{Y}{1 - Y}} = \theta x^{T}\)<br></li>
-<li>log odds are linear in X</li>
-<li>this is called the logit of theta - this is linear in X</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-8" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Find parameters</h1>
+    <h1>Notation</h1>
 
 <p><space></p>
 
 <ul>
-<li>So \(h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}\)</li>
-<li>What is the cost function?</li>
-<li>Why can&#39;t we use the same cost function as before?
+<li>Re-arranging \(Y = \frac{1}{1+e^{-\theta x^{T}}}\) yields \(\log{\frac{Y}{1 - Y}} = \theta x^{T}\)<br></li>
+<li>&quot;log odds&quot;&quot; are linear in X</li>
+<li>this is called the logit of theta
 
 <ul>
-<li>logistic residuals are Binomially distributed - not NORMAL</li>
-<li>the regression function is not linear in X</li>
+<li>links X linearly with some function of Y</li>
 </ul></li>
 </ul>
 
@@ -235,12 +227,36 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <p><space></p>
 
 <ul>
-<li>Define cost function as:</li>
+<li>So \(h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}\)</li>
+<li>What is the cost function?</li>
+<li>Why can&#39;t we use the same cost function as for the linear hypothesis?
+
+<ul>
+<li>logistic residuals are Binomially distributed - not Normal</li>
+<li>the regression function is not linear in X</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>Define logistic cost function as:</li>
 </ul>
 
 <p>\(cost(h_{\theta}(x)):\)<br>
-\(= -\log(x),   y = 1\)<br>
-\(= -\log(1-x),   y = 0\)</p>
+&nbsp;&nbsp; \(= -\log(x),\) &nbsp;&nbsp;&nbsp;  \(y = 1\)<br>
+&nbsp;&nbsp; \(= -\log(1-x),\) &nbsp;   \(y = 0\)</p>
 
 <p><img src="figure/cost_curves1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves2.png" alt="plot of chunk cost_curves"> </p>
 
@@ -248,7 +264,45 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-10" style="background:;">
+      <slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>using statistics, it can be shown that<br>
+\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>using statistics, it can be shown that<br>
+\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
+<li>Logistic regression cost function is then<br>
+\(cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-13" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -269,9 +323,9 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-11" style="background:;">
+      <slide class="" id="slide-14" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -284,9 +338,9 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-12" style="background:;">
+      <slide class="" id="slide-15" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -303,9 +357,9 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-13" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -332,9 +386,9 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-14" style="background:;">
+      <slide class="" id="slide-17" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -349,7 +403,7 @@ init_theta&lt;-as.matrix(c(0))
 grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 5114
+<pre><code>[1] 5243
 </code></pre>
 
 <pre><code class="r">iterations = 100
@@ -361,9 +415,9 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-15" style="background:;">
+      <slide class="" id="slide-18" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -377,9 +431,9 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-16" style="background:;">
+      <slide class="" id="slide-19" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -389,7 +443,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 <pre><code class="r">grad_cost(X1,Y1,theta[[1]])
 </code></pre>
 
-<pre><code>[1] 290.3
+<pre><code>[1] 335.3
 </code></pre>
 
 <pre><code class="r">## Make some predictions
@@ -403,9 +457,9 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-17" style="background:;">
+      <slide class="" id="slide-20" style="background:;">
   <hgroup>
-    <h2>Regression example</h2>
+    <h2>Logistic Regression</h2>
   </hgroup>
   <article>
     <h1>Gradient descent</h1>
@@ -426,7 +480,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-18" style="background:;">
+      <slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>Regression example</h2>
   </hgroup>
@@ -447,7 +501,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-19" style="background:;">
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -458,15 +512,14 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <ul>
 <li>very popular classification algorithm</li>
+<li>based on Binomial error terms, i.e. 1&#39;s and 0&#39;s</li>
 </ul>
-
-<h2>- based on Binomial error terms, i.e. 1&#39;s and 0&#39;s</h2>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-20" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -486,7 +539,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-21" style="background:;">
+      <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -514,7 +567,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -562,7 +615,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-23" style="background:;">
+      <slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -586,7 +639,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-24" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -612,7 +665,7 @@ roots &lt;- Re(polyroot(c(21,-10,1)))</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -634,7 +687,7 @@ x1=-x2</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -655,7 +708,7 @@ x1 = x2</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -672,7 +725,7 @@ roots</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -693,7 +746,7 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -719,7 +772,7 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -746,7 +799,7 @@ CY = PPtDPPt
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -837,7 +890,7 @@ head(features)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -857,7 +910,7 @@ PC &lt;- scaled_features %*% eigenvectors
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -883,7 +936,7 @@ sum(round(diag(Cy) - eigenvalues,5))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -906,13 +959,13 @@ ggplot(var_explained) +
   geom_line(aes(x=PC,y=cum_var_explained))
 </code></pre>
 
-<p><img src="figure/unnamed-chunk-5.png" alt="plot of chunk unnamed-chunk-5"> </p>
+<p><img src="figure/unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -945,7 +998,7 @@ eigenvalues == (pca.df$sdev)^2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -967,7 +1020,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -986,7 +1039,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -999,7 +1052,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1029,7 +1082,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1052,7 +1105,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1069,7 +1122,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1090,7 +1143,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1111,7 +1164,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1135,7 +1188,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1179,7 +1232,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1194,7 +1247,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1209,7 +1262,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1224,7 +1277,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1244,7 +1297,7 @@ table(tennis$Gender,tennis_kmean$cluster)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1310,7 +1363,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1345,13 +1398,13 @@ cluster &lt;- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
 plot(cluster)
 </code></pre>
 
-<p><img src="figure/unnamed-chunk-9.png" alt="plot of chunk unnamed-chunk-9"> </p>
+<p><img src="figure/unnamed-chunk-8.png" alt="plot of chunk unnamed-chunk-8"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1371,7 +1424,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1384,7 +1437,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1402,7 +1455,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1417,107 +1470,22 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Algorithm(s)</h1>
-
-<p><space></p>
-
-<ul>
-<li>ID3
-
-<ul>
-<li>original, popular, DT implementation
-C4.5</li>
-<li>like ID3 +</li>
-<li>handles continuous cases</li>
-<li>imputing missing values</li>
-<li>weighing costs</li>
-<li>pruning post creation
-C5.0</li>
-<li>like C4.5 + </li>
-<li>faster, less memory usage</li>
-<li>boosting</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-57" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy calculation</h1>
-
-<p><space></p>
-
-<ul>
-<li>The entropy of a sample of data indicates how mixed the class values are; the minimum value of 0 indicates that the sample is completely homogenous, while 1 indicates the maximum amount of disorder.</li>
-</ul>
-
-<p>entropy_function &lt;- function(p) {</p>
-
-<p>if (min(p) &lt; 0 || sum(p) &lt;= 0) {
-    return(NA)
-  } else {
-    p.norm &lt;- p[p&gt;0]/sum(p)
-    -sum(log2(p.norm)*p.norm)
-    }
-}</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-58" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy calculation</h1>
-
-<p><space></p>
-
-<ul>
-<li>InfoGain = Entropy (pre split) - Entropy (post split)
-
-<ul>
-<li>Entropy is weighted by the Entropy of each feature split
-
-<ul>
-<li>avoid pre-pruning because its impossible to know if the tree will miss subtle but important patterns in the data (if you prune too early)</li>
-</ul></li>
-</ul></li>
-<li>hard to know optimal length of tree without growing it there first</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Entropy calculation</h1>
+    <h1>Structure</h1>
 
 <p><space></p>
 
 <ul>
-<li>Entropy = expected amount of information contained in a random variable -&gt; information is synonymous with &quot;bits&quot; which is why is log, base 2 
+<li>recursive partitioning -&gt; &quot;divide and conquer&quot;</li>
+<li>going down, choose feature that is most <em>predictive</em> of target class
 
 <ul>
-<li>the more a feature splits the data in obvious ways, the less informative it is for us, entropy is lower</li>
-<li>the more the feature splits the data, the higher the entropy and hence information gained by splitting at that feature</li>
-<li>Entropy is minimized when one of the events has a P(X)=1</li>
-<li>Entropy is maximized when each event has a P(X)=1/n of happening</li>
+<li>split the data according to feature</li>
+<li>continue...</li>
 </ul></li>
 </ul>
 
@@ -1530,9 +1498,17 @@ C5.0</li>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Entropy calculation</h1>
+    <h1>Structure</h1>
 
 <p><space></p>
+
+<p>until...</p>
+
+<ul>
+<li>all examples at a node are in same class</li>
+<li>no more features left to distinguish (prone to overfitting)</li>
+<li>tree has grown to some prespecified limit (prune)</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -1543,27 +1519,33 @@ C5.0</li>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Example</h1>
+    <h1>Algorithms</h1>
 
 <p><space></p>
 
-<pre><code class="r">voting_data &lt;- read.csv(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#39;)
-str(voting_data)
-names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;water-project-cost-sharing&#39;,
-                        &#39;adoption-of-the-budget-resolution&#39;,&#39;physician-fee-freeze&#39;,
-                        &#39;el-salvador-aid&#39;,&#39;religious-groups-in-schools&#39;,
-                        &#39;anti-satellite-test-ban&#39;,&#39;aid-to-nicaraguan-contras&#39;,
-                        &#39;mx-missile&#39;,&#39;immigration&#39;,&#39;synfuels-corporation-cutback&#39;,
-                        &#39;education-spending&#39;,&#39;superfund-right-to-sue&#39;,&#39;crime&#39;,
-                        &#39;duty-free-exports&#39;,&#39;export-administration-act-south-africa&#39;)
+<ul>
+<li>ID3
 
+<ul>
+<li>original, popular, DT implementation</li>
+</ul></li>
+<li>C4.5
 
-prop.table(table(voting_data[,1]))
-n &lt;- nrow(voting_data)
-train_ind &lt;- sample(n,2/3*n)
-voting_train &lt;- voting_data[train_ind,]
-voting_test &lt;- voting_data[-train_ind,]
-</code></pre>
+<ul>
+<li>like ID3 +</li>
+<li>handles continuous cases</li>
+<li>imputing missing values</li>
+<li>weighing costs</li>
+<li>pruning post creation</li>
+</ul></li>
+<li>C5.0
+
+<ul>
+<li>like C4.5 + </li>
+<li>faster, less memory usage</li>
+<li>boosting</li>
+</ul></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -1574,55 +1556,24 @@ voting_test &lt;- voting_data[-train_ind,]
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Example</h1>
+    <h1>Selecting features</h1>
 
 <p><space></p>
 
-<pre><code>     party handicapped-infants water-project-cost-sharing
-</code></pre>
+<ul>
+<li>How does tree decide how to select feature?
 
-<p>125 republican                   n                          ?
-420 republican                   y                          y
-305 republican                   n                          n
-104   democrat                   ?                          ?
-177   democrat                   n                          n
-246   democrat                   n                          n
-    adoption-of-the-budget-resolution physician-fee-freeze el-salvador-aid
-125                                 n                    y               y
-420                                 y                    y               y
-305                                 n                    y               y
-104                                 ?                    ?               n
-177                                 y                    n               n
-246                                 y                    n               y
-    religious-groups-in-schools anti-satellite-test-ban
-125                           y                       n
-420                           y                       y
-305                           y                       n
-104                           y                       y
-177                           n                       y
-246                           n                       y
-    aid-to-nicaraguan-contras mx-missile immigration
-125                         n          n           y
-420                         y          n           y
-305                         n          n           y
-104                         y          y           y
-177                         y          y           y
-246                         y          y           n
-    synfuels-corporation-cutback education-spending superfund-right-to-sue
-125                            n                  y                      y
-420                            n                  n                      y
-305                            n                  y                      y
-104                            ?                  n                      y
-177                            y                  ?                      n
-246                            n                  n                      n
-    crime duty-free-exports export-administration-act-south-africa
-125     y                 n                                      y
-420     y                 n                                      y
-305     y                 n                                      n
-104     y                 n                                      ?
-177     n                 y                                      y
-246     y                 ?                                      y
-<img src="figure/tree_plot.png" alt="plot of chunk tree_plot"> </p>
+<ul>
+<li>purity of resulting split</li>
+</ul></li>
+<li><strong>Entropy</strong>: amount of information contained in a random variable
+
+<ul>
+<li>For a feature with N classes:</li>
+<li>0 = purely homogenous</li>
+<li>\(\log_{2}(N)\) = completely mixed</li>
+</ul></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -1633,16 +1584,405 @@ voting_test &lt;- voting_data[-train_ind,]
     <h2>Trees</h2>
   </hgroup>
   <article>
+    <h1>Entropy</h1>
+
+<p><space></p>
+
+<p>\(Entropy(S) = \sum_{i=1}^{c} -p_{i}\log_{2}(p_{i})\)</p>
+
+<ul>
+<li>where \(S\) is a dataset</li>
+<li>\(c\) is the number of levels in that data</li>
+<li>\(p_{i}\) is the proportion of values in that level</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-64" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy - example</h1>
+
+<p><space></p>
+
+<p>What is the entropy of a fair, 6 sided die?</p>
+
+<pre><code class="r">entropy &lt;- function(probs){
+  ent &lt;- 0
+  for(i in probs){
+    ent_temp &lt;- -i*log2(i)
+    ent &lt;- ent + ent_temp
+  }
+  return(ent)
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-65" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy - example</h1>
+
+<p><space></p>
+
+<pre><code class="r">fair &lt;- rep(1/6,6)
+entropy(fair)
+</code></pre>
+
+<pre><code>## [1] 2.585
+</code></pre>
+
+<pre><code class="r">log2(6)
+</code></pre>
+
+<pre><code>## [1] 2.585
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-66" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy - example</h1>
+
+<p><space></p>
+
+<p>What is the entropy of a biased, 6 sided die?</p>
+
+<ul>
+<li>\(P(X=1) = P(X=2) = P(X=3) = 1/9\)</li>
+<li>\(P(X=4) = P(X=5) = P(X=6) = 2/9\)</li>
+</ul>
+
+<pre><code class="r">biased &lt;- c(rep(1/9,3),rep(2/9,3))
+entropy(biased)
+</code></pre>
+
+<pre><code>[1] 2.503
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-67" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy - example</h1>
+
+<p><space></p>
+
+<pre><code class="r">more_biased &lt;- c(rep(1/18,3),rep(5/18,3))
+entropy(more_biased)
+</code></pre>
+
+<pre><code>[1] 2.235
+</code></pre>
+
+<pre><code class="r">most_biased &lt;- c(rep(1/100,5),rep(95/100,1))
+entropy(most_biased)
+</code></pre>
+
+<pre><code>[1] 0.4025
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-68" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy - example</h1>
+
+<p><space></p>
+
+<pre><code class="r">curve(-x*log2(x)-(1 - x)*log2(1 - x), col =&quot; red&quot;, xlab = &quot;x&quot;, ylab = &quot;Entropy&quot;, 
+      lwd = 4, main=&#39;Entropy of a coin toss&#39;)
+</code></pre>
+
+<p><img src="figure/entropy_curve.png" alt="plot of chunk entropy_curve"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-69" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Entropy</h1>
+
+<p><space></p>
+
+<ul>
+<li>C5.0 uses the change in entropy to determine the change in purity</li>
+<li><p>InfoGain = Entropy (pre split) - Entropy (post split)</p>
+
+<ul>
+<li>Entropy (pre split) = current Entropy</li>
+<li>Entropy (post split) is trickier</li>
+<li>need to consider Entropy of each possible split</li>
+<li>\(E(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})\)</li>
+</ul></li>
+<li><p>Notes:</p>
+
+<ul>
+<li>The more a feature splits the data in obvious ways, the less informative it is, entropy is lower</li>
+<li>The more a feature splits the data - in general - the higher the entropy and hence information gained by splitting at that feature</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-70" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
     <h1>Example</h1>
 
 <p><space></p>
 
-<pre><code class="r"># make tree using C5.0
-tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=1)
-tree_predict &lt;- predict(tree_model, newdata=voting_test[,-1])
-conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
+<pre><code class="r">voting_data &lt;- read.csv(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#39;)
+names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;water-project-cost-sharing&#39;,
+                        &#39;adoption-of-the-budget-resolution&#39;,&#39;physician-fee-freeze&#39;,
+                        &#39;el-salvador-aid&#39;,&#39;religious-groups-in-schools&#39;,
+                        &#39;anti-satellite-test-ban&#39;,&#39;aid-to-nicaraguan-contras&#39;,
+                        &#39;mx-missile&#39;,&#39;immigration&#39;,&#39;synfuels-corporation-cutback&#39;,
+                        &#39;education-spending&#39;,&#39;superfund-right-to-sue&#39;,&#39;crime&#39;,
+                        &#39;duty-free-exports&#39;,&#39;export-administration-act-south-africa&#39;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-71" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">prop.table(table(voting_data[,1]))
+</code></pre>
+
+<pre><code>
+  democrat republican 
+    0.6152     0.3848 
+</code></pre>
+
+<pre><code class="r">n &lt;- nrow(voting_data)
+train_ind &lt;- sample(n,2/3*n)
+voting_train &lt;- voting_data[train_ind,]
+voting_test &lt;- voting_data[-train_ind,]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-72" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-73" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code>
+
+   Cell Contents
+|-------------------------|
+|                       N |
+|         N / Table Total |
+|-------------------------|
+
+
+Total Observations in Table:  145 
+
+
+             | predicted class 
+actual class |   democrat | republican |  Row Total | 
+-------------|------------|------------|------------|
+    democrat |         84 |          5 |         89 | 
+             |      0.579 |      0.034 |            | 
+-------------|------------|------------|------------|
+  republican |          5 |         51 |         56 | 
+             |      0.034 |      0.352 |            | 
+-------------|------------|------------|------------|
+Column Total |         89 |         56 |        145 | 
+-------------|------------|------------|------------|
+
+
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-74" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r"># most important variables
+head(C5imp(tree_model))
+</code></pre>
+
+<pre><code>##                                   Overall
+## physician-fee-freeze                97.58
+## education-spending                  39.45
+## immigration                         10.03
+## handicapped-infants                  0.00
+## water-project-cost-sharing           0.00
+## adoption-of-the-budget-resolution    0.00
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-75" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r"># in-sample error rate
+summary(tree_model)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
+## 
+## 
+## C5.0 [Release 2.07 GPL Edition]      Wed Aug 13 22:17:23 2014
+## -------------------------------
+## 
+## Class specified by attribute `outcome&#39;
+## 
+## Read 289 cases (17 attributes) from undefined.data
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
+## physician-fee-freeze = y:
+## :...education-spending in {?,y}: republican (97/3.2)
+##     education-spending = n:
+##     :...immigration = n: democrat (8/2.6)
+##         immigration in {?,y}: republican (12.8/1.4)
+## 
+## 
+## Evaluation on training data (289 cases):
+## 
+##      Decision Tree   
+##    ----------------  
+##    Size      Errors  
+## 
+##       4   10( 3.5%)   &lt;&lt;
+## 
+## 
+##     (a)   (b)    &lt;-classified as
+##    ----  ----
+##     174     4    (a): class democrat
+##       6   105    (b): class republican
+## 
+## 
+##  Attribute usage:
+## 
+##   97.58% physician-fee-freeze
+##   39.45% education-spending
+##   10.03% immigration
+## 
+## 
+## Time: 0.0 secs
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-76" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Boosting</h1>
+
+<p><space></p>
+
+<ul>
+<li>by combining a number of weak performing learners create a team that is much stronger than any one of the learners alone.</li>
+<li>this is where C5.0 improves on C4.5</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-77" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example - Boosting</h1>
+
+<p><space></p>
+
+<pre><code class="r">boosted_tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=25)
+boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])
+
+boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
+                           prop.c = FALSE, prop.r = FALSE, 
+                           dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
 </code></pre>
 
 <pre><code>## 
@@ -1660,13 +2000,13 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         87 |          4 |         91 | 
-##              |      0.600 |      0.028 |            | 
+##     democrat |         84 |          5 |         89 | 
+##              |      0.579 |      0.034 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          2 |         52 |         54 | 
-##              |      0.014 |      0.359 |            | 
+##   republican |          1 |         55 |         56 | 
+##              |      0.007 |      0.379 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         89 |         56 |        145 | 
+## Column Total |         85 |         60 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -1676,84 +2016,351 @@ conf &lt;- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-64" style="background:;">
+      <slide class="" id="slide-78" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Example</h1>
+    <h1>Example - Boosting</h1>
 
 <p><space></p>
 
-<pre><code class="r"># most important variables
-C5imp(tree_model)
-</code></pre>
-
-<pre><code>##                                        Overall
-## physician-fee-freeze                     96.89
-## synfuels-corporation-cutback             41.18
-## mx-missile                               10.73
-## handicapped-infants                       0.00
-## water-project-cost-sharing                0.00
-## adoption-of-the-budget-resolution         0.00
-## el-salvador-aid                           0.00
-## religious-groups-in-schools               0.00
-## anti-satellite-test-ban                   0.00
-## aid-to-nicaraguan-contras                 0.00
-## immigration                               0.00
-## education-spending                        0.00
-## superfund-right-to-sue                    0.00
-## crime                                     0.00
-## duty-free-exports                         0.00
-## export-administration-act-south-africa    0.00
-</code></pre>
-
 <pre><code class="r"># in-sample error rate
-summary(tree_model)
+summary(boosted_tree_model)
 </code></pre>
 
 <pre><code>## 
 ## Call:
-## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
+## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Mon Aug 11 20:43:25 2014
+## C5.0 [Release 2.07 GPL Edition]      Wed Aug 13 22:17:23 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
 ## 
 ## Read 289 cases (17 attributes) from undefined.data
 ## 
+## -----  Trial 0:  -----
+## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (168.2/2.7)
+## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (95.7/3)
+## :...education-spending in {?,y}: republican (97/3.2)
+##     education-spending = n:
+##     :...immigration = n: democrat (8/2.6)
+##         immigration in {?,y}: republican (12.8/1.4)
+## 
+## -----  Trial 1:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (125/25.7)
+## adoption-of-the-budget-resolution in {?,y}: democrat (164/26.8)
+## 
+## -----  Trial 2:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (145.1/21.5)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (86.7/2.8)
+##     synfuels-corporation-cutback = y: democrat (57.2/24.1)
+## 
+## -----  Trial 3:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (122.8/24.6)
+## physician-fee-freeze in {?,y}: republican (166.2/33.6)
+## 
+## -----  Trial 4:  -----
+## 
+## Decision tree:
+## 
+## crime in {?,n}: democrat (69.4/9.6)
+## crime = y:
+## :...adoption-of-the-budget-resolution in {?,n}: republican (139.3/44)
+##     adoption-of-the-budget-resolution = y: democrat (80.3/30.9)
+## 
+## -----  Trial 5:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (112.1/25.2)
+## physician-fee-freeze = y:
+## :...immigration = n: democrat (103.7/46.4)
+##     immigration in {?,y}: republican (73.2/8.7)
+## 
+## -----  Trial 6:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (100/26.2)
+## physician-fee-freeze in {?,y}: republican (189/59.1)
+## 
+## -----  Trial 7:  -----
+## 
+## Decision tree:
+## 
+## synfuels-corporation-cutback = ?: democrat (0)
+## synfuels-corporation-cutback = n: republican (139.2/45.1)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (38/0.9)
+##     physician-fee-freeze = y:
+##     :...water-project-cost-sharing = n: republican (14.1)
+##         water-project-cost-sharing in {?,y}: democrat (97.7/31.2)
+## 
+## -----  Trial 8:  -----
+## 
+## Decision tree:
+## 
+## crime in {?,n}: democrat (71.7/9.7)
+## crime = y:
+## :...education-spending = ?: republican (0)
+##     education-spending = n:
+##     :...anti-satellite-test-ban in {?,n}: democrat (53.6/12.2)
+##     :   anti-satellite-test-ban = y: republican (50.2/19.5)
+##     education-spending = y:
+##     :...physician-fee-freeze = n: democrat (22.4/6.2)
+##         physician-fee-freeze in {?,y}: republican (91.1/20.6)
+## 
+## -----  Trial 9:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (125/25.5)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (49.9/9)
+##     immigration = n:
+##     :...mx-missile = n: republican (81.8/31.5)
+##         mx-missile in {?,y}: democrat (32.3/5.4)
+## 
+## -----  Trial 10:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution in {?,y}: democrat (135.9/32.1)
+## adoption-of-the-budget-resolution = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (84.9/19.4)
+##     synfuels-corporation-cutback = y: democrat (68.2/29.7)
+## 
+## -----  Trial 11:  -----
+## 
+## Decision tree:
+## 
+## education-spending = ?: democrat (0)
+## education-spending = y:
+## :...physician-fee-freeze = n: democrat (22.8/7.8)
+## :   physician-fee-freeze in {?,y}: republican (104.8/24.7)
+## education-spending = n:
+## :...crime in {?,n}: democrat (36.6/1.5)
+##     crime = y:
+##     :...religious-groups-in-schools = n: republican (30.8/9.1)
+##         religious-groups-in-schools in {?,y}: democrat (94/31.5)
+## 
+## -----  Trial 12:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (104.8/28.7)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (45.5/3.2)
+##     water-project-cost-sharing = y:
+##     :...synfuels-corporation-cutback in {?,n}: republican (42.7/11)
+##         synfuels-corporation-cutback = y: democrat (96/38.7)
+## 
+## -----  Trial 13:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = ?: republican (0)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (51.5/2.9)
+## :   physician-fee-freeze = y: republican (67.3/29.3)
+## adoption-of-the-budget-resolution = n:
+## :...superfund-right-to-sue in {?,n}: republican (64.3/30.3)
+##     superfund-right-to-sue = y:
+##     :...duty-free-exports in {?,n}: republican (92/9.9)
+##         duty-free-exports = y: democrat (13.9/1.9)
+## 
+## -----  Trial 14:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (107.5/27.4)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (58.2/10)
+##     immigration = n:
+##     :...superfund-right-to-sue in {?,n}: democrat (26.9/2.5)
+##         superfund-right-to-sue = y: republican (96.4/41)
+## 
+## -----  Trial 15:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (176.8/73)
+## adoption-of-the-budget-resolution in {?,y}: democrat (112.2/33.6)
+## 
+## -----  Trial 16:  -----
+## 
+## Decision tree:
+## 
+## synfuels-corporation-cutback = ?: democrat (0)
+## synfuels-corporation-cutback = n: republican (140.2/53.9)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (38.8/1.5)
+##     physician-fee-freeze = y:
+##     :...water-project-cost-sharing = n: republican (7.3)
+##         water-project-cost-sharing in {?,y}: democrat (102.7/41.6)
+## 
+## -----  Trial 17:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (116.6/28.5)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (54.9/10.6)
+##     immigration = n:
+##     :...mx-missile = n: republican (81.6/33.1)
+##         mx-missile in {?,y}: democrat (36/7.8)
+## 
+## -----  Trial 18:  -----
+## 
+## Decision tree:
+## 
+## adoption-of-the-budget-resolution = n: republican (170.2/73.5)
+## adoption-of-the-budget-resolution in {?,y}: democrat (118.8/35.8)
+## 
+## -----  Trial 19:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (112.7/34)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (42.9/6.9)
+##     water-project-cost-sharing = y:
+##     :...synfuels-corporation-cutback = n: republican (38.1/13.4)
+##         synfuels-corporation-cutback in {?,y}: democrat (95.3/37.7)
+## 
+## -----  Trial 20:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze = n: democrat (108.2/38.7)
+## physician-fee-freeze in {?,y}: republican (179.8/61.1)
+## 
+## -----  Trial 21:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (88.8/22.8)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (58.6/13.6)
 ##     synfuels-corporation-cutback = y:
-##     :...mx-missile in {?,n}: republican (22.1/4.5)
-##         mx-missile = y: democrat (3)
+##     :...water-project-cost-sharing = ?: democrat (0)
+##         water-project-cost-sharing = n: republican (4.9)
+##         water-project-cost-sharing = y:
+##         :...adoption-of-the-budget-resolution = n: republican (84.1/36)
+##             adoption-of-the-budget-resolution in {?,y}: democrat (50.6/10.2)
+## 
+## -----  Trial 22:  -----
+## 
+## Decision tree:
+## 
+## duty-free-exports in {?,y}: democrat (80.7/13.7)
+## duty-free-exports = n:
+## :...immigration = ?: republican (0)
+##     immigration = n: democrat (103.2/43)
+##     immigration = y:
+##     :...export-administration-act-south-africa = n: democrat (14.4/3.6)
+##         export-administration-act-south-africa in {?,y}: republican (86.7/16.1)
+## 
+## -----  Trial 23:  -----
+## 
+## Decision tree:
+## 
+## education-spending = ?: democrat (0)
+## education-spending = y:
+## :...physician-fee-freeze = n: democrat (18.5/1.2)
+## :   physician-fee-freeze in {?,y}: republican (90.8/14)
+## education-spending = n:
+## :...crime in {?,n}: democrat (38.1/1.5)
+##     crime = y:
+##     :...export-administration-act-south-africa in {?,n}: democrat (22.4/1.7)
+##         export-administration-act-south-africa = y:
+##         :...immigration = n: democrat (46.2/12.8)
+##             immigration in {?,y}: republican (69/22.3)
+## 
+## -----  Trial 24:  -----
+## 
+## Decision tree:
+## 
+## physician-fee-freeze in {?,n}: democrat (93.6/2)
+## physician-fee-freeze = y:
+## :...mx-missile = ?: republican (0)
+##     mx-missile = y: democrat (67.9/23.7)
+##     mx-missile = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (69.8/1)
+##         adoption-of-the-budget-resolution = y: democrat (52.7/22)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
 ## 
-##      Decision Tree   
-##    ----------------  
+## Trial        Decision Tree   
+## -----      ----------------  
 ##    Size      Errors  
 ## 
-##       4   10( 3.5%)   &lt;&lt;
+##    0      4   10( 3.5%)
+##    1      2   36(12.5%)
+##    2      3   23( 8.0%)
+##    3      2   15( 5.2%)
+##    4      3   33(11.4%)
+##    5      3   51(17.6%)
+##    6      2   15( 5.2%)
+##    7      4   97(33.6%)
+##    8      5   37(12.8%)
+##    9      4   11( 3.8%)
+##   10      3   38(13.1%)
+##   11      5   17( 5.9%)
+##   12      4   16( 5.5%)
+##   13      5   22( 7.6%)
+##   14      4   14( 4.8%)
+##   15      2   36(12.5%)
+##   16      4   95(32.9%)
+##   17      4   11( 3.8%)
+##   18      2   36(12.5%)
+##   19      4   18( 6.2%)
+##   20      2   15( 5.2%)
+##   21      5   10( 3.5%)
+##   22      4  109(37.7%)
+##   23      6   33(11.4%)
+##   24      4   28( 9.7%)
+## boost              7( 2.4%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     170     6    (a): class democrat
-##       4   109    (b): class republican
+##     176     2    (a): class democrat
+##       5   106    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
-##   96.89% physician-fee-freeze
-##   41.18% synfuels-corporation-cutback
-##   10.73% mx-missile
+##   97.58% adoption-of-the-budget-resolution
+##   97.58% physician-fee-freeze
+##   96.89% crime
+##   95.16% synfuels-corporation-cutback
+##   94.12% duty-free-exports
+##   92.04% education-spending
+##   70.59% immigration
+##   41.52% mx-missile
+##   41.52% superfund-right-to-sue
+##   39.10% export-administration-act-south-africa
+##   38.06% water-project-cost-sharing
+##   22.49% religious-groups-in-schools
+##   22.15% anti-satellite-test-ban
 ## 
 ## 
 ## Time: 0.0 secs
@@ -1763,651 +2370,12 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-65" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example - Boosting</h1>
-
-<p><space></p>
-
-<ul>
-<li>rooted in the notion that by combining a number of weak performing learners, </li>
-<li>you can create a team that is much stronger than any one of the learners alone.</li>
-<li>this is where C5.0 improves on C4.5</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-66" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example - Boosting</h1>
-
-<p><space></p>
-
-<pre><code class="r">boosted_tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=25)
-boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])
-
-boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
-                           prop.c = FALSE, prop.r = FALSE, 
-                           dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
-</code></pre>
-
-<p>Cell Contents
-|-------------------------|
-|                       N |
-|         N / Table Total |
-|-------------------------|</p>
-
-<p>Total Observations in Table:  145 </p>
-
-<pre><code>         | predicted class 
-</code></pre>
-
-<table><thead>
-<tr>
-<th>actual class</th>
-<th>democrat</th>
-<th>republican</th>
-<th>Row Total</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>democrat</td>
-<td>89</td>
-<td>2</td>
-<td>91</td>
-</tr>
-<tr>
-<td></td>
-<td>0.614</td>
-<td>0.014</td>
-<td></td>
-</tr>
-<tr>
-<td>-------------</td>
-<td>------------</td>
-<td>------------</td>
-<td>------------</td>
-</tr>
-<tr>
-<td>republican</td>
-<td>2</td>
-<td>52</td>
-<td>54</td>
-</tr>
-<tr>
-<td></td>
-<td>0.014</td>
-<td>0.359</td>
-<td></td>
-</tr>
-<tr>
-<td>-------------</td>
-<td>------------</td>
-<td>------------</td>
-<td>------------</td>
-</tr>
-<tr>
-<td>Column Total</td>
-<td>91</td>
-<td>54</td>
-<td>145</td>
-</tr>
-<tr>
-<td>-------------</td>
-<td>------------</td>
-<td>------------</td>
-<td>------------</td>
-</tr>
-</tbody></table>
-
-<pre><code class="r"># in-sample error rate
-summary(boosted_tree_model)
-</code></pre>
-
-<p>Call:
-C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)</p>
-
-<h2>C5.0 [Release 2.07 GPL Edition]     Mon Aug 11 20:43:25 2014</h2>
-
-<p>Class specified by attribute `outcome&#39;</p>
-
-<p>Read 289 cases (17 attributes) from undefined.data</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-67" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (168.2/2.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (95.7/3)
-    synfuels-corporation-cutback = y:
-    :...mx-missile in {?,n}: republican (22.1/4.5)
-        mx-missile = y: democrat (3)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-68" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>adoption-of-the-budget-resolution in {?,y}: democrat (162.4/23.6)
-adoption-of-the-budget-resolution = n:
-:...synfuels-corporation-cutback in {?,n}: republican (88.3/12.7)
-    synfuels-corporation-cutback = y: democrat (38.3/14.4)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-69" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (126.8/17.9)
-physician-fee-freeze = y: republican (162.2/43.5)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-70" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (114.1/23.1)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (55.6/1)
-    immigration = n:
-    :...crime = ?: democrat (0)
-        crime = n: republican (8.2/0.6)
-        crime = y:
-        :...anti-satellite-test-ban in {?,n}: democrat (95/33.5)
-            anti-satellite-test-ban = y: republican (16.2/3.6)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-71" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>adoption-of-the-budget-resolution in {?,n}: republican (163.9/43.5)
-adoption-of-the-budget-resolution = y: democrat (125.1/32.8)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-72" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (101.4/18.3)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (113.9/19)
-    synfuels-corporation-cutback = y: democrat (73.7/30.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-73" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (88/19.3)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (64.3/3)
-    immigration = n:
-    :...superfund-right-to-sue = ?: republican (0)
-        superfund-right-to-sue = n: democrat (20.2/5.1)
-        superfund-right-to-sue = y:
-        :...adoption-of-the-budget-resolution in {?,n}: republican (88.5/20.7)
-            adoption-of-the-budget-resolution = y: democrat (28/9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-74" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>el-salvador-aid = ?: republican (0)
-el-salvador-aid = n: democrat (66.4/13.1)
-el-salvador-aid = y:
-:...anti-satellite-test-ban in {?,y}: republican (63.7/6.6)
-    anti-satellite-test-ban = n:
-    :...physician-fee-freeze = ?: republican (0)
-        physician-fee-freeze = n: democrat (12.5/0.8)
-        physician-fee-freeze = y:
-        :...mx-missile = ?: republican (0)
-            mx-missile = y: democrat (10.6/0.9)
-            mx-missile = n:
-            :...adoption-of-the-budget-resolution = ?: republican (0)
-                adoption-of-the-budget-resolution = y: democrat (25.2/6.4)
-                adoption-of-the-budget-resolution = n:
-                :...duty-free-exports in {?,n}: republican (90.8/16.7)
-                    duty-free-exports = y: democrat (19.8/3.6)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-75" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = n: democrat (97.3/18.3)
-physician-fee-freeze in {?,y}: republican (191.7/64.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-76" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>synfuels-corporation-cutback in {?,y}: democrat (136.2/34.9)
-synfuels-corporation-cutback = n:
-:...physician-fee-freeze = n: democrat (49.5/17.1)
-    physician-fee-freeze in {?,y}: republican (103.3/28.5)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-77" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>education-spending = n: democrat (120.4/38.1)
-education-spending in {?,y}: republican (168.6/60.4)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-78" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (88.1/18.1)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (65.6/10.5)
-    immigration = n:
-    :...anti-satellite-test-ban in {?,n}: democrat (110.1/43.9)
-        anti-satellite-test-ban = y: republican (25.2/5.5)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-79" style="background:;">
   <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (79.2/18.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (105.1/25.4)
-    synfuels-corporation-cutback = y:
-    :...mx-missile in {?,n}: republican (84.3/30.8)
-        mx-missile = y: democrat (20.3/1.1)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-80" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>adoption-of-the-budget-resolution in {?,y}: democrat (119.1/30.5)
-adoption-of-the-budget-resolution = n:
-:...mx-missile = ?: republican (0)
-    mx-missile = y: democrat (22/6.8)
-    mx-missile = n:
-    :...anti-satellite-test-ban in {?,y}: republican (26.7/3.7)
-        anti-satellite-test-ban = n:
-        :...duty-free-exports in {?,n}: republican (98.9/30.4)
-            duty-free-exports = y: democrat (22.4/4.2)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-81" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>synfuels-corporation-cutback = n: republican (151.5/51.2)
-synfuels-corporation-cutback in {?,y}: democrat (137.5/42.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-82" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (86.7/18.6)
-physician-fee-freeze = y:
-:...immigration in {?,y}: republican (60.5/9.7)
-    immigration = n:
-    :...anti-satellite-test-ban in {?,n}: democrat (121/50.2)
-        anti-satellite-test-ban = y: republican (20.8/3.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-83" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = n: democrat (78.6/19.1)
-physician-fee-freeze in {?,y}: republican (210.4/77.4)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-84" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>adoption-of-the-budget-resolution = n: republican (169.3/65.5)
-adoption-of-the-budget-resolution in {?,y}: democrat (119.7/32.8)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-85" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (78.4/18.7)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (108.7/29.8)
-    synfuels-corporation-cutback = y: democrat (101.9/38.6)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-86" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>el-salvador-aid = ?: republican (0)
-el-salvador-aid = n: democrat (56.7/13.4)
-el-salvador-aid = y:
-:...anti-satellite-test-ban in {?,y}: republican (58.1/11.6)
-    anti-satellite-test-ban = n:
-    :...adoption-of-the-budget-resolution = ?: republican (0)
-        adoption-of-the-budget-resolution = y: democrat (39.6/8.7)
-        adoption-of-the-budget-resolution = n:
-        :...physician-fee-freeze = ?: republican (0)
-            physician-fee-freeze = n: democrat (9/0.6)
-            physician-fee-freeze = y:
-            :...immigration in {?,y}: republican (25.3/0.3)
-                immigration = n:
-                :...superfund-right-to-sue = n: democrat (15.2/2.6)
-                    superfund-right-to-sue in {?,y}: republican (85/29.4)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-87" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (92.8/19.3)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback in {?,n}: republican (88.3/13.4)
-    synfuels-corporation-cutback = y:
-    :...mx-missile = n: republican (89.4/37)
-        mx-missile in {?,y}: democrat (17.4/0.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-88" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (65.7/4.2)
-physician-fee-freeze = y:
-:...synfuels-corporation-cutback = ?: democrat (0)
-    synfuels-corporation-cutback = n: republican (86.5/23.6)
-    synfuels-corporation-cutback = y:
-    :...immigration in {?,n}: democrat (104.2/25.7)
-        immigration = y: republican (30.6/10.4)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-89" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze in {?,n}: democrat (63.6/5.2)
-physician-fee-freeze = y:
-:...adoption-of-the-budget-resolution = ?: republican (0)
-    adoption-of-the-budget-resolution = n:
-    :...superfund-right-to-sue = n: democrat (25.3/6.7)
-    :   superfund-right-to-sue in {?,y}: republican (88.9/5.6)
-    adoption-of-the-budget-resolution = y:
-    :...water-project-cost-sharing = n: republican (21/1.5)
-        water-project-cost-sharing in {?,y}: democrat (87.2/17.9)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-90" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (48.1/0.7)
-physician-fee-freeze = y:
-:...water-project-cost-sharing in {?,n}: republican (63.5/3.9)
-    water-project-cost-sharing = y:
-    :...el-salvador-aid = ?: republican (0)
-        el-salvador-aid = n: democrat (16.8/2.5)
-        el-salvador-aid = y:
-        :...anti-satellite-test-ban in {?,y}: republican (28.2/0.3)
-            anti-satellite-test-ban = n:
-            :...adoption-of-the-budget-resolution = n: republican (61.9/17.3)
-                adoption-of-the-budget-resolution in {?,
-                                                      y}: democrat (65.5/12.3)</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-91" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    <p>Decision tree:</p>
-
-<p>physician-fee-freeze = ?: republican (0)
-physician-fee-freeze = n: democrat (40.1/2.1)
-physician-fee-freeze = y:
-:...water-project-cost-sharing in {?,n}: republican (56.4/5)
-    water-project-cost-sharing = y:
-    :...synfuels-corporation-cutback in {?,n}: republican (88.5/25)
-        synfuels-corporation-cutback = y: democrat (98.9/34.9)</p>
-
-<p>Evaluation on training data (289 cases):</p>
-
-<p>Trial       Decision Tree   </p>
-
-<hr>
-
-<pre><code>  Size      Errors  
-</code></pre>
-
-<p>0         4   10( 3.5%)
-   1         3   40(13.8%)
-   2         2   12( 4.2%)
-   3         5   46(15.9%)
-   4         2   37(12.8%)
-   5         3   22( 7.6%)
-   6         5   13( 4.5%)
-   7         7   25( 8.7%)
-   8         2   15( 5.2%)
-   9         3   22( 7.6%)
-  10         2   56(19.4%)
-  11         4   46(15.9%)
-  12         4    9( 3.1%)
-  13         5   34(11.8%)
-  14         2   99(34.3%)
-  15         4   46(15.9%)
-  16         2   15( 5.2%)
-  17         2   36(12.5%)
-  18         3   22( 7.6%)
-  19         7   26( 9.0%)
-  20         4    8( 2.8%)
-  21         4   16( 5.5%)
-  22         5   20( 6.9%)
-  23         6    8( 2.8%)
-  24         4   20( 6.9%)
-boost             6( 2.1%)   &lt;&lt;</p>
-
-<pre><code>   (a)   (b)    &lt;-classified as
-  ----  ----
-   173     3    (a): class democrat
-     3   110    (b): class republican
-
-
-Attribute usage:
-
- 97.58% adoption-of-the-budget-resolution
- 96.89% physician-fee-freeze
- 96.19% el-salvador-aid
- 95.16% synfuels-corporation-cutback
- 92.04% education-spending
- 52.25% anti-satellite-test-ban
- 44.98% mx-missile
- 42.21% immigration
- 37.02% water-project-cost-sharing
- 35.99% superfund-right-to-sue
- 29.76% duty-free-exports
- 20.07% crime
-</code></pre>
-
-<p>Time: 0.0 secs</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-92" style="background:;">
-  <hgroup>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Example - Error Cost</h1>
+    <h1>Error Cost</h1>
 
 <p><space></p>
 
@@ -2445,13 +2413,13 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         83 |          8 |         91 | 
-##              |      0.572 |      0.055 |            | 
+##     democrat |         80 |          9 |         89 | 
+##              |      0.552 |      0.062 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         53 |         54 | 
-##              |      0.007 |      0.366 |            | 
+##   republican |          0 |         56 |         56 | 
+##              |      0.000 |      0.386 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         84 |         61 |        145 | 
+## Column Total |         80 |         65 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2461,23 +2429,14 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-93" style="background:;">
+      <slide class="" id="slide-80" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
   <article>
-    <h1>Example - Error Cost</h1>
+    <h1>Error Cost</h1>
 
 <p><space></p>
-
-<pre><code class="r">tris &lt;- seq(1,50,by=2)
-boost_acc &lt;- NULL
-for (i in tris){  
-  temp &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=i, costs = error_cost)
-  temp_pred &lt;- predict(temp,voting_test[,-1])
-  boost_acc &lt;- append(boost_acc,sum(diag(table(temp_pred,voting_test[,1]))))
-}
-</code></pre>
 
 <pre><code>## Warning: 
 ## no dimnames were given for the cost matrix; the factor levels will be used
@@ -2555,16 +2514,13 @@ for (i in tris){
 ## no dimnames were given for the cost matrix; the factor levels will be used
 </code></pre>
 
-<pre><code class="r">plot(boost_acc,type=&#39;l&#39;)
-</code></pre>
-
-<p><img src="figure/unnamed-chunk-11.png" alt="plot of chunk unnamed-chunk-11"> </p>
+<p><img src="figure/plot_boost_acc.png" alt="plot of chunk plot_boost_acc"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-94" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2577,49 +2533,38 @@ for (i in tris){
 <li>trees are non-parametric, rule based classification or regression method</li>
 <li>simple to understand and interpret</li>
 <li>little data preparation</li>
-<li>easy to overfit (need to prune to avoid that, or have max tree depth)</li>
-<li>usually finds local optimum. Can mitigate this with an ensemble of trees</li>
-<li>difficult concepts that are not easily expressed by trees (XOR) are hard to learn</li>
-<li>for class imbalance, trees can be biased - should balance dataset before fitting</li>
-<li>trees tend to overfit, so use PCA beforehand</li>
+<li>works well with small or large number of features
+<br></li>
+<li>easy to overfit</li>
+<li>biased towards splits on features with large number of levels</li>
+<li>usually finds local optimum</li>
+<li>difficult concepts are hard to learn</li>
+<li>avoid pre-pruning</li>
+<li>hard to know optimal length of tree without growing it there first</li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-95" style="background:;">
+      <slide class="" id="slide-82" style="background:;">
   <hgroup>
-    <h2>Missing Data</h2>
+    <h2>Resources</h2>
   </hgroup>
   <article>
-    <h1>Types</h1>
-
-<p><space></p>
-
-<p>Missingness that...</p>
+    <p><space></p>
 
 <ul>
-<li>is completely at random; no bias in missing data</li>
-<li>is random</li>
-<li>depends on unobserved features</li>
-<li><p>depends on the missing value itself</p>
-
-<h2><a href="http://www.stat.columbia.edu/%7Egelman/arm/missing.pdf">http://www.stat.columbia.edu/~gelman/arm/missing.pdf</a></h2>
-
-<h2>Resources</h2>
-
-<p><space></p></li>
-<li><p><a href="http://www.packtpub.com/machine-learning-with-r/book">Machine Learning with R</a></p></li>
-<li><p><a href="http://shop.oreilly.com/product/0636920018483.do">Machine Learning for Hackers</a></p></li>
-<li><p><a href="http://web.stanford.edu/%7Ehastie/local.ftp/Springer/OLD/ESLII_print4.pdf">Elements of Statistical Learning</a></p></li>
+<li><a href="http://www.packtpub.com/machine-learning-with-r/book">Machine Learning with R</a></li>
+<li><a href="http://shop.oreilly.com/product/0636920018483.do">Machine Learning for Hackers</a></li>
+<li><a href="http://web.stanford.edu/%7Ehastie/local.ftp/Springer/OLD/ESLII_print4.pdf">Elements of Statistical Learning</a></li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-96" style="background:;">
+      <slide class="" id="slide-83" style="background:;">
   <hgroup>
     
   </hgroup>
