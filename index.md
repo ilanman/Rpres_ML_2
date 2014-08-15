@@ -37,11 +37,13 @@ mode        : selfcontained # {standalone, draft}
 
 ```r
 x <- 1:10
-log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
+log_ex <- data.frame(Y = c(rnorm(5, 0, 0.01), rnorm(5, 5, 0.01)), X = x)
+ggplot(log_ex, aes(X, Y)) + geom_point(color = "blue", size = 3) + stat_smooth(method = "lm", 
+    se = F, color = "green", size = 1)
 ```
 
 ![plot of chunk log_bad_fit](figure/log_bad_fit.png) 
+
 
 ----
 
@@ -54,18 +56,23 @@ ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='
 library("MASS")
 library(ggplot2)
 data(menarche)
-log_data <- data.frame(Y=menarche$Menarche/menarche$Total)
+log_data <- data.frame(Y = menarche$Menarche/menarche$Total)
 log_data$X <- menarche$Age
 
-glm.out <- glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-lm.out <- lm(Y~X, data=log_data)
+glm.out <- glm(cbind(Menarche, Total - Menarche) ~ Age, family = binomial(logit), 
+    data = menarche)
+lm.out <- lm(Y ~ X, data = log_data)
 
 log_data$fitted <- glm.out$fitted
 
-data_points <- ggplot(log_data) + geom_point(aes(x=X,y=Y),color='blue',size=3)
-line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color='green',size=1)
-curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1) 
+data_points <- ggplot(log_data) + geom_point(aes(x = X, y = Y), color = "blue", 
+    size = 3)
+line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2], 
+    color = "green", size = 1)
+curve_points <- line_points + geom_line(aes(x = X, y = fitted), color = "red", 
+    size = 1)
 ```
+
 
 ----
 
@@ -89,11 +96,13 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 
 
 ```r
-curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
-abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
+curve(1/(1 + exp(-x)), from = -10, to = 10, ylab = "P(Y=1|X)", col = "red", 
+    lwd = 3)
+abline(a = 0.5, b = 0, lty = 2, col = "blue", lwd = 3)
 ```
 
 ![plot of chunk log_curve](figure/log_curve.png) 
+
 
 ----
 
@@ -144,6 +153,7 @@ $cost(h_{\theta}(x)):$<br>
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
 
+
 ----
 
 ## Logistic Regression
@@ -184,6 +194,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 
 ![plot of chunk grad_ex_plot](figure/grad_ex_plot.png) 
 
+
 ----
 
 ## Logistic Regression
@@ -192,12 +203,13 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 
 
 ```r
-x <- cbind(1,x)  #Add ones to x  
-theta<- c(0,0)  # initalize theta vector 
+x <- cbind(1, x)  #Add ones to x  
+theta <- c(0, 0)  # initalize theta vector 
 m <- nrow(x)  # Number of the observations 
-grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
+grad_cost <- function(X, y, theta) return(sum(((X %*% theta) - y)^2))
 ```
 
+
 ----
 
 ## Logistic Regression
@@ -206,21 +218,22 @@ grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
 
 
 ```r
-gradDescent<-function(X,y,theta,iterations,alpha){
-  m <- length(y)
-  grad <- rep(0,length(theta))
-  cost.df <- data.frame(cost=0,theta=0)
-  
-  for (i in 1:iterations){
-    h <- X%*%theta
-    grad <-  (t(X)%*%(h - y))/m
-    theta <- theta - alpha * grad
-    cost.df <- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
-  }  
-  
-  return(list(theta,cost.df))
+gradDescent <- function(X, y, theta, iterations, alpha) {
+    m <- length(y)
+    grad <- rep(0, length(theta))
+    cost.df <- data.frame(cost = 0, theta = 0)
+    
+    for (i in 1:iterations) {
+        h <- X %*% theta
+        grad <- (t(X) %*% (h - y))/m
+        theta <- theta - alpha * grad
+        cost.df <- rbind(cost.df, c(grad_cost(X, y, theta), theta))
+    }
+    
+    return(list(theta, cost.df))
 }
 ```
+
 
 ----
 
@@ -231,22 +244,24 @@ gradDescent<-function(X,y,theta,iterations,alpha){
 
 ```r
 ## initialize X, y and theta
-X1<-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
-Y1<-matrix(ncol=1,nrow=nrow(df),df$Y)
+X1 <- matrix(ncol = 1, nrow = nrow(df), cbind(1, df$X))
+Y1 <- matrix(ncol = 1, nrow = nrow(df), df$Y)
 
-init_theta<-as.matrix(c(0))
-grad_cost(X1,Y1,init_theta)
+init_theta <- as.matrix(c(0))
+grad_cost(X1, Y1, init_theta)
 ```
 
 ```
-[1] 5243
+[1] 5321
 ```
 
 ```r
+
 iterations = 100
 alpha = 0.1
-results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
+results <- gradDescent(X1, Y1, init_theta, iterations, alpha)
 ```
+
 
 ----
 
@@ -259,6 +274,7 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 ## Error: object 'cost.df' not found
 ```
 
+
 ----
 
 ## Logistic Regression
@@ -267,20 +283,21 @@ results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
 
 
 ```r
-grad_cost(X1,Y1,theta[[1]])
+grad_cost(X1, Y1, theta[[1]])
 ```
 
 ```
-[1] 335.3
+[1] 351.4
 ```
 
 ```r
 ## Make some predictions
-intercept <- df[df$X==0,]$Y
-pred <- function (x) return(intercept+c(x)%*%theta)
-new_points <- c(0.1,0.5,0.8,1.1)
-new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
+intercept <- df[df$X == 0, ]$Y
+pred <- function(x) return(intercept + c(x) %*% theta)
+new_points <- c(0.1, 0.5, 0.8, 1.1)
+new_preds <- data.frame(X = new_points, Y = sapply(new_points, pred))
 ```
+
 
 ----
 
@@ -290,16 +307,18 @@ new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 
 ```r
-ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
+ggplot(data = df, aes(x = X, y = Y)) + geom_point(size = 2)
 ```
 
 ![plot of chunk new_point](figure/new_point1.png) 
 
 ```r
-ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color='red'),size=3)+scale_colour_discrete(guide = FALSE)
+ggplot(data = df, aes(x = X, y = Y)) + geom_point() + geom_point(data = new_preds, 
+    aes(x = X, y = Y, color = "red"), size = 3) + scale_colour_discrete(guide = FALSE)
 ```
 
 ![plot of chunk new_point](figure/new_point2.png) 
+
 
 ----
 
@@ -490,7 +509,7 @@ CY = PPtDPPt
 
 
 ```r
-data <- read.csv('tennis_data_2013.csv')
+data <- read.csv("tennis_data_2013.csv")
 ```
 
 ```
@@ -507,7 +526,7 @@ data$Player1 <- as.character(data$Player1)
 ```
 
 ```
-## Error: replacement has 0 rows, data has 6497
+## Error: object of type 'closure' is not subsettable
 ```
 
 ```r
@@ -515,51 +534,90 @@ data$Player2 <- as.character(data$Player2)
 ```
 
 ```
-## Error: replacement has 0 rows, data has 6497
+## Error: object of type 'closure' is not subsettable
 ```
 
 ```r
+
 tennis <- data
 m <- length(data)
 
-for (i in 10:m){
-  tennis[,i] <- ifelse(is.na(data[,i]),0,data[,i])
+for (i in 10:m) {
+    tennis[, i] <- ifelse(is.na(data[, i]), 0, data[, i])
 }
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
 
 str(tennis)
 ```
 
 ```
-## 'data.frame':	6497 obs. of  13 variables:
-##  $ type                : Factor w/ 2 levels "red","white": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ fixed.acidity       : num  7.4 7.8 7.8 11.2 7.4 7.4 7.9 7.3 7.8 7.5 ...
-##  $ volatile.acidity    : num  0.7 0.88 0.76 0.28 0.7 0.66 0.6 0.65 0.58 0.5 ...
-##  $ citric.acid         : num  0 0 0.04 0.56 0 0 0.06 0 0.02 0.36 ...
-##  $ residual.sugar      : num  1.9 2.6 2.3 1.9 1.9 1.8 1.6 1.2 2 6.1 ...
-##  $ chlorides           : num  0.076 0.098 0.092 0.075 0.076 0.075 0.069 0.065 0.073 0.071 ...
-##  $ free.sulfur.dioxide : num  11 25 15 17 11 13 15 15 9 17 ...
-##  $ total.sulfur.dioxide: num  34 67 54 60 34 40 59 21 18 102 ...
-##  $ density             : num  0.998 0.997 0.997 0.998 0.998 ...
-##  $ pH                  : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates           : num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol             : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality             : int  5 5 5 6 5 5 5 7 7 5 ...
+## function (..., list = character(), package = NULL, lib.loc = NULL, 
+##     verbose = getOption("verbose"), envir = .GlobalEnv)
 ```
 
 ```r
-features <- tennis[,10:m]
+
+features <- tennis[, 10:m]
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
 
 head(features)
 ```
 
 ```
-##     pH sulphates alcohol quality
-## 1 3.51      0.56     9.4       5
-## 2 3.20      0.68     9.8       5
-## 3 3.26      0.65     9.8       5
-## 4 3.16      0.58     9.8       6
-## 5 3.51      0.56     9.4       5
-## 6 3.51      0.56     9.4       5
+##   classification developer domain coupon plan_period plan_type
+## 1              0         0      1      1      Annual  Standard
+## 2              1         0      1      0      Annual  Business
+## 3              0         0      1      0       Month Unlimited
+## 4              1         0      1      1      Annual  Business
+## 5              1         0      1      0      Annual Unlimited
+## 6              0         0      1      0      Annual Unlimited
+##   num_prod_sold num_prod_inventory sold_over_inventory     GMV num_starred
+## 1             0                  5               0.000       0           0
+## 2           300                220               1.364 1421525           0
+## 3             8                  8               1.000   18000           0
+## 4          1207               1065               1.133 6957645           0
+## 5           242                220               1.100 1672000           0
+## 6             0                  2               0.000       0           0
+##   num_on_sale avg_prod_price avg_purchase_amt unique_cust discounts_given
+## 1           0          13100                0           0               0
+## 2           0           6920             6461           4           27445
+## 3           0           3375             2250           2               0
+## 4           0           6542             6533          12            5405
+## 5           0           7182             7600           3               0
+## 6           0           8000                0           0               0
+##   num_physical num_digital num_service percent_physical percent_digital
+## 1            0           1           0                0               1
+## 2           63           0           0                1               0
+## 3            0           0           3                0               0
+## 4           17           0           0                1               0
+## 5           11           0           0                1               0
+## 6            0           0           0                0               0
+##   percent_service num_with_shipping_cost num_with_taxes views_30day
+## 1               0                      0              0         169
+## 2               0                      0              0        2279
+## 3               1                      0              0          56
+## 4               0                     17              0         584
+## 5               0                      0              0        1037
+## 6               0                      0              0         110
+##   visits_30day views_7day visits_7day
+## 1           81         63          19
+## 2          453        402          94
+## 3           20         27           6
+## 4          191        153          53
+## 5          363        341         114
+## 6           29         47          12
 ```
 
 ```r
@@ -567,11 +625,35 @@ str(features)
 ```
 
 ```
-## 'data.frame':	6497 obs. of  4 variables:
-##  $ pH       : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates: num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol  : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality  : int  5 5 5 6 5 5 5 7 7 5 ...
+## 'data.frame':	299 obs. of  28 variables:
+##  $ classification        : int  0 1 0 1 1 0 0 0 1 0 ...
+##  $ developer             : Factor w/ 2 levels "0","1": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ domain                : Factor w/ 2 levels "0","1": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ coupon                : Factor w/ 2 levels "0","1": 2 1 1 2 1 1 1 1 1 2 ...
+##  $ plan_period           : Factor w/ 2 levels "Annual","Month": 1 1 2 1 1 1 1 1 2 1 ...
+##  $ plan_type             : Factor w/ 3 levels "Business","Standard",..: 2 1 3 1 3 3 2 2 3 1 ...
+##  $ num_prod_sold         : int  0 300 8 1207 242 0 508 0 6916 0 ...
+##  $ num_prod_inventory    : int  5 220 8 1065 220 2 280 1 3666 0 ...
+##  $ sold_over_inventory   : num  0 1.36 1 1.13 1.1 ...
+##  $ GMV                   : int  0 1421525 18000 6957645 1672000 0 802800 0 45825286 0 ...
+##  $ num_starred           : int  0 0 0 0 0 0 0 0 1540 0 ...
+##  $ num_on_sale           : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ avg_prod_price        : num  13100 6920 3375 6542 7182 ...
+##  $ avg_purchase_amt      : num  0 6461 2250 6533 7600 ...
+##  $ unique_cust           : int  0 4 2 12 3 0 21 0 1 0 ...
+##  $ discounts_given       : int  0 27445 0 5405 0 0 0 0 26784 0 ...
+##  $ num_physical          : int  0 63 0 17 11 0 70 0 244 0 ...
+##  $ num_digital           : int  1 0 0 0 0 0 0 0 0 0 ...
+##  $ num_service           : int  0 0 3 0 0 0 3 0 0 0 ...
+##  $ percent_physical      : num  0 1 0 1 1 ...
+##  $ percent_digital       : num  1 0 0 0 0 0 0 0 0 0 ...
+##  $ percent_service       : num  0 0 1 0 0 ...
+##  $ num_with_shipping_cost: int  0 0 0 17 0 0 0 0 244 0 ...
+##  $ num_with_taxes        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ views_30day           : int  169 2279 56 584 1037 110 179 28 10966 192 ...
+##  $ visits_30day          : int  81 453 20 191 363 29 63 14 3385 116 ...
+##  $ views_7day            : int  63 402 27 153 341 47 72 5 2238 33 ...
+##  $ visits_7day           : int  19 94 6 53 114 12 25 3 713 13 ...
 ```
 
 ```r
@@ -579,8 +661,9 @@ dim(features)
 ```
 
 ```
-## [1] 6497    4
+## [1] 299  28
 ```
+
 
 ----
 
@@ -591,11 +674,44 @@ dim(features)
 
 ```r
 scaled_features <- as.matrix(scale(features))
+```
+
+```
+## Error: 'x' must be numeric
+```
+
+```r
 Cx <- cov(scaled_features)
+```
+
+```
+## Error: object 'scaled_features' not found
+```
+
+```r
 eigenvalues <- eigen(Cx)$values
+```
+
+```
+## Error: object 'Cx' not found
+```
+
+```r
 eigenvectors <- eigen(Cx)$vectors
+```
+
+```
+## Error: object 'Cx' not found
+```
+
+```r
 PC <- scaled_features %*% eigenvectors
 ```
+
+```
+## Error: object 'scaled_features' not found
+```
+
 
 ----
 
@@ -606,20 +722,28 @@ PC <- scaled_features %*% eigenvectors
 
 ```r
 Cy <- cov(PC)
-sum(round(diag(Cy) - eigenvalues,5))
 ```
 
 ```
-## [1] 0
+## Error: object 'PC' not found
 ```
 
 ```r
-sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
+sum(round(diag(Cy) - eigenvalues, 5))
 ```
 
 ```
-## [1] 0
+## Error: object 'Cy' not found
 ```
+
+```r
+sum(round(Cy[upper.tri(Cy)], 5))  ## off diagonals are 0 since PC's are orthogonal
+```
+
+```
+## Error: object 'Cy' not found
+```
+
 
 ----
 
@@ -630,20 +754,64 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 
 ```r
 var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
-cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
-
-var_explained <- as.data.frame(var_explained)
-names(var_explained) <- "variance_explained"
-var_explained$PC <- as.numeric(rownames(var_explained))
-var_explained <- cbind(var_explained,cum_var_explained)
-
-library(ggplot2)
-ggplot(var_explained) +
-  geom_bar(aes(x=PC,y=variance_explained),stat='identity') +
-  geom_line(aes(x=PC,y=cum_var_explained))
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+```
+## Error: object 'eigenvalues' not found
+```
+
+```r
+cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
+```
+
+```
+## Error: object 'eigenvalues' not found
+```
+
+```r
+
+var_explained <- as.data.frame(var_explained)
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+names(var_explained) <- "variance_explained"
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+var_explained$PC <- as.numeric(rownames(var_explained))
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+var_explained <- cbind(var_explained, cum_var_explained)
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+
+library(ggplot2)
+ggplot(var_explained) + geom_bar(aes(x = PC, y = variance_explained), stat = "identity") + 
+    geom_line(aes(x = PC, y = cum_var_explained))
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
 
 ----
 
@@ -654,29 +822,36 @@ ggplot(var_explained) +
 
 ```r
 pca.df <- prcomp(scaled_features)
+```
+
+```
+## Error: object 'scaled_features' not found
+```
+
+```r
 eigenvalues == (pca.df$sdev)^2
 ```
 
 ```
-## [1] FALSE FALSE FALSE FALSE
+## Error: object 'eigenvalues' not found
 ```
 
 ```r
-eigenvectors[,1] == pca.df$rotation[,1]
+eigenvectors[, 1] == pca.df$rotation[, 1]
 ```
 
 ```
-##        pH sulphates   alcohol   quality 
-##     FALSE     FALSE     FALSE     FALSE
+## Error: object 'eigenvectors' not found
 ```
 
 ```r
-sum((eigenvectors[,1])^2)
+sum((eigenvectors[, 1])^2)
 ```
 
 ```
-## [1] 1
+## Error: object 'eigenvectors' not found
 ```
+
 
 ----
 
@@ -687,14 +862,29 @@ sum((eigenvectors[,1])^2)
 
 ```r
 rows <- nrow(tennis)
-pca.plot <- as.data.frame(pca.df$x[,1:2])
-pca.plot$gender <- data$Gender
-ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
+pca.plot <- as.data.frame(pca.df$x[, 1:2])
 ```
 
 ```
-## Error: object 'gender' not found
+## Error: object 'pca.df' not found
 ```
+
+```r
+pca.plot$gender <- data$Gender
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
+ggplot(data = pca.plot, aes(x = PC1, y = PC2, color = gender)) + geom_point()
+```
+
+```
+## Error: object 'pca.plot' not found
+```
+
 
 ----
 
@@ -718,33 +908,39 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Motivation
 <space>
 
-- used to separate data into meaningful or useful groups (or both)
+- separate data into meaningful or useful groups
   - capture natural structure of the data
-  - useful starting point for further analysis
-- customer segmentation
+  - starting point for further analysis
 - cluster for utility
   - summarizing data for less expensive computation
   - data compression
-  - nearest neighbors - distance between two cluster centers (centroids)
 
 ----
 
 ## Clustering
-# Motivation
+# Types of Clusters
 <space>
 
-- types of clusters
-  - data points that are more similar to one another than points outside of the cluster - most intuitive definition
-  - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
-  - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
+- data that looks more like other data in that cluster than outside
+- each data point is more similar to the prototype (centeroid) of the cluster than the prototype of other clusters
+- where the density is highest, that is a cluster
 
 ----
 
 ## Clustering
-# Motivation
+# Typical clustering problem
 <space>
 
-- example of density based cluster
+![plot of chunk cluster_plot_example](figure/cluster_plot_example.png) 
+
+
+----
+
+## Clustering
+# Density based cluster
+<space>
+
+<img src="http://upload.wikimedia.org/wikipedia/commons/0/05/DBSCAN-density-data.svg" density_based />
 
 ----
 
@@ -809,7 +1005,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![different_density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_density.png)
+![different_density](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_density.png)
 
 ----
 
@@ -817,7 +1013,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![different_size_clusters](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](/RPres_ML_2/figure/different_size_clusters.png)
 
 ----
 
@@ -825,7 +1021,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![non-globular](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/non-globular.png)
+![non-globular](/RPres_ML_2/figure/non-globular.png)
 
 ----
 
@@ -835,13 +1031,25 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 
 ```r
-tennis_kmean <- kmeans(features, centers=5)
-table(tennis$Gender,tennis_kmean$cluster)
+tennis_kmean <- kmeans(features, centers = 5)
 ```
 
 ```
-## Error: all arguments must have the same length
+## Warning: NAs introduced by coercion
 ```
+
+```
+## Error: NA/NaN/Inf in foreign function call (arg 1)
+```
+
+```r
+table(tennis$Gender, tennis_kmean$cluster)
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
 
 ----
 
@@ -923,13 +1131,14 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
 
 ```r
-x <- c(2,2,8,5,7,6,1,4)
-y <- c(10,5,4,8,5,4,2,9)
-cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
+x <- c(2, 2, 8, 5, 7, 6, 1, 4)
+y <- c(10, 5, 4, 8, 5, 4, 2, 9)
+cluster <- data.frame(X = c(x, 2 * x, 3 * x), Y = c(y, -2 * x, 1/4 * y))
 plot(cluster)
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+
 
 ----
 
@@ -940,11 +1149,12 @@ plot(cluster)
 
 ```r
 library(fpc)
-cluster_DBSCAN<-dbscan(cluster, eps=3, MinPts=2, method="hybrid")
-plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
+cluster_DBSCAN <- dbscan(cluster, eps = 3, MinPts = 2, method = "hybrid")
+plot(cluster_DBSCAN, cluster, main = "Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
 ```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
+
 
 ----
 
@@ -1044,15 +1254,16 @@ What is the entropy of a fair, 6 sided die?
 
 
 ```r
-entropy <- function(probs){
-  ent <- 0
-  for(i in probs){
-    ent_temp <- -i*log2(i)
-    ent <- ent + ent_temp
-  }
-  return(ent)
+entropy <- function(probs) {
+    ent <- 0
+    for (i in probs) {
+        ent_temp <- -i * log2(i)
+        ent <- ent + ent_temp
+    }
+    return(ent)
 }
 ```
+
 
 ----
 
@@ -1062,7 +1273,7 @@ entropy <- function(probs){
 
 
 ```r
-fair <- rep(1/6,6)
+fair <- rep(1/6, 6)
 entropy(fair)
 ```
 
@@ -1078,6 +1289,7 @@ log2(6)
 ## [1] 2.585
 ```
 
+
 ----
 
 ## Trees
@@ -1090,13 +1302,14 @@ What is the entropy of a biased, 6 sided die?
 
 
 ```r
-biased <- c(rep(1/9,3),rep(2/9,3))
+biased <- c(rep(1/9, 3), rep(2/9, 3))
 entropy(biased)
 ```
 
 ```
 [1] 2.503
 ```
+
 
 ----
 
@@ -1106,7 +1319,7 @@ entropy(biased)
 
 
 ```r
-more_biased <- c(rep(1/18,3),rep(5/18,3))
+more_biased <- c(rep(1/18, 3), rep(5/18, 3))
 entropy(more_biased)
 ```
 
@@ -1115,13 +1328,15 @@ entropy(more_biased)
 ```
 
 ```r
-most_biased <- c(rep(1/100,5),rep(95/100,1))
+
+most_biased <- c(rep(1/100, 5), rep(95/100, 1))
 entropy(most_biased)
 ```
 
 ```
 [1] 0.4025
 ```
+
 
 ----
 
@@ -1131,11 +1346,12 @@ entropy(most_biased)
 
 
 ```r
-curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
-      lwd = 4, main='Entropy of a coin toss')
+curve(-x * log2(x) - (1 - x) * log2(1 - x), col = " red", xlab = "x", ylab = "Entropy", 
+    lwd = 4, main = "Entropy of a coin toss")
 ```
 
 ![plot of chunk entropy_curve](figure/entropy_curve.png) 
+
 
 ----
 
@@ -1162,15 +1378,14 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy",
 
 
 ```r
-voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
-names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
-                        'adoption-of-the-budget-resolution','physician-fee-freeze',
-                        'el-salvador-aid','religious-groups-in-schools',
-                        'anti-satellite-test-ban','aid-to-nicaraguan-contras',
-                        'mx-missile','immigration','synfuels-corporation-cutback',
-                        'education-spending','superfund-right-to-sue','crime',
-                        'duty-free-exports','export-administration-act-south-africa')
+voting_data <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data")
+names(voting_data) <- c("party", "handicapped-infants", "water-project-cost-sharing", 
+    "adoption-of-the-budget-resolution", "physician-fee-freeze", "el-salvador-aid", 
+    "religious-groups-in-schools", "anti-satellite-test-ban", "aid-to-nicaraguan-contras", 
+    "mx-missile", "immigration", "synfuels-corporation-cutback", "education-spending", 
+    "superfund-right-to-sue", "crime", "duty-free-exports", "export-administration-act-south-africa")
 ```
+
 
 ----
 
@@ -1180,7 +1395,7 @@ names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharin
 
 
 ```r
-prop.table(table(voting_data[,1]))
+prop.table(table(voting_data[, 1]))
 ```
 
 ```
@@ -1191,10 +1406,11 @@ prop.table(table(voting_data[,1]))
 
 ```r
 n <- nrow(voting_data)
-train_ind <- sample(n,2/3*n)
-voting_train <- voting_data[train_ind,]
-voting_test <- voting_data[-train_ind,]
+train_ind <- sample(n, 2/3 * n)
+voting_train <- voting_data[train_ind, ]
+voting_test <- voting_data[-train_ind, ]
 ```
+
 
 ----
 
@@ -1203,6 +1419,10 @@ voting_test <- voting_data[-train_ind,]
 <space>
 
 <img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+
+```
+## Error: object 'voting_train' not found
+```
 
 
 ----
@@ -1228,17 +1448,18 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         84 |          5 |         89 | 
-             |      0.579 |      0.034 |            | 
+    democrat |         92 |          4 |         96 | 
+             |      0.634 |      0.028 |            | 
 -------------|------------|------------|------------|
-  republican |          5 |         51 |         56 | 
-             |      0.034 |      0.352 |            | 
+  republican |          4 |         45 |         49 | 
+             |      0.028 |      0.310 |            | 
 -------------|------------|------------|------------|
-Column Total |         89 |         56 |        145 | 
+Column Total |         96 |         49 |        145 | 
 -------------|------------|------------|------------|
 
  
 ```
+
 
 ----
 
@@ -1254,13 +1475,14 @@ head(C5imp(tree_model))
 
 ```
 ##                                   Overall
-## physician-fee-freeze                97.58
-## education-spending                  39.45
-## immigration                         10.03
+## physician-fee-freeze                97.23
+## adoption-of-the-budget-resolution   43.60
+## el-salvador-aid                     35.64
+## anti-satellite-test-ban             10.03
+## synfuels-corporation-cutback         4.50
 ## handicapped-infants                  0.00
-## water-project-cost-sharing           0.00
-## adoption-of-the-budget-resolution    0.00
 ```
+
 
 ----
 
@@ -1280,7 +1502,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 13 22:17:23 2014
+## C5.0 [Release 2.07 GPL Edition]  	Thu Aug 14 20:51:32 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1289,12 +1511,17 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
+## physician-fee-freeze in {?,n}: democrat (162.5/2.1)
 ## physician-fee-freeze = y:
-## :...education-spending in {?,y}: republican (97/3.2)
-##     education-spending = n:
-##     :...immigration = n: democrat (8/2.6)
-##         immigration in {?,y}: republican (12.8/1.4)
+## :...adoption-of-the-budget-resolution = ?: republican (0)
+##     adoption-of-the-budget-resolution = n:
+##     :...el-salvador-aid = n: democrat (1.7/0.4)
+##     :   el-salvador-aid in {?,y}: republican (101.5/2.4)
+##     adoption-of-the-budget-resolution = y:
+##     :...anti-satellite-test-ban in {?,y}: republican (13.6/0.5)
+##         anti-satellite-test-ban = n:
+##         :...synfuels-corporation-cutback = n: republican (4.5/1.2)
+##             synfuels-corporation-cutback in {?,y}: democrat (5.2)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -1303,24 +1530,27 @@ summary(tree_model)
 ## 	  ----------------  
 ## 	  Size      Errors  
 ## 
-## 	     4   10( 3.5%)   <<
+## 	     6    6( 2.1%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   174     4    (a): class democrat
-## 	     6   105    (b): class republican
+## 	   168     3    (a): class democrat
+## 	     3   115    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 97.58%	physician-fee-freeze
-## 	 39.45%	education-spending
-## 	 10.03%	immigration
+## 	 97.23%	physician-fee-freeze
+## 	 43.60%	adoption-of-the-budget-resolution
+## 	 35.64%	el-salvador-aid
+## 	 10.03%	anti-satellite-test-ban
+## 	  4.50%	synfuels-corporation-cutback
 ## 
 ## 
 ## Time: 0.0 secs
 ```
+
 
 ----
 
@@ -1339,12 +1569,11 @@ summary(tree_model)
 
 
 ```r
-boosted_tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=25)
-boosted_tennis_predict <- predict(boosted_tree_model,voting_test[,-1])
+boosted_tree_model <- C5.0(voting_train[, -1], voting_train[, 1], trials = 25)
+boosted_tennis_predict <- predict(boosted_tree_model, voting_test[, -1])
 
-boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
-                           prop.c = FALSE, prop.r = FALSE, 
-                           dnn = c("actual class", "predicted class"))
+boosted_conf <- CrossTable(voting_test[, 1], boosted_tennis_predict, prop.chisq = FALSE, 
+    prop.c = FALSE, prop.r = FALSE, dnn = c("actual class", "predicted class"))
 ```
 
 ```
@@ -1363,17 +1592,18 @@ boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq =
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         84 |          5 |         89 | 
-##              |      0.579 |      0.034 |            | 
+##     democrat |         93 |          3 |         96 | 
+##              |      0.641 |      0.021 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         55 |         56 | 
-##              |      0.007 |      0.379 |            | 
+##   republican |          2 |         47 |         49 | 
+##              |      0.014 |      0.324 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         85 |         60 |        145 | 
+## Column Total |         95 |         50 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
 ```
+
 
 ----
 
@@ -1393,7 +1623,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 13 22:17:23 2014
+## C5.0 [Release 2.07 GPL Edition]  	Thu Aug 14 20:51:33 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1404,265 +1634,378 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.1/3.2)
+## physician-fee-freeze in {?,n}: democrat (162.5/2.1)
 ## physician-fee-freeze = y:
-## :...education-spending in {?,y}: republican (97/3.2)
-##     education-spending = n:
-##     :...immigration = n: democrat (8/2.6)
-##         immigration in {?,y}: republican (12.8/1.4)
+## :...adoption-of-the-budget-resolution = ?: republican (0)
+##     adoption-of-the-budget-resolution = n:
+##     :...el-salvador-aid = n: democrat (1.7/0.4)
+##     :   el-salvador-aid in {?,y}: republican (101.5/2.4)
+##     adoption-of-the-budget-resolution = y:
+##     :...anti-satellite-test-ban in {?,y}: republican (13.6/0.5)
+##         anti-satellite-test-ban = n:
+##         :...synfuels-corporation-cutback = n: republican (4.5/1.2)
+##             synfuels-corporation-cutback in {?,y}: democrat (5.2)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = n: republican (125/25.7)
-## adoption-of-the-budget-resolution in {?,y}: democrat (164/26.8)
+## adoption-of-the-budget-resolution in {?,y}: democrat (154.8/25.9)
+## adoption-of-the-budget-resolution = n:
+## :...duty-free-exports in {?,n}: republican (111.6/17.8)
+##     duty-free-exports = y: democrat (22.5/4.7)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (145.1/21.5)
+## physician-fee-freeze in {?,n}: democrat (128.6/22.6)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (86.7/2.8)
-##     synfuels-corporation-cutback = y: democrat (57.2/24.1)
+## :...immigration in {?,y}: republican (74.1/2.5)
+##     immigration = n:
+##     :...duty-free-exports in {?,n}: republican (59.2/17.7)
+##         duty-free-exports = y: democrat (27.1/6.3)
 ## 
 ## -----  Trial 3:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = n: democrat (122.8/24.6)
-## physician-fee-freeze in {?,y}: republican (166.2/33.6)
+## physician-fee-freeze in {?,n}: democrat (116.4/27.2)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (108.1/19.5)
+##     synfuels-corporation-cutback = y: democrat (64.5/24)
 ## 
 ## -----  Trial 4:  -----
 ## 
 ## Decision tree:
 ## 
-## crime in {?,n}: democrat (69.4/9.6)
-## crime = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (139.3/44)
-##     adoption-of-the-budget-resolution = y: democrat (80.3/30.9)
+## physician-fee-freeze in {?,y}: republican (189.6/56.1)
+## physician-fee-freeze = n:
+## :...adoption-of-the-budget-resolution = n: republican (28.9/10.7)
+##     adoption-of-the-budget-resolution in {?,y}: democrat (70.4/8)
 ## 
 ## -----  Trial 5:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (112.1/25.2)
+## physician-fee-freeze in {?,n}: democrat (106/22.4)
 ## physician-fee-freeze = y:
-## :...immigration = n: democrat (103.7/46.4)
-##     immigration in {?,y}: republican (73.2/8.7)
+## :...education-spending in {?,y}: republican (115/30)
+##     education-spending = n:
+##     :...anti-satellite-test-ban in {?,n}: democrat (43.3/10.2)
+##         anti-satellite-test-ban = y: republican (24.7/9.9)
 ## 
 ## -----  Trial 6:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = n: democrat (100/26.2)
-## physician-fee-freeze in {?,y}: republican (189/59.1)
+## physician-fee-freeze in {?,n}: democrat (92.8/24)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (87.6/21.3)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,y}: democrat (21.9/3.7)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (12.3)
+##             anti-satellite-test-ban = n:
+##             :...adoption-of-the-budget-resolution = n: republican (50.8/18.9)
+##                 adoption-of-the-budget-resolution in {?,y}: democrat (23.6/1.5)
 ## 
 ## -----  Trial 7:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback = ?: democrat (0)
-## synfuels-corporation-cutback = n: republican (139.2/45.1)
-## synfuels-corporation-cutback = y:
-## :...physician-fee-freeze in {?,n}: democrat (38/0.9)
-##     physician-fee-freeze = y:
-##     :...water-project-cost-sharing = n: republican (14.1)
-##         water-project-cost-sharing in {?,y}: democrat (97.7/31.2)
+## duty-free-exports = ?: democrat (0)
+## duty-free-exports = y:
+## :...crime in {?,n}: democrat (28.4/0.8)
+## :   crime = y:
+## :   :...anti-satellite-test-ban in {?,n}: democrat (53.9/12.6)
+## :       anti-satellite-test-ban = y: republican (15.9/2.8)
+## duty-free-exports = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (79.6/11)
+##     synfuels-corporation-cutback = y:
+##     :...physician-fee-freeze in {?,n}: democrat (15.2/1.3)
+##         physician-fee-freeze = y:
+##         :...immigration in {?,n}: democrat (57.7/17.4)
+##             immigration = y: republican (38.4/11.8)
 ## 
 ## -----  Trial 8:  -----
 ## 
 ## Decision tree:
 ## 
-## crime in {?,n}: democrat (71.7/9.7)
-## crime = y:
-## :...education-spending = ?: republican (0)
-##     education-spending = n:
-##     :...anti-satellite-test-ban in {?,n}: democrat (53.6/12.2)
-##     :   anti-satellite-test-ban = y: republican (50.2/19.5)
-##     education-spending = y:
-##     :...physician-fee-freeze = n: democrat (22.4/6.2)
-##         physician-fee-freeze in {?,y}: republican (91.1/20.6)
+## adoption-of-the-budget-resolution = ?: democrat (0)
+## adoption-of-the-budget-resolution = n:
+## :...immigration in {?,y}: republican (48.4/7.3)
+## :   immigration = n:
+## :   :...superfund-right-to-sue = n: democrat (15.5/1.5)
+## :       superfund-right-to-sue in {?,y}: republican (77.7/35)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (77.1/6.8)
+##     physician-fee-freeze = y:
+##     :...anti-satellite-test-ban in {?,n}: democrat (49.7/13.7)
+##         anti-satellite-test-ban = y: republican (20.7/1.5)
 ## 
 ## -----  Trial 9:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (125/25.5)
+## physician-fee-freeze in {?,n}: democrat (114/25.6)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (49.9/9)
-##     immigration = n:
-##     :...mx-missile = n: republican (81.8/31.5)
-##         mx-missile in {?,y}: democrat (32.3/5.4)
+## :...handicapped-infants in {?,y}: republican (41.6/7.2)
+##     handicapped-infants = n:
+##     :...superfund-right-to-sue in {?,n}: republican (15.9/1.7)
+##         superfund-right-to-sue = y:
+##         :...crime = ?: democrat (0)
+##             crime = n: republican (4.9)
+##             crime = y:
+##             :...mx-missile in {?,y}: democrat (22.2/3.5)
+##                 mx-missile = n:
+##                 :...anti-satellite-test-ban in {?,y}: republican (8.1)
+##                     anti-satellite-test-ban = n:
+##                     :...synfuels-corporation-cutback = n: republican (33/9.8)
+##                         synfuels-corporation-cutback in {?,
+##                                                          y}: democrat (49.4/15.7)
 ## 
 ## -----  Trial 10:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (135.9/32.1)
-## adoption-of-the-budget-resolution = n:
-## :...synfuels-corporation-cutback in {?,n}: republican (84.9/19.4)
-##     synfuels-corporation-cutback = y: democrat (68.2/29.7)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (100.5/26.2)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (78.6/15.7)
+##     immigration = n:
+##     :...duty-free-exports in {?,n}: republican (79.9/30.9)
+##         duty-free-exports = y: democrat (30.1/7.3)
 ## 
 ## -----  Trial 11:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending = ?: democrat (0)
-## education-spending = y:
-## :...physician-fee-freeze = n: democrat (22.8/7.8)
-## :   physician-fee-freeze in {?,y}: republican (104.8/24.7)
-## education-spending = n:
-## :...crime in {?,n}: democrat (36.6/1.5)
-##     crime = y:
-##     :...religious-groups-in-schools = n: republican (30.8/9.1)
-##         religious-groups-in-schools in {?,y}: democrat (94/31.5)
+## adoption-of-the-budget-resolution = ?: democrat (0)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (47.6/4.8)
+## :   physician-fee-freeze = y:
+## :   :...synfuels-corporation-cutback = n: republican (35.7/9.6)
+## :       synfuels-corporation-cutback in {?,y}: democrat (41.4/8.5)
+## adoption-of-the-budget-resolution = n:
+## :...immigration in {?,y}: republican (62.1/13.6)
+##     immigration = n:
+##     :...physician-fee-freeze in {?,n}: democrat (12.8/1.6)
+##         physician-fee-freeze = y:
+##         :...education-spending = n: democrat (30/9.1)
+##             education-spending in {?,y}: republican (59.5/20.4)
 ## 
 ## -----  Trial 12:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (104.8/28.7)
+## physician-fee-freeze in {?,n}: democrat (89.4/25)
 ## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (45.5/3.2)
-##     water-project-cost-sharing = y:
-##     :...synfuels-corporation-cutback in {?,n}: republican (42.7/11)
-##         synfuels-corporation-cutback = y: democrat (96/38.7)
+## :...export-administration-act-south-africa = n: democrat (68.2/27.9)
+##     export-administration-act-south-africa in {?,y}: republican (131.4/44.4)
 ## 
 ## -----  Trial 13:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = ?: republican (0)
-## adoption-of-the-budget-resolution = y:
-## :...physician-fee-freeze in {?,n}: democrat (51.5/2.9)
-## :   physician-fee-freeze = y: republican (67.3/29.3)
-## adoption-of-the-budget-resolution = n:
-## :...superfund-right-to-sue in {?,n}: republican (64.3/30.3)
-##     superfund-right-to-sue = y:
-##     :...duty-free-exports in {?,n}: republican (92/9.9)
-##         duty-free-exports = y: democrat (13.9/1.9)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (83.6/24.9)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (86.6/22.6)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,y}: democrat (28.1/7.5)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (12.6)
+##             anti-satellite-test-ban = n:
+##             :...adoption-of-the-budget-resolution = n: republican (57.2/21.7)
+##                 adoption-of-the-budget-resolution in {?,y}: democrat (20.8/1.6)
 ## 
 ## -----  Trial 14:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (107.5/27.4)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (58.2/10)
-##     immigration = n:
-##     :...superfund-right-to-sue in {?,n}: democrat (26.9/2.5)
-##         superfund-right-to-sue = y: republican (96.4/41)
+## duty-free-exports in {?,y}: democrat (85.8/22)
+## duty-free-exports = n:
+## :...synfuels-corporation-cutback = ?: republican (0)
+##     synfuels-corporation-cutback = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (63.5/4.4)
+##     :   adoption-of-the-budget-resolution = y: democrat (21.2/8.3)
+##     synfuels-corporation-cutback = y:
+##     :...physician-fee-freeze in {?,n}: democrat (10.9/0.7)
+##         physician-fee-freeze = y:
+##         :...immigration in {?,n}: democrat (61.4/18.5)
+##             immigration = y: republican (46.1/14.7)
 ## 
 ## -----  Trial 15:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = n: republican (176.8/73)
-## adoption-of-the-budget-resolution in {?,y}: democrat (112.2/33.6)
+## crime = ?: republican (0)
+## crime = n: democrat (29.4/7.8)
+## crime = y:
+## :...religious-groups-in-schools in {?,n}: republican (57.5/8.5)
+##     religious-groups-in-schools = y:
+##     :...physician-fee-freeze in {?,n}: democrat (20/1.5)
+##         physician-fee-freeze = y:
+##         :...handicapped-infants in {?,y}: republican (25/1.1)
+##             handicapped-infants = n:
+##             :...education-spending in {?,n}: democrat (60.7/16.6)
+##                 education-spending = y:
+##                 :...synfuels-corporation-cutback in {?,
+##                     :                                n}: republican (25.6)
+##                     synfuels-corporation-cutback = y:
+##                     :...anti-satellite-test-ban in {?,n}: democrat (61.7/23.9)
+##                         anti-satellite-test-ban = y: republican (9.1)
 ## 
 ## -----  Trial 16:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback = ?: democrat (0)
-## synfuels-corporation-cutback = n: republican (140.2/53.9)
-## synfuels-corporation-cutback = y:
-## :...physician-fee-freeze in {?,n}: democrat (38.8/1.5)
-##     physician-fee-freeze = y:
-##     :...water-project-cost-sharing = n: republican (7.3)
-##         water-project-cost-sharing in {?,y}: democrat (102.7/41.6)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (75.8/22.1)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (90.5/19.5)
+##     immigration = n:
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (27.1/7)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (14.8)
+##             anti-satellite-test-ban = n:
+##             :...duty-free-exports = ?: republican (0)
+##                 duty-free-exports = y: democrat (13.7/1.4)
+##                 duty-free-exports = n: [S1]
+## 
+## SubTree [S1]
+## 
+## export-administration-act-south-africa = n: democrat (39.1/17.3)
+## export-administration-act-south-africa in {?,y}: republican (28/0.9)
 ## 
 ## -----  Trial 17:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (116.6/28.5)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (54.9/10.6)
-##     immigration = n:
-##     :...mx-missile = n: republican (81.6/33.1)
-##         mx-missile in {?,y}: democrat (36/7.8)
+## adoption-of-the-budget-resolution = ?: republican (0)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (35.3/2.6)
+## :   physician-fee-freeze = y:
+## :   :...anti-satellite-test-ban = n: democrat (46.8/12.8)
+## :       anti-satellite-test-ban in {?,y}: republican (29.8/3)
+## adoption-of-the-budget-resolution = n:
+## :...duty-free-exports = ?: republican (0)
+##     duty-free-exports = y: democrat (22.3/7.8)
+##     duty-free-exports = n:
+##     :...synfuels-corporation-cutback in {?,n}: republican (72/4.6)
+##         synfuels-corporation-cutback = y:
+##         :...mx-missile in {?,n}: republican (73.5/21.7)
+##             mx-missile = y: democrat (9.3/0.4)
 ## 
 ## -----  Trial 18:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = n: republican (170.2/73.5)
-## adoption-of-the-budget-resolution in {?,y}: democrat (118.8/35.8)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (74.5/18.9)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (103.7/20.6)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (24.8/6.8)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (10.5)
+##             anti-satellite-test-ban = n:
+##             :...adoption-of-the-budget-resolution in {?,
+##                 :                                     n}: republican (62.2/22.2)
+##                 adoption-of-the-budget-resolution = y: democrat (13.3/0.5)
 ## 
 ## -----  Trial 19:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (112.7/34)
-## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (42.9/6.9)
-##     water-project-cost-sharing = y:
-##     :...synfuels-corporation-cutback = n: republican (38.1/13.4)
-##         synfuels-corporation-cutback in {?,y}: democrat (95.3/37.7)
+## immigration in {?,y}: republican (131.7/43.1)
+## immigration = n:
+## :...physician-fee-freeze in {?,n}: democrat (22.8/1.5)
+##     physician-fee-freeze = y:
+##     :...education-spending in {?,n}: democrat (58.2/13.9)
+##         education-spending = y:
+##         :...synfuels-corporation-cutback in {?,n}: republican (23.6)
+##             synfuels-corporation-cutback = y: democrat (52.6/23.4)
 ## 
 ## -----  Trial 20:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = n: democrat (108.2/38.7)
-## physician-fee-freeze in {?,y}: republican (179.8/61.1)
+## physician-fee-freeze in {?,n}: democrat (92.4/23.5)
+## physician-fee-freeze = y:
+## :...religious-groups-in-schools in {?,n}: republican (29.7/3.6)
+##     religious-groups-in-schools = y:
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (34.5/6.9)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (17.1)
+##             anti-satellite-test-ban = n:
+##             :...duty-free-exports in {?,n}: republican (90.1/32.9)
+##                 duty-free-exports = y: democrat (25.2/7.4)
 ## 
 ## -----  Trial 21:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (88.8/22.8)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (58.6/13.6)
-##     synfuels-corporation-cutback = y:
-##     :...water-project-cost-sharing = ?: democrat (0)
-##         water-project-cost-sharing = n: republican (4.9)
-##         water-project-cost-sharing = y:
-##         :...adoption-of-the-budget-resolution = n: republican (84.1/36)
-##             adoption-of-the-budget-resolution in {?,y}: democrat (50.6/10.2)
+## synfuels-corporation-cutback = ?: democrat (0)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (32.9/1)
+## :   physician-fee-freeze = y:
+## :   :...export-administration-act-south-africa in {?,n}: democrat (55.2/15.7)
+## :       export-administration-act-south-africa = y: republican (53.9/22.1)
+## synfuels-corporation-cutback = n:
+## :...education-spending in {?,y}: republican (53/5.8)
+##     education-spending = n:
+##     :...crime in {?,n}: democrat (11/0.3)
+##         crime = y:
+##         :...religious-groups-in-schools in {?,n}: republican (35.4/5.4)
+##             religious-groups-in-schools = y: democrat (47.7/15.6)
 ## 
 ## -----  Trial 22:  -----
 ## 
 ## Decision tree:
 ## 
-## duty-free-exports in {?,y}: democrat (80.7/13.7)
-## duty-free-exports = n:
-## :...immigration = ?: republican (0)
-##     immigration = n: democrat (103.2/43)
-##     immigration = y:
-##     :...export-administration-act-south-africa = n: democrat (14.4/3.6)
-##         export-administration-act-south-africa in {?,y}: republican (86.7/16.1)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (99.8/24.1)
+## physician-fee-freeze = y:
+## :...education-spending in {?,y}: republican (91.8/12.3)
+##     education-spending = n:
+##     :...immigration = n: democrat (58/23)
+##         immigration in {?,y}: republican (38.4/11.7)
 ## 
 ## -----  Trial 23:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending = ?: democrat (0)
-## education-spending = y:
-## :...physician-fee-freeze = n: democrat (18.5/1.2)
-## :   physician-fee-freeze in {?,y}: republican (90.8/14)
-## education-spending = n:
-## :...crime in {?,n}: democrat (38.1/1.5)
-##     crime = y:
-##     :...export-administration-act-south-africa in {?,n}: democrat (22.4/1.7)
-##         export-administration-act-south-africa = y:
-##         :...immigration = n: democrat (46.2/12.8)
-##             immigration in {?,y}: republican (69/22.3)
+## adoption-of-the-budget-resolution in {?,n}: republican (143.6/37.3)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (48.7/2)
+##     physician-fee-freeze = y:
+##     :...anti-satellite-test-ban in {?,n}: democrat (59.2/14)
+##         anti-satellite-test-ban = y: republican (36.5/4.5)
 ## 
 ## -----  Trial 24:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (93.6/2)
+## physician-fee-freeze in {?,n}: democrat (88.7/4.1)
 ## physician-fee-freeze = y:
 ## :...mx-missile = ?: republican (0)
-##     mx-missile = y: democrat (67.9/23.7)
+##     mx-missile = y: democrat (61.6/25.8)
 ##     mx-missile = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (69.8/1)
-##         adoption-of-the-budget-resolution = y: democrat (52.7/22)
+##     :...water-project-cost-sharing in {?,n}: republican (33)
+##         water-project-cost-sharing = y:
+##         :...anti-satellite-test-ban in {?,y}: republican (12.6)
+##             anti-satellite-test-ban = n:
+##             :...duty-free-exports = ?: republican (0)
+##                 duty-free-exports = y: democrat (19.9/2)
+##                 duty-free-exports = n:
+##                 :...adoption-of-the-budget-resolution in {?,
+##                     :                                     n}: republican (47.6/1.8)
+##                     adoption-of-the-budget-resolution = y: democrat (23.5/6.2)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -1671,59 +2014,62 @@ summary(boosted_tree_model)
 ## -----	  ----------------  
 ## 	  Size      Errors  
 ## 
-##    0	     4   10( 3.5%)
-##    1	     2   36(12.5%)
-##    2	     3   23( 8.0%)
-##    3	     2   15( 5.2%)
-##    4	     3   33(11.4%)
-##    5	     3   51(17.6%)
-##    6	     2   15( 5.2%)
-##    7	     4   97(33.6%)
-##    8	     5   37(12.8%)
-##    9	     4   11( 3.8%)
-##   10	     3   38(13.1%)
-##   11	     5   17( 5.9%)
-##   12	     4   16( 5.5%)
-##   13	     5   22( 7.6%)
-##   14	     4   14( 4.8%)
-##   15	     2   36(12.5%)
-##   16	     4   95(32.9%)
-##   17	     4   11( 3.8%)
-##   18	     2   36(12.5%)
-##   19	     4   18( 6.2%)
-##   20	     2   15( 5.2%)
-##   21	     5   10( 3.5%)
-##   22	     4  109(37.7%)
-##   23	     6   33(11.4%)
-##   24	     4   28( 9.7%)
-## boost	          7( 2.4%)   <<
+##    0	     6    6( 2.1%)
+##    1	     3   30(10.4%)
+##    2	     4   13( 4.5%)
+##    3	     3   24( 8.3%)
+##    4	     3   26( 9.0%)
+##    5	     4   14( 4.8%)
+##    6	     6    6( 2.1%)
+##    7	     7   56(19.4%)
+##    8	     6   19( 6.6%)
+##    9	     8   21( 7.3%)
+##   10	     4   12( 4.2%)
+##   11	     7   16( 5.5%)
+##   12	     3   49(17.0%)
+##   13	     6    5( 1.7%)
+##   14	     6   30(10.4%)
+##   15	     8   30(10.4%)
+##   16	     7   24( 8.3%)
+##   17	     7   16( 5.5%)
+##   18	     6    5( 1.7%)
+##   19	     5   94(32.5%)
+##   20	     6   16( 5.5%)
+##   21	     7   30(10.4%)
+##   22	     4   14( 4.8%)
+##   23	     4   22( 7.6%)
+##   24	     7   16( 5.5%)
+## boost	          3( 1.0%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   176     2    (a): class democrat
-## 	     5   106    (b): class republican
+## 	   170     1    (a): class democrat
+## 	     2   116    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 97.58%	adoption-of-the-budget-resolution
-## 	 97.58%	physician-fee-freeze
-## 	 96.89%	crime
-## 	 95.16%	synfuels-corporation-cutback
-## 	 94.12%	duty-free-exports
-## 	 92.04%	education-spending
-## 	 70.59%	immigration
-## 	 41.52%	mx-missile
-## 	 41.52%	superfund-right-to-sue
-## 	 39.10%	export-administration-act-south-africa
-## 	 38.06%	water-project-cost-sharing
-## 	 22.49%	religious-groups-in-schools
-## 	 22.15%	anti-satellite-test-ban
+## 	 98.96%	immigration
+## 	 98.27%	adoption-of-the-budget-resolution
+## 	 97.23%	physician-fee-freeze
+## 	 95.85%	crime
+## 	 95.50%	synfuels-corporation-cutback
+## 	 93.77%	duty-free-exports
+## 	 69.55%	education-spending
+## 	 60.55%	religious-groups-in-schools
+## 	 50.87%	anti-satellite-test-ban
+## 	 46.37%	mx-missile
+## 	 43.94%	handicapped-infants
+## 	 38.75%	superfund-right-to-sue
+## 	 38.06%	export-administration-act-south-africa
+## 	 35.99%	water-project-cost-sharing
+## 	 35.64%	el-salvador-aid
 ## 
 ## 
 ## Time: 0.0 secs
 ```
+
 
 ----
 
@@ -1736,8 +2082,8 @@ summary(boosted_tree_model)
 
 
 ```r
-error_cost <- matrix(c(0,1,2,0),nrow=2)
-cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
+error_cost <- matrix(c(0, 1, 2, 0), nrow = 2)
+cost_model <- C5.0(voting_train[, -1], voting_train[, 1], trials = 1, costs = error_cost)
 ```
 
 ```
@@ -1746,10 +2092,9 @@ cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_c
 ```
 
 ```r
-cost_predict <- predict(cost_model, newdata=voting_test[,-1])
-conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c("actual class", "predicted class"))
+cost_predict <- predict(cost_model, newdata = voting_test[, -1])
+conf <- CrossTable(voting_test[, 1], cost_predict, prop.chisq = FALSE, prop.c = FALSE, 
+    prop.r = FALSE, dnn = c("actual class", "predicted class"))
 ```
 
 ```
@@ -1768,17 +2113,18 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         80 |          9 |         89 | 
-##              |      0.552 |      0.062 |            | 
+##     democrat |         89 |          7 |         96 | 
+##              |      0.614 |      0.048 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          0 |         56 |         56 | 
-##              |      0.000 |      0.386 |            | 
+##   republican |          1 |         48 |         49 | 
+##              |      0.007 |      0.331 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         80 |         65 |        145 | 
+## Column Total |         90 |         55 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
 ```
+
 
 ----
 
@@ -1865,6 +2211,7 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ```
 
 ![plot of chunk plot_boost_acc](figure/plot_boost_acc.png) 
+
 
 ----
 

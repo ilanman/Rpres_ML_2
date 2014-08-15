@@ -585,45 +585,48 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Motivation
 <space>
 
-- used to separate data into meaningful or useful groups (or both)
+- separate data into meaningful or useful groups
   - capture natural structure of the data
-  - useful starting point for further analysis
-- customer segmentation
+  - starting point for further analysis
 - cluster for utility
   - summarizing data for less expensive computation
   - data compression
-  - nearest neighbors - distance between two cluster centers (centroids)
 
 ----
 
 ## Clustering
-# Motivation
+# Types of Clusters
 <space>
 
-- types of clusters
-  - data points that are more similar to one another than points outside of the cluster - most intuitive definition
-  - prototype-based: each data point is more similar to the prototype, i.e. center, of the cluster than the prototype of other clusters. Often a centroid, i.e. mean.
-  - density based clusters: where the density is highest, that is a cluster. Works well for data with noise and outliers. Clusters separated by noise.
+- data that looks more like other data in that cluster than outside
+- each data point is more similar to the prototype (centeroid) of the cluster than the prototype of other clusters
+- where the density is highest, that is a cluster
 
 ----
 
 ## Clustering
-# Motivation
+# Typical clustering problem
 <space>
 
-- example of density based cluster
+```{r cluster_plot_example, echo=FALSE}
+x <- rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2),
+           matrix(rnorm(100, mean = 2, sd = 0.3), ncol = 2))
+cl <- kmeans(x,3)
+clusters <- data.frame(cbind(x,cl$cluster))
+ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
+  theme(legend.title=element_blank()) +
+  theme(plot.title = element_text(size = rel(2)))+
+  theme(axis.title = element_text(size = rel(1.5)))+
+  labs(title = "3 Clusters")
+```
 
 ----
 
 ## Clustering
-# Kmeans
+# Density based cluster
 <space>
 
-- prototype, partitional based
-- choose K initial centroids/clusters
-- points are assigned to the closest centroid
-- centroid is then updated based on the points in that cluster
-- update steps until no point changes or centroids remain the same
+<img src="http://upload.wikimedia.org/wikipedia/commons/0/05/DBSCAN-density-data.svg" density_based />
 
 ----
 
@@ -631,11 +634,11 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmeans algorithm
 <space>
 
-1. Select K points as initial centroids. 
-2. Repeat
-3. &nbsp;&nbsp; Form K clusters by assigning each point to its closest centroid.
-4. &nbsp;&nbsp; Recompute the centroid of each cluster. 
-5. until Centroids do not change, or change very minimally, i.e. <1%
+- Select K points as initial centroids 
+- Do
+  - Form K clusters by assigning each point to its closest centroid
+  - Recompute the centroid of each cluster 
+- Until centroids do not change, or change very minimally, i.e. <1%
 
 ----
 
@@ -644,10 +647,9 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 <space>
 
 - Use similarity measures (Euclidean or cosine) depending on the data
-- Minimize the squared distance of each point to closest centroid
-  - minimize the objective function
-  - the centroid that minimizes the SSE of the cluster is the mean
-  - leads to local minimum - not global - since optimizing based on chosen centroids
+- Minimize the squared distance of each point to closest centroid  
+  - The centroid that minimizes the SSE of the cluster is the mean
+  - Leads to local minimum - not global
 
 ----
 
@@ -655,20 +657,26 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmeans
 <space>
 
-- choose K randomly - can lead to poor centroids
-     - run k-means multiple times - still doesn’t solve problems
+- choose K randomly 
+  - can lead to poor centroids
+  - run Kmeans multiple times
+- reduce the total SSE by increasing K
+- increase the cluster with largest SSE
+- decrease K and minimize SSE
+- split up a cluster into other clusters
+  - the centroid that is split will increase total SSE the least
+----
 
-- can reduce the total SSE by increasing K
-     - can increase the cluster with largest SSE
-- can decrease K and minimize SSE
-     - split up a cluster into other clusters
-     - the centroid that is split will increase total SSE the least
+## Clustering
+# Kmeans
+<space>
+
 - bisecting K means
-   - less susceptible to initialization problems
-   - split points into 2 clusters
-        - take cluster with largest SSE - split that into two clusters
-   - rerun bisecting K mean on resulting clusters
-   - stop when you have K clusters
+  - less susceptible to initialization problems
+  - split points into 2 clusters
+    - take cluster with largest SSE - split that into two clusters
+  - rerun bisecting K mean on resulting clusters
+  - stop when you have K clusters
 
 ----
 
@@ -676,7 +684,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![different_density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_density.png)
+![different_density](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_density.png)
 
 ----
 
@@ -684,7 +692,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![different_size_clusters](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_size_clusters.png)
 
 ----
 
@@ -692,7 +700,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Kmean fails
 <space>
 
-![non-globular](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/non-globular.png)
+![non-globular](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/non-globular.png)
 
 ----
 
