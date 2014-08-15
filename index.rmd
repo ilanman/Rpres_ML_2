@@ -657,8 +657,8 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 <space>
 
 - Choose initial K randomly 
-  - can lead to poor centroids
-  - Run Kmeans multiple times
+  - can lead to poor centroids - local minimuum
+  - Run kmeans multiple times
 - Reduce the total SSE by increasing K
 - Increase the cluster with largest SSE
 - Decrease K and minimize SSE
@@ -709,7 +709,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 <space>
 
 ```{r kmeans_wine, message=FALSE}
-wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
+#wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
 names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
                  'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
 str(wine)
@@ -799,6 +799,43 @@ kmeans.an = function(
 
 kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
+----
+
+## Clustering
+# K-medoid
+<space>
+
+- multiple distance metrics
+- robust medioids
+- computationally expensive
+- cluster center is one of the points itself
+
+----
+
+## Clustering
+# K-medoid
+<space>
+
+- cluster each point based on the closest center
+- replace each center by the medioid of points in its cluster
+
+----
+
+## Clustering
+# K-medoid
+<space>
+
+```{r kmedoid_example}
+library(cluster)
+## generate 25 objects, divided into 2 clusters.
+x <- rbind(cbind(rnorm(10,0,0.5), rnorm(10,0,0.5)),
+           cbind(rnorm(15,5,0.5), rnorm(15,5,0.5)))
+pamx <- pam(x, 2)
+summary(pamx)
+clusplot(pamx, main="K-medoids with K = 2",sub=NULL)
+```
+
+http://www.bvmengineering.ac.in/docs/published%20papers/cpit/cpit/201405.pdf
 ----
 
 ## Clustering
