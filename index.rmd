@@ -647,36 +647,36 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 <space>
 
 - Use similarity measures (Euclidean or cosine) depending on the data
-- Minimize the squared distance of each point to closest centroid  
-  - The centroid that minimizes the SSE of the cluster is the mean
-  - Leads to local minimum - not global
+- Minimize the squared distance of each point to closest centroid
+$SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 
 ----
 
 ## Clustering
-# Kmeans
+# Kmeans - notes
 <space>
 
-- choose K randomly 
+- Choose initial K randomly 
   - can lead to poor centroids
-  - run Kmeans multiple times
-- reduce the total SSE by increasing K
-- increase the cluster with largest SSE
-- decrease K and minimize SSE
-- split up a cluster into other clusters
-  - the centroid that is split will increase total SSE the least
+  - Run Kmeans multiple times
+- Reduce the total SSE by increasing K
+- Increase the cluster with largest SSE
+- Decrease K and minimize SSE
+- Split up a cluster into other clusters
+  - The centroid that is split will increase total SSE the least
+
 ----
 
 ## Clustering
 # Kmeans
 <space>
 
-- bisecting K means
-  - less susceptible to initialization problems
-  - split points into 2 clusters
-    - take cluster with largest SSE - split that into two clusters
-  - rerun bisecting K mean on resulting clusters
-  - stop when you have K clusters
+- Bisecting K means
+  - Split points into 2 clusters
+    - Take cluster with largest SSE - split that into two clusters
+  - Rerun bisecting K mean on resulting clusters
+  - Stop when you have K clusters
+- Less susceptible to initialization problems
 
 ----
 
@@ -708,9 +708,36 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 # Kmeans
 <space>
 
+```{r kmeans_wine, message=FALSE}
+wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
+names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
+                 'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
+str(wine)
+```
+
+- set.seed() to make sure results are reproducible
+- add nstart to the function call so that it attempts multiple configurations, selecting the best
+- use a screeplot to select optimal K
+
+----
+
+## Clustering
+# Kmeans
+<space>
+
 ```{r}
-tennis_kmean <- kmeans(features, centers=5)
-table(tennis$Gender,tennis_kmean$cluster)
+wine <- scale(wine[,-1])
+best_k <- 0
+num_k <- 20
+for (i in 1:num_k){
+  best_k[i] <- sum(kmeans(wine,centers=i)$withinss)
+  }
+
+barplot(best_k, xlab = "Number of clusters",
+        names.arg = 1:num_k,
+        ylab="Within groups sum of squares",
+        main="Scree Plot for Wine dataset")
+
 ```
 
 ----
