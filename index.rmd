@@ -887,6 +887,17 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, Eps
+![density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_structure.png)
+
+----
+
+## Clustering
+# Terminology
+<space>
+
+- Core points are located inside a cluster
+- Border points are on the borders between two clusters
+- Neighborhood of p are all points within some radius of p, Eps
 - High density region has at least Minpts within Eps of point p
 - Noise points are not within Eps of border or core points
 
@@ -903,12 +914,14 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 - Noise points are not within Eps of border or core points
 - If p is density connected to q, they are part of the same cluster, if not, then they are not
 - If p is not density connected to any other point, its considered noise
-     
+
 ----
 
 ## Clustering
 # DBSCAN
 <space>
+
+![density_win](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_ex_win.png)
 
 ----
 
@@ -1292,6 +1305,17 @@ plot(boost_acc,type='l')
 - difficult concepts are hard to learn
 - avoid pre-pruning
 - hard to know optimal length of tree without growing it there first
+
+----
+
+## Summary
+# ML - Part II
+<space>
+
+- Logistic regression
+- Math behind PCA
+- 3 types of clusters
+- Trees and improvements
 
 ----
 

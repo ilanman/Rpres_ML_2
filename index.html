@@ -403,7 +403,7 @@ init_theta&lt;-as.matrix(c(0))
 grad_cost(X1,Y1,init_theta)
 </code></pre>
 
-<pre><code>[1] 5155
+<pre><code>[1] 5256
 </code></pre>
 
 <pre><code class="r">iterations = 100
@@ -442,7 +442,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
 <pre><code class="r">grad_cost(X1,Y1,theta[[1]])
 </code></pre>
 
-<pre><code>[1] 307.9
+<pre><code>[1] 329.2
 </code></pre>
 
 <pre><code class="r">## Make some predictions
@@ -1564,9 +1564,8 @@ best_k
 <ul>
 <li>Core points are located inside a cluster</li>
 <li>Border points are on the borders between two clusters</li>
-<li>Neighborhood of p are all points within some radius of p, Eps</li>
-<li>High density region has at least Minpts within Eps of point p</li>
-<li>Noise points are not within Eps of border or core points</li>
+<li>Neighborhood of p are all points within some radius of p, Eps
+<img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_structure.png" alt="density"></li>
 </ul>
 
   </article>
@@ -1588,23 +1587,51 @@ best_k
 <li>Neighborhood of p are all points within some radius of p, Eps</li>
 <li>High density region has at least Minpts within Eps of point p</li>
 <li>Noise points are not within Eps of border or core points</li>
-<li>If p is density connected to q, they are part of the same cluster, if not, then they are not</li>
-<li>If p is not density connected to any other point, its considered noise</li>
 </ul>
-
-<hr>
-
-<h2>Clustering</h2>
-
-<h1>DBSCAN</h1>
-
-<p><space></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-65" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>Terminology</h1>
+
+<p><space></p>
+
+<ul>
+<li>Core points are located inside a cluster</li>
+<li>Border points are on the borders between two clusters</li>
+<li>Neighborhood of p are all points within some radius of p, Eps</li>
+<li>High density region has at least Minpts within Eps of point p</li>
+<li>Noise points are not within Eps of border or core points</li>
+<li>If p is density connected to q, they are part of the same cluster, if not, then they are not</li>
+<li>If p is not density connected to any other point, its considered noise</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-66" style="background:;">
+  <hgroup>
+    <h2>Clustering</h2>
+  </hgroup>
+  <article>
+    <h1>DBSCAN</h1>
+
+<p><space></p>
+
+<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_ex_win.png" alt="density_win"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-67" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1625,7 +1652,7 @@ plot(cluster)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-66" style="background:;">
+      <slide class="" id="slide-68" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1645,7 +1672,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-67" style="background:;">
+      <slide class="" id="slide-69" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1665,7 +1692,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-68" style="background:;">
+      <slide class="" id="slide-70" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1683,7 +1710,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-69" style="background:;">
+      <slide class="" id="slide-71" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1698,7 +1725,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-70" style="background:;">
+      <slide class="" id="slide-72" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1721,7 +1748,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-71" style="background:;">
+      <slide class="" id="slide-73" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1742,7 +1769,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-72" style="background:;">
+      <slide class="" id="slide-74" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1779,7 +1806,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-73" style="background:;">
+      <slide class="" id="slide-75" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1807,7 +1834,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-74" style="background:;">
+      <slide class="" id="slide-76" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1828,7 +1855,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-75" style="background:;">
+      <slide class="" id="slide-77" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1853,7 +1880,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-76" style="background:;">
+      <slide class="" id="slide-78" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1879,7 +1906,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-77" style="background:;">
+      <slide class="" id="slide-79" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1906,7 +1933,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-78" style="background:;">
+      <slide class="" id="slide-80" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1933,7 +1960,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-79" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1952,7 +1979,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-80" style="background:;">
+      <slide class="" id="slide-82" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1983,7 +2010,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-81" style="background:;">
+      <slide class="" id="slide-83" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2006,7 +2033,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-82" style="background:;">
+      <slide class="" id="slide-84" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2033,7 +2060,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-83" style="background:;">
+      <slide class="" id="slide-85" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2048,7 +2075,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-84" style="background:;">
+      <slide class="" id="slide-86" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2072,13 +2099,13 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         86 |          3 |         89 | 
-             |      0.593 |      0.021 |            | 
+    democrat |         81 |          1 |         82 | 
+             |      0.559 |      0.007 |            | 
 -------------|------------|------------|------------|
-  republican |          9 |         47 |         56 | 
-             |      0.062 |      0.324 |            | 
+  republican |          3 |         60 |         63 | 
+             |      0.021 |      0.414 |            | 
 -------------|------------|------------|------------|
-Column Total |         95 |         50 |        145 | 
+Column Total |         84 |         61 |        145 | 
 -------------|------------|------------|------------|
 
 
@@ -2088,7 +2115,7 @@ Column Total |         95 |         50 |        145 |
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-85" style="background:;">
+      <slide class="" id="slide-87" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2101,20 +2128,20 @@ Column Total |         95 |         50 |        145 |
 head(C5imp(tree_model))
 </code></pre>
 
-<pre><code>##                              Overall
-## physician-fee-freeze           97.92
-## synfuels-corporation-cutback   41.52
-## immigration                     7.61
-## duty-free-exports               7.61
-## handicapped-infants             0.00
-## water-project-cost-sharing      0.00
+<pre><code>##                                   Overall
+## physician-fee-freeze                97.92
+## synfuels-corporation-cutback        38.41
+## mx-missile                          11.07
+## water-project-cost-sharing           9.00
+## adoption-of-the-budget-resolution    6.57
+## handicapped-infants                  0.00
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-86" style="background:;">
+      <slide class="" id="slide-88" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2132,7 +2159,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Sat Aug 16 22:09:27 2014
+## C5.0 [Release 2.07 GPL Edition]      Sun Aug 17 08:45:00 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2141,15 +2168,18 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (167.5/2.2)
+## physician-fee-freeze in {?,n}: democrat (173.6/2.6)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (103.2/2.7)
+## :...synfuels-corporation-cutback in {?,n}: republican (91.3/3.9)
 ##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports = ?: democrat (0)
-##         duty-free-exports = y: republican (1)
-##         duty-free-exports = n:
-##         :...immigration in {?,n}: democrat (10/2.2)
-##             immigration = y: republican (7.3/2.1)
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (3.2)
+##         mx-missile = n:
+##         :...water-project-cost-sharing in {?,n}: republican (6.5)
+##             water-project-cost-sharing = y:
+##             :...adoption-of-the-budget-resolution in {?,
+##                 :                                     n}: republican (9.6/2.3)
+##                 adoption-of-the-budget-resolution = y: democrat (4.8/0.2)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2158,21 +2188,22 @@ summary(tree_model)
 ##    ----------------  
 ##    Size      Errors  
 ## 
-##       5    9( 3.1%)   &lt;&lt;
+##       6    8( 2.8%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     174     4    (a): class democrat
-##       5   106    (b): class republican
+##     180     5    (a): class democrat
+##       3   101    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
 ##   97.92% physician-fee-freeze
-##   41.52% synfuels-corporation-cutback
-##    7.61% immigration
-##    7.61% duty-free-exports
+##   38.41% synfuels-corporation-cutback
+##   11.07% mx-missile
+##    9.00% water-project-cost-sharing
+##    6.57% adoption-of-the-budget-resolution
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2182,7 +2213,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-87" style="background:;">
+      <slide class="" id="slide-89" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2200,7 +2231,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-88" style="background:;">
+      <slide class="" id="slide-90" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2232,13 +2263,13 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         88 |          1 |         89 | 
-##              |      0.607 |      0.007 |            | 
+##     democrat |         81 |          1 |         82 | 
+##              |      0.559 |      0.007 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          5 |         51 |         56 | 
-##              |      0.034 |      0.352 |            | 
+##   republican |          6 |         57 |         63 | 
+##              |      0.041 |      0.393 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         93 |         52 |        145 | 
+## Column Total |         87 |         58 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2248,7 +2279,7 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-89" style="background:;">
+      <slide class="" id="slide-91" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2266,7 +2297,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Sat Aug 16 22:09:27 2014
+## C5.0 [Release 2.07 GPL Edition]      Sun Aug 17 08:45:00 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2277,324 +2308,356 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (167.5/2.2)
+## physician-fee-freeze in {?,n}: democrat (173.6/2.6)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (103.2/2.7)
+## :...synfuels-corporation-cutback in {?,n}: republican (91.3/3.9)
 ##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports = ?: democrat (0)
-##         duty-free-exports = y: republican (1)
-##         duty-free-exports = n:
-##         :...immigration in {?,n}: democrat (10/2.2)
-##             immigration = y: republican (7.3/2.1)
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (3.2)
+##         mx-missile = n:
+##         :...water-project-cost-sharing in {?,n}: republican (6.5)
+##             water-project-cost-sharing = y:
+##             :...adoption-of-the-budget-resolution in {?,
+##                 :                                     n}: republican (9.6/2.3)
+##                 adoption-of-the-budget-resolution = y: democrat (4.8/0.2)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = n: republican (118.9/17)
-## adoption-of-the-budget-resolution in {?,y}: democrat (170.1/21.1)
+## adoption-of-the-budget-resolution in {?,y}: democrat (155.3/15.4)
+## adoption-of-the-budget-resolution = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (96.2/15.7)
+##     synfuels-corporation-cutback = y: democrat (37.5/9.2)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (140/16.4)
-## physician-fee-freeze = y: republican (149/38.6)
+## physician-fee-freeze in {?,n}: democrat (134.2/20.3)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (60.8/2)
+##     immigration = n:
+##     :...education-spending = n: democrat (34.9/6.8)
+##         education-spending in {?,y}: republican (59.1/17)
 ## 
 ## -----  Trial 3:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending in {?,n}: democrat (146.8/28.3)
-## education-spending = y:
-## :...physician-fee-freeze = ?: republican (0)
-##     physician-fee-freeze = n: democrat (17.4/2.3)
+## adoption-of-the-budget-resolution = ?: democrat (0)
+## adoption-of-the-budget-resolution = n: republican (142.3/47.6)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (80.5/3.9)
 ##     physician-fee-freeze = y:
-##     :...synfuels-corporation-cutback in {?,n}: republican (79.3/9.7)
-##         synfuels-corporation-cutback = y: democrat (45.4/17.1)
+##     :...anti-satellite-test-ban in {?,n}: democrat (42.1/7.7)
+##         anti-satellite-test-ban = y: republican (24.1/0.8)
 ## 
 ## -----  Trial 4:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (102.8/20.4)
+## physician-fee-freeze in {?,n}: democrat (129.9/24.2)
 ## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (105.1/18.1)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban in {?,n}: democrat (53.1/10.5)
-##         anti-satellite-test-ban = y: republican (28.1/0.1)
+## :...water-project-cost-sharing in {?,n}: republican (51.8/6)
+##     water-project-cost-sharing = y:
+##     :...superfund-right-to-sue in {?,n}: democrat (16.8/0.5)
+##         superfund-right-to-sue = y:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (62.3/21.8)
+##             adoption-of-the-budget-resolution = y: democrat (28.2/5.2)
 ## 
 ## -----  Trial 5:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback in {?,y}: democrat (124.4/31.1)
+## synfuels-corporation-cutback = ?: democrat (0)
 ## synfuels-corporation-cutback = n:
-## :...physician-fee-freeze = n: democrat (58/23.6)
-##     physician-fee-freeze in {?,y}: republican (106.6/17.4)
+## :...duty-free-exports in {?,n}: republican (109.1/29.6)
+## :   duty-free-exports = y: democrat (72.9/21.9)
+## synfuels-corporation-cutback = y:
+## :...physician-fee-freeze in {?,n}: democrat (38.7)
+##     physician-fee-freeze = y:
+##     :...water-project-cost-sharing = n: republican (7.7/0.1)
+##         water-project-cost-sharing in {?,y}: democrat (60.6/13.1)
 ## 
 ## -----  Trial 6:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending = ?: republican (0)
-## education-spending = y:
-## :...physician-fee-freeze = n: democrat (9.4/1.2)
-## :   physician-fee-freeze in {?,y}: republican (144.3/38.6)
-## education-spending = n:
-## :...crime in {?,n}: democrat (30/0.5)
-##     crime = y:
-##     :...synfuels-corporation-cutback = n: republican (62.6/19.2)
-##         synfuels-corporation-cutback in {?,y}: democrat (42.7/9.2)
+## physician-fee-freeze in {?,n}: democrat (132.2/31.2)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (54.7/7.7)
+##     immigration = n:
+##     :...duty-free-exports in {?,y}: democrat (28.4/4.1)
+##         duty-free-exports = n:
+##         :...crime in {?,n}: republican (9/0.2)
+##             crime = y: democrat (64.7/28.3)
 ## 
 ## -----  Trial 7:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (100.2/23.2)
+## physician-fee-freeze in {?,n}: democrat (114.9/30.6)
 ## physician-fee-freeze = y:
-## :...crime in {?,n}: republican (10.9/0.1)
-##     crime = y:
-##     :...immigration in {?,y}: republican (69.2/13.3)
-##         immigration = n:
-##         :...mx-missile in {?,y}: democrat (23.2/1.5)
-##             mx-missile = n:
-##             :...anti-satellite-test-ban in {?,n}: democrat (74.9/30.8)
-##                 anti-satellite-test-ban = y: republican (10.5)
+## :...education-spending = n: democrat (67.6/28.5)
+##     education-spending in {?,y}: republican (106.6/22.1)
 ## 
 ## -----  Trial 8:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution in {?,n}: republican (158/43.7)
-## adoption-of-the-budget-resolution = y: democrat (131/38.8)
+## adoption-of-the-budget-resolution = ?: republican (0)
+## adoption-of-the-budget-resolution = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (114.3/24.6)
+## :   synfuels-corporation-cutback = y: democrat (58.7/25.6)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (48.2/1.8)
+##     physician-fee-freeze = y:
+##     :...anti-satellite-test-ban = n: democrat (38.6/7.2)
+##         anti-satellite-test-ban in {?,y}: republican (29.1/1.1)
 ## 
 ## -----  Trial 9:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (93.1/19.5)
+## physician-fee-freeze = n: democrat (101.3/26.7)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (103.5/19.5)
-##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports = ?: democrat (0)
-##         duty-free-exports = y: republican (3)
-##         duty-free-exports = n:
-##         :...immigration in {?,n}: democrat (55/16.5)
-##             immigration = y: republican (34.4/12.3)
+## :...water-project-cost-sharing in {?,n}: republican (64.1/6.1)
+##     water-project-cost-sharing = y:
+##     :...superfund-right-to-sue = ?: republican (0)
+##         superfund-right-to-sue = n: democrat (9/0.3)
+##         superfund-right-to-sue = y:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (85.3/24.4)
+##             adoption-of-the-budget-resolution = y: democrat (29.3/8.1)
 ## 
 ## -----  Trial 10:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = ?: democrat (0)
-## adoption-of-the-budget-resolution = n: republican (151.5/54.4)
-## adoption-of-the-budget-resolution = y:
-## :...physician-fee-freeze in {?,n}: democrat (39/2)
-##     physician-fee-freeze = y:
-##     :...anti-satellite-test-ban in {?,n}: democrat (71.3/14.5)
-##         anti-satellite-test-ban = y: republican (27.2/3.2)
+## mx-missile = ?: republican (0)
+## mx-missile = y: democrat (107.1/29.6)
+## mx-missile = n:
+## :...anti-satellite-test-ban in {?,y}: republican (56.5/7.8)
+##     anti-satellite-test-ban = n:
+##     :...physician-fee-freeze = ?: republican (0)
+##         physician-fee-freeze = n: democrat (12.4)
+##         physician-fee-freeze = y:
+##         :...water-project-cost-sharing in {?,n}: republican (24.6)
+##             water-project-cost-sharing = y:
+##             :...adoption-of-the-budget-resolution in {?,y}: democrat (16.5/0.1)
+##                 adoption-of-the-budget-resolution = n:
+##                 :...duty-free-exports in {?,n}: republican (57.5/14.9)
+##                     duty-free-exports = y: democrat (14.5/0.9)
 ## 
 ## -----  Trial 11:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending = ?: democrat (0)
-## education-spending = n:
-## :...crime in {?,n}: democrat (20.3/0.2)
-## :   crime = y:
-## :   :...religious-groups-in-schools = n: republican (37.4/12.9)
-## :       religious-groups-in-schools in {?,y}: democrat (86.4/13.7)
-## education-spending = y:
-## :...physician-fee-freeze = ?: republican (0)
-##     physician-fee-freeze = n: democrat (15.2/1.3)
-##     physician-fee-freeze = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (14)
-##         anti-satellite-test-ban = n:
-##         :...superfund-right-to-sue = ?: republican (0)
-##             superfund-right-to-sue = n: democrat (9/1.1)
-##             superfund-right-to-sue = y:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     n}: republican (62.9/8.8)
-##                 adoption-of-the-budget-resolution = y: democrat (43.8/18.5)
+## crime in {?,n}: democrat (60.6/12.9)
+## crime = y:
+## :...water-project-cost-sharing in {?,n}: republican (110/33.2)
+##     water-project-cost-sharing = y:
+##     :...physician-fee-freeze in {?,n}: democrat (16.7)
+##         physician-fee-freeze = y:
+##         :...mx-missile in {?,y}: democrat (14.6/1.8)
+##             mx-missile = n:
+##             :...anti-satellite-test-ban = n: democrat (71.7/30)
+##                 anti-satellite-test-ban in {?,y}: republican (15.3)
 ## 
 ## -----  Trial 12:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (99.1/18.5)
+## physician-fee-freeze in {?,n}: democrat (115.1/27.8)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (106.1/22.8)
-##     synfuels-corporation-cutback = y: democrat (83.8/32.7)
+## :...immigration in {?,y}: republican (62.9/8.5)
+##     immigration = n:
+##     :...duty-free-exports = ?: republican (0)
+##         duty-free-exports = y: democrat (24.4/4.1)
+##         duty-free-exports = n:
+##         :...synfuels-corporation-cutback in {?,n}: republican (43.5/4.3)
+##             synfuels-corporation-cutback = y: democrat (43.1/17.3)
 ## 
 ## -----  Trial 13:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (88.1/21.5)
-## physician-fee-freeze = y:
-## :...mx-missile in {?,n}: republican (147.7/39.9)
-##     mx-missile = y: democrat (53.2/22)
+## adoption-of-the-budget-resolution = ?: republican (0)
+## adoption-of-the-budget-resolution = y: democrat (104.9/26.5)
+## adoption-of-the-budget-resolution = n:
+## :...education-spending = ?: republican (0)
+##     education-spending = n:
+##     :...religious-groups-in-schools in {?,n}: republican (20.2/2.8)
+##     :   religious-groups-in-schools = y: democrat (60.6/26.6)
+##     education-spending = y:
+##     :...physician-fee-freeze = n: democrat (23.3/9)
+##         physician-fee-freeze in {?,y}: republican (80/7.5)
 ## 
 ## -----  Trial 14:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (79.3/22.1)
+## physician-fee-freeze = n: democrat (98.1/31)
 ## physician-fee-freeze = y:
-## :...export-administration-act-south-africa = n: democrat (59.9/22.2)
-##     export-administration-act-south-africa in {?,y}: republican (149.8/42.1)
+## :...water-project-cost-sharing in {?,n}: republican (63.4/7.3)
+##     water-project-cost-sharing = y:
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (20.6/4.4)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,y}: republican (15.6)
+##             anti-satellite-test-ban = n:
+##             :...adoption-of-the-budget-resolution = ?: republican (0)
+##                 adoption-of-the-budget-resolution = y: democrat (18/0.1)
+##                 adoption-of-the-budget-resolution = n:
+##                 :...superfund-right-to-sue = ?: republican (0)
+##                     superfund-right-to-sue = n: democrat (7/0.2)
+##                     superfund-right-to-sue = y:
+##                     :...duty-free-exports in {?,n}: republican (60.2/6.5)
+##                         duty-free-exports = y: democrat (6/0.5)
 ## 
 ## -----  Trial 15:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (71.4/21.7)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (52.1/11)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (99.1/22.1)
-##         adoption-of-the-budget-resolution = y: democrat (66.4/17.6)
+## synfuels-corporation-cutback = ?: republican (0)
+## synfuels-corporation-cutback = y: democrat (107.4/39.9)
+## synfuels-corporation-cutback = n:
+## :...adoption-of-the-budget-resolution in {?,n}: republican (112.2/22)
+##     adoption-of-the-budget-resolution = y:
+##     :...physician-fee-freeze in {?,n}: democrat (17.5/1.3)
+##         physician-fee-freeze = y: republican (51.9/19.1)
 ## 
 ## -----  Trial 16:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback in {?,n}: republican (159.4/49.8)
-## synfuels-corporation-cutback = y: democrat (129.6/39.8)
+## education-spending = ?: republican (0)
+## education-spending = y:
+## :...physician-fee-freeze = n: democrat (31.3/11.4)
+## :   physician-fee-freeze in {?,y}: republican (101.6/17.9)
+## education-spending = n:
+## :...crime in {?,n}: democrat (33.7/5.1)
+##     crime = y:
+##     :...religious-groups-in-schools = ?: democrat (0)
+##         religious-groups-in-schools = n: republican (29.1/5.9)
+##         religious-groups-in-schools = y:
+##         :...mx-missile = n: republican (62.7/25.4)
+##             mx-missile in {?,y}: democrat (30.7)
 ## 
 ## -----  Trial 17:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending = ?: democrat (0)
-## education-spending = n:
-## :...crime in {?,n}: democrat (28.8/0.3)
-## :   crime = y:
-## :   :...religious-groups-in-schools = n: republican (49.1/19.8)
-## :       religious-groups-in-schools in {?,y}: democrat (68.9/13.2)
-## education-spending = y:
-## :...physician-fee-freeze = ?: republican (0)
-##     physician-fee-freeze = n: democrat (8.3/0.4)
-##     physician-fee-freeze = y:
-##     :...immigration in {?,y}: republican (55/4.3)
-##         immigration = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (59.6/19.6)
-##             adoption-of-the-budget-resolution = y: democrat (19.2/2.1)
+## adoption-of-the-budget-resolution in {?,y}: democrat (110.8/29)
+## adoption-of-the-budget-resolution = n:
+## :...education-spending in {?,y}: republican (83/19.1)
+##     education-spending = n:
+##     :...water-project-cost-sharing = n: republican (38.4/11.5)
+##         water-project-cost-sharing in {?,y}: democrat (56.8/19.9)
 ## 
 ## -----  Trial 18:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (87.4/17.6)
+## physician-fee-freeze in {?,n}: democrat (112.8/31.7)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (106.9/21.8)
-##     synfuels-corporation-cutback = y: democrat (94.7/32.5)
+## :...immigration in {?,y}: republican (72.2/12.5)
+##     immigration = n:
+##     :...mx-missile = ?: republican (0)
+##         mx-missile = y: democrat (21.3/5.3)
+##         mx-missile = n:
+##         :...water-project-cost-sharing in {?,n}: republican (15.1)
+##             water-project-cost-sharing = y:
+##             :...adoption-of-the-budget-resolution = n: republican (57.8/25.6)
+##                 adoption-of-the-budget-resolution in {?,y}: democrat (9.8)
 ## 
 ## -----  Trial 19:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (78.5/21.2)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (83/15.1)
-##     immigration = n:
-##     :...mx-missile in {?,y}: democrat (25.7/4.2)
-##         mx-missile = n:
-##         :...anti-satellite-test-ban in {?,y}: republican (15.9)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     n}: republican (68.3/25.7)
-##                 adoption-of-the-budget-resolution = y: democrat (17.6/0.6)
+## water-project-cost-sharing = ?: democrat (0)
+## water-project-cost-sharing = n:
+## :...physician-fee-freeze in {?,y}: republican (55.8/9.4)
+## :   physician-fee-freeze = n:
+## :   :...synfuels-corporation-cutback = n: republican (63.3/25.5)
+## :       synfuels-corporation-cutback in {?,y}: democrat (14.3)
+## water-project-cost-sharing = y:
+## :...physician-fee-freeze in {?,n}: democrat (30.2/1.1)
+##     physician-fee-freeze = y:
+##     :...superfund-right-to-sue in {?,n}: democrat (13.5/0.4)
+##         superfund-right-to-sue = y:
+##         :...adoption-of-the-budget-resolution in {?,y}: democrat (37.2/8.1)
+##             adoption-of-the-budget-resolution = n:
+##             :...education-spending = n: democrat (49.5/20.7)
+##                 education-spending in {?,y}: republican (25.2/0.8)
 ## 
 ## -----  Trial 20:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (52.6/2.8)
+## physician-fee-freeze = ?: democrat (0)
+## physician-fee-freeze = n:
+## :...adoption-of-the-budget-resolution in {?,y}: democrat (66.1/2)
+## :   adoption-of-the-budget-resolution = n:
+## :   :...superfund-right-to-sue = n: republican (44.8/16.6)
+## :       superfund-right-to-sue in {?,y}: democrat (22.2/2)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (102.9/27.3)
-##     synfuels-corporation-cutback = y:
-##     :...education-spending in {?,n}: democrat (47/8.4)
-##         education-spending = y:
-##         :...superfund-right-to-sue in {?,n}: democrat (14/0.4)
-##             superfund-right-to-sue = y: republican (71.5/29.2)
+## :...anti-satellite-test-ban in {?,y}: republican (39.4/6.3)
+##     anti-satellite-test-ban = n:
+##     :...adoption-of-the-budget-resolution = n: republican (81.3/29.5)
+##         adoption-of-the-budget-resolution in {?,y}: democrat (35.1/6)
 ## 
 ## -----  Trial 21:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (43.1/3)
+## physician-fee-freeze in {?,n}: democrat (133.5/28.2)
 ## physician-fee-freeze = y:
-## :...anti-satellite-test-ban = ?: democrat (0)
-##     anti-satellite-test-ban = y: republican (62.2/14.3)
-##     anti-satellite-test-ban = n:
-##     :...crime = ?: democrat (0)
-##         crime = n: republican (11.3/2.2)
-##         crime = y:
-##         :...adoption-of-the-budget-resolution in {?,y}: democrat (82.9/13.9)
-##             adoption-of-the-budget-resolution = n:
-##             :...synfuels-corporation-cutback in {?,n}: republican (22.1)
-##                 synfuels-corporation-cutback = y: democrat (66.4/24.5)
+## :...immigration in {?,y}: republican (59.8/14.1)
+##     immigration = n:
+##     :...duty-free-exports in {?,y}: democrat (23.8/3.5)
+##         duty-free-exports = n:
+##         :...synfuels-corporation-cutback = n: republican (24.2/3.4)
+##             synfuels-corporation-cutback in {?,y}: democrat (47.8/14.8)
 ## 
 ## -----  Trial 22:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (36.6/2.9)
+## physician-fee-freeze in {?,n}: democrat (106.9/16.7)
 ## physician-fee-freeze = y:
-## :...education-spending = ?: republican (0)
-##     education-spending = n:
-##     :...superfund-right-to-sue = n: republican (25.6/9.5)
-##     :   superfund-right-to-sue in {?,y}: democrat (61.1/13.8)
-##     education-spending = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (20.1)
-##         anti-satellite-test-ban = n:
-##         :...crime in {?,n}: republican (7.6)
-##             crime = y:
-##             :...aid-to-nicaraguan-contras = ?: republican (0)
-##                 aid-to-nicaraguan-contras = y: democrat (15.5/2.3)
-##                 aid-to-nicaraguan-contras = n:
-##                 :...immigration = n: democrat (79.3/31.2)
-##                     immigration in {?,y}: republican (42.3)
+## :...water-project-cost-sharing in {?,n}: republican (49.1/7.3)
+##     water-project-cost-sharing = y:
+##     :...superfund-right-to-sue in {?,n}: democrat (13.9/0.7)
+##         superfund-right-to-sue = y:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (81.2/26.6)
+##             adoption-of-the-budget-resolution = y: democrat (36.9/7.6)
 ## 
 ## -----  Trial 23:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (29.5/2.3)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (126.2/28.4)
+## duty-free-exports in {?,y}: democrat (90.3/16.2)
+## duty-free-exports = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (100.3/32.2)
 ##     synfuels-corporation-cutback = y:
-##     :...education-spending in {?,n}: democrat (44.7/11.7)
-##         education-spending = y:
-##         :...mx-missile in {?,n}: republican (74.9/27)
-##             mx-missile = y: democrat (12.6/0.8)
+##     :...physician-fee-freeze in {?,n}: democrat (12.9)
+##         physician-fee-freeze = y:
+##         :...water-project-cost-sharing in {?,n}: republican (10.8/0.4)
+##             water-project-cost-sharing = y: democrat (73.8/28.5)
 ## 
 ## -----  Trial 24:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (25.1/0.3)
+## physician-fee-freeze in {?,n}: democrat (111.4/19.9)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback = ?: republican (0)
-##     synfuels-corporation-cutback = n:
-##     :...education-spending = n: democrat (46.4/18.7)
-##     :   education-spending in {?,y}: republican (63.9)
-##     synfuels-corporation-cutback = y:
-##     :...water-project-cost-sharing = ?: democrat (0)
-##         water-project-cost-sharing = n: republican (18.8/0.7)
-##         water-project-cost-sharing = y:
-##         :...religious-groups-in-schools = n: republican (30.9/9.5)
-##             religious-groups-in-schools in {?,y}: democrat (99.9/21.2)
+## :...education-spending in {?,y}: republican (87/21.3)
+##     education-spending = n:
+##     :...immigration in {?,n}: democrat (54.4/8.4)
+##         immigration = y: republican (34.1/13)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2603,56 +2666,54 @@ summary(boosted_tree_model)
 ## -----      ----------------  
 ##    Size      Errors  
 ## 
-##    0      5    9( 3.1%)
-##    1      2   37(12.8%)
-##    2      2   14( 4.8%)
-##    3      4   23( 8.0%)
-##    4      4   11( 3.8%)
-##    5      3   12( 4.2%)
-##    6      5   27( 9.3%)
-##    7      6   50(17.3%)
-##    8      2   40(13.8%)
-##    9      5    9( 3.1%)
-##   10      4   27( 9.3%)
-##   11      8   27( 9.3%)
-##   12      3   12( 4.2%)
-##   13      3   23( 8.0%)
-##   14      3   41(14.2%)
-##   15      4   11( 3.8%)
-##   16      2  102(35.3%)
-##   17      7   24( 8.3%)
-##   18      3   12( 4.2%)
-##   19      6   11( 3.8%)
-##   20      5    8( 2.8%)
-##   21      6   12( 4.2%)
-##   22      8   48(16.6%)
-##   23      5    8( 2.8%)
-##   24      6   19( 6.6%)
-## boost              4( 1.4%)   &lt;&lt;
+##    0      6    8( 2.8%)
+##    1      3   34(11.8%)
+##    2      4   16( 5.5%)
+##    3      4   26( 9.0%)
+##    4      5   10( 3.5%)
+##    5      5   50(17.3%)
+##    6      5   54(18.7%)
+##    7      3   19( 6.6%)
+##    8      5   23( 8.0%)
+##    9      5   11( 3.8%)
+##   10      7   28( 9.7%)
+##   11      6   70(24.2%)
+##   12      5   14( 4.8%)
+##   13      5   27( 9.3%)
+##   14      8    7( 2.4%)
+##   15      4   26( 9.0%)
+##   16      6   28( 9.7%)
+##   17      4   31(10.7%)
+##   18      6   11( 3.8%)
+##   19      8   47(16.3%)
+##   20      6   17( 5.9%)
+##   21      5   17( 5.9%)
+##   22      5   10( 3.5%)
+##   23      5   51(17.6%)
+##   24      4   17( 5.9%)
+## boost              3( 1.0%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     176     2    (a): class democrat
-##       2   109    (b): class republican
+##     185          (a): class democrat
+##       3   101    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
 ##   97.92% physician-fee-freeze
-##   96.89% adoption-of-the-budget-resolution
-##   95.50% synfuels-corporation-cutback
-##   94.12% education-spending
-##   92.73% crime
-##   42.56% mx-missile
-##   42.56% immigration
-##   41.87% anti-satellite-test-ban
-##   36.68% export-administration-act-south-africa
-##   35.99% superfund-right-to-sue
-##   27.34% aid-to-nicaraguan-contras
-##   26.30% religious-groups-in-schools
-##    7.61% water-project-cost-sharing
-##    7.61% duty-free-exports
+##   97.58% adoption-of-the-budget-resolution
+##   96.54% crime
+##   96.19% mx-missile
+##   95.16% duty-free-exports
+##   94.46% synfuels-corporation-cutback
+##   92.73% education-spending
+##   87.20% water-project-cost-sharing
+##   52.60% anti-satellite-test-ban
+##   40.48% immigration
+##   29.07% superfund-right-to-sue
+##   23.53% religious-groups-in-schools
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2662,7 +2723,7 @@ summary(boosted_tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-90" style="background:;">
+      <slide class="" id="slide-92" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2705,13 +2766,13 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         82 |          7 |         89 | 
-##              |      0.566 |      0.048 |            | 
+##     democrat |         79 |          3 |         82 | 
+##              |      0.545 |      0.021 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         55 |         56 | 
-##              |      0.007 |      0.379 |            | 
+##   republican |          2 |         61 |         63 | 
+##              |      0.014 |      0.421 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         83 |         62 |        145 | 
+## Column Total |         81 |         64 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2721,7 +2782,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-91" style="background:;">
+      <slide class="" id="slide-93" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2812,7 +2873,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-92" style="background:;">
+      <slide class="" id="slide-94" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2839,7 +2900,27 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-93" style="background:;">
+      <slide class="" id="slide-95" style="background:;">
+  <hgroup>
+    <h2>Summary</h2>
+  </hgroup>
+  <article>
+    <h1>ML - Part II</h1>
+
+<p><space></p>
+
+<ul>
+<li>Logistic regression</li>
+<li>Math behind PCA</li>
+<li>3 types of clusters</li>
+<li>Trees and improvements</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-96" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -2856,7 +2937,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-94" style="background:;">
+      <slide class="" id="slide-97" style="background:;">
   <hgroup>
     
   </hgroup>
