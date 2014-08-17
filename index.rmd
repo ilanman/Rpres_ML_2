@@ -709,7 +709,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 <space>
 
 ```{r kmeans_wine, message=FALSE}
-#wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
+wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
 names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
                  'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
 str(wine)
@@ -726,18 +726,17 @@ str(wine)
 <space>
 
 ```{r}
-wine <- scale(wine[,-1])
+s.wine <- scale(wine[,-1])
 best_k <- 0
 num_k <- 20
 for (i in 1:num_k){
-  best_k[i] <- sum(kmeans(wine,centers=i)$withinss)
+  best_k[i] <- sum(kmeans(s.wine,centers=i)$withinss)
   }
 
 barplot(best_k, xlab = "Number of clusters",
         names.arg = 1:num_k,
         ylab="Within groups sum of squares",
         main="Scree Plot for Wine dataset")
-
 ```
 
 ----
@@ -825,30 +824,92 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 # K-medoid
 <space>
 
+- Selecting the optimal number of clusters
+- For each point p, first find the average distance between p and all other points in the same cluster, $A$
+- Then find the average distance between p and all points in the nearest cluster, $B$
+- The silhouette coefficient for p is $\frac{A - B}{\max(A,B)}$
+  - Values close to 1 mean point clearly belongs to that cluster
+  - Values close to 0 mean points might belong in another cluster
+
+----
+
+## Clustering
+# K-medoid
+<space>
+
 ```{r kmedoid_example}
 library(cluster)
-## generate 25 objects, divided into 2 clusters.
-x <- rbind(cbind(rnorm(10,0,0.5), rnorm(10,0,0.5)),
-           cbind(rnorm(15,5,0.5), rnorm(15,5,0.5)))
-pamx <- pam(x, 2)
-summary(pamx)
-clusplot(pamx, main="K-medoids with K = 2",sub=NULL)
+
+pam.best <- as.numeric()
+for (i in 2:20){
+  pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
+}
+best_k <- which.max(pam.best)
+best_k
 ```
 
-http://www.bvmengineering.ac.in/docs/published%20papers/cpit/cpit/201405.pdf
+----
+
+## Clustering
+# K-medoid
+<space>
+
+```{r}
+clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
+```
+
 ----
 
 ## Clustering
 # DBSCAN
 <space>
 
-- density based
-     - center based approach to finding density
-     - count the number of points within some radius of a point, the radius is call Eps
-     - if Eps is too big, there will be m points, if eps is too small, there will be 1 point
-     - core point has X points within a radius of Eps, border points are within a radius of Eps of core point, and noise points are not within Eps of border or core points
-     - if p is density connected to q, they are part of the same cluster, if not, then they are not; if p is not density connected to any other point, its considered noise
+- A cluster is a dense region of points separated by low-density regions
+- Group objects into one cluster if they are connected to one another by densely populated area
+- Used when the clusters are irregular or intertwined, and when noise and outliers are present
+
+----
+
+## Clustering
+# Terminology
+<space>
+
+- Core points are located inside a cluster
+- Border points are on the borders between two clusters
+- Neighborhood of p are all points within some radius of p, Eps
+
+----
+
+## Clustering
+# Terminology
+<space>
+
+- Core points are located inside a cluster
+- Border points are on the borders between two clusters
+- Neighborhood of p are all points within some radius of p, Eps
+- High density region has at least Minpts within Eps of point p
+- Noise points are not within Eps of border or core points
+
+----
+
+## Clustering
+# Terminology
+<space>
+
+- Core points are located inside a cluster
+- Border points are on the borders between two clusters
+- Neighborhood of p are all points within some radius of p, Eps
+- High density region has at least Minpts within Eps of point p
+- Noise points are not within Eps of border or core points
+- If p is density connected to q, they are part of the same cluster, if not, then they are not
+- If p is not density connected to any other point, its considered noise
      
+----
+
+## Clustering
+# DBSCAN
+<space>
+
 ----
 
 ## Clustering
@@ -879,6 +940,11 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 ## Clustering
 # Summary
 <space>
+
+- Unsupervised learning
+- Not a perfect science - lots of interpretation
+- Hard to define "correct" clustering
+- Many types of algorithms
 
 ----
 
