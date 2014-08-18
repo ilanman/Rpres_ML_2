@@ -175,117 +175,90 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 ----
 
 ## Logistic Regression
-# Gradient descent
+# Newton-Raphson Method
 <space>
 
-```{r grad_ex_plot,echo=FALSE,fig.height=5,fig.width=5}
-x <- seq(0,1,by=0.01)
-y <- 4 + 3*x*rnorm(length(x),2,sd=0.3)
-df <- data.frame(cbind(X=x,Y=y))
-
-## take a look at the data
-ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
-```
+- efficient
+- easier to calculate that gradient descent
+- converges on *global* minimum
 
 ----
 
 ## Logistic Regression
-# Gradient descent
+# Newton-Raphson Method
 <space>
 
-```{r grad_formula,echo=TRUE}
-x <- cbind(1,x)  #Add ones to x  
-theta<- c(0,0)  # initalize theta vector 
-m <- nrow(x)  # Number of the observations 
-grad_cost <- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
-```
+- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
 
 ----
 
 ## Logistic Regression
-# Gradient descent
+# Newton-Raphson Method
 <space>
 
-```{r grad_function,echo=TRUE}
-gradDescent<-function(X,y,theta,iterations,alpha){
-  m <- length(y)
-  grad <- rep(0,length(theta))
-  cost.df <- data.frame(cost=0,theta=0)
+- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
+- re-write $f(x)$ as it's Taylor expansion:<br>
+$f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``$
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
+- re-write $f(x)$ as it's Taylor expansion:<br>
+$f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``$
+- take the derivative w.r.t x and set = 0<br>
+$0 = f′(w_{0}) + \frac{1}{2}f′′(w_{0})2(w_{1} − w_{0})$<br>
+$w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
+  - $w_{1}$ is a better approximation for the minimum than $w_{0}$
+  - continue iterating
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
+{
+#
+# Use the Newton-Raphson algorithm to get the mle.
+# Input is the data, functions to get the first and
+# second derivatives of the log-likelihood and an
+# initial value for the estimate.
+# return at each iteration:
+# parameter estimates and
+# value of score function
   
-  for (i in 1:iterations){
-    h <- X%*%theta
-    grad <-  (t(X)%*%(h - y))/m
-    theta <- theta - alpha * grad
-    cost.df <- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
-  }  
-  
-  return(list(theta,cost.df))
+   theta <- init
+   out <- matrix(NA, nrow=maxiter+1,ncol=2)
+   dlt <- dll(init,data)
+   out[1,] <- c(init,dlt)
+   i <- 1
+  continue <- T
+  while (continue) {
+      i <- i+1
+      theta.old <- theta
+      theta <- theta - dlt/d2ll(theta,data) ## NR update
+      dlt <- dll(theta,data)
+      out[i,] <- c(theta,dlt)
+      continue <- (abs(theta-theta.old) > eps) &&
+                   (i <= maxiter)
+   }
+   if (i > maxiter) { 
+        warning("Maximum number of iterations reached")
+        return(out)
+       }
+    out <- out[!is.na(out[,1]),]
+    out
 }
-```
 
 ----
 
 ## Logistic Regression
-# Gradient descent
-<space>
-
-```{r grad_vars,comment="",fig.height=5,fig.width=5}
-## initialize X, y and theta
-X1<-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
-Y1<-matrix(ncol=1,nrow=nrow(df),df$Y)
-
-init_theta<-as.matrix(c(0))
-grad_cost(X1,Y1,init_theta)
-
-iterations = 100
-alpha = 0.1
-results <- gradDescent(X1,Y1,init_theta,iterations,alpha)
-```
-
-----
-
-## Logistic Regression
-# Gradient descent
-<space>
-
-```{r grad_curve,fig.height=5,fig.width=5,echo=FALSE}
-theta <- results[1][[1]]
-cost.df <- results[2]
-cost.df <- as.data.frame(cost.df)[-1,]
-ggplot(cost.df,aes(x=cost.df$theta,y=cost.df$cost)) + geom_point()+
-  ylab("Cost")+xlab("Theta")+ggtitle("Cost curve")
-```
-
-----
-
-## Logistic Regression
-# Gradient descent
-<space>
-
-```{r pred,echo=TRUE,comment=""}
-grad_cost(X1,Y1,theta[[1]])
-## Make some predictions
-intercept <- df[df$X==0,]$Y
-pred <- function (x) return(intercept+c(x)%*%theta)
-new_points <- c(0.1,0.5,0.8,1.1)
-new_preds <- data.frame(X=new_points,Y=sapply(new_points,pred))
-```
-
-----
-
-## Logistic Regression
-# Gradient descent
-<space>
-
-```{r new_point,echo=TRUE,fig.height=5,fig.width=5}
-ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
-ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color='red'),size=3)+scale_colour_discrete(guide = FALSE)
-```
-
-----
-
-## Regression example
-# Gradient descent - summary
+# Newton-Raphson - summary
 <space>
 
 - minimization algorithm
