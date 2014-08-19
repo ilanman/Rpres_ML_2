@@ -221,39 +221,60 @@ $w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
 # Newton-Raphson Method
 <space>
 
-newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
-{
-#
-# Use the Newton-Raphson algorithm to get the mle.
-# Input is the data, functions to get the first and
-# second derivatives of the log-likelihood and an
-# initial value for the estimate.
-# return at each iteration:
-# parameter estimates and
-# value of score function
+$f(x) = x^{4} - 3\log(x)$
+
+```{r newton_curve, echo=FALSE}
+curve(fn,type='l',ylab="y",xlab="x",main="x^4 - 3*log(x)")
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r newton_code}
+fn <- function(x) x^4 - 3*log(x)
+dfn <- function(x) 4*x^3 - 3/x
+d2fn <- function(x) 12*x^2 + 3/x^2 
+
+newton <- function(num.its, dfn, d2fn){
+  theta <- rep(0,num.its)
+  theta[1] <- round(runif(1,0,100),0)
+
+  for (i in 2:num.its) {
+    h <- - dfn(theta[i-1]) / d2fn(theta[i-1])
+    theta[i] <- theta[i-1] + h 
+  }
   
-   theta <- init
-   out <- matrix(NA, nrow=maxiter+1,ncol=2)
-   dlt <- dll(init,data)
-   out[1,] <- c(init,dlt)
-   i <- 1
-  continue <- T
-  while (continue) {
-      i <- i+1
-      theta.old <- theta
-      theta <- theta - dlt/d2ll(theta,data) ## NR update
-      dlt <- dll(theta,data)
-      out[i,] <- c(theta,dlt)
-      continue <- (abs(theta-theta.old) > eps) &&
-                   (i <= maxiter)
-   }
-   if (i > maxiter) { 
-        warning("Maximum number of iterations reached")
-        return(out)
-       }
-    out <- out[!is.na(out[,1]),]
-    out
+  out <- cbind(1:num.its,theta)
+  dimnames(out)[[2]] <- c("iteration","estimate")
+  return(out)
 }
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r newton_output,echo=FALSE,comment=""}
+ans <- newton(20,dfn, d2fn)
+head(ans,5)
+tail(ans,5)
+fn(rev(ans[,2])[1])   ## value of f(x) at minimum
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r using_optimize,message=FALSE,comment="",warning=FALSE}
+optimize(fn,c(-100,100))  ## built-in R optimization function
+```
 
 ----
 
@@ -294,7 +315,7 @@ newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
 <space>
 
 - first big assumption: linearity
-- $PX=Y$
+- $\bf{PX}=\bf{Y}$
   - $X$ is original dataset, $P$ is a transformation of $X$ into $Y$
 - how do we choose $P$?
   - reduce noise
@@ -307,12 +328,12 @@ newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
 <space>
 
 - covariance matrix
-     - $C = X*X^{T}$
+  - $C = X*X^{T}$
 
 - restated goals are
   - minimize covariance and maximize variance
   - the optimizal $C$ is a diagonal matrix, off diagonals are = 0
-  
+
 ----
 
 ## Principle Component Analysis
@@ -333,12 +354,11 @@ newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
 # Eigenwhat?
 <space>
 
-- $Ax = \lambdax$
-  - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$
-- $Ax - \lambdaIx = 0$
-- $(A - \lambdaI)x = 0$
-- $\det(A - \lambdaI)$ = 0
-
+$Ax = \lambda x$
+  - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$<br>
+$Ax - \lambda Ix = 0$<br>
+$(A - \lambda I)x = 0$<br>
+$\det(A - \lambda I)$ = 0
 
 ----
 
@@ -346,16 +366,9 @@ newton <-function(data,dll,d2ll,init,eps=1e-6,maxiter=20)
 # Eigenwhat?
 <space>
 
-$\[A=\left[{\begin{array}{cc}5 & 2 \\2 & 5\\\end{array}\right ]\]$
-
+```{r eigen_ex}
 A = matrix(c(5,2,2,5),nrow=2)
 I = diag(nrow(A))
-|A - L*I| = 0
-det(c(5-l,2,2,5-l))
-(5-l)*(5-l) - 4 = 0
-25 - 10l + l^2 - 4 = 0
-l^2 - 10l + 21 = 0
-roots <- Re(polyroot(c(21,-10,1)))
 ```
 
 ----
@@ -364,12 +377,15 @@ roots <- Re(polyroot(c(21,-10,1)))
 # Eigenwhat?
 <space>
 
-- when lambda = -3
-Ax = 3x
-5x1 + 2x2 = 3x1
-2x1 + 5x2 = 3x2
-x1=-x2
-- one eigenvector = [1 -1]
+```{r eigen_ex2}
+A = matrix(c(5,2,2,5),nrow=2)
+I = diag(nrow(A))
+### |A - L*I| = 0
+### det(c(5-l,2,2,5-l))
+### (5-l)*(5-l) - 4 = 0
+### 25 - 10l + l^2 - 4 = 0
+### l^2 - 10l + 21 = 0
+```
 
 ----
 
@@ -377,11 +393,17 @@ x1=-x2
 # Eigenwhat?
 <space>
 
-- when lambda = 7
-5x1 + 2x2 = 7x1
-2x2 + 5x2 = 7x2
-x1 = x2
-- another eigenvector = [1 1]
+```{r eigen_ex3}
+A = matrix(c(5,2,2,5),nrow=2)
+I = diag(nrow(A))
+### |A - L*I| = 0
+### det(c(5-l,2,2,5-l))
+### (5-l)*(5-l) - 4 = 0
+### 25 - 10l + l^2 - 4 = 0
+### l^2 - 10l + 21 = 0
+roots <- Re(polyroot(c(21,-10,1)))
+roots
+```
 
 ----
 
@@ -389,9 +411,43 @@ x1 = x2
 # Eigenwhat?
 <space>
 
+- when $\lambda = 3$<br>
+$Ax = 3x$<br>
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- when $\lambda = 3$<br>
+$Ax = 3x$<br>
+$5x_{1} + 2x_{2} = 3x_{1}$<br>
+$2x_{1} + 5x_{2} = 3x_{2}$<br>
+$x_{1} = -x_{2}$<br>
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- when $\lambda = 7$<br>
+$Ax = 7x$<br>
+$5x_{1} + 2x_{2} = 7x_{1}$<br>
+$2x_{2} + 5x_{2} = 7x_{2}$<br>
+$x_{1} = x_{2}$<br>
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+```{r eigen_proof}
 A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
 A%*%c(1,1) == 7 * as.matrix(c(1,1))
-roots
+```
 
 ----
 
@@ -399,11 +455,11 @@ roots
 # Eigenwhat?
 <space>
 
-- check
-m <- matrix(c(1,-1,1,1),ncol=2)
+```{r eigen_check}
+m <- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
 m <- m/sqrt(norm(m))
 as.matrix(m%*%diag(roots)%*%t(m))
-- lambda is a diagonal matrix, with 0 off diagonals
+```
 
 ----
 
@@ -411,15 +467,8 @@ as.matrix(m%*%diag(roots)%*%t(m))
 # Motivation
 <space>
 
-PX = Y
-
-CY = (1/(n-1))*YYt
-=PX(PX)t
-=PXXtPt
-=PAPt
-# P is a matrix with columns that are eigenvectors
-# A is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric
-A = EDEt
+$PX = Y$<br>
+$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
 
 ----
 
@@ -427,14 +476,39 @@ A = EDEt
 # Motivation
 <space>
 
-# each row of P should be an eigenvector of A
-P=Et
-# also note that Pt = P-1 (linear algebra)
-A = PtDP
-CY = PPtDPPt
-= (1/(n-1))*D
-# D is a diagonal matrix, depending on how we choose P
-# therefore CY is diagonalized
+$PX = Y$<br>
+$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
+$=PX(PX)^{T}$<br>
+$=PXX^{T}P^{T}$<br>
+
+----
+
+## Principle Component Analysis
+# Motivation
+<space>
+
+$PX = Y$<br>
+$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
+$=PX(PX)^{T}$<br>
+$=PXX^{T}P^{T}$<br>
+$=PAP^{T}$<br>
+- $P$ is a matrix with columns that are eigenvectors
+- $A$ is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric<br>
+$A = EDE^{T}$
+
+----
+
+## Principle Component Analysis
+# Motivation
+<space>
+
+- each row of $P$ should be an eigenvector of $A$<br>
+$P = E^{T}$
+- note that $P^{T} = P^{-1}$ (linear algebra)
+$A = P^{T}DP$<br>
+$C_{Y} = PP^{T}DPP^{T} = \frac{1}{n-1}D$
+- $D$ is a diagonal matrix, depending on how we choose $P$
+- therefore $C_{Y}$ is diagonalized
 
 ----
 

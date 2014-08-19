@@ -352,12 +352,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <p><space></p>
 
 <ul>
-<li>assume derivative of f(x_{0}) is zero and f<sup>{``}</sup> is positive</li>
-<li>re-write \(f(x)\) as it&#39;s Taylor expansion:<br>
-\(f(x) = f(x_{0}) + (x-x_{0})\frac{df}{dx} + \frac{1}{2}(x-x_{0})^{2}\frac{d^2f}{dx^2}\)</li>
-<li>take the derivative w.r.t x and set = 0<br>
-\(0 = f′(w_{0}) + \frac{1}{2}f′′(w_{0})2(w_{1} − w_{0})\)<br>
-\(w1 = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}\)</li>
+<li>assume derivative of \(f`(x_{0})\) is zero and \(f``(x_{0})\) is positive</li>
 </ul>
 
   </article>
@@ -373,27 +368,11 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p>my.newton = function(f,f.prime,f.prime2,w0,tolerance=1e-3,max.iter=50) {
-  w = w0
-  old.f = f(w)
-  iterations = 0
-  made.changes = TRUE
-  while(made.changes &amp; (iterations &lt; max.iter)) {
-   iterations &lt;- iterations +1
-   made.changes &lt;- FALSE
-   new.w = w - f.prime(w)/f.prime2(w)
-   new.f = f(new.w)
-   relative.change = abs(new.f - old.f)/old.f -1
-   made.changes = (relative.changes &gt; tolerance)
-   w = new.w
-   old.f = new.f
-  }
-  if (made.changes) {
-    warning(&quot;Newton’s method terminated before convergence&quot;)
-  }
-  return(list(minimum=w,value=f(w),deriv=f.prime(w),deriv2=f.prime2(w),
-         iterations=iterations,converged=!made.changes))
-}</p>
+<ul>
+<li>assume derivative of \(f`(x_{0})\) is zero and \(f``(x_{0})\) is positive</li>
+<li>re-write \(f(x)\) as it&#39;s Taylor expansion:<br>
+\(f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``\)</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -404,11 +383,23 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Newton-Raphson Method</h1>
 
 <p><space></p>
 
-<p><img src="figure/grad_ex_plot.png" alt="plot of chunk grad_ex_plot"> </p>
+<ul>
+<li>assume derivative of \(f`(x_{0})\) is zero and \(f``(x_{0})\) is positive</li>
+<li>re-write \(f(x)\) as it&#39;s Taylor expansion:<br>
+\(f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``\)</li>
+<li>take the derivative w.r.t x and set = 0<br>
+\(0 = f′(w_{0}) + \frac{1}{2}f′′(w_{0})2(w_{1} − w_{0})\)<br>
+\(w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}\)
+
+<ul>
+<li>\(w_{1}\) is a better approximation for the minimum than \(w_{0}\)</li>
+<li>continue iterating</li>
+</ul></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -419,15 +410,13 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Newton-Raphson Method</h1>
 
 <p><space></p>
 
-<pre><code class="r">x &lt;- cbind(1,x)  #Add ones to x  
-theta&lt;- c(0,0)  # initalize theta vector 
-m &lt;- nrow(x)  # Number of the observations 
-grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
-</code></pre>
+<p>\(f(x) = x^{4} - 3\log(x)\)</p>
+
+<p><img src="figure/newton_curve.png" alt="plot of chunk newton_curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -438,23 +427,26 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Newton-Raphson Method</h1>
 
 <p><space></p>
 
-<pre><code class="r">gradDescent&lt;-function(X,y,theta,iterations,alpha){
-  m &lt;- length(y)
-  grad &lt;- rep(0,length(theta))
-  cost.df &lt;- data.frame(cost=0,theta=0)
+<pre><code class="r">fn &lt;- function(x) x^4 - 3*log(x)
+dfn &lt;- function(x) 4*x^3 - 3/x
+d2fn &lt;- function(x) 12*x^2 + 3/x^2 
 
-  for (i in 1:iterations){
-    h &lt;- X%*%theta
-    grad &lt;-  (t(X)%*%(h - y))/m
-    theta &lt;- theta - alpha * grad
-    cost.df &lt;- rbind(cost.df,c(grad_cost(X,y,theta),theta))    
-  }  
+newton &lt;- function(num.its, dfn, d2fn){
+  theta &lt;- rep(0,num.its)
+  theta[1] &lt;- round(runif(1,0,100),0)
 
-  return(list(theta,cost.df))
+  for (i in 2:num.its) {
+    h &lt;- - dfn(theta[i-1]) / d2fn(theta[i-1])
+    theta[i] &lt;- theta[i-1] + h 
+  }
+
+  out &lt;- cbind(1:num.its,theta)
+  dimnames(out)[[2]] &lt;- c(&quot;iteration&quot;,&quot;estimate&quot;)
+  return(out)
 }
 </code></pre>
 
@@ -467,24 +459,27 @@ grad_cost &lt;- function(X,y,theta) return(sum(((X%*%theta)- y)^2))
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Newton-Raphson Method</h1>
 
 <p><space></p>
 
-<pre><code class="r">## initialize X, y and theta
-X1&lt;-matrix(ncol=1,nrow=nrow(df),cbind(1,df$X))
-Y1&lt;-matrix(ncol=1,nrow=nrow(df),df$Y)
-
-init_theta&lt;-as.matrix(c(0))
-grad_cost(X1,Y1,init_theta)
+<pre><code>     iteration estimate
+[1,]         1    59.00
+[2,]         2    39.33
+[3,]         3    26.22
+[4,]         4    17.48
+[5,]         5    11.65
 </code></pre>
 
-<pre><code>[1] 5371
+<pre><code>      iteration estimate
+[16,]        16   0.9306
+[17,]        17   0.9306
+[18,]        18   0.9306
+[19,]        19   0.9306
+[20,]        20   0.9306
 </code></pre>
 
-<pre><code class="r">iterations = 100
-alpha = 0.1
-results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
+<pre><code>[1] 0.9658
 </code></pre>
 
   </article>
@@ -496,11 +491,19 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
+    <h1>Newton-Raphson Method</h1>
 
 <p><space></p>
 
-<p><img src="figure/grad_curve.png" alt="plot of chunk grad_curve"> </p>
+<pre><code class="r">optimize(fn,c(-100,100))  ## built-in R optimization function
+</code></pre>
+
+<pre><code>$minimum
+[1] 0.9306
+
+$objective
+[1] 0.9658
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -511,56 +514,7 @@ results &lt;- gradDescent(X1,Y1,init_theta,iterations,alpha)
     <h2>Logistic Regression</h2>
   </hgroup>
   <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<pre><code class="r">grad_cost(X1,Y1,theta[[1]])
-</code></pre>
-
-<pre><code>[1] 360.9
-</code></pre>
-
-<pre><code class="r">## Make some predictions
-intercept &lt;- df[df$X==0,]$Y
-pred &lt;- function (x) return(intercept+c(x)%*%theta)
-new_points &lt;- c(0.1,0.5,0.8,1.1)
-new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-23" style="background:;">
-  <hgroup>
-    <h2>Logistic Regression</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent</h1>
-
-<p><space></p>
-
-<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point(size=2)
-</code></pre>
-
-<p><img src="figure/new_point1.png" alt="plot of chunk new_point"> </p>
-
-<pre><code class="r">ggplot(data=df,aes(x=X,y=Y))+geom_point()+geom_point(data=new_preds,aes(x=X,y=Y,color=&#39;red&#39;),size=3)+scale_colour_discrete(guide = FALSE)
-</code></pre>
-
-<p><img src="figure/new_point2.png" alt="plot of chunk new_point"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-24" style="background:;">
-  <hgroup>
-    <h2>Regression example</h2>
-  </hgroup>
-  <article>
-    <h1>Gradient descent - summary</h1>
+    <h1>Newton-Raphson - summary</h1>
 
 <p><space></p>
 
@@ -576,7 +530,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -594,7 +548,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -614,7 +568,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -625,7 +579,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <ul>
 <li>first big assumption: linearity</li>
-<li>\(PX=Y\)
+<li>\(\bf{PX}=\bf{Y}\)
 
 <ul>
 <li>\(X\) is original dataset, \(P\) is a transformation of \(X\) into \(Y\)</li>
@@ -642,7 +596,7 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -665,11 +619,16 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 </ul></li>
 </ul>
 
-<hr>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
 
-<h2>Principle Component Analysis</h2>
-
-<h1>Concepts</h1>
+      <slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Concepts</h1>
 
 <p><space></p>
 
@@ -690,6 +649,28 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
   <!-- Presenter Notes -->
 </slide>
 
+      <slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Eigenwhat?</h1>
+
+<p><space></p>
+
+<p>\(Ax = \lambda x\)</p>
+
+<ul>
+<li>\(\lambda\) is an eigenvalue of \(A\) and \(x\) is an eigenvector of \(A\)<br>
+\(Ax - \lambda Ix = 0\)<br>
+\((A - \lambda I)x = 0\)<br>
+\(\det(A - \lambda I)\) = 0</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
       <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
@@ -699,16 +680,9 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <p><space></p>
 
-<ul>
-<li>\(Ax = \lambdax\)
-
-<ul>
-<li>\(\lambda\) is an eigenvalue of \(A\) and \(x\) is an eigenvector of \(A\)</li>
-</ul></li>
-<li>\(Ax - \lambdaIx = 0\)</li>
-<li>\((A - \lambdaI)x = 0\)</li>
-<li>\(\det(A - \lambdaI)\) = 0</li>
-</ul>
+<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
+I = diag(nrow(A))
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -723,18 +697,14 @@ new_preds &lt;- data.frame(X=new_points,Y=sapply(new_points,pred))
 
 <p><space></p>
 
-<p>\(\[A=\left[{\begin{array}{cc}5 & 2 \\2 & 5\\\end{array}\right ]\]\)</p>
-
-<p>A = matrix(c(5,2,2,5),nrow=2)
+<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
 I = diag(nrow(A))
-|A - L<em>I| = 0
-det(c(5-l,2,2,5-l))
-(5-l)</em>(5-l) - 4 = 0
-25 - 10l + l<sup>2</sup> - 4 = 0
-l<sup>2</sup> - 10l + 21 = 0
-roots &lt;- Re(polyroot(c(21,-10,1)))</p>
-
-<pre><code></code></pre>
+### |A - L*I| = 0
+### det(c(5-l,2,2,5-l))
+### (5-l)*(5-l) - 4 = 0
+### 25 - 10l + l^2 - 4 = 0
+### l^2 - 10l + 21 = 0
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -749,14 +719,19 @@ roots &lt;- Re(polyroot(c(21,-10,1)))</p>
 
 <p><space></p>
 
-<ul>
-<li>when lambda = -3
-Ax = 3x
-5x1 + 2x2 = 3x1
-2x1 + 5x2 = 3x2
-x1=-x2</li>
-<li>one eigenvector = [1 -1]</li>
-</ul>
+<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
+I = diag(nrow(A))
+### |A - L*I| = 0
+### det(c(5-l,2,2,5-l))
+### (5-l)*(5-l) - 4 = 0
+### 25 - 10l + l^2 - 4 = 0
+### l^2 - 10l + 21 = 0
+roots &lt;- Re(polyroot(c(21,-10,1)))
+roots
+</code></pre>
+
+<pre><code>## [1] 3 7
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -772,11 +747,8 @@ x1=-x2</li>
 <p><space></p>
 
 <ul>
-<li>when lambda = 7
-5x1 + 2x2 = 7x1
-2x2 + 5x2 = 7x2
-x1 = x2</li>
-<li>another eigenvector = [1 1]</li>
+<li>when \(\lambda = 3\)<br>
+\(Ax = 3x\)<br></li>
 </ul>
 
   </article>
@@ -792,9 +764,13 @@ x1 = x2</li>
 
 <p><space></p>
 
-<p>A%<em>%c(1,-1) == 3 * as.matrix(c(1,-1))
-A%</em>%c(1,1) == 7 * as.matrix(c(1,1))
-roots</p>
+<ul>
+<li>when \(\lambda = 3\)<br>
+\(Ax = 3x\)<br>
+\(5x_{1} + 2x_{2} = 3x_{1}\)<br>
+\(2x_{1} + 5x_{2} = 3x_{2}\)<br>
+\(x_{1} = -x_{2}\)<br></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -810,11 +786,11 @@ roots</p>
 <p><space></p>
 
 <ul>
-<li>check
-m &lt;- matrix(c(1,-1,1,1),ncol=2)
-m &lt;- m/sqrt(norm(m))
-as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
-<li>lambda is a diagonal matrix, with 0 off diagonals</li>
+<li>when \(\lambda = 7\)<br>
+\(Ax = 7x\)<br>
+\(5x_{1} + 2x_{2} = 7x_{1}\)<br>
+\(2x_{2} + 5x_{2} = 7x_{2}\)<br>
+\(x_{1} = x_{2}\)<br></li>
 </ul>
 
   </article>
@@ -826,22 +802,25 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
-<p>PX = Y</p>
+<pre><code class="r">A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
+</code></pre>
 
-<p>CY = (1/(n-1))*YYt
-=PX(PX)t
-=PXXtPt
-=PAPt</p>
+<pre><code>##      [,1]
+## [1,] TRUE
+## [2,] TRUE
+</code></pre>
 
-<h1>P is a matrix with columns that are eigenvectors</h1>
+<pre><code class="r">A%*%c(1,1) == 7 * as.matrix(c(1,1))
+</code></pre>
 
-<h1>A is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric</h1>
-
-<p>A = EDEt</p>
+<pre><code>##      [,1]
+## [1,] TRUE
+## [2,] TRUE
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -852,29 +831,107 @@ as.matrix(m%<em>%diag(roots)%</em>%t(m))</li>
     <h2>Principle Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>Motivation</h1>
+    <h1>Eigenwhat?</h1>
 
 <p><space></p>
 
-<h1>each row of P should be an eigenvector of A</h1>
+<pre><code class="r">m &lt;- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
+m &lt;- m/sqrt(norm(m))
+as.matrix(m%*%diag(roots)%*%t(m))
+</code></pre>
 
-<p>P=Et</p>
-
-<h1>also note that Pt = P-1 (linear algebra)</h1>
-
-<p>A = PtDP
-CY = PPtDPPt
-= (1/(n-1))*D</p>
-
-<h1>D is a diagonal matrix, depending on how we choose P</h1>
-
-<h1>therefore CY is diagonalized</h1>
+<pre><code>##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-37" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>\(PX = Y\)<br>
+\(C_{Y} = \frac{1}{(n-1)}YY^{T}\)<br></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-38" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>\(PX = Y\)<br>
+\(C_{Y} = \frac{1}{(n-1)}YY^{T}\)<br>
+\(=PX(PX)^{T}\)<br>
+\(=PXX^{T}P^{T}\)<br></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-39" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p>\(PX = Y\)<br>
+\(C_{Y} = \frac{1}{(n-1)}YY^{T}\)<br>
+\(=PX(PX)^{T}\)<br>
+\(=PXX^{T}P^{T}\)<br>
+\(=PAP^{T}\)<br></p>
+
+<ul>
+<li>\(P\) is a matrix with columns that are eigenvectors</li>
+<li>\(A\) is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric<br>
+\(A = EDE^{T}\)</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-40" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<ul>
+<li>each row of \(P\) should be an eigenvector of \(A\)<br>
+\(P = E^{T}\)</li>
+<li>note that \(P^{T} = P^{-1}\) (linear algebra)
+\(A = P^{T}DP\)<br>
+\(C_{Y} = PP^{T}DPP^{T} = \frac{1}{n-1}D\)</li>
+<li>\(D\) is a diagonal matrix, depending on how we choose \(P\)</li>
+<li>therefore \(C_{Y}\) is diagonalized</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -965,7 +1022,7 @@ head(features)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -985,7 +1042,7 @@ PC &lt;- scaled_features %*% eigenvectors
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1011,7 +1068,7 @@ sum(round(diag(Cy) - eigenvalues,5))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1040,7 +1097,7 @@ ggplot(var_explained) +
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1073,7 +1130,7 @@ eigenvalues == (pca.df$sdev)^2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1095,7 +1152,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1114,7 +1171,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1127,7 +1184,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1155,7 +1212,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1174,7 +1231,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1189,7 +1246,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1204,7 +1261,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1228,7 +1285,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1247,7 +1304,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1277,7 +1334,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1302,7 +1359,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1317,7 +1374,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1332,7 +1389,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1347,7 +1404,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-60" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1389,7 +1446,7 @@ str(wine)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-61" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1417,7 +1474,7 @@ barplot(best_k, xlab = &quot;Number of clusters&quot;,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-58" style="background:;">
+      <slide class="" id="slide-62" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1483,7 +1540,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-59" style="background:;">
+      <slide class="" id="slide-63" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1503,7 +1560,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-60" style="background:;">
+      <slide class="" id="slide-64" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1521,7 +1578,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-61" style="background:;">
+      <slide class="" id="slide-65" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1546,7 +1603,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-62" style="background:;">
+      <slide class="" id="slide-66" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1572,7 +1629,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-63" style="background:;">
+      <slide class="" id="slide-67" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1590,7 +1647,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-64" style="background:;">
+      <slide class="" id="slide-68" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1609,7 +1666,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-65" style="background:;">
+      <slide class="" id="slide-69" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1628,7 +1685,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-66" style="background:;">
+      <slide class="" id="slide-70" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1648,7 +1705,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-67" style="background:;">
+      <slide class="" id="slide-71" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1669,7 +1726,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-68" style="background:;">
+      <slide class="" id="slide-72" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1692,7 +1749,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-69" style="background:;">
+      <slide class="" id="slide-73" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1707,7 +1764,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-70" style="background:;">
+      <slide class="" id="slide-74" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1728,7 +1785,7 @@ plot(cluster)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-71" style="background:;">
+      <slide class="" id="slide-75" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1748,7 +1805,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-72" style="background:;">
+      <slide class="" id="slide-76" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1768,7 +1825,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-73" style="background:;">
+      <slide class="" id="slide-77" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1786,7 +1843,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-74" style="background:;">
+      <slide class="" id="slide-78" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1801,7 +1858,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-75" style="background:;">
+      <slide class="" id="slide-79" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1824,7 +1881,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-76" style="background:;">
+      <slide class="" id="slide-80" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1845,7 +1902,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-77" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1882,7 +1939,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-78" style="background:;">
+      <slide class="" id="slide-82" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1910,7 +1967,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-79" style="background:;">
+      <slide class="" id="slide-83" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1931,7 +1988,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-80" style="background:;">
+      <slide class="" id="slide-84" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1956,7 +2013,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-81" style="background:;">
+      <slide class="" id="slide-85" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1982,7 +2039,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-82" style="background:;">
+      <slide class="" id="slide-86" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2009,7 +2066,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-83" style="background:;">
+      <slide class="" id="slide-87" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2036,7 +2093,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-84" style="background:;">
+      <slide class="" id="slide-88" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2055,7 +2112,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-85" style="background:;">
+      <slide class="" id="slide-89" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2086,7 +2143,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-86" style="background:;">
+      <slide class="" id="slide-90" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2109,7 +2166,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-87" style="background:;">
+      <slide class="" id="slide-91" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2136,7 +2193,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-88" style="background:;">
+      <slide class="" id="slide-92" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2151,7 +2208,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-89" style="background:;">
+      <slide class="" id="slide-93" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2175,13 +2232,13 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         94 |          1 |         95 | 
-             |      0.648 |      0.007 |            | 
+    democrat |         84 |          3 |         87 | 
+             |      0.579 |      0.021 |            | 
 -------------|------------|------------|------------|
-  republican |          3 |         47 |         50 | 
-             |      0.021 |      0.324 |            | 
+  republican |          4 |         54 |         58 | 
+             |      0.028 |      0.372 |            | 
 -------------|------------|------------|------------|
-Column Total |         97 |         48 |        145 | 
+Column Total |         88 |         57 |        145 | 
 -------------|------------|------------|------------|
 
 
@@ -2191,7 +2248,7 @@ Column Total |         97 |         48 |        145 |
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-90" style="background:;">
+      <slide class="" id="slide-94" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2205,19 +2262,19 @@ head(C5imp(tree_model))
 </code></pre>
 
 <pre><code>##                                   Overall
-## physician-fee-freeze                97.92
-## synfuels-corporation-cutback        42.21
-## mx-missile                          10.73
-## adoption-of-the-budget-resolution    9.69
+## physician-fee-freeze                96.54
+## adoption-of-the-budget-resolution   40.14
+## anti-satellite-test-ban              8.65
 ## handicapped-infants                  0.00
 ## water-project-cost-sharing           0.00
+## el-salvador-aid                      0.00
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-91" style="background:;">
+      <slide class="" id="slide-95" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2235,7 +2292,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 09:15:15 2014
+## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 22:27:54 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2244,15 +2301,12 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (163.4/2.1)
+## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (100.2/2.3)
-##     synfuels-corporation-cutback = y:
-##     :...mx-missile = ?: republican (0)
-##         mx-missile = y: democrat (2.5)
-##         mx-missile = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (17.7/3)
-##             adoption-of-the-budget-resolution = y: democrat (5.2/2.2)
+## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
+##     adoption-of-the-budget-resolution = y:
+##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
+##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2261,21 +2315,20 @@ summary(tree_model)
 ##    ----------------  
 ##    Size      Errors  
 ## 
-##       5   10( 3.5%)   &lt;&lt;
+##       4   10( 3.5%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     167     5    (a): class democrat
-##       5   112    (b): class republican
+##     176     4    (a): class democrat
+##       6   103    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
-##   97.92% physician-fee-freeze
-##   42.21% synfuels-corporation-cutback
-##   10.73% mx-missile
-##    9.69% adoption-of-the-budget-resolution
+##   96.54% physician-fee-freeze
+##   40.14% adoption-of-the-budget-resolution
+##    8.65% anti-satellite-test-ban
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2285,7 +2338,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-92" style="background:;">
+      <slide class="" id="slide-96" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2303,7 +2356,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-93" style="background:;">
+      <slide class="" id="slide-97" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2335,13 +2388,13 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         94 |          1 |         95 | 
-##              |      0.648 |      0.007 |            | 
+##     democrat |         84 |          3 |         87 | 
+##              |      0.579 |      0.021 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          2 |         48 |         50 | 
-##              |      0.014 |      0.331 |            | 
+##   republican |          1 |         57 |         58 | 
+##              |      0.007 |      0.393 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         96 |         49 |        145 | 
+## Column Total |         85 |         60 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2351,7 +2404,7 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-94" style="background:;">
+      <slide class="" id="slide-98" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2369,7 +2422,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 09:15:16 2014
+## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 22:27:54 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2380,341 +2433,245 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (163.4/2.1)
+## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (100.2/2.3)
-##     synfuels-corporation-cutback = y:
-##     :...mx-missile = ?: republican (0)
-##         mx-missile = y: democrat (2.5)
-##         mx-missile = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (17.7/3)
-##             adoption-of-the-budget-resolution = y: democrat (5.2/2.2)
+## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
+##     adoption-of-the-budget-resolution = y:
+##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
+##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (137.2/15.1)
+## physician-fee-freeze in {?,n}: democrat (155.2/27.9)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (66.8/1.9)
-##     immigration = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (65.6/24.5)
-##         adoption-of-the-budget-resolution = y: democrat (19.4/2.6)
+## :...synfuels-corporation-cutback in {?,n}: republican (90.6/10)
+##     synfuels-corporation-cutback = y: democrat (43.1/15.9)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback = ?: republican (0)
-## synfuels-corporation-cutback = y: democrat (131.6/32.4)
-## synfuels-corporation-cutback = n:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (70.6/3.3)
-##     adoption-of-the-budget-resolution = y: democrat (86.8/22.5)
+## adoption-of-the-budget-resolution in {?,n}: republican (160.3/40.1)
+## adoption-of-the-budget-resolution = y:
+## :...physician-fee-freeze in {?,n}: democrat (101/8.9)
+##     physician-fee-freeze = y: republican (27.6/7.9)
 ## 
 ## -----  Trial 3:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = n: democrat (107/18.4)
-## physician-fee-freeze in {?,y}: republican (182/55.4)
+## physician-fee-freeze in {?,n}: democrat (139.5/25.2)
+## physician-fee-freeze = y:
+## :...education-spending = n: democrat (59.3/21.5)
+##     education-spending in {?,y}: republican (90.2/18)
 ## 
 ## -----  Trial 4:  -----
 ## 
 ## Decision tree:
 ## 
-## crime in {?,n}: democrat (64.9/6.5)
-## crime = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (111.2/32.7)
-##     synfuels-corporation-cutback = y:
-##     :...export-administration-act-south-africa in {?,n}: democrat (64/10.5)
-##         export-administration-act-south-africa = y: republican (49/20.5)
+## physician-fee-freeze in {?,n}: democrat (122/28.5)
+## physician-fee-freeze = y: republican (167/56.3)
 ## 
 ## -----  Trial 5:  -----
 ## 
 ## Decision tree:
 ## 
-## el-salvador-aid in {?,n}: democrat (89.2/10.1)
-## el-salvador-aid = y:
-## :...anti-satellite-test-ban in {?,y}: republican (52.2/10.2)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,y}: democrat (54.7/7.1)
-##         adoption-of-the-budget-resolution = n:
-##         :...immigration = n: democrat (71.4/32)
-##             immigration in {?,y}: republican (21.5/0.7)
+## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/31.7)
+## adoption-of-the-budget-resolution = n:
+## :...synfuels-corporation-cutback in {?,n}: republican (93.5/22.8)
+##     synfuels-corporation-cutback = y: democrat (80.5/33.3)
 ## 
 ## -----  Trial 6:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (109.4/15.9)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (107.4/30.2)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (90.5/16.1)
-##     synfuels-corporation-cutback = y: democrat (89.1/41.6)
+## :...immigration in {?,y}: republican (73.3/10)
+##     immigration = n:
+##     :...superfund-right-to-sue in {?,n}: democrat (24.3/3)
+##         superfund-right-to-sue = y: republican (84/33.5)
 ## 
 ## -----  Trial 7:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = n: democrat (95.6/17.6)
-## physician-fee-freeze in {?,y}: republican (193.4/59.4)
+## adoption-of-the-budget-resolution in {?,y}: democrat (121.2/38.3)
+## adoption-of-the-budget-resolution = n:
+## :...water-project-cost-sharing in {?,n}: republican (67.7/14.2)
+##     water-project-cost-sharing = y:
+##     :...superfund-right-to-sue = n: democrat (26.2/2.7)
+##         superfund-right-to-sue in {?,y}: republican (73.9/26.3)
 ## 
 ## -----  Trial 8:  -----
 ## 
 ## Decision tree:
 ## 
-## adoption-of-the-budget-resolution = ?: democrat (0)
-## adoption-of-the-budget-resolution = y:
-## :...physician-fee-freeze in {?,n}: democrat (63/4.3)
-## :   physician-fee-freeze = y:
-## :   :...anti-satellite-test-ban in {?,n}: democrat (55.7/8.6)
-## :       anti-satellite-test-ban = y: republican (24.1/2.5)
-## adoption-of-the-budget-resolution = n:
-## :...mx-missile = ?: republican (0)
-##     mx-missile = y: democrat (18.4/3.3)
-##     mx-missile = n:
-##     :...synfuels-corporation-cutback in {?,n}: republican (48.7/2.8)
-##         synfuels-corporation-cutback = y:
-##         :...superfund-right-to-sue = n: democrat (14.5/3.2)
-##             superfund-right-to-sue in {?,y}: republican (64.6/20.9)
+## physician-fee-freeze in {?,n}: democrat (104.7/31.9)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (50.6/8.6)
+##     water-project-cost-sharing = y:
+##     :...crime in {?,n}: republican (10.4/1.7)
+##         crime = y:
+##         :...anti-satellite-test-ban in {?,n}: democrat (94.9/39.2)
+##             anti-satellite-test-ban = y: republican (28.4/9)
 ## 
 ## -----  Trial 9:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (86.3/17.1)
-## physician-fee-freeze = y:
-## :...export-administration-act-south-africa = n: democrat (78.1/31.3)
-##     export-administration-act-south-africa in {?,y}: republican (124.5/35.7)
+## physician-fee-freeze = n: democrat (95.8/32.2)
+## physician-fee-freeze in {?,y}: republican (193.2/70.4)
 ## 
 ## -----  Trial 10:  -----
 ## 
 ## Decision tree:
 ## 
-## education-spending in {?,n}: democrat (134.7/40.3)
-## education-spending = y:
-## :...physician-fee-freeze = ?: republican (0)
-##     physician-fee-freeze = n: democrat (22.4/7.4)
-##     physician-fee-freeze = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (21.4)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (85.4/19.1)
-##             adoption-of-the-budget-resolution = y: democrat (25.2/7.9)
+## synfuels-corporation-cutback in {?,y}: democrat (121.5/38.5)
+## synfuels-corporation-cutback = n:
+## :...duty-free-exports in {?,n}: republican (99.1/25.7)
+##     duty-free-exports = y: democrat (68.3/29.8)
 ## 
 ## -----  Trial 11:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (71.1/18.5)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (111.2/18.2)
-##     synfuels-corporation-cutback = y:
-##     :...mx-missile in {?,y}: democrat (14/1.3)
-##         mx-missile = n:
-##         :...anti-satellite-test-ban in {?,y}: republican (8.2)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution = n: republican (68.1/29.9)
-##                 adoption-of-the-budget-resolution in {?,y}: democrat (16.5/1.6)
+## adoption-of-the-budget-resolution = n: republican (168.8/64.2)
+## adoption-of-the-budget-resolution in {?,y}: democrat (120.2/38.9)
 ## 
 ## -----  Trial 12:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback in {?,y}: democrat (138.2/42.4)
-## synfuels-corporation-cutback = n:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (72.7/6.2)
-##     adoption-of-the-budget-resolution = y: democrat (78.1/31)
+## physician-fee-freeze in {?,n}: democrat (101.5/31.1)
+## physician-fee-freeze = y:
+## :...water-project-cost-sharing in {?,n}: republican (44.8/8.7)
+##     water-project-cost-sharing = y:
+##     :...synfuels-corporation-cutback in {?,n}: republican (63.4/20.6)
+##         synfuels-corporation-cutback = y: democrat (79.3/32.7)
 ## 
 ## -----  Trial 13:  -----
 ## 
 ## Decision tree:
 ## 
-## immigration = ?: republican (0)
-## immigration = y:
-## :...physician-fee-freeze = n: democrat (22.1/1.8)
-## :   physician-fee-freeze in {?,y}: republican (83.1/8.8)
-## immigration = n:
-## :...adoption-of-the-budget-resolution in {?,y}: democrat (54.1/9.5)
-##     adoption-of-the-budget-resolution = n:
-##     :...synfuels-corporation-cutback in {?,n}: republican (45.7/6.8)
-##         synfuels-corporation-cutback = y:
-##         :...export-administration-act-south-africa in {?,
-##             :                                          n}: democrat (62.9/17.1)
-##             export-administration-act-south-africa = y: republican (21/6.5)
+## physician-fee-freeze = n: democrat (94.5/33.8)
+## physician-fee-freeze in {?,y}: republican (194.5/73.7)
 ## 
 ## -----  Trial 14:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (76.2/17.6)
-## physician-fee-freeze = y:
-## :...export-administration-act-south-africa in {?,y}: republican (113.7/30.5)
-##     export-administration-act-south-africa = n:
-##     :...mx-missile in {?,y}: democrat (8.6/0.6)
-##         mx-missile = n:
-##         :...superfund-right-to-sue in {?,n}: democrat (12/1.6)
-##             superfund-right-to-sue = y: republican (78.5/32.7)
+## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/38.9)
+## adoption-of-the-budget-resolution = n:
+## :...education-spending = n: democrat (93.7/42.6)
+##     education-spending in {?,y}: republican (80.2/19)
 ## 
 ## -----  Trial 15:  -----
 ## 
 ## Decision tree:
 ## 
-## crime in {?,n}: democrat (33.2/5.8)
-## crime = y:
-## :...anti-satellite-test-ban = ?: democrat (0)
-##     anti-satellite-test-ban = y: republican (63.9/12.9)
-##     anti-satellite-test-ban = n:
-##     :...religious-groups-in-schools = ?: democrat (0)
-##         religious-groups-in-schools = n: republican (11.4/0.2)
-##         religious-groups-in-schools = y:
-##         :...physician-fee-freeze in {?,n}: democrat (22.3/1.3)
-##             physician-fee-freeze = y:
-##             :...adoption-of-the-budget-resolution = n: republican (93.2/41.1)
-##                 adoption-of-the-budget-resolution in {?,
-##                                                       y}: democrat (65/12)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (90.5/33.9)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (81.8/19.5)
+##     immigration = n:
+##     :...superfund-right-to-sue in {?,n}: democrat (22.6/4.2)
+##         superfund-right-to-sue = y: republican (94/41.5)
 ## 
 ## -----  Trial 16:  -----
 ## 
 ## Decision tree:
 ## 
-## el-salvador-aid in {?,n}: democrat (61.7/10.4)
-## el-salvador-aid = y:
-## :...anti-satellite-test-ban = ?: democrat (0)
-##     anti-satellite-test-ban = y: republican (49.1/10.1)
-##     anti-satellite-test-ban = n:
-##     :...crime = ?: democrat (0)
-##         crime = n: republican (5.8/0.1)
-##         crime = y:
-##         :...religious-groups-in-schools = ?: democrat (0)
-##             religious-groups-in-schools = n: republican (7.1/0.1)
-##             religious-groups-in-schools = y:
-##             :...physician-fee-freeze in {?,n}: democrat (18.7/1.1)
-##                 physician-fee-freeze = y:
-##                 :...duty-free-exports in {?,y}: democrat (18.9/2.2)
-##                     duty-free-exports = n: [S1]
-## 
-## SubTree [S1]
-## 
-## export-administration-act-south-africa in {?,n}: democrat (80.4/26.2)
-## export-administration-act-south-africa = y: republican (47.3/17.1)
+## synfuels-corporation-cutback = ?: republican (0)
+## synfuels-corporation-cutback = y: democrat (125.3/46.1)
+## synfuels-corporation-cutback = n:
+## :...superfund-right-to-sue in {?,n}: republican (80.4/20.3)
+##     superfund-right-to-sue = y: democrat (83.3/39)
 ## 
 ## -----  Trial 17:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (88.7/17)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (95/18.8)
-##     synfuels-corporation-cutback = y: democrat (105.3/44.4)
+## adoption-of-the-budget-resolution in {?,n}: republican (166.1/60.6)
+## adoption-of-the-budget-resolution = y: democrat (122.9/42.5)
 ## 
 ## -----  Trial 18:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (78.9/18.7)
+## physician-fee-freeze in {?,n}: democrat (96.6/28.5)
 ## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (134.2/31.3)
-##     adoption-of-the-budget-resolution = y: democrat (75.9/33.7)
+## :...anti-satellite-test-ban in {?,y}: republican (61.7/13.9)
+##     anti-satellite-test-ban = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (88.4/29.8)
+##         adoption-of-the-budget-resolution = y: democrat (42.3/6.9)
 ## 
 ## -----  Trial 19:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (68.5/18.7)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (93/14.7)
-##     immigration = n:
-##     :...mx-missile = ?: republican (0)
-##         mx-missile = y: democrat (16.6/2.4)
-##         mx-missile = n:
-##         :...anti-satellite-test-ban in {?,y}: republican (11.6)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     n}: republican (86.6/34.4)
-##                 adoption-of-the-budget-resolution = y: democrat (12.6/0.8)
+## synfuels-corporation-cutback in {?,y}: democrat (119.5/40.6)
+## synfuels-corporation-cutback = n:
+## :...crime = n: democrat (25.2/7.3)
+##     crime in {?,y}: republican (144.3/49.9)
 ## 
 ## -----  Trial 20:  -----
 ## 
 ## Decision tree:
 ## 
-## synfuels-corporation-cutback in {?,n}: republican (132.7/36.2)
-## synfuels-corporation-cutback = y:
-## :...education-spending in {?,n}: democrat (66.2/11.1)
-##     education-spending = y:
-##     :...export-administration-act-south-africa in {?,n}: democrat (56.9/18.4)
-##         export-administration-act-south-africa = y: republican (33.2/8)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (105.2/34.1)
+## physician-fee-freeze = y:
+## :...anti-satellite-test-ban in {?,y}: republican (60.8/18.2)
+##     anti-satellite-test-ban = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (81.3/21.7)
+##         adoption-of-the-budget-resolution = y: democrat (40.7/9.9)
 ## 
 ## -----  Trial 21:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (97.5/19.4)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (42.5/3.4)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,y}: democrat (50.1/13)
-##         adoption-of-the-budget-resolution = n:
-##         :...immigration in {?,y}: republican (17.8)
-##             immigration = n:
-##             :...synfuels-corporation-cutback in {?,n}: republican (10.3)
-##                 synfuels-corporation-cutback = y: democrat (70.7/30.8)
+## mx-missile in {?,y}: democrat (130.4/45.5)
+## mx-missile = n:
+## :...duty-free-exports in {?,y}: republican (33.5/2.6)
+##     duty-free-exports = n:
+##     :...physician-fee-freeze = n: democrat (16.4/1)
+##         physician-fee-freeze in {?,y}: republican (107.7/42.9)
 ## 
 ## -----  Trial 22:  -----
 ## 
 ## Decision tree:
 ## 
-## crime = ?: republican (0)
-## crime = n: democrat (44.5/4.8)
-## crime = y:
-## :...physician-fee-freeze = ?: republican (0)
-##     physician-fee-freeze = n: democrat (54.9/20.1)
-##     physician-fee-freeze = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (31.9)
-##         anti-satellite-test-ban = n:
-##         :...religious-groups-in-schools in {?,n}: republican (8.3)
-##             religious-groups-in-schools = y:
-##             :...duty-free-exports in {?,n}: republican (135.1/52.3)
-##                 duty-free-exports = y: democrat (13.2/1.8)
+## physician-fee-freeze in {?,n}: democrat (102.6/21.9)
+## physician-fee-freeze = y:
+## :...synfuels-corporation-cutback in {?,n}: republican (88.4/22.3)
+##     synfuels-corporation-cutback = y: democrat (93.9/40.5)
 ## 
 ## -----  Trial 23:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (59.4/1.5)
+## physician-fee-freeze in {?,n}: democrat (69/2.4)
 ## physician-fee-freeze = y:
-## :...religious-groups-in-schools in {?,n}: republican (18.1/1.5)
-##     religious-groups-in-schools = y:
-##     :...education-spending = ?: republican (0)
-##         education-spending = n: democrat (76.9/26.3)
-##         education-spending = y:
-##         :...export-administration-act-south-africa in {?,
-##             :                                          y}: republican (51.4/6.2)
-##             export-administration-act-south-africa = n:
-##             :...superfund-right-to-sue in {?,n}: democrat (12.8/0.4)
-##                 superfund-right-to-sue = y: republican (68.5/29.2)
+## :...anti-satellite-test-ban in {?,y}: republican (72.8/24.3)
+##     anti-satellite-test-ban = n:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (93/16.1)
+##         adoption-of-the-budget-resolution = y: democrat (48.2/10)
 ## 
 ## -----  Trial 24:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (49.7)
+## physician-fee-freeze = n: democrat (68.1/4.8)
 ## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (61.5/3.5)
-##     water-project-cost-sharing = y:
-##     :...el-salvador-aid = ?: republican (0)
-##         el-salvador-aid = n: democrat (10.5)
-##         el-salvador-aid = y:
-##         :...anti-satellite-test-ban in {?,y}: republican (13.2)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     y}: democrat (53.7/9.8)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...superfund-right-to-sue = n: democrat (10.7/0.1)
-##                     superfund-right-to-sue in {?,y}: republican (85.6/16.2)
+## :...mx-missile in {?,n}: republican (114.1/13.8)
+##     mx-missile = y:
+##     :...education-spending in {?,n}: democrat (72.4/14.1)
+##         education-spending = y: republican (26.3/3.7)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2723,56 +2680,53 @@ summary(boosted_tree_model)
 ## -----      ----------------  
 ##    Size      Errors  
 ## 
-##    0      5   10( 3.5%)
-##    1      4   13( 4.5%)
-##    2      3   38(13.1%)
-##    3      2   14( 4.8%)
-##    4      4   53(18.3%)
-##    5      5   70(24.2%)
-##    6      3   21( 7.3%)
-##    7      2   14( 4.8%)
-##    8      7   22( 7.6%)
-##    9      3   45(15.6%)
-##   10      5   24( 8.3%)
-##   11      6    6( 2.1%)
-##   12      3   38(13.1%)
-##   13      6   17( 5.9%)
-##   14      5   10( 3.5%)
-##   15      6   47(16.3%)
-##   16      8   64(22.1%)
-##   17      3   21( 7.3%)
-##   18      3   22( 7.6%)
-##   19      6    9( 3.1%)
-##   20      4  107(37.0%)
-##   21      6   17( 5.9%)
-##   22      6   13( 4.5%)
-##   23      6   21( 7.3%)
-##   24      7    7( 2.4%)
-## boost              5( 1.7%)   &lt;&lt;
+##    0      4   10( 3.5%)
+##    1      3   24( 8.3%)
+##    2      3   28( 9.7%)
+##    3      3   23( 8.0%)
+##    4      2   14( 4.8%)
+##    5      3   38(13.1%)
+##    6      4   15( 5.2%)
+##    7      4   31(10.7%)
+##    8      5   47(16.3%)
+##    9      2   18( 6.2%)
+##   10      3   64(22.1%)
+##   11      2   36(12.5%)
+##   12      4   19( 6.6%)
+##   13      2   18( 6.2%)
+##   14      3   32(11.1%)
+##   15      4   16( 5.5%)
+##   16      3  168(58.1%)
+##   17      2   38(13.1%)
+##   18      4   12( 4.2%)
+##   19      3   47(16.3%)
+##   20      4   11( 3.8%)
+##   21      4   42(14.5%)
+##   22      3   24( 8.3%)
+##   23      4   12( 4.2%)
+##   24      4   17( 5.9%)
+## boost             10( 3.5%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     170     2    (a): class democrat
-##       3   114    (b): class republican
+##     175     5    (a): class democrat
+##       5   104    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
-##   98.62% adoption-of-the-budget-resolution
-##   98.27% immigration
-##   97.92% physician-fee-freeze
-##   97.23% el-salvador-aid
-##   96.54% synfuels-corporation-cutback
-##   95.50% crime
-##   92.04% education-spending
-##   64.36% anti-satellite-test-ban
-##   49.83% religious-groups-in-schools
-##   47.06% export-administration-act-south-africa
-##   45.33% mx-missile
-##   41.18% water-project-cost-sharing
-##   30.45% duty-free-exports
-##   30.10% superfund-right-to-sue
+##   96.54% adoption-of-the-budget-resolution
+##   96.54% physician-fee-freeze
+##   94.81% synfuels-corporation-cutback
+##   94.46% mx-missile
+##   80.62% duty-free-exports
+##   71.97% superfund-right-to-sue
+##   71.28% crime
+##   46.37% education-spending
+##   42.21% water-project-cost-sharing
+##   41.52% immigration
+##   40.83% anti-satellite-test-ban
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2782,7 +2736,7 @@ summary(boosted_tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-95" style="background:;">
+      <slide class="" id="slide-99" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2825,13 +2779,13 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         86 |          9 |         95 | 
-##              |      0.593 |      0.062 |            | 
+##     democrat |         83 |          4 |         87 | 
+##              |      0.572 |      0.028 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         49 |         50 | 
-##              |      0.007 |      0.338 |            | 
+##   republican |          3 |         55 |         58 | 
+##              |      0.021 |      0.379 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         87 |         58 |        145 | 
+## Column Total |         86 |         59 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2841,7 +2795,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-96" style="background:;">
+      <slide class="" id="slide-100" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2932,7 +2886,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-97" style="background:;">
+      <slide class="" id="slide-101" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2959,7 +2913,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-98" style="background:;">
+      <slide class="" id="slide-102" style="background:;">
   <hgroup>
     <h2>Summary</h2>
   </hgroup>
@@ -2979,7 +2933,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-99" style="background:;">
+      <slide class="" id="slide-103" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -2996,7 +2950,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-100" style="background:;">
+      <slide class="" id="slide-104" style="background:;">
   <hgroup>
     
   </hgroup>
