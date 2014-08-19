@@ -34,10 +34,12 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-```{r log_bad_fit, fig.height=5,fig.width=5}
+```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
 x <- 1:10
 log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
+log_ex$sig <- 5/(1+exp(-(log_ex$X-5)))
+pts <- ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3)
+pts
 ```
 
 ----
@@ -46,7 +48,29 @@ ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='
 # Motivation
 <space>
 
-```{r}
+```{r log_bad_fit2, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+bad_line <- pts + stat_smooth(method='lm',se=F,color='green',size=1)
+bad_line
+```
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+```{r log_bad_fit3, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+sig_curve <- bad_line + stat_smooth(data=log_ex,aes(X,sig),se=F,color='red',size=1,method='auto')
+sig_curve
+```
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+```{r log_motivation, fig.height=5,fig.width=5,echo=FALSE}
 library("MASS")
 library(ggplot2)
 data(menarche)
@@ -59,8 +83,29 @@ lm.out <- lm(Y~X, data=log_data)
 log_data$fitted <- glm.out$fitted
 
 data_points <- ggplot(log_data) + geom_point(aes(x=X,y=Y),color='blue',size=3)
+data_points
+```
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+```{r log_motivation2, fig.height=5,fig.width=5, echo=FALSE}
 line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color='green',size=1)
-curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1) 
+line_points
+```
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+```{r log_motivation3, fig.height=5,fig.width=5, echo=FALSE}
+curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
+curve_points
 ```
 
 ----

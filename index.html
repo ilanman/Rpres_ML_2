@@ -82,11 +82,6 @@
 
 <p><space></p>
 
-<pre><code class="r">x &lt;- 1:10
-log_ex &lt;- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-ggplot(log_ex,aes(X,Y)) + geom_point(color=&#39;blue&#39;,size=3) + stat_smooth(method=&#39;lm&#39;,se=F,color=&#39;green&#39;,size=1)
-</code></pre>
-
 <p><img src="figure/log_bad_fit.png" alt="plot of chunk log_bad_fit"> </p>
 
   </article>
@@ -102,27 +97,73 @@ ggplot(log_ex,aes(X,Y)) + geom_point(color=&#39;blue&#39;,size=3) + stat_smooth(
 
 <p><space></p>
 
-<pre><code class="r">library(&quot;MASS&quot;)
-library(ggplot2)
-data(menarche)
-log_data &lt;- data.frame(Y=menarche$Menarche/menarche$Total)
-log_data$X &lt;- menarche$Age
-
-glm.out &lt;- glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-lm.out &lt;- lm(Y~X, data=log_data)
-
-log_data$fitted &lt;- glm.out$fitted
-
-data_points &lt;- ggplot(log_data) + geom_point(aes(x=X,y=Y),color=&#39;blue&#39;,size=3)
-line_points &lt;- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color=&#39;green&#39;,size=1)
-curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;,size=1) 
-</code></pre>
+<p><img src="figure/log_bad_fit2.png" alt="plot of chunk log_bad_fit2"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
       <slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p><img src="figure/log_bad_fit3.png" alt="plot of chunk log_bad_fit3"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p><img src="figure/log_motivation.png" alt="plot of chunk log_motivation"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p><img src="figure/log_motivation2.png" alt="plot of chunk log_motivation2"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Motivation</h1>
+
+<p><space></p>
+
+<p><img src="figure/log_motivation3.png" alt="plot of chunk log_motivation3"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-9" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -154,7 +195,7 @@ curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-6" style="background:;">
+      <slide class="" id="slide-10" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -163,8 +204,9 @@ curve_points &lt;- line_points + geom_line(aes(x=X,y=fitted),color=&#39;red&#39;
 
 <p><space></p>
 
-<pre><code class="r">curve(1/(1+exp(-x)), from = -10, to = 10, ylab=&quot;P(Y=1|X)&quot;, col = &#39;red&#39;, lwd = 3.0)
-abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
+<pre><code class="r">curve(1/(1 + exp(-x)), from = -10, to = 10, ylab = &quot;P(Y=1|X)&quot;, col = &quot;red&quot;, 
+    lwd = 3)
+abline(a = 0.5, b = 0, lty = 2, col = &quot;blue&quot;, lwd = 3)
 </code></pre>
 
 <p><img src="figure/log_curve.png" alt="plot of chunk log_curve"> </p>
@@ -173,7 +215,7 @@ abline(a=0.5, b=0, lty=2, col=&#39;blue&#39;, lwd = 3.0)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-7" style="background:;">
+      <slide class="" id="slide-11" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -194,7 +236,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-8" style="background:;">
+      <slide class="" id="slide-12" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -217,7 +259,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-9" style="background:;">
+      <slide class="" id="slide-13" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -241,7 +283,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-10" style="background:;">
+      <slide class="" id="slide-14" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -264,7 +306,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-11" style="background:;">
+      <slide class="" id="slide-15" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -282,7 +324,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-12" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -302,7 +344,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-13" style="background:;">
+      <slide class="" id="slide-17" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -323,7 +365,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-14" style="background:;">
+      <slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -342,7 +384,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-15" style="background:;">
+      <slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -359,7 +401,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-16" style="background:;">
+      <slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -378,7 +420,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-17" style="background:;">
+      <slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -405,7 +447,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-18" style="background:;">
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -416,13 +458,14 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p>\(f(x) = x^{4} - 3\log(x)\)</p>
 
-<p><img src="figure/newton_curve.png" alt="plot of chunk newton_curve"> </p>
+<pre><code>## Error: could not find function &quot;fn&quot;
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-19" style="background:;">
+      <slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -431,22 +474,22 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<pre><code class="r">fn &lt;- function(x) x^4 - 3*log(x)
-dfn &lt;- function(x) 4*x^3 - 3/x
-d2fn &lt;- function(x) 12*x^2 + 3/x^2 
+<pre><code class="r">fn &lt;- function(x) x^4 - 3 * log(x)
+dfn &lt;- function(x) 4 * x^3 - 3/x
+d2fn &lt;- function(x) 12 * x^2 + 3/x^2
 
-newton &lt;- function(num.its, dfn, d2fn){
-  theta &lt;- rep(0,num.its)
-  theta[1] &lt;- round(runif(1,0,100),0)
+newton &lt;- function(num.its, dfn, d2fn) {
+    theta &lt;- rep(0, num.its)
+    theta[1] &lt;- round(runif(1, 0, 100), 0)
 
-  for (i in 2:num.its) {
-    h &lt;- - dfn(theta[i-1]) / d2fn(theta[i-1])
-    theta[i] &lt;- theta[i-1] + h 
-  }
+    for (i in 2:num.its) {
+        h &lt;- -dfn(theta[i - 1])/d2fn(theta[i - 1])
+        theta[i] &lt;- theta[i - 1] + h
+    }
 
-  out &lt;- cbind(1:num.its,theta)
-  dimnames(out)[[2]] &lt;- c(&quot;iteration&quot;,&quot;estimate&quot;)
-  return(out)
+    out &lt;- cbind(1:num.its, theta)
+    dimnames(out)[[2]] &lt;- c(&quot;iteration&quot;, &quot;estimate&quot;)
+    return(out)
 }
 </code></pre>
 
@@ -454,7 +497,7 @@ newton &lt;- function(num.its, dfn, d2fn){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-20" style="background:;">
+      <slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -464,11 +507,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1    59.00
-[2,]         2    39.33
-[3,]         3    26.22
-[4,]         4    17.48
-[5,]         5    11.65
+[1,]         1   25.000
+[2,]         2   16.667
+[3,]         3   11.111
+[4,]         4    7.408
+[5,]         5    4.939
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -486,7 +529,7 @@ newton &lt;- function(num.its, dfn, d2fn){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-21" style="background:;">
+      <slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -495,7 +538,7 @@ newton &lt;- function(num.its, dfn, d2fn){
 
 <p><space></p>
 
-<pre><code class="r">optimize(fn,c(-100,100))  ## built-in R optimization function
+<pre><code class="r">optimize(fn, c(-100, 100))  ## built-in R optimization function
 </code></pre>
 
 <pre><code>$minimum
@@ -509,7 +552,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-22" style="background:;">
+      <slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -530,7 +573,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-23" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -548,7 +591,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-24" style="background:;">
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -568,7 +611,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-25" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -596,7 +639,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -623,7 +666,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -649,7 +692,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -671,7 +714,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -680,7 +723,7 @@ $objective
 
 <p><space></p>
 
-<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
+<pre><code class="r">A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
 </code></pre>
 
@@ -688,7 +731,7 @@ I = diag(nrow(A))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -697,20 +740,17 @@ I = diag(nrow(A))
 
 <p><space></p>
 
-<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
+<pre><code class="r">A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
+### |A - L*I| = 0 det(c(5-l,2,2,5-l)) (5-l)*(5-l) - 4 = 0 25 - 10l + l^2 - 4 =
+### 0 l^2 - 10l + 21 = 0
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -719,14 +759,11 @@ I = diag(nrow(A))
 
 <p><space></p>
 
-<pre><code class="r">A = matrix(c(5,2,2,5),nrow=2)
+<pre><code class="r">A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
-roots &lt;- Re(polyroot(c(21,-10,1)))
+### |A - L*I| = 0 det(c(5-l,2,2,5-l)) (5-l)*(5-l) - 4 = 0 25 - 10l + l^2 - 4 =
+### 0 l^2 - 10l + 21 = 0
+roots &lt;- Re(polyroot(c(21, -10, 1)))
 roots
 </code></pre>
 
@@ -737,7 +774,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -755,7 +792,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -776,7 +813,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -797,7 +834,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -806,7 +843,7 @@ roots
 
 <p><space></p>
 
-<pre><code class="r">A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
+<pre><code class="r">A %*% c(1, -1) == 3 * as.matrix(c(1, -1))
 </code></pre>
 
 <pre><code>##      [,1]
@@ -814,7 +851,7 @@ roots
 ## [2,] TRUE
 </code></pre>
 
-<pre><code class="r">A%*%c(1,1) == 7 * as.matrix(c(1,1))
+<pre><code class="r">A %*% c(1, 1) == 7 * as.matrix(c(1, 1))
 </code></pre>
 
 <pre><code>##      [,1]
@@ -826,7 +863,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -835,9 +872,9 @@ roots
 
 <p><space></p>
 
-<pre><code class="r">m &lt;- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
+<pre><code class="r">m &lt;- matrix(c(1, -1, 1, 1), ncol = 2)  ## two eigenvectors
 m &lt;- m/sqrt(norm(m))
-as.matrix(m%*%diag(roots)%*%t(m))
+as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
 <pre><code>##      [,1] [,2]
@@ -849,7 +886,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -865,7 +902,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -883,7 +920,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -908,7 +945,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -931,7 +968,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -940,7 +977,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
 
 <p><space></p>
 
-<pre><code class="r">data &lt;- read.csv(&#39;tennis_data_2013.csv&#39;)
+<pre><code class="r">data &lt;- read.csv(&quot;tennis_data_2013.csv&quot;)
 </code></pre>
 
 <pre><code>## Warning: cannot open file &#39;tennis_data_2013.csv&#39;: No such file or
@@ -953,177 +990,59 @@ as.matrix(m%*%diag(roots)%*%t(m))
 <pre><code class="r">data$Player1 &lt;- as.character(data$Player1)
 </code></pre>
 
-<pre><code>## Error: replacement has 0 rows, data has 6497
+<pre><code>## Error: object of type &#39;closure&#39; is not subsettable
 </code></pre>
 
 <pre><code class="r">data$Player2 &lt;- as.character(data$Player2)
 </code></pre>
 
-<pre><code>## Error: replacement has 0 rows, data has 6497
+<pre><code>## Error: object of type &#39;closure&#39; is not subsettable
 </code></pre>
 
-<pre><code class="r">tennis &lt;- data
+<pre><code class="r">
+tennis &lt;- data
 m &lt;- length(data)
 
-for (i in 10:m){
-  tennis[,i] &lt;- ifelse(is.na(data[,i]),0,data[,i])
+for (i in 10:m) {
+    tennis[, i] &lt;- ifelse(is.na(data[, i]), 0, data[, i])
 }
+</code></pre>
 
+<pre><code>## Error: object of type &#39;closure&#39; is not subsettable
+</code></pre>
+
+<pre><code class="r">
 str(tennis)
 </code></pre>
 
-<pre><code>## &#39;data.frame&#39;:    6497 obs. of  13 variables:
-##  $ type                : Factor w/ 2 levels &quot;red&quot;,&quot;white&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ fixed.acidity       : num  7.4 7.8 7.8 11.2 7.4 7.4 7.9 7.3 7.8 7.5 ...
-##  $ volatile.acidity    : num  0.7 0.88 0.76 0.28 0.7 0.66 0.6 0.65 0.58 0.5 ...
-##  $ citric.acid         : num  0 0 0.04 0.56 0 0 0.06 0 0.02 0.36 ...
-##  $ residual.sugar      : num  1.9 2.6 2.3 1.9 1.9 1.8 1.6 1.2 2 6.1 ...
-##  $ chlorides           : num  0.076 0.098 0.092 0.075 0.076 0.075 0.069 0.065 0.073 0.071 ...
-##  $ free.sulfur.dioxide : num  11 25 15 17 11 13 15 15 9 17 ...
-##  $ total.sulfur.dioxide: num  34 67 54 60 34 40 59 21 18 102 ...
-##  $ density             : num  0.998 0.997 0.997 0.998 0.998 ...
-##  $ pH                  : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates           : num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol             : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality             : int  5 5 5 6 5 5 5 7 7 5 ...
+<pre><code>## function (..., list = character(), package = NULL, lib.loc = NULL, 
+##     verbose = getOption(&quot;verbose&quot;), envir = .GlobalEnv)
 </code></pre>
 
-<pre><code class="r">features &lt;- tennis[,10:m]
+<pre><code class="r">
+features &lt;- tennis[, 10:m]
+</code></pre>
 
+<pre><code>## Error: object of type &#39;closure&#39; is not subsettable
+</code></pre>
+
+<pre><code class="r">
 head(features)
 </code></pre>
 
-<pre><code>##     pH sulphates alcohol quality
-## 1 3.51      0.56     9.4       5
-## 2 3.20      0.68     9.8       5
-## 3 3.26      0.65     9.8       5
-## 4 3.16      0.58     9.8       6
-## 5 3.51      0.56     9.4       5
-## 6 3.51      0.56     9.4       5
+<pre><code>## Error: object &#39;features&#39; not found
 </code></pre>
 
 <pre><code class="r">str(features)
 </code></pre>
 
-<pre><code>## &#39;data.frame&#39;:    6497 obs. of  4 variables:
-##  $ pH       : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates: num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol  : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality  : int  5 5 5 6 5 5 5 7 7 5 ...
+<pre><code>## Error: object &#39;features&#39; not found
 </code></pre>
 
 <pre><code class="r">dim(features)
 </code></pre>
 
-<pre><code>## [1] 6497    4
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-42" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">scaled_features &lt;- as.matrix(scale(features))
-Cx &lt;- cov(scaled_features)
-eigenvalues &lt;- eigen(Cx)$values
-eigenvectors &lt;- eigen(Cx)$vectors
-PC &lt;- scaled_features %*% eigenvectors
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-43" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">Cy &lt;- cov(PC)
-sum(round(diag(Cy) - eigenvalues,5))
-</code></pre>
-
-<pre><code>## [1] 0
-</code></pre>
-
-<pre><code class="r">sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC&#39;s are orthogonal
-</code></pre>
-
-<pre><code>## [1] 0
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-44" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">var_explained &lt;- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
-cum_var_explained &lt;- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
-
-var_explained &lt;- as.data.frame(var_explained)
-names(var_explained) &lt;- &quot;variance_explained&quot;
-var_explained$PC &lt;- as.numeric(rownames(var_explained))
-var_explained &lt;- cbind(var_explained,cum_var_explained)
-
-library(ggplot2)
-ggplot(var_explained) +
-  geom_bar(aes(x=PC,y=variance_explained),stat=&#39;identity&#39;) +
-  geom_line(aes(x=PC,y=cum_var_explained))
-</code></pre>
-
-<p><img src="figure/unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-45" style="background:;">
-  <hgroup>
-    <h2>Principle Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">pca.df &lt;- prcomp(scaled_features)
-eigenvalues == (pca.df$sdev)^2
-</code></pre>
-
-<pre><code>## [1] FALSE FALSE FALSE FALSE
-</code></pre>
-
-<pre><code class="r">eigenvectors[,1] == pca.df$rotation[,1]
-</code></pre>
-
-<pre><code>##        pH sulphates   alcohol   quality 
-##     FALSE     FALSE     FALSE     FALSE
-</code></pre>
-
-<pre><code class="r">sum((eigenvectors[,1])^2)
-</code></pre>
-
-<pre><code>## [1] 1
+<pre><code>## Error: object &#39;features&#39; not found
 </code></pre>
 
   </article>
@@ -1139,13 +1058,34 @@ eigenvalues == (pca.df$sdev)^2
 
 <p><space></p>
 
-<pre><code class="r">rows &lt;- nrow(tennis)
-pca.plot &lt;- as.data.frame(pca.df$x[,1:2])
-pca.plot$gender &lt;- data$Gender
-ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
+<pre><code class="r">scaled_features &lt;- as.matrix(scale(features))
 </code></pre>
 
-<pre><code>## Error: object &#39;gender&#39; not found
+<pre><code>## Error: object &#39;features&#39; not found
+</code></pre>
+
+<pre><code class="r">Cx &lt;- cov(scaled_features)
+</code></pre>
+
+<pre><code>## Error: object &#39;scaled_features&#39; not found
+</code></pre>
+
+<pre><code class="r">eigenvalues &lt;- eigen(Cx)$values
+</code></pre>
+
+<pre><code>## Error: object &#39;Cx&#39; not found
+</code></pre>
+
+<pre><code class="r">eigenvectors &lt;- eigen(Cx)$vectors
+</code></pre>
+
+<pre><code>## Error: object &#39;Cx&#39; not found
+</code></pre>
+
+<pre><code class="r">PC &lt;- scaled_features %*% eigenvectors
+</code></pre>
+
+<pre><code>## Error: object &#39;scaled_features&#39; not found
 </code></pre>
 
   </article>
@@ -1153,6 +1093,165 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
 </slide>
 
       <slide class="" id="slide-47" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">Cy &lt;- cov(PC)
+</code></pre>
+
+<pre><code>## Error: object &#39;PC&#39; not found
+</code></pre>
+
+<pre><code class="r">sum(round(diag(Cy) - eigenvalues, 5))
+</code></pre>
+
+<pre><code>## Error: object &#39;Cy&#39; not found
+</code></pre>
+
+<pre><code class="r">sum(round(Cy[upper.tri(Cy)], 5))  ## off diagonals are 0 since PC&#39;s are orthogonal
+</code></pre>
+
+<pre><code>## Error: object &#39;Cy&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-48" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">var_explained &lt;- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
+</code></pre>
+
+<pre><code>## Error: object &#39;eigenvalues&#39; not found
+</code></pre>
+
+<pre><code class="r">cum_var_explained &lt;- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
+</code></pre>
+
+<pre><code>## Error: object &#39;eigenvalues&#39; not found
+</code></pre>
+
+<pre><code class="r">
+var_explained &lt;- as.data.frame(var_explained)
+</code></pre>
+
+<pre><code>## Error: object &#39;var_explained&#39; not found
+</code></pre>
+
+<pre><code class="r">names(var_explained) &lt;- &quot;variance_explained&quot;
+</code></pre>
+
+<pre><code>## Error: object &#39;var_explained&#39; not found
+</code></pre>
+
+<pre><code class="r">var_explained$PC &lt;- as.numeric(rownames(var_explained))
+</code></pre>
+
+<pre><code>## Error: object &#39;var_explained&#39; not found
+</code></pre>
+
+<pre><code class="r">var_explained &lt;- cbind(var_explained, cum_var_explained)
+</code></pre>
+
+<pre><code>## Error: object &#39;var_explained&#39; not found
+</code></pre>
+
+<pre><code class="r">
+library(ggplot2)
+ggplot(var_explained) + geom_bar(aes(x = PC, y = variance_explained), stat = &quot;identity&quot;) + 
+    geom_line(aes(x = PC, y = cum_var_explained))
+</code></pre>
+
+<pre><code>## Error: object &#39;var_explained&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-49" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">pca.df &lt;- prcomp(scaled_features)
+</code></pre>
+
+<pre><code>## Error: object &#39;scaled_features&#39; not found
+</code></pre>
+
+<pre><code class="r">eigenvalues == (pca.df$sdev)^2
+</code></pre>
+
+<pre><code>## Error: object &#39;eigenvalues&#39; not found
+</code></pre>
+
+<pre><code class="r">eigenvectors[, 1] == pca.df$rotation[, 1]
+</code></pre>
+
+<pre><code>## Error: object &#39;eigenvectors&#39; not found
+</code></pre>
+
+<pre><code class="r">sum((eigenvectors[, 1])^2)
+</code></pre>
+
+<pre><code>## Error: object &#39;eigenvectors&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-50" style="background:;">
+  <hgroup>
+    <h2>Principle Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">rows &lt;- nrow(tennis)
+pca.plot &lt;- as.data.frame(pca.df$x[, 1:2])
+</code></pre>
+
+<pre><code>## Error: object &#39;pca.df&#39; not found
+</code></pre>
+
+<pre><code class="r">pca.plot$gender &lt;- data$Gender
+</code></pre>
+
+<pre><code>## Error: object of type &#39;closure&#39; is not subsettable
+</code></pre>
+
+<pre><code class="r">ggplot(data = pca.plot, aes(x = PC1, y = PC2, color = gender)) + geom_point()
+</code></pre>
+
+<pre><code>## Error: object &#39;pca.plot&#39; not found
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1171,7 +1270,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Principle Component Analysis</h2>
   </hgroup>
@@ -1184,7 +1283,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1212,7 +1311,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1231,7 +1330,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1246,7 +1345,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1261,7 +1360,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1285,7 +1384,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1304,7 +1403,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1334,7 +1433,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-60" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1359,7 +1458,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-61" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1374,7 +1473,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-58" style="background:;">
+      <slide class="" id="slide-62" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1389,7 +1488,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-59" style="background:;">
+      <slide class="" id="slide-63" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1404,7 +1503,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-60" style="background:;">
+      <slide class="" id="slide-64" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1413,9 +1512,10 @@ sum(diag(table(gen,as.character(data$Gender))))/rows</li>
 
 <p><space></p>
 
-<pre><code class="r">wine &lt;- read.csv(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&#39;)
-names(wine) &lt;- c(&quot;class&quot;,&#39;Alcohol&#39;,&#39;Malic&#39;,&#39;Ash&#39;,&#39;Alcalinity&#39;,&#39;Magnesium&#39;,&#39;Total_phenols&#39;,
-                 &#39;Flavanoids&#39;,&#39;NFphenols&#39;,&#39;Proanthocyanins&#39;,&#39;Color&#39;,&#39;Hue&#39;,&#39;Diluted&#39;,&#39;Proline&#39;)
+<pre><code class="r">wine &lt;- read.csv(&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&quot;)
+names(wine) &lt;- c(&quot;class&quot;, &quot;Alcohol&quot;, &quot;Malic&quot;, &quot;Ash&quot;, &quot;Alcalinity&quot;, &quot;Magnesium&quot;, 
+    &quot;Total_phenols&quot;, &quot;Flavanoids&quot;, &quot;NFphenols&quot;, &quot;Proanthocyanins&quot;, &quot;Color&quot;, 
+    &quot;Hue&quot;, &quot;Diluted&quot;, &quot;Proline&quot;)
 str(wine)
 </code></pre>
 
@@ -1446,7 +1546,7 @@ str(wine)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-61" style="background:;">
+      <slide class="" id="slide-65" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1455,26 +1555,24 @@ str(wine)
 
 <p><space></p>
 
-<pre><code class="r">s.wine &lt;- scale(wine[,-1])
+<pre><code class="r">s.wine &lt;- scale(wine[, -1])
 best_k &lt;- 0
 num_k &lt;- 20
-for (i in 1:num_k){
-  best_k[i] &lt;- sum(kmeans(s.wine,centers=i)$withinss)
-  }
+for (i in 1:num_k) {
+    best_k[i] &lt;- sum(kmeans(s.wine, centers = i)$withinss)
+}
 
-barplot(best_k, xlab = &quot;Number of clusters&quot;,
-        names.arg = 1:num_k,
-        ylab=&quot;Within groups sum of squares&quot;,
-        main=&quot;Scree Plot for Wine dataset&quot;)
+barplot(best_k, xlab = &quot;Number of clusters&quot;, names.arg = 1:num_k, ylab = &quot;Within groups sum of squares&quot;, 
+    main = &quot;Scree Plot for Wine dataset&quot;)
 </code></pre>
 
-<p><img src="figure/unnamed-chunk-7.png" alt="plot of chunk unnamed-chunk-7"> </p>
+<p><img src="figure/unnamed-chunk-6.png" alt="plot of chunk unnamed-chunk-6"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-62" style="background:;">
+      <slide class="" id="slide-66" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1540,7 +1638,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-63" style="background:;">
+      <slide class="" id="slide-67" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1560,7 +1658,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-64" style="background:;">
+      <slide class="" id="slide-68" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1578,7 +1676,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-65" style="background:;">
+      <slide class="" id="slide-69" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1603,7 +1701,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-66" style="background:;">
+      <slide class="" id="slide-70" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1615,8 +1713,8 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
 <pre><code class="r">library(cluster)
 
 pam.best &lt;- as.numeric()
-for (i in 2:20){
-  pam.best[i] &lt;- pam(s.wine, k=i)$silinfo$avg.width
+for (i in 2:20) {
+    pam.best[i] &lt;- pam(s.wine, k = i)$silinfo$avg.width
 }
 best_k &lt;- which.max(pam.best)
 best_k
@@ -1629,7 +1727,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-67" style="background:;">
+      <slide class="" id="slide-71" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1638,16 +1736,16 @@ best_k
 
 <p><space></p>
 
-<pre><code class="r">clusplot(pam(s.wine,best_k), main=&quot;K-medoids with K = 3&quot;,sub=NULL)
+<pre><code class="r">clusplot(pam(s.wine, best_k), main = &quot;K-medoids with K = 3&quot;, sub = NULL)
 </code></pre>
 
-<p><img src="figure/unnamed-chunk-8.png" alt="plot of chunk unnamed-chunk-8"> </p>
+<p><img src="figure/unnamed-chunk-7.png" alt="plot of chunk unnamed-chunk-7"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-68" style="background:;">
+      <slide class="" id="slide-72" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1666,7 +1764,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-69" style="background:;">
+      <slide class="" id="slide-73" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1685,7 +1783,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-70" style="background:;">
+      <slide class="" id="slide-74" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1705,7 +1803,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-71" style="background:;">
+      <slide class="" id="slide-75" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1726,7 +1824,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-72" style="background:;">
+      <slide class="" id="slide-76" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1749,7 +1847,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-73" style="background:;">
+      <slide class="" id="slide-77" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1764,7 +1862,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-74" style="background:;">
+      <slide class="" id="slide-78" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1773,19 +1871,19 @@ best_k
 
 <p><space></p>
 
-<pre><code class="r">x &lt;- c(2,2,8,5,7,6,1,4)
-y &lt;- c(10,5,4,8,5,4,2,9)
-cluster &lt;- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
+<pre><code class="r">x &lt;- c(2, 2, 8, 5, 7, 6, 1, 4)
+y &lt;- c(10, 5, 4, 8, 5, 4, 2, 9)
+cluster &lt;- data.frame(X = c(x, 2 * x, 3 * x), Y = c(y, -2 * x, 1/4 * y))
 plot(cluster)
 </code></pre>
 
-<p><img src="figure/unnamed-chunk-9.png" alt="plot of chunk unnamed-chunk-9"> </p>
+<p><img src="figure/unnamed-chunk-8.png" alt="plot of chunk unnamed-chunk-8"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-75" style="background:;">
+      <slide class="" id="slide-79" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1795,8 +1893,8 @@ plot(cluster)
 <p><space></p>
 
 <pre><code class="r">library(fpc)
-cluster_DBSCAN&lt;-dbscan(cluster, eps=3, MinPts=2, method=&quot;hybrid&quot;)
-plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=3, MinPts=3)&quot;)
+cluster_DBSCAN &lt;- dbscan(cluster, eps = 3, MinPts = 2, method = &quot;hybrid&quot;)
+plot(cluster_DBSCAN, cluster, main = &quot;Clustering using DBSCAN algorithm (eps=3, MinPts=3)&quot;)
 </code></pre>
 
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
@@ -1805,7 +1903,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-76" style="background:;">
+      <slide class="" id="slide-80" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -1825,7 +1923,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-77" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1843,7 +1941,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-78" style="background:;">
+      <slide class="" id="slide-82" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1858,7 +1956,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-79" style="background:;">
+      <slide class="" id="slide-83" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1881,7 +1979,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-80" style="background:;">
+      <slide class="" id="slide-84" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1902,7 +2000,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-81" style="background:;">
+      <slide class="" id="slide-85" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1939,7 +2037,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-82" style="background:;">
+      <slide class="" id="slide-86" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1967,7 +2065,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-83" style="background:;">
+      <slide class="" id="slide-87" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1988,7 +2086,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-84" style="background:;">
+      <slide class="" id="slide-88" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -1999,13 +2097,13 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
 
 <p>What is the entropy of a fair, 6 sided die?</p>
 
-<pre><code class="r">entropy &lt;- function(probs){
-  ent &lt;- 0
-  for(i in probs){
-    ent_temp &lt;- -i*log2(i)
-    ent &lt;- ent + ent_temp
-  }
-  return(ent)
+<pre><code class="r">entropy &lt;- function(probs) {
+    ent &lt;- 0
+    for (i in probs) {
+        ent_temp &lt;- -i * log2(i)
+        ent &lt;- ent + ent_temp
+    }
+    return(ent)
 }
 </code></pre>
 
@@ -2013,7 +2111,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-85" style="background:;">
+      <slide class="" id="slide-89" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2022,7 +2120,7 @@ plot(cluster_DBSCAN, cluster, main=&quot;Clustering using DBSCAN algorithm (eps=
 
 <p><space></p>
 
-<pre><code class="r">fair &lt;- rep(1/6,6)
+<pre><code class="r">fair &lt;- rep(1/6, 6)
 entropy(fair)
 </code></pre>
 
@@ -2039,7 +2137,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-86" style="background:;">
+      <slide class="" id="slide-90" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2055,7 +2153,7 @@ entropy(fair)
 <li>\(P(X=4) = P(X=5) = P(X=6) = 2/9\)</li>
 </ul>
 
-<pre><code class="r">biased &lt;- c(rep(1/9,3),rep(2/9,3))
+<pre><code class="r">biased &lt;- c(rep(1/9, 3), rep(2/9, 3))
 entropy(biased)
 </code></pre>
 
@@ -2066,7 +2164,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-87" style="background:;">
+      <slide class="" id="slide-91" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2075,14 +2173,15 @@ entropy(biased)
 
 <p><space></p>
 
-<pre><code class="r">more_biased &lt;- c(rep(1/18,3),rep(5/18,3))
+<pre><code class="r">more_biased &lt;- c(rep(1/18, 3), rep(5/18, 3))
 entropy(more_biased)
 </code></pre>
 
 <pre><code>[1] 2.235
 </code></pre>
 
-<pre><code class="r">most_biased &lt;- c(rep(1/100,5),rep(95/100,1))
+<pre><code class="r">
+most_biased &lt;- c(rep(1/100, 5), rep(95/100, 1))
 entropy(most_biased)
 </code></pre>
 
@@ -2093,7 +2192,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-88" style="background:;">
+      <slide class="" id="slide-92" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2102,8 +2201,8 @@ entropy(most_biased)
 
 <p><space></p>
 
-<pre><code class="r">curve(-x*log2(x)-(1 - x)*log2(1 - x), col =&quot; red&quot;, xlab = &quot;x&quot;, ylab = &quot;Entropy&quot;, 
-      lwd = 4, main=&#39;Entropy of a coin toss&#39;)
+<pre><code class="r">curve(-x * log2(x) - (1 - x) * log2(1 - x), col = &quot; red&quot;, xlab = &quot;x&quot;, ylab = &quot;Entropy&quot;, 
+    lwd = 4, main = &quot;Entropy of a coin toss&quot;)
 </code></pre>
 
 <p><img src="figure/entropy_curve.png" alt="plot of chunk entropy_curve"> </p>
@@ -2112,7 +2211,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-89" style="background:;">
+      <slide class="" id="slide-93" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2143,7 +2242,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-90" style="background:;">
+      <slide class="" id="slide-94" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2152,21 +2251,19 @@ entropy(most_biased)
 
 <p><space></p>
 
-<pre><code class="r">voting_data &lt;- read.csv(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#39;)
-names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;water-project-cost-sharing&#39;,
-                        &#39;adoption-of-the-budget-resolution&#39;,&#39;physician-fee-freeze&#39;,
-                        &#39;el-salvador-aid&#39;,&#39;religious-groups-in-schools&#39;,
-                        &#39;anti-satellite-test-ban&#39;,&#39;aid-to-nicaraguan-contras&#39;,
-                        &#39;mx-missile&#39;,&#39;immigration&#39;,&#39;synfuels-corporation-cutback&#39;,
-                        &#39;education-spending&#39;,&#39;superfund-right-to-sue&#39;,&#39;crime&#39;,
-                        &#39;duty-free-exports&#39;,&#39;export-administration-act-south-africa&#39;)
+<pre><code class="r">voting_data &lt;- read.csv(&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&quot;)
+names(voting_data) &lt;- c(&quot;party&quot;, &quot;handicapped-infants&quot;, &quot;water-project-cost-sharing&quot;, 
+    &quot;adoption-of-the-budget-resolution&quot;, &quot;physician-fee-freeze&quot;, &quot;el-salvador-aid&quot;, 
+    &quot;religious-groups-in-schools&quot;, &quot;anti-satellite-test-ban&quot;, &quot;aid-to-nicaraguan-contras&quot;, 
+    &quot;mx-missile&quot;, &quot;immigration&quot;, &quot;synfuels-corporation-cutback&quot;, &quot;education-spending&quot;, 
+    &quot;superfund-right-to-sue&quot;, &quot;crime&quot;, &quot;duty-free-exports&quot;, &quot;export-administration-act-south-africa&quot;)
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-91" style="background:;">
+      <slide class="" id="slide-95" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2175,7 +2272,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
 
 <p><space></p>
 
-<pre><code class="r">prop.table(table(voting_data[,1]))
+<pre><code class="r">prop.table(table(voting_data[, 1]))
 </code></pre>
 
 <pre><code>
@@ -2184,16 +2281,16 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
 </code></pre>
 
 <pre><code class="r">n &lt;- nrow(voting_data)
-train_ind &lt;- sample(n,2/3*n)
-voting_train &lt;- voting_data[train_ind,]
-voting_test &lt;- voting_data[-train_ind,]
+train_ind &lt;- sample(n, 2/3 * n)
+voting_train &lt;- voting_data[train_ind, ]
+voting_test &lt;- voting_data[-train_ind, ]
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-92" style="background:;">
+      <slide class="" id="slide-96" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2204,11 +2301,14 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
 
+<pre><code>## Error: object &#39;voting_train&#39; not found
+</code></pre>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-93" style="background:;">
+      <slide class="" id="slide-97" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2232,13 +2332,13 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         84 |          3 |         87 | 
-             |      0.579 |      0.021 |            | 
+    democrat |         86 |          6 |         92 | 
+             |      0.593 |      0.041 |            | 
 -------------|------------|------------|------------|
-  republican |          4 |         54 |         58 | 
-             |      0.028 |      0.372 |            | 
+  republican |          4 |         49 |         53 | 
+             |      0.028 |      0.338 |            | 
 -------------|------------|------------|------------|
-Column Total |         88 |         57 |        145 | 
+Column Total |         90 |         55 |        145 | 
 -------------|------------|------------|------------|
 
 
@@ -2248,7 +2348,7 @@ Column Total |         88 |         57 |        145 |
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-94" style="background:;">
+      <slide class="" id="slide-98" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2262,19 +2362,19 @@ head(C5imp(tree_model))
 </code></pre>
 
 <pre><code>##                                   Overall
-## physician-fee-freeze                96.54
-## adoption-of-the-budget-resolution   40.14
-## anti-satellite-test-ban              8.65
+## physician-fee-freeze                97.58
 ## handicapped-infants                  0.00
 ## water-project-cost-sharing           0.00
+## adoption-of-the-budget-resolution    0.00
 ## el-salvador-aid                      0.00
+## religious-groups-in-schools          0.00
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-95" style="background:;">
+      <slide class="" id="slide-99" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2292,7 +2392,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 22:27:54 2014
+## C5.0 [Release 2.07 GPL Edition]      Tue Aug 19 12:20:12 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2301,12 +2401,8 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
-## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
-##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
+## physician-fee-freeze in {?,n}: democrat (165/0.6)
+## physician-fee-freeze = y: republican (124/10.6)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2315,20 +2411,18 @@ summary(tree_model)
 ##    ----------------  
 ##    Size      Errors  
 ## 
-##       4   10( 3.5%)   &lt;&lt;
+##       2    9( 3.1%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     176     4    (a): class democrat
-##       6   103    (b): class republican
+##     167     8    (a): class democrat
+##       1   113    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
-##   96.54% physician-fee-freeze
-##   40.14% adoption-of-the-budget-resolution
-##    8.65% anti-satellite-test-ban
+##   97.58% physician-fee-freeze
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2338,7 +2432,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-96" style="background:;">
+      <slide class="" id="slide-100" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2356,7 +2450,7 @@ summary(tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-97" style="background:;">
+      <slide class="" id="slide-101" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2365,12 +2459,11 @@ summary(tree_model)
 
 <p><space></p>
 
-<pre><code class="r">boosted_tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=25)
-boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])
+<pre><code class="r">boosted_tree_model &lt;- C5.0(voting_train[, -1], voting_train[, 1], trials = 25)
+boosted_tennis_predict &lt;- predict(boosted_tree_model, voting_test[, -1])
 
-boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
-                           prop.c = FALSE, prop.r = FALSE, 
-                           dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
+boosted_conf &lt;- CrossTable(voting_test[, 1], boosted_tennis_predict, prop.chisq = FALSE, 
+    prop.c = FALSE, prop.r = FALSE, dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
 </code></pre>
 
 <pre><code>## 
@@ -2388,13 +2481,13 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         84 |          3 |         87 | 
-##              |      0.579 |      0.021 |            | 
+##     democrat |         86 |          6 |         92 | 
+##              |      0.593 |      0.041 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         57 |         58 | 
-##              |      0.007 |      0.393 |            | 
+##   republican |          4 |         49 |         53 | 
+##              |      0.028 |      0.338 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         85 |         60 |        145 | 
+## Column Total |         90 |         55 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -2404,7 +2497,7 @@ boosted_conf &lt;- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chis
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-98" style="background:;">
+      <slide class="" id="slide-102" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2422,7 +2515,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]      Mon Aug 18 22:27:54 2014
+## C5.0 [Release 2.07 GPL Edition]      Tue Aug 19 12:20:12 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome&#39;
@@ -2433,300 +2526,44 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
-## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
-##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
+## physician-fee-freeze in {?,n}: democrat (165/0.6)
+## physician-fee-freeze = y: republican (124/10.6)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (155.2/27.9)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (90.6/10)
-##     synfuels-corporation-cutback = y: democrat (43.1/15.9)
+## physician-fee-freeze in {?,n}: democrat (127.8/3.8)
+## physician-fee-freeze = y: republican (161.2/70.8)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
+##  democrat (289/84.3)
 ## 
-## adoption-of-the-budget-resolution in {?,n}: republican (160.3/40.1)
-## adoption-of-the-budget-resolution = y:
-## :...physician-fee-freeze in {?,n}: democrat (101/8.9)
-##     physician-fee-freeze = y: republican (27.6/7.9)
+## *** boosting reduced to 2 trials since last classifier is very inaccurate
 ## 
-## -----  Trial 3:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (139.5/25.2)
-## physician-fee-freeze = y:
-## :...education-spending = n: democrat (59.3/21.5)
-##     education-spending in {?,y}: republican (90.2/18)
-## 
-## -----  Trial 4:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (122/28.5)
-## physician-fee-freeze = y: republican (167/56.3)
-## 
-## -----  Trial 5:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/31.7)
-## adoption-of-the-budget-resolution = n:
-## :...synfuels-corporation-cutback in {?,n}: republican (93.5/22.8)
-##     synfuels-corporation-cutback = y: democrat (80.5/33.3)
-## 
-## -----  Trial 6:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (107.4/30.2)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (73.3/10)
-##     immigration = n:
-##     :...superfund-right-to-sue in {?,n}: democrat (24.3/3)
-##         superfund-right-to-sue = y: republican (84/33.5)
-## 
-## -----  Trial 7:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (121.2/38.3)
-## adoption-of-the-budget-resolution = n:
-## :...water-project-cost-sharing in {?,n}: republican (67.7/14.2)
-##     water-project-cost-sharing = y:
-##     :...superfund-right-to-sue = n: democrat (26.2/2.7)
-##         superfund-right-to-sue in {?,y}: republican (73.9/26.3)
-## 
-## -----  Trial 8:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (104.7/31.9)
-## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (50.6/8.6)
-##     water-project-cost-sharing = y:
-##     :...crime in {?,n}: republican (10.4/1.7)
-##         crime = y:
-##         :...anti-satellite-test-ban in {?,n}: democrat (94.9/39.2)
-##             anti-satellite-test-ban = y: republican (28.4/9)
-## 
-## -----  Trial 9:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = n: democrat (95.8/32.2)
-## physician-fee-freeze in {?,y}: republican (193.2/70.4)
-## 
-## -----  Trial 10:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback in {?,y}: democrat (121.5/38.5)
-## synfuels-corporation-cutback = n:
-## :...duty-free-exports in {?,n}: republican (99.1/25.7)
-##     duty-free-exports = y: democrat (68.3/29.8)
-## 
-## -----  Trial 11:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution = n: republican (168.8/64.2)
-## adoption-of-the-budget-resolution in {?,y}: democrat (120.2/38.9)
-## 
-## -----  Trial 12:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (101.5/31.1)
-## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (44.8/8.7)
-##     water-project-cost-sharing = y:
-##     :...synfuels-corporation-cutback in {?,n}: republican (63.4/20.6)
-##         synfuels-corporation-cutback = y: democrat (79.3/32.7)
-## 
-## -----  Trial 13:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = n: democrat (94.5/33.8)
-## physician-fee-freeze in {?,y}: republican (194.5/73.7)
-## 
-## -----  Trial 14:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/38.9)
-## adoption-of-the-budget-resolution = n:
-## :...education-spending = n: democrat (93.7/42.6)
-##     education-spending in {?,y}: republican (80.2/19)
-## 
-## -----  Trial 15:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (90.5/33.9)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (81.8/19.5)
-##     immigration = n:
-##     :...superfund-right-to-sue in {?,n}: democrat (22.6/4.2)
-##         superfund-right-to-sue = y: republican (94/41.5)
-## 
-## -----  Trial 16:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback = ?: republican (0)
-## synfuels-corporation-cutback = y: democrat (125.3/46.1)
-## synfuels-corporation-cutback = n:
-## :...superfund-right-to-sue in {?,n}: republican (80.4/20.3)
-##     superfund-right-to-sue = y: democrat (83.3/39)
-## 
-## -----  Trial 17:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,n}: republican (166.1/60.6)
-## adoption-of-the-budget-resolution = y: democrat (122.9/42.5)
-## 
-## -----  Trial 18:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (96.6/28.5)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (61.7/13.9)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (88.4/29.8)
-##         adoption-of-the-budget-resolution = y: democrat (42.3/6.9)
-## 
-## -----  Trial 19:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback in {?,y}: democrat (119.5/40.6)
-## synfuels-corporation-cutback = n:
-## :...crime = n: democrat (25.2/7.3)
-##     crime in {?,y}: republican (144.3/49.9)
-## 
-## -----  Trial 20:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (105.2/34.1)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (60.8/18.2)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (81.3/21.7)
-##         adoption-of-the-budget-resolution = y: democrat (40.7/9.9)
-## 
-## -----  Trial 21:  -----
-## 
-## Decision tree:
-## 
-## mx-missile in {?,y}: democrat (130.4/45.5)
-## mx-missile = n:
-## :...duty-free-exports in {?,y}: republican (33.5/2.6)
-##     duty-free-exports = n:
-##     :...physician-fee-freeze = n: democrat (16.4/1)
-##         physician-fee-freeze in {?,y}: republican (107.7/42.9)
-## 
-## -----  Trial 22:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (102.6/21.9)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (88.4/22.3)
-##     synfuels-corporation-cutback = y: democrat (93.9/40.5)
-## 
-## -----  Trial 23:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (69/2.4)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (72.8/24.3)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (93/16.1)
-##         adoption-of-the-budget-resolution = y: democrat (48.2/10)
-## 
-## -----  Trial 24:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (68.1/4.8)
-## physician-fee-freeze = y:
-## :...mx-missile in {?,n}: republican (114.1/13.8)
-##     mx-missile = y:
-##     :...education-spending in {?,n}: democrat (72.4/14.1)
-##         education-spending = y: republican (26.3/3.7)
+## *** boosting abandoned (too few classifiers)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
 ## 
-## Trial        Decision Tree   
-## -----      ----------------  
+##      Decision Tree   
+##    ----------------  
 ##    Size      Errors  
 ## 
-##    0      4   10( 3.5%)
-##    1      3   24( 8.3%)
-##    2      3   28( 9.7%)
-##    3      3   23( 8.0%)
-##    4      2   14( 4.8%)
-##    5      3   38(13.1%)
-##    6      4   15( 5.2%)
-##    7      4   31(10.7%)
-##    8      5   47(16.3%)
-##    9      2   18( 6.2%)
-##   10      3   64(22.1%)
-##   11      2   36(12.5%)
-##   12      4   19( 6.6%)
-##   13      2   18( 6.2%)
-##   14      3   32(11.1%)
-##   15      4   16( 5.5%)
-##   16      3  168(58.1%)
-##   17      2   38(13.1%)
-##   18      4   12( 4.2%)
-##   19      3   47(16.3%)
-##   20      4   11( 3.8%)
-##   21      4   42(14.5%)
-##   22      3   24( 8.3%)
-##   23      4   12( 4.2%)
-##   24      4   17( 5.9%)
-## boost             10( 3.5%)   &lt;&lt;
+##       2    9( 3.1%)   &lt;&lt;
 ## 
 ## 
 ##     (a)   (b)    &lt;-classified as
 ##    ----  ----
-##     175     5    (a): class democrat
-##       5   104    (b): class republican
+##     167     8    (a): class democrat
+##       1   113    (b): class republican
 ## 
 ## 
 ##  Attribute usage:
 ## 
-##   96.54% adoption-of-the-budget-resolution
-##   96.54% physician-fee-freeze
-##   94.81% synfuels-corporation-cutback
-##   94.46% mx-missile
-##   80.62% duty-free-exports
-##   71.97% superfund-right-to-sue
-##   71.28% crime
-##   46.37% education-spending
-##   42.21% water-project-cost-sharing
-##   41.52% immigration
-##   40.83% anti-satellite-test-ban
+##   97.58% physician-fee-freeze
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2736,7 +2573,7 @@ summary(boosted_tree_model)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-99" style="background:;">
+      <slide class="" id="slide-103" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2750,18 +2587,17 @@ summary(boosted_tree_model)
 <li>introduce higher cost to getting this wrong</li>
 </ul>
 
-<pre><code class="r">error_cost &lt;- matrix(c(0,1,2,0),nrow=2)
-cost_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
+<pre><code class="r">error_cost &lt;- matrix(c(0, 1, 2, 0), nrow = 2)
+cost_model &lt;- C5.0(voting_train[, -1], voting_train[, 1], trials = 1, costs = error_cost)
 </code></pre>
 
 <pre><code>## Warning: 
 ## no dimnames were given for the cost matrix; the factor levels will be used
 </code></pre>
 
-<pre><code class="r">cost_predict &lt;- predict(cost_model, newdata=voting_test[,-1])
-conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
+<pre><code class="r">cost_predict &lt;- predict(cost_model, newdata = voting_test[, -1])
+conf &lt;- CrossTable(voting_test[, 1], cost_predict, prop.chisq = FALSE, prop.c = FALSE, 
+    prop.r = FALSE, dnn = c(&quot;actual class&quot;, &quot;predicted class&quot;))
 </code></pre>
 
 <pre><code>## 
@@ -2779,11 +2615,11 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         83 |          4 |         87 | 
-##              |      0.572 |      0.028 |            | 
+##     democrat |         84 |          8 |         92 | 
+##              |      0.579 |      0.055 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          3 |         55 |         58 | 
-##              |      0.021 |      0.379 |            | 
+##   republican |          2 |         51 |         53 | 
+##              |      0.014 |      0.352 |            | 
 ## -------------|------------|------------|------------|
 ## Column Total |         86 |         59 |        145 | 
 ## -------------|------------|------------|------------|
@@ -2795,7 +2631,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-100" style="background:;">
+      <slide class="" id="slide-104" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2886,7 +2722,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-101" style="background:;">
+      <slide class="" id="slide-105" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2913,7 +2749,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-102" style="background:;">
+      <slide class="" id="slide-106" style="background:;">
   <hgroup>
     <h2>Summary</h2>
   </hgroup>
@@ -2933,7 +2769,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-103" style="background:;">
+      <slide class="" id="slide-107" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -2950,7 +2786,7 @@ conf &lt;- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-104" style="background:;">
+      <slide class="" id="slide-108" style="background:;">
   <hgroup>
     
   </hgroup>

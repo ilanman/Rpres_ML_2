@@ -34,14 +34,8 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-
-```r
-x <- 1:10
-log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='lm',se=F,color='green',size=1)
-```
-
 ![plot of chunk log_bad_fit](figure/log_bad_fit.png) 
+
 
 ----
 
@@ -49,23 +43,44 @@ ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) + stat_smooth(method='
 # Motivation
 <space>
 
+![plot of chunk log_bad_fit2](figure/log_bad_fit2.png) 
 
-```r
-library("MASS")
-library(ggplot2)
-data(menarche)
-log_data <- data.frame(Y=menarche$Menarche/menarche$Total)
-log_data$X <- menarche$Age
 
-glm.out <- glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-lm.out <- lm(Y~X, data=log_data)
+----
 
-log_data$fitted <- glm.out$fitted
+## Logistic Regression
+# Motivation
+<space>
 
-data_points <- ggplot(log_data) + geom_point(aes(x=X,y=Y),color='blue',size=3)
-line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color='green',size=1)
-curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1) 
-```
+![plot of chunk log_bad_fit3](figure/log_bad_fit3.png) 
+
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+![plot of chunk log_motivation](figure/log_motivation.png) 
+
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+![plot of chunk log_motivation2](figure/log_motivation2.png) 
+
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+![plot of chunk log_motivation3](figure/log_motivation3.png) 
+
 
 ----
 
@@ -89,11 +104,13 @@ curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
 
 
 ```r
-curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
-abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
+curve(1/(1 + exp(-x)), from = -10, to = 10, ylab = "P(Y=1|X)", col = "red", 
+    lwd = 3)
+abline(a = 0.5, b = 0, lty = 2, col = "blue", lwd = 3)
 ```
 
 ![plot of chunk log_curve](figure/log_curve.png) 
+
 
 ----
 
@@ -143,6 +160,7 @@ $cost(h_{\theta}(x)):$<br>
 &nbsp;&nbsp; $= -\log(1-x),$ &nbsp;   $y = 0$
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
+
 
 ----
 
@@ -227,7 +245,11 @@ $w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
 
 $f(x) = x^{4} - 3\log(x)$
 
-![plot of chunk newton_curve](figure/newton_curve.png) 
+
+```
+## Error: could not find function "fn"
+```
+
 
 ----
 
@@ -237,24 +259,25 @@ $f(x) = x^{4} - 3\log(x)$
 
 
 ```r
-fn <- function(x) x^4 - 3*log(x)
-dfn <- function(x) 4*x^3 - 3/x
-d2fn <- function(x) 12*x^2 + 3/x^2 
+fn <- function(x) x^4 - 3 * log(x)
+dfn <- function(x) 4 * x^3 - 3/x
+d2fn <- function(x) 12 * x^2 + 3/x^2
 
-newton <- function(num.its, dfn, d2fn){
-  theta <- rep(0,num.its)
-  theta[1] <- round(runif(1,0,100),0)
-
-  for (i in 2:num.its) {
-    h <- - dfn(theta[i-1]) / d2fn(theta[i-1])
-    theta[i] <- theta[i-1] + h 
-  }
-  
-  out <- cbind(1:num.its,theta)
-  dimnames(out)[[2]] <- c("iteration","estimate")
-  return(out)
+newton <- function(num.its, dfn, d2fn) {
+    theta <- rep(0, num.its)
+    theta[1] <- round(runif(1, 0, 100), 0)
+    
+    for (i in 2:num.its) {
+        h <- -dfn(theta[i - 1])/d2fn(theta[i - 1])
+        theta[i] <- theta[i - 1] + h
+    }
+    
+    out <- cbind(1:num.its, theta)
+    dimnames(out)[[2]] <- c("iteration", "estimate")
+    return(out)
 }
 ```
+
 
 ----
 
@@ -265,11 +288,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    59.00
-[2,]         2    39.33
-[3,]         3    26.22
-[4,]         4    17.48
-[5,]         5    11.65
+[1,]         1   25.000
+[2,]         2   16.667
+[3,]         3   11.111
+[4,]         4    7.408
+[5,]         5    4.939
 ```
 
 ```
@@ -285,6 +308,7 @@ newton <- function(num.its, dfn, d2fn){
 [1] 0.9658
 ```
 
+
 ----
 
 ## Logistic Regression
@@ -293,7 +317,7 @@ newton <- function(num.its, dfn, d2fn){
 
 
 ```r
-optimize(fn,c(-100,100))  ## built-in R optimization function
+optimize(fn, c(-100, 100))  ## built-in R optimization function
 ```
 
 ```
@@ -303,6 +327,7 @@ $minimum
 $objective
 [1] 0.9658
 ```
+
 
 ----
 
@@ -396,9 +421,10 @@ $\det(A - \lambda I)$ = 0
 
 
 ```r
-A = matrix(c(5,2,2,5),nrow=2)
+A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
 ```
+
 
 ----
 
@@ -408,14 +434,12 @@ I = diag(nrow(A))
 
 
 ```r
-A = matrix(c(5,2,2,5),nrow=2)
+A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
+### |A - L*I| = 0 det(c(5-l,2,2,5-l)) (5-l)*(5-l) - 4 = 0 25 - 10l + l^2 - 4 =
+### 0 l^2 - 10l + 21 = 0
 ```
+
 
 ----
 
@@ -425,20 +449,18 @@ I = diag(nrow(A))
 
 
 ```r
-A = matrix(c(5,2,2,5),nrow=2)
+A = matrix(c(5, 2, 2, 5), nrow = 2)
 I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
-roots <- Re(polyroot(c(21,-10,1)))
+### |A - L*I| = 0 det(c(5-l,2,2,5-l)) (5-l)*(5-l) - 4 = 0 25 - 10l + l^2 - 4 =
+### 0 l^2 - 10l + 21 = 0
+roots <- Re(polyroot(c(21, -10, 1)))
 roots
 ```
 
 ```
 ## [1] 3 7
 ```
+
 
 ----
 
@@ -481,7 +503,7 @@ $x_{1} = x_{2}$<br>
 
 
 ```r
-A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
+A %*% c(1, -1) == 3 * as.matrix(c(1, -1))
 ```
 
 ```
@@ -491,7 +513,7 @@ A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
 ```
 
 ```r
-A%*%c(1,1) == 7 * as.matrix(c(1,1))
+A %*% c(1, 1) == 7 * as.matrix(c(1, 1))
 ```
 
 ```
@@ -499,6 +521,7 @@ A%*%c(1,1) == 7 * as.matrix(c(1,1))
 ## [1,] TRUE
 ## [2,] TRUE
 ```
+
 
 ----
 
@@ -508,9 +531,9 @@ A%*%c(1,1) == 7 * as.matrix(c(1,1))
 
 
 ```r
-m <- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
+m <- matrix(c(1, -1, 1, 1), ncol = 2)  ## two eigenvectors
 m <- m/sqrt(norm(m))
-as.matrix(m%*%diag(roots)%*%t(m))
+as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
@@ -518,6 +541,7 @@ as.matrix(m%*%diag(roots)%*%t(m))
 ## [1,]    5    2
 ## [2,]    2    5
 ```
+
 
 ----
 
@@ -576,7 +600,7 @@ $C_{Y} = PP^{T}DPP^{T} = \frac{1}{n-1}D$
 
 
 ```r
-data <- read.csv('tennis_data_2013.csv')
+data <- read.csv("tennis_data_2013.csv")
 ```
 
 ```
@@ -593,7 +617,7 @@ data$Player1 <- as.character(data$Player1)
 ```
 
 ```
-## Error: replacement has 0 rows, data has 6497
+## Error: object of type 'closure' is not subsettable
 ```
 
 ```r
@@ -601,51 +625,49 @@ data$Player2 <- as.character(data$Player2)
 ```
 
 ```
-## Error: replacement has 0 rows, data has 6497
+## Error: object of type 'closure' is not subsettable
 ```
 
 ```r
+
 tennis <- data
 m <- length(data)
 
-for (i in 10:m){
-  tennis[,i] <- ifelse(is.na(data[,i]),0,data[,i])
+for (i in 10:m) {
+    tennis[, i] <- ifelse(is.na(data[, i]), 0, data[, i])
 }
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
 
 str(tennis)
 ```
 
 ```
-## 'data.frame':	6497 obs. of  13 variables:
-##  $ type                : Factor w/ 2 levels "red","white": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ fixed.acidity       : num  7.4 7.8 7.8 11.2 7.4 7.4 7.9 7.3 7.8 7.5 ...
-##  $ volatile.acidity    : num  0.7 0.88 0.76 0.28 0.7 0.66 0.6 0.65 0.58 0.5 ...
-##  $ citric.acid         : num  0 0 0.04 0.56 0 0 0.06 0 0.02 0.36 ...
-##  $ residual.sugar      : num  1.9 2.6 2.3 1.9 1.9 1.8 1.6 1.2 2 6.1 ...
-##  $ chlorides           : num  0.076 0.098 0.092 0.075 0.076 0.075 0.069 0.065 0.073 0.071 ...
-##  $ free.sulfur.dioxide : num  11 25 15 17 11 13 15 15 9 17 ...
-##  $ total.sulfur.dioxide: num  34 67 54 60 34 40 59 21 18 102 ...
-##  $ density             : num  0.998 0.997 0.997 0.998 0.998 ...
-##  $ pH                  : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates           : num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol             : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality             : int  5 5 5 6 5 5 5 7 7 5 ...
+## function (..., list = character(), package = NULL, lib.loc = NULL, 
+##     verbose = getOption("verbose"), envir = .GlobalEnv)
 ```
 
 ```r
-features <- tennis[,10:m]
+
+features <- tennis[, 10:m]
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
 
 head(features)
 ```
 
 ```
-##     pH sulphates alcohol quality
-## 1 3.51      0.56     9.4       5
-## 2 3.20      0.68     9.8       5
-## 3 3.26      0.65     9.8       5
-## 4 3.16      0.58     9.8       6
-## 5 3.51      0.56     9.4       5
-## 6 3.51      0.56     9.4       5
+## Error: object 'features' not found
 ```
 
 ```r
@@ -653,11 +675,7 @@ str(features)
 ```
 
 ```
-## 'data.frame':	6497 obs. of  4 variables:
-##  $ pH       : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
-##  $ sulphates: num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
-##  $ alcohol  : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
-##  $ quality  : int  5 5 5 6 5 5 5 7 7 5 ...
+## Error: object 'features' not found
 ```
 
 ```r
@@ -665,8 +683,9 @@ dim(features)
 ```
 
 ```
-## [1] 6497    4
+## Error: object 'features' not found
 ```
+
 
 ----
 
@@ -677,11 +696,44 @@ dim(features)
 
 ```r
 scaled_features <- as.matrix(scale(features))
+```
+
+```
+## Error: object 'features' not found
+```
+
+```r
 Cx <- cov(scaled_features)
+```
+
+```
+## Error: object 'scaled_features' not found
+```
+
+```r
 eigenvalues <- eigen(Cx)$values
+```
+
+```
+## Error: object 'Cx' not found
+```
+
+```r
 eigenvectors <- eigen(Cx)$vectors
+```
+
+```
+## Error: object 'Cx' not found
+```
+
+```r
 PC <- scaled_features %*% eigenvectors
 ```
+
+```
+## Error: object 'scaled_features' not found
+```
+
 
 ----
 
@@ -692,20 +744,28 @@ PC <- scaled_features %*% eigenvectors
 
 ```r
 Cy <- cov(PC)
-sum(round(diag(Cy) - eigenvalues,5))
 ```
 
 ```
-## [1] 0
+## Error: object 'PC' not found
 ```
 
 ```r
-sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
+sum(round(diag(Cy) - eigenvalues, 5))
 ```
 
 ```
-## [1] 0
+## Error: object 'Cy' not found
 ```
+
+```r
+sum(round(Cy[upper.tri(Cy)], 5))  ## off diagonals are 0 since PC's are orthogonal
+```
+
+```
+## Error: object 'Cy' not found
+```
+
 
 ----
 
@@ -716,20 +776,64 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 
 ```r
 var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
-cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
-
-var_explained <- as.data.frame(var_explained)
-names(var_explained) <- "variance_explained"
-var_explained$PC <- as.numeric(rownames(var_explained))
-var_explained <- cbind(var_explained,cum_var_explained)
-
-library(ggplot2)
-ggplot(var_explained) +
-  geom_bar(aes(x=PC,y=variance_explained),stat='identity') +
-  geom_line(aes(x=PC,y=cum_var_explained))
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+```
+## Error: object 'eigenvalues' not found
+```
+
+```r
+cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
+```
+
+```
+## Error: object 'eigenvalues' not found
+```
+
+```r
+
+var_explained <- as.data.frame(var_explained)
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+names(var_explained) <- "variance_explained"
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+var_explained$PC <- as.numeric(rownames(var_explained))
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+var_explained <- cbind(var_explained, cum_var_explained)
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
+```r
+
+library(ggplot2)
+ggplot(var_explained) + geom_bar(aes(x = PC, y = variance_explained), stat = "identity") + 
+    geom_line(aes(x = PC, y = cum_var_explained))
+```
+
+```
+## Error: object 'var_explained' not found
+```
+
 
 ----
 
@@ -740,29 +844,36 @@ ggplot(var_explained) +
 
 ```r
 pca.df <- prcomp(scaled_features)
+```
+
+```
+## Error: object 'scaled_features' not found
+```
+
+```r
 eigenvalues == (pca.df$sdev)^2
 ```
 
 ```
-## [1] FALSE FALSE FALSE FALSE
+## Error: object 'eigenvalues' not found
 ```
 
 ```r
-eigenvectors[,1] == pca.df$rotation[,1]
+eigenvectors[, 1] == pca.df$rotation[, 1]
 ```
 
 ```
-##        pH sulphates   alcohol   quality 
-##     FALSE     FALSE     FALSE     FALSE
+## Error: object 'eigenvectors' not found
 ```
 
 ```r
-sum((eigenvectors[,1])^2)
+sum((eigenvectors[, 1])^2)
 ```
 
 ```
-## [1] 1
+## Error: object 'eigenvectors' not found
 ```
+
 
 ----
 
@@ -773,14 +884,29 @@ sum((eigenvectors[,1])^2)
 
 ```r
 rows <- nrow(tennis)
-pca.plot <- as.data.frame(pca.df$x[,1:2])
-pca.plot$gender <- data$Gender
-ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
+pca.plot <- as.data.frame(pca.df$x[, 1:2])
 ```
 
 ```
-## Error: object 'gender' not found
+## Error: object 'pca.df' not found
 ```
+
+```r
+pca.plot$gender <- data$Gender
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```r
+ggplot(data = pca.plot, aes(x = PC1, y = PC2, color = gender)) + geom_point()
+```
+
+```
+## Error: object 'pca.plot' not found
+```
+
 
 ----
 
@@ -828,6 +954,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 <space>
 
 ![plot of chunk cluster_plot_example](figure/cluster_plot_example.png) 
+
 
 ----
 
@@ -919,9 +1046,10 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 
 
 ```r
-wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
-names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
-                 'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
+wine <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data")
+names(wine) <- c("class", "Alcohol", "Malic", "Ash", "Alcalinity", "Magnesium", 
+    "Total_phenols", "Flavanoids", "NFphenols", "Proanthocyanins", "Color", 
+    "Hue", "Diluted", "Proline")
 str(wine)
 ```
 
@@ -943,6 +1071,7 @@ str(wine)
 ##  $ Proline        : int  1050 1185 1480 735 1450 1290 1295 1045 1045 1510 ...
 ```
 
+
 - set.seed() to make sure results are reproducible
 - add nstart to the function call so that it attempts multiple configurations, selecting the best
 - use a screeplot to select optimal K
@@ -955,20 +1084,19 @@ str(wine)
 
 
 ```r
-s.wine <- scale(wine[,-1])
+s.wine <- scale(wine[, -1])
 best_k <- 0
 num_k <- 20
-for (i in 1:num_k){
-  best_k[i] <- sum(kmeans(s.wine,centers=i)$withinss)
-  }
+for (i in 1:num_k) {
+    best_k[i] <- sum(kmeans(s.wine, centers = i)$withinss)
+}
 
-barplot(best_k, xlab = "Number of clusters",
-        names.arg = 1:num_k,
-        ylab="Within groups sum of squares",
-        main="Scree Plot for Wine dataset")
+barplot(best_k, xlab = "Number of clusters", names.arg = 1:num_k, ylab = "Within groups sum of squares", 
+    main = "Scree Plot for Wine dataset")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
 
 ----
 
@@ -1073,8 +1201,8 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 library(cluster)
 
 pam.best <- as.numeric()
-for (i in 2:20){
-  pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
+for (i in 2:20) {
+    pam.best[i] <- pam(s.wine, k = i)$silinfo$avg.width
 }
 best_k <- which.max(pam.best)
 best_k
@@ -1084,6 +1212,7 @@ best_k
 ## [1] 3
 ```
 
+
 ----
 
 ## Clustering
@@ -1092,10 +1221,11 @@ best_k
 
 
 ```r
-clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
+clusplot(pam(s.wine, best_k), main = "K-medoids with K = 3", sub = NULL)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
 
 ----
 
@@ -1170,13 +1300,14 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 
 ```r
-x <- c(2,2,8,5,7,6,1,4)
-y <- c(10,5,4,8,5,4,2,9)
-cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
+x <- c(2, 2, 8, 5, 7, 6, 1, 4)
+y <- c(10, 5, 4, 8, 5, 4, 2, 9)
+cluster <- data.frame(X = c(x, 2 * x, 3 * x), Y = c(y, -2 * x, 1/4 * y))
 plot(cluster)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+
 
 ----
 
@@ -1187,11 +1318,12 @@ plot(cluster)
 
 ```r
 library(fpc)
-cluster_DBSCAN<-dbscan(cluster, eps=3, MinPts=2, method="hybrid")
-plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
+cluster_DBSCAN <- dbscan(cluster, eps = 3, MinPts = 2, method = "hybrid")
+plot(cluster_DBSCAN, cluster, main = "Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
 ```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
+
 
 ----
 
@@ -1296,15 +1428,16 @@ What is the entropy of a fair, 6 sided die?
 
 
 ```r
-entropy <- function(probs){
-  ent <- 0
-  for(i in probs){
-    ent_temp <- -i*log2(i)
-    ent <- ent + ent_temp
-  }
-  return(ent)
+entropy <- function(probs) {
+    ent <- 0
+    for (i in probs) {
+        ent_temp <- -i * log2(i)
+        ent <- ent + ent_temp
+    }
+    return(ent)
 }
 ```
+
 
 ----
 
@@ -1314,7 +1447,7 @@ entropy <- function(probs){
 
 
 ```r
-fair <- rep(1/6,6)
+fair <- rep(1/6, 6)
 entropy(fair)
 ```
 
@@ -1330,6 +1463,7 @@ log2(6)
 ## [1] 2.585
 ```
 
+
 ----
 
 ## Trees
@@ -1342,13 +1476,14 @@ What is the entropy of a biased, 6 sided die?
 
 
 ```r
-biased <- c(rep(1/9,3),rep(2/9,3))
+biased <- c(rep(1/9, 3), rep(2/9, 3))
 entropy(biased)
 ```
 
 ```
 [1] 2.503
 ```
+
 
 ----
 
@@ -1358,7 +1493,7 @@ entropy(biased)
 
 
 ```r
-more_biased <- c(rep(1/18,3),rep(5/18,3))
+more_biased <- c(rep(1/18, 3), rep(5/18, 3))
 entropy(more_biased)
 ```
 
@@ -1367,13 +1502,15 @@ entropy(more_biased)
 ```
 
 ```r
-most_biased <- c(rep(1/100,5),rep(95/100,1))
+
+most_biased <- c(rep(1/100, 5), rep(95/100, 1))
 entropy(most_biased)
 ```
 
 ```
 [1] 0.4025
 ```
+
 
 ----
 
@@ -1383,11 +1520,12 @@ entropy(most_biased)
 
 
 ```r
-curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
-      lwd = 4, main='Entropy of a coin toss')
+curve(-x * log2(x) - (1 - x) * log2(1 - x), col = " red", xlab = "x", ylab = "Entropy", 
+    lwd = 4, main = "Entropy of a coin toss")
 ```
 
 ![plot of chunk entropy_curve](figure/entropy_curve.png) 
+
 
 ----
 
@@ -1414,15 +1552,14 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy",
 
 
 ```r
-voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
-names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
-                        'adoption-of-the-budget-resolution','physician-fee-freeze',
-                        'el-salvador-aid','religious-groups-in-schools',
-                        'anti-satellite-test-ban','aid-to-nicaraguan-contras',
-                        'mx-missile','immigration','synfuels-corporation-cutback',
-                        'education-spending','superfund-right-to-sue','crime',
-                        'duty-free-exports','export-administration-act-south-africa')
+voting_data <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data")
+names(voting_data) <- c("party", "handicapped-infants", "water-project-cost-sharing", 
+    "adoption-of-the-budget-resolution", "physician-fee-freeze", "el-salvador-aid", 
+    "religious-groups-in-schools", "anti-satellite-test-ban", "aid-to-nicaraguan-contras", 
+    "mx-missile", "immigration", "synfuels-corporation-cutback", "education-spending", 
+    "superfund-right-to-sue", "crime", "duty-free-exports", "export-administration-act-south-africa")
 ```
+
 
 ----
 
@@ -1432,7 +1569,7 @@ names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharin
 
 
 ```r
-prop.table(table(voting_data[,1]))
+prop.table(table(voting_data[, 1]))
 ```
 
 ```
@@ -1443,10 +1580,11 @@ prop.table(table(voting_data[,1]))
 
 ```r
 n <- nrow(voting_data)
-train_ind <- sample(n,2/3*n)
-voting_train <- voting_data[train_ind,]
-voting_test <- voting_data[-train_ind,]
+train_ind <- sample(n, 2/3 * n)
+voting_train <- voting_data[train_ind, ]
+voting_test <- voting_data[-train_ind, ]
 ```
+
 
 ----
 
@@ -1455,6 +1593,10 @@ voting_test <- voting_data[-train_ind,]
 <space>
 
 <img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+
+```
+## Error: object 'voting_train' not found
+```
 
 
 ----
@@ -1480,17 +1622,18 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         84 |          3 |         87 | 
-             |      0.579 |      0.021 |            | 
+    democrat |         86 |          6 |         92 | 
+             |      0.593 |      0.041 |            | 
 -------------|------------|------------|------------|
-  republican |          4 |         54 |         58 | 
-             |      0.028 |      0.372 |            | 
+  republican |          4 |         49 |         53 | 
+             |      0.028 |      0.338 |            | 
 -------------|------------|------------|------------|
-Column Total |         88 |         57 |        145 | 
+Column Total |         90 |         55 |        145 | 
 -------------|------------|------------|------------|
 
  
 ```
+
 
 ----
 
@@ -1506,13 +1649,14 @@ head(C5imp(tree_model))
 
 ```
 ##                                   Overall
-## physician-fee-freeze                96.54
-## adoption-of-the-budget-resolution   40.14
-## anti-satellite-test-ban              8.65
+## physician-fee-freeze                97.58
 ## handicapped-infants                  0.00
 ## water-project-cost-sharing           0.00
+## adoption-of-the-budget-resolution    0.00
 ## el-salvador-aid                      0.00
+## religious-groups-in-schools          0.00
 ```
+
 
 ----
 
@@ -1532,7 +1676,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Mon Aug 18 22:27:54 2014
+## C5.0 [Release 2.07 GPL Edition]  	Tue Aug 19 12:20:12 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1541,12 +1685,8 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
-## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
-##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
+## physician-fee-freeze in {?,n}: democrat (165/0.6)
+## physician-fee-freeze = y: republican (124/10.6)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -1555,24 +1695,23 @@ summary(tree_model)
 ## 	  ----------------  
 ## 	  Size      Errors  
 ## 
-## 	     4   10( 3.5%)   <<
+## 	     2    9( 3.1%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   176     4    (a): class democrat
-## 	     6   103    (b): class republican
+## 	   167     8    (a): class democrat
+## 	     1   113    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 96.54%	physician-fee-freeze
-## 	 40.14%	adoption-of-the-budget-resolution
-## 	  8.65%	anti-satellite-test-ban
+## 	 97.58%	physician-fee-freeze
 ## 
 ## 
 ## Time: 0.0 secs
 ```
+
 
 ----
 
@@ -1591,12 +1730,11 @@ summary(tree_model)
 
 
 ```r
-boosted_tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=25)
-boosted_tennis_predict <- predict(boosted_tree_model,voting_test[,-1])
+boosted_tree_model <- C5.0(voting_train[, -1], voting_train[, 1], trials = 25)
+boosted_tennis_predict <- predict(boosted_tree_model, voting_test[, -1])
 
-boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
-                           prop.c = FALSE, prop.r = FALSE, 
-                           dnn = c("actual class", "predicted class"))
+boosted_conf <- CrossTable(voting_test[, 1], boosted_tennis_predict, prop.chisq = FALSE, 
+    prop.c = FALSE, prop.r = FALSE, dnn = c("actual class", "predicted class"))
 ```
 
 ```
@@ -1615,17 +1753,18 @@ boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq =
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         84 |          3 |         87 | 
-##              |      0.579 |      0.021 |            | 
+##     democrat |         86 |          6 |         92 | 
+##              |      0.593 |      0.041 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          1 |         57 |         58 | 
-##              |      0.007 |      0.393 |            | 
+##   republican |          4 |         49 |         53 | 
+##              |      0.028 |      0.338 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         85 |         60 |        145 | 
+## Column Total |         90 |         55 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
 ```
+
 
 ----
 
@@ -1645,7 +1784,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Mon Aug 18 22:27:54 2014
+## C5.0 [Release 2.07 GPL Edition]  	Tue Aug 19 12:20:12 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1656,304 +1795,49 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (171.9/3.8)
-## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution in {?,n}: republican (97.9/5)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban = n: democrat (7.6/1.3)
-##         anti-satellite-test-ban in {?,y}: republican (11.6/0.5)
+## physician-fee-freeze in {?,n}: democrat (165/0.6)
+## physician-fee-freeze = y: republican (124/10.6)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (155.2/27.9)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (90.6/10)
-##     synfuels-corporation-cutback = y: democrat (43.1/15.9)
+## physician-fee-freeze in {?,n}: democrat (127.8/3.8)
+## physician-fee-freeze = y: republican (161.2/70.8)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
+##  democrat (289/84.3)
 ## 
-## adoption-of-the-budget-resolution in {?,n}: republican (160.3/40.1)
-## adoption-of-the-budget-resolution = y:
-## :...physician-fee-freeze in {?,n}: democrat (101/8.9)
-##     physician-fee-freeze = y: republican (27.6/7.9)
+## *** boosting reduced to 2 trials since last classifier is very inaccurate
 ## 
-## -----  Trial 3:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (139.5/25.2)
-## physician-fee-freeze = y:
-## :...education-spending = n: democrat (59.3/21.5)
-##     education-spending in {?,y}: republican (90.2/18)
-## 
-## -----  Trial 4:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (122/28.5)
-## physician-fee-freeze = y: republican (167/56.3)
-## 
-## -----  Trial 5:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/31.7)
-## adoption-of-the-budget-resolution = n:
-## :...synfuels-corporation-cutback in {?,n}: republican (93.5/22.8)
-##     synfuels-corporation-cutback = y: democrat (80.5/33.3)
-## 
-## -----  Trial 6:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (107.4/30.2)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (73.3/10)
-##     immigration = n:
-##     :...superfund-right-to-sue in {?,n}: democrat (24.3/3)
-##         superfund-right-to-sue = y: republican (84/33.5)
-## 
-## -----  Trial 7:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (121.2/38.3)
-## adoption-of-the-budget-resolution = n:
-## :...water-project-cost-sharing in {?,n}: republican (67.7/14.2)
-##     water-project-cost-sharing = y:
-##     :...superfund-right-to-sue = n: democrat (26.2/2.7)
-##         superfund-right-to-sue in {?,y}: republican (73.9/26.3)
-## 
-## -----  Trial 8:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (104.7/31.9)
-## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (50.6/8.6)
-##     water-project-cost-sharing = y:
-##     :...crime in {?,n}: republican (10.4/1.7)
-##         crime = y:
-##         :...anti-satellite-test-ban in {?,n}: democrat (94.9/39.2)
-##             anti-satellite-test-ban = y: republican (28.4/9)
-## 
-## -----  Trial 9:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = n: democrat (95.8/32.2)
-## physician-fee-freeze in {?,y}: republican (193.2/70.4)
-## 
-## -----  Trial 10:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback in {?,y}: democrat (121.5/38.5)
-## synfuels-corporation-cutback = n:
-## :...duty-free-exports in {?,n}: republican (99.1/25.7)
-##     duty-free-exports = y: democrat (68.3/29.8)
-## 
-## -----  Trial 11:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution = n: republican (168.8/64.2)
-## adoption-of-the-budget-resolution in {?,y}: democrat (120.2/38.9)
-## 
-## -----  Trial 12:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (101.5/31.1)
-## physician-fee-freeze = y:
-## :...water-project-cost-sharing in {?,n}: republican (44.8/8.7)
-##     water-project-cost-sharing = y:
-##     :...synfuels-corporation-cutback in {?,n}: republican (63.4/20.6)
-##         synfuels-corporation-cutback = y: democrat (79.3/32.7)
-## 
-## -----  Trial 13:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = n: democrat (94.5/33.8)
-## physician-fee-freeze in {?,y}: republican (194.5/73.7)
-## 
-## -----  Trial 14:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,y}: democrat (115.1/38.9)
-## adoption-of-the-budget-resolution = n:
-## :...education-spending = n: democrat (93.7/42.6)
-##     education-spending in {?,y}: republican (80.2/19)
-## 
-## -----  Trial 15:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (90.5/33.9)
-## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (81.8/19.5)
-##     immigration = n:
-##     :...superfund-right-to-sue in {?,n}: democrat (22.6/4.2)
-##         superfund-right-to-sue = y: republican (94/41.5)
-## 
-## -----  Trial 16:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback = ?: republican (0)
-## synfuels-corporation-cutback = y: democrat (125.3/46.1)
-## synfuels-corporation-cutback = n:
-## :...superfund-right-to-sue in {?,n}: republican (80.4/20.3)
-##     superfund-right-to-sue = y: democrat (83.3/39)
-## 
-## -----  Trial 17:  -----
-## 
-## Decision tree:
-## 
-## adoption-of-the-budget-resolution in {?,n}: republican (166.1/60.6)
-## adoption-of-the-budget-resolution = y: democrat (122.9/42.5)
-## 
-## -----  Trial 18:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (96.6/28.5)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (61.7/13.9)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (88.4/29.8)
-##         adoption-of-the-budget-resolution = y: democrat (42.3/6.9)
-## 
-## -----  Trial 19:  -----
-## 
-## Decision tree:
-## 
-## synfuels-corporation-cutback in {?,y}: democrat (119.5/40.6)
-## synfuels-corporation-cutback = n:
-## :...crime = n: democrat (25.2/7.3)
-##     crime in {?,y}: republican (144.3/49.9)
-## 
-## -----  Trial 20:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (105.2/34.1)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (60.8/18.2)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (81.3/21.7)
-##         adoption-of-the-budget-resolution = y: democrat (40.7/9.9)
-## 
-## -----  Trial 21:  -----
-## 
-## Decision tree:
-## 
-## mx-missile in {?,y}: democrat (130.4/45.5)
-## mx-missile = n:
-## :...duty-free-exports in {?,y}: republican (33.5/2.6)
-##     duty-free-exports = n:
-##     :...physician-fee-freeze = n: democrat (16.4/1)
-##         physician-fee-freeze in {?,y}: republican (107.7/42.9)
-## 
-## -----  Trial 22:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (102.6/21.9)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (88.4/22.3)
-##     synfuels-corporation-cutback = y: democrat (93.9/40.5)
-## 
-## -----  Trial 23:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze in {?,n}: democrat (69/2.4)
-## physician-fee-freeze = y:
-## :...anti-satellite-test-ban in {?,y}: republican (72.8/24.3)
-##     anti-satellite-test-ban = n:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (93/16.1)
-##         adoption-of-the-budget-resolution = y: democrat (48.2/10)
-## 
-## -----  Trial 24:  -----
-## 
-## Decision tree:
-## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (68.1/4.8)
-## physician-fee-freeze = y:
-## :...mx-missile in {?,n}: republican (114.1/13.8)
-##     mx-missile = y:
-##     :...education-spending in {?,n}: democrat (72.4/14.1)
-##         education-spending = y: republican (26.3/3.7)
+## *** boosting abandoned (too few classifiers)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
 ## 
-## Trial	    Decision Tree   
-## -----	  ----------------  
+## 	    Decision Tree   
+## 	  ----------------  
 ## 	  Size      Errors  
 ## 
-##    0	     4   10( 3.5%)
-##    1	     3   24( 8.3%)
-##    2	     3   28( 9.7%)
-##    3	     3   23( 8.0%)
-##    4	     2   14( 4.8%)
-##    5	     3   38(13.1%)
-##    6	     4   15( 5.2%)
-##    7	     4   31(10.7%)
-##    8	     5   47(16.3%)
-##    9	     2   18( 6.2%)
-##   10	     3   64(22.1%)
-##   11	     2   36(12.5%)
-##   12	     4   19( 6.6%)
-##   13	     2   18( 6.2%)
-##   14	     3   32(11.1%)
-##   15	     4   16( 5.5%)
-##   16	     3  168(58.1%)
-##   17	     2   38(13.1%)
-##   18	     4   12( 4.2%)
-##   19	     3   47(16.3%)
-##   20	     4   11( 3.8%)
-##   21	     4   42(14.5%)
-##   22	     3   24( 8.3%)
-##   23	     4   12( 4.2%)
-##   24	     4   17( 5.9%)
-## boost	         10( 3.5%)   <<
+## 	     2    9( 3.1%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   175     5    (a): class democrat
-## 	     5   104    (b): class republican
+## 	   167     8    (a): class democrat
+## 	     1   113    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 96.54%	adoption-of-the-budget-resolution
-## 	 96.54%	physician-fee-freeze
-## 	 94.81%	synfuels-corporation-cutback
-## 	 94.46%	mx-missile
-## 	 80.62%	duty-free-exports
-## 	 71.97%	superfund-right-to-sue
-## 	 71.28%	crime
-## 	 46.37%	education-spending
-## 	 42.21%	water-project-cost-sharing
-## 	 41.52%	immigration
-## 	 40.83%	anti-satellite-test-ban
+## 	 97.58%	physician-fee-freeze
 ## 
 ## 
 ## Time: 0.0 secs
 ```
+
 
 ----
 
@@ -1966,8 +1850,8 @@ summary(boosted_tree_model)
 
 
 ```r
-error_cost <- matrix(c(0,1,2,0),nrow=2)
-cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
+error_cost <- matrix(c(0, 1, 2, 0), nrow = 2)
+cost_model <- C5.0(voting_train[, -1], voting_train[, 1], trials = 1, costs = error_cost)
 ```
 
 ```
@@ -1976,10 +1860,9 @@ cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_c
 ```
 
 ```r
-cost_predict <- predict(cost_model, newdata=voting_test[,-1])
-conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c("actual class", "predicted class"))
+cost_predict <- predict(cost_model, newdata = voting_test[, -1])
+conf <- CrossTable(voting_test[, 1], cost_predict, prop.chisq = FALSE, prop.c = FALSE, 
+    prop.r = FALSE, dnn = c("actual class", "predicted class"))
 ```
 
 ```
@@ -1998,17 +1881,18 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         83 |          4 |         87 | 
-##              |      0.572 |      0.028 |            | 
+##     democrat |         84 |          8 |         92 | 
+##              |      0.579 |      0.055 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          3 |         55 |         58 | 
-##              |      0.021 |      0.379 |            | 
+##   republican |          2 |         51 |         53 | 
+##              |      0.014 |      0.352 |            | 
 ## -------------|------------|------------|------------|
 ## Column Total |         86 |         59 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
 ```
+
 
 ----
 
@@ -2095,6 +1979,7 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ```
 
 ![plot of chunk plot_boost_acc](figure/plot_boost_acc.png) 
+
 
 ----
 
