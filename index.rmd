@@ -1,6 +1,6 @@
 ---
 
-title       : Machine Learning with R - II
+title       : Machine Learning with R - Part II
 author      : Ilan Man
 job         : Strategy Operations  @ Squarespace
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
@@ -38,7 +38,8 @@ mode        : selfcontained # {standalone, draft}
 x <- 1:10
 log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
 log_ex$sig <- 5/(1+exp(-(log_ex$X-5)))
-pts <- ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3)
+pts <- ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) +
+  scale_y_continuous(limits = c(-1, 6))
 pts
 ```
 
@@ -128,7 +129,7 @@ curve_points
 # Notation
 <space>
 
-```{r log_curve, fig.height=5,fig.width=5}
+```{r log_curve, fig.height=5,fig.width=5,echo=FALSE}
 curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
 abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 ```
@@ -139,9 +140,10 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 # Find parameters
 <space>
 
-- The hypothesis function, $h_{\theta}(x)$, is P(Y=1|X)
-- Linear Regression --> $h_{\theta}(x) = \theta x^{T}$
-- Logistic Regression --> $h_{\theta}(x) = g(\theta x^{T})$ 
+- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
+- Linear Regression: $h_{\theta}(x) = \theta x^{T}$
+- Logistic Regression: $h_{\theta}(x) = g(\theta x^{T})$ 
+<br>
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
 
@@ -151,10 +153,12 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 # Notation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields $\log{\frac{Y}{1 - Y}} = \theta x^{T}$<br>
-- "log odds"" are linear in X
+- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
+<br>
+$\log{\frac{Y}{1 - Y}} = \theta x^{T}$
+- *log odds* are linear in $X$
 - this is called the logit of theta
-  - links X linearly with some function of Y
+  - links $X$ linearly with some function of $Y$
 
 ----
 
@@ -163,10 +167,20 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 <space>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
-- What is the cost function?
+- Cost function?
 - Why can't we use the same cost function as for the linear hypothesis?
-  - logistic residuals are Binomially distributed - not Normal
-  - the regression function is not linear in X
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
+- Cost function?
+- Why can't we use the same cost function as for the linear hypothesis?
+  - logistic residuals are Binomially distributed
+  - the regression function is not linear in $X$
 
 ----
 
@@ -177,8 +191,8 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 - Define logistic cost function as:
 
 $cost(h_{\theta}(x)):$<br>
-&nbsp;&nbsp; $= -\log(x),$ &nbsp;&nbsp;&nbsp;  $y = 1$<br>
-&nbsp;&nbsp; $= -\log(1-x),$ &nbsp;   $y = 0$
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(x)$, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $y = 1$<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(1-x)$, &nbsp;   $y = 0$
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=1")
@@ -191,7 +205,8 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=0")
 # Find parameters
 <space>
 
-- using statistics, it can be shown that<br>
+- Using statistics, it can be shown that<br>
+<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ----
@@ -200,9 +215,11 @@ $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<
 # Find parameters
 <space>
 
-- using statistics, it can be shown that<br>
+- Using statistics, it can be shown that<br>
+<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
+<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 
 ----
@@ -211,21 +228,25 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Find parameters
 <space>
 
-- using statistics, it can be shown that<br>
+- Using statistics, it can be shown that<br>
+<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
+<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 - Minimize the cost
 
 ----
 
 ## Logistic Regression
-# Newton-Raphson Method
+# Find parameters
 <space>
 
-- efficient
-- easier to calculate that gradient descent
-- converges on *global* minimum
+- Cannot solve analytically
+- User approximation methods
+  - (Stochastic) Gradient Descent
+  - Conjugate Descent
+  - Newton-Raphson Method
 
 ----
 
@@ -233,7 +254,10 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Newton-Raphson Method
 <space>
 
-- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
+- Efficient
+- Easier to calculate that gradient descent
+  - Except for first and second derivatives
+- Converges on *global* minimum
 
 ----
 
@@ -241,24 +265,33 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Newton-Raphson Method
 <space>
 
-- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
-- re-write $f(x)$ as it's Taylor expansion:<br>
+- Assume derivative of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+- Assume derivative of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Re-write $f(x)$ as its Taylor expansion:<br>
+<br>
+$f(x) = f(x_{0}) + (x-x_{0})f' + \frac{1}{2}(x-x_{0})^{2}f''$
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+- Assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
+- Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``$
-
-----
-
-## Logistic Regression
-# Newton-Raphson Method
-<space>
-
-- assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
-- re-write $f(x)$ as it's Taylor expansion:<br>
-$f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``$
-- take the derivative w.r.t x and set = 0<br>
+- Take the derivative w.r.t $x$ and set = 0<br>
 $0 = f′(w_{0}) + \frac{1}{2}f′′(w_{0})2(w_{1} − w_{0})$<br>
 $w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
   - $w_{1}$ is a better approximation for the minimum than $w_{0}$
-  - continue iterating
+  - and so on...
 
 ----
 
@@ -268,7 +301,7 @@ $w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
 
 $f(x) = x^{4} - 3\log(x)$
 
-```{r newton_curve, echo=FALSE}
+```{r newton_curve, echo=FALSE,fig.height=5,fig.width=5}
 curve(fn,type='l',ylab="y",xlab="x",main="x^4 - 3*log(x)")
 ```
 
