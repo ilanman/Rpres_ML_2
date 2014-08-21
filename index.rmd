@@ -34,7 +34,22 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
+- Describes how a binary response variable (Y = 1 or Y = 0) is associated a set of explanatory variables
+- Like Linear Regression, but the outcome is categorical, not continuous
+- Instead of:<br>
+$\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- We have:<br>
+$\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- Can be extended to multiple and/or ordered categories
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
 ```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+library(ggplot2)
 x <- 1:10
 log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
 log_ex$sig <- 5/(1+exp(-(log_ex$X-5)))
@@ -112,16 +127,16 @@ curve_points
 ----
 
 ## Logistic Regression
-# Notation
+# Concepts
 <space>
 
-- type of regression to predict the probability of being in a class
-  - typical to set threshold to 0.5
-- assumes error terms are Binomially distributed
-  - which generates 1's and 0's as the error term
-- sigmoid or logistic function: $g(z) = \frac{1}{1+e^{-z}}$
-  - interpret the output as $P(Y=1 | X)$
-  - bounded by 0 and 1
+- Type of regression to predict the probability of being in a class
+  - Typical to set threshold to 0.5
+- Assumes error terms are Binomially distributed
+  - Which generates 1's and 0's as the error term
+- Sigmoid or logistic function: $g(z) = \frac{1}{1+e^{-z}}$
+  - Interpret the output as $P(Y=1 | X)$
+  - Bounded by 0 and 1
 
 ----
 
@@ -131,7 +146,7 @@ curve_points
 
 ```{r log_curve, fig.height=5,fig.width=5,echo=FALSE}
 curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
-abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
+abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 ```
 
 ----
@@ -141,9 +156,8 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0)
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
-- Linear Regression: $h_{\theta}(x) = \theta x^{T}$
-- Logistic Regression: $h_{\theta}(x) = g(\theta x^{T})$ 
-<br>
+- Linear regression: $h_{\theta}(x) = \theta x^{T}$
+- Logistic regression: $h_{\theta}(x) = g(\theta x^{T})$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
 
@@ -156,9 +170,10 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 - Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
 <br>
 $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
-- *log odds* are linear in $X$
-- this is called the logit of theta
-  - links $X$ linearly with some function of $Y$
+- *Log odds* are linear in $X$
+- This is called the logit of $Y$
+  - Links $X$ linearly with some function of $Y$
+  - When $x_{1}$ increases by 1 unit, $P(Y=1)$ increases by $e^{\theta_{1}}$
 
 ----
 
@@ -179,8 +194,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
 - Cost function?
 - Why can't we use the same cost function as for the linear hypothesis?
-  - logistic residuals are Binomially distributed
-  - the regression function is not linear in $X$
+  - Logistic residuals are Binomially distributed
+  - Regression function is not linear in $X$
 
 ----
 
@@ -191,7 +206,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 - Define logistic cost function as:
 
 $cost(h_{\theta}(x)):$<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(x)$, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $y = 1$<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(x)$, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $y = 1$<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(1-x)$, &nbsp;   $y = 0$
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
@@ -206,7 +221,6 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=0")
 <space>
 
 - Using statistics, it can be shown that<br>
-<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ----
@@ -216,10 +230,8 @@ $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<
 <space>
 
 - Using statistics, it can be shown that<br>
-<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
-<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 
 ----
@@ -233,7 +245,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 <br>
-$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
+$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
 - Minimize the cost
 
 ----
@@ -243,10 +255,11 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 <space>
 
 - Cannot solve analytically
-- User approximation methods
+- Use approximation methods
   - (Stochastic) Gradient Descent
   - Conjugate Descent
   - Newton-Raphson Method
+  - BFGS
 
 ----
 
@@ -265,7 +278,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Newton-Raphson Method
 <space>
 
-- Assume derivative of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
 
 ----
 
@@ -273,10 +286,9 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Newton-Raphson Method
 <space>
 
-- Assume derivative of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
-<br>
-$f(x) = f(x_{0}) + (x-x_{0})f' + \frac{1}{2}(x-x_{0})^{2}f''$
+$f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 
 ----
 
@@ -284,13 +296,13 @@ $f(x) = f(x_{0}) + (x-x_{0})f' + \frac{1}{2}(x-x_{0})^{2}f''$
 # Newton-Raphson Method
 <space>
 
-- Assume derivative of $f`(x_{0})$ is zero and $f``(x_{0})$ is positive
+- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
-$f(x) = f(x_{0}) + (x-x_{0})f` + \frac{1}{2}(x-x_{0})^{2}f``$
+$f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
-$0 = f′(w_{0}) + \frac{1}{2}f′′(w_{0})2(w_{1} − w_{0})$<br>
-$w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
-  - $w_{1}$ is a better approximation for the minimum than $w_{0}$
+$0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
+$x_{1} = x_{0} − \frac{f'(x_{0})}{f￼''(x_{0})}$
+  - $x_{1}$ is a better approximation for the minimum than $x_{0}$
   - and so on...
 
 ----
@@ -302,7 +314,7 @@ $w_{1} = w_{0} − \frac{f′(w_{0})}{￼f′′(w_{0})}$
 $f(x) = x^{4} - 3\log(x)$
 
 ```{r newton_curve, echo=FALSE,fig.height=5,fig.width=5}
-curve(fn,type='l',ylab="y",xlab="x",main="x^4 - 3*log(x)")
+curve(x^4 - 3*log(x),type='l',ylab="y",xlab="x",main="x^4 - 3*log(x)")
 ```
 
 ----
@@ -360,11 +372,8 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Newton-Raphson - summary
 <space>
 
-- minimization algorithm
-- approximation, non-closed form solution
-- good for large number of examples
-- hard to select the right $\alpha$
-- traditional looping is slow - optimization algorithms are used in practice
+- Minimization algorithm
+- Approximation, non-closed form solution
 
 ----
 
@@ -372,8 +381,12 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Summary
 <space>
 
-- very popular classification algorithm
-- based on Binomial error terms, i.e. 1's and 0's
+- Very popular classification algorithm
+- Part of family of GLMs
+- Based on Binomial error terms, i.e. 1's and 0's
+- Usually requires large sample size
+- Assumes linearity between logit function and independent variables
+- Does not work out of the box with correlated features...
 
 ----
 
@@ -381,10 +394,10 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Motivation
 <space>
 
-- used widely in modern data analysis
-- not well understood
-- intuition: reduce data into only relevant dimensions
-- the goal of PCA is to compute the most meaningful was to re-express noisy data, revealing the hidden structure
+- Unsupervised learning
+- Used widely in modern data analysis
+- Compute the most meaningful way to re-express noisy data, revealing the hidden structure
+- Commonly used to supplement supervised learning algorithms
 
 ----
 
@@ -392,12 +405,12 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-- first big assumption: linearity
+- Assumes linearity
 - $\bf{PX}=\bf{Y}$
-  - $X$ is original dataset, $P$ is a transformation of $X$ into $Y$
-- how do we choose $P$?
-  - reduce noise
-  - maximize variance
+  - $\bf{X}$ is original dataset, $\bf{P}$ is a transformation of $\bf{X}$ into $\bf{Y}$
+- How to choose $\bf{P}$?<br>
+  1) Reduce noise<br>
+  2) Maximize variance
 
 ----
 
@@ -405,12 +418,12 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-- covariance matrix
-  - $C = X*X^{T}$
+- Covariance matrix<br>
+$\bf{C} = \bf{XX}^{T}$
 
-- restated goals are
-  - minimize covariance and maximize variance
-  - the optimizal $C$ is a diagonal matrix, off diagonals are = 0
+- Restated goals are
+  - Minimize covariance and maximize variance
+  - Optimal $\bf{C}$ is a diagonal matrix, off diagonals are = 0
 
 ----
 
@@ -418,13 +431,12 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-- summary of assumptions
-  - linearity (non-linear is a kernel PCA)
-  - largest variance indicates most signal, low variance = noise
-  - orthogonal components - makes the linear algebra easier
-  - assumes data is normally distributed, otherwise PCA might not diagonalize matrix
-    - can use ICA
-    - but most data is normal and PCA is robust to slight deviance from normality
+- Assumes linear relationship between $\bf{X}$ and $\bf{Y}$ (non-linear is a kernel PCA)
+- Largest variance indicates most signal
+- Orthogonal components - makes the linear algebra easier
+- Assumes data is normally distributed, otherwise PCA might not diagonalize matrix
+  - Can use ICA...
+  - But most data is normal and PCA is robust to slight deviance from normality
 
 ----
 
@@ -436,7 +448,7 @@ $Ax = \lambda x$
   - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$<br>
 $Ax - \lambda Ix = 0$<br>
 $(A - \lambda I)x = 0$<br>
-$\det(A - \lambda I)$ = 0
+$\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 
 ----
 
@@ -444,10 +456,7 @@ $\det(A - \lambda I)$ = 0
 # Eigenwhat?
 <space>
 
-```{r eigen_ex}
-A = matrix(c(5,2,2,5),nrow=2)
-I = diag(nrow(A))
-```
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
 
 ----
 
@@ -455,15 +464,44 @@ I = diag(nrow(A))
 # Eigenwhat?
 <space>
 
-```{r eigen_ex2}
-A = matrix(c(5,2,2,5),nrow=2)
-I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
-```
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
+\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X - \lambda X = 0\]
+\[(\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I)X = 0\]
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
+\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X - \lambda X = 0\]
+\[(\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I)X = 0\]
+\[\left | \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I \right |= 0\]
+\[\left|\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix} \right| = 0\]
+\[\left|\begin{bmatrix} 5-\lambda & 2\\ 2 & 5-\lambda \end{bmatrix}\right| = 0\]
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+$(5-\lambda)\times(5-\lambda) - 4 = 0$
+<br>
+$\lambda^{2} - 10\lambda + 21 = 0$
+<br>
+$\lambda = ?$
 
 ----
 
@@ -473,12 +511,6 @@ I = diag(nrow(A))
 
 ```{r eigen_ex3}
 A = matrix(c(5,2,2,5),nrow=2)
-I = diag(nrow(A))
-### |A - L*I| = 0
-### det(c(5-l,2,2,5-l))
-### (5-l)*(5-l) - 4 = 0
-### 25 - 10l + l^2 - 4 = 0
-### l^2 - 10l + 21 = 0
 roots <- Re(polyroot(c(21,-10,1)))
 roots
 ```
@@ -502,7 +534,32 @@ $Ax = 3x$<br>
 $Ax = 3x$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- when $\lambda = 3$<br>
+$Ax = 3x$<br>
+$5x_{1} + 2x_{2} = 3x_{1}$<br>
+$2x_{1} + 5x_{2} = 3x_{2}$<br>
 $x_{1} = -x_{2}$<br>
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- when $\lambda = 3$<br>
+$Ax = 3x$<br>
+$5x_{1} + 2x_{2} = 3x_{1}$<br>
+$2x_{1} + 5x_{2} = 3x_{2}$<br>
+$x_{1} = -x_{2}$<br>
+
+\[Eigenvector = \begin{bmatrix} 1\\ -1 \end{bmatrix}\]
 
 ----
 
@@ -516,15 +573,18 @@ $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
 
+\[Eigenvector = \begin{bmatrix} 1\\ 1 \end{bmatrix}\]
+
 ----
 
 ## Principle Component Analysis
 # Eigenwhat?
 <space>
 
+$Ax = \lambda x$
 ```{r eigen_proof}
-A%*%c(1,-1) == 3 * as.matrix(c(1,-1))
-A%*%c(1,1) == 7 * as.matrix(c(1,1))
+A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
+A %*% c(1,1) == 7 * as.matrix(c(1,1))
 ```
 
 ----
@@ -535,7 +595,7 @@ A%*%c(1,1) == 7 * as.matrix(c(1,1))
 
 ```{r eigen_check}
 m <- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
-m <- m/sqrt(norm(m))
+m <- m/sqrt(norm(m))  ## normalize
 as.matrix(m%*%diag(roots)%*%t(m))
 ```
 
@@ -545,8 +605,8 @@ as.matrix(m%*%diag(roots)%*%t(m))
 # Motivation
 <space>
 
-$PX = Y$<br>
-$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
+$\bf{PX} = \bf{Y}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 
 ----
 
@@ -554,10 +614,10 @@ $C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
 # Motivation
 <space>
 
-$PX = Y$<br>
-$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
-$=PX(PX)^{T}$<br>
-$=PXX^{T}P^{T}$<br>
+$\bf{PX} = \bf{Y}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
+$=\bf{PX(PX)^{T}}$<br>
+$=\bf{PXX^{T}P^{T}}$<br>
 
 ----
 
@@ -565,14 +625,14 @@ $=PXX^{T}P^{T}$<br>
 # Motivation
 <space>
 
-$PX = Y$<br>
-$C_{Y} = \frac{1}{(n-1)}YY^{T}$<br>
-$=PX(PX)^{T}$<br>
-$=PXX^{T}P^{T}$<br>
-$=PAP^{T}$<br>
-- $P$ is a matrix with columns that are eigenvectors
-- $A$ is a diagonalized matrix of eigenvalues (by linear algebra) and symmetric<br>
-$A = EDE^{T}$
+$\bf{PX} = \bf{Y}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
+$=\bf{PX(PX)^{T}}$<br>
+$=\bf{PXX^{T}P^{T}}$<br>
+$=\bf{PAP^{T}}$<br>
+- $\bf{P}$ is a matrix with columns that are eigenvectors
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and symmetric<br>
+$\bf{A} = \bf{EDE^{T}}$
 
 ----
 
@@ -580,13 +640,13 @@ $A = EDE^{T}$
 # Motivation
 <space>
 
-- each row of $P$ should be an eigenvector of $A$<br>
-$P = E^{T}$
-- note that $P^{T} = P^{-1}$ (linear algebra)
-$A = P^{T}DP$<br>
-$C_{Y} = PP^{T}DPP^{T} = \frac{1}{n-1}D$
-- $D$ is a diagonal matrix, depending on how we choose $P$
-- therefore $C_{Y}$ is diagonalized
+- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+$\bf{P} = \bf{E^{T}}$
+- Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
+$\bf{A} = \bf{P^{T}DP}$<br>
+$\bf{C_{Y}} = \bf{PP^{T}DPP^{T}} = \frac{1}{n-1}\bf{D}$
+- $\bf{D}$ is a diagonal matrix, depending on how we choose $\bf{P}$
+- Therefore $\bf{C_{Y}}$ is diagonalized
 
 ----
 
