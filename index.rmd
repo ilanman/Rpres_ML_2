@@ -34,20 +34,6 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-- Describes how a binary response variable (Y = 1 or Y = 0) is associated a set of explanatory variables
-- Like Linear Regression, but the outcome is categorical, not continuous
-- Instead of:<br>
-$\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-- We have:<br>
-$\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-- Can be extended to multiple and/or ordered categories
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
 ```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
 library(ggplot2)
 x <- 1:10
@@ -127,21 +113,54 @@ curve_points
 ----
 
 ## Logistic Regression
+# Motivation
+<space>
+
+- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
+- Like Linear Regression with a categorical outcome
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
+- Like Linear Regression with a categorical outcome
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- becomes<br>
+- $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- Can be extended to multiple and/or ordered categories
+
+----
+
+## Logistic Regression
 # Concepts
 <space>
 
 - Type of regression to predict the probability of being in a class
-  - Typical to set threshold to 0.5
+  - Typical threshold is 0.5
 - Assumes error terms are Binomially distributed
-  - Which generates 1's and 0's as the error term
-- Sigmoid or logistic function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Interpret the output as $P(Y=1 | X)$
+  - Generates 1's and 0's as the error term
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Type of regression to predict the probability of being in a class
+  - Output is $P(Y=1 | X)$
+  - Typical threshold is 0.5
+- Assumes error terms are Binomially distributed
+  - Generates 1's and 0's as the error term
+- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
   - Bounded by 0 and 1
 
 ----
 
 ## Logistic Regression
-# Notation
+# Concepts
 <space>
 
 ```{r log_curve, fig.height=5,fig.width=5,echo=FALSE}
@@ -170,9 +189,10 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 - Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
 <br>
 $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
-- *Log odds* are linear in $X$
+- **Log odds** are linear in $X$
 - This is called the logit of $Y$
-  - Links $X$ linearly with some function of $Y$
+  - Links the odds of $Y$ (a probability) to a linear regression in $X$
+  - Logit ranges from -ve infite to +ve infinite
   - When $x_{1}$ increases by 1 unit, $P(Y=1)$ increases by $e^{\theta_{1}}$
 
 ----
@@ -203,11 +223,40 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 # Find parameters
 <space>
 
-- Define logistic cost function as:
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
 
-$cost(h_{\theta}(x)):$<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(x)$, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $y = 1$<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(1-x)$, &nbsp;   $y = 0$
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
+- $P(Y|X) = p$, when $Y$ = 1
+- $P(Y|X) = 1-p$, when $Y$ = 0
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
+- $P(Y|X) = p$, when $Y$ = 1
+- $P(Y|X) = 1-p$, when $Y$ = 0
+- $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
+- Taking the log of both sides...
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=1")
@@ -220,16 +269,6 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=0")
 # Find parameters
 <space>
 
-- Using statistics, it can be shown that<br>
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- Using statistics, it can be shown that<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
@@ -240,11 +279,8 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Find parameters
 <space>
 
-- Using statistics, it can be shown that<br>
-<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
-<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
 - Minimize the cost
 
@@ -278,7 +314,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 # Newton-Raphson Method
 <space>
 
-- Assume $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
 
@@ -286,7 +322,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 # Newton-Raphson Method
 <space>
 
-- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 
@@ -296,7 +332,7 @@ $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 # Newton-Raphson Method
 <space>
 
-- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
@@ -369,11 +405,12 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 ----
 
 ## Logistic Regression
-# Newton-Raphson - summary
+# Newton-Raphson
 <space>
 
 - Minimization algorithm
 - Approximation, non-closed form solution
+- Built-in to many programs
 
 ----
 
@@ -444,11 +481,11 @@ $\bf{C} = \bf{XX}^{T}$
 # Eigenwhat?
 <space>
 
-$Ax = \lambda x$
-  - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$<br>
-$Ax - \lambda Ix = 0$<br>
-$(A - \lambda I)x = 0$<br>
-$\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
+$\bf{A}x = \lambda x$
+  - $\lambda$ is an eigenvalue of $\bf{A}$ and $x$ is an eigenvector of $\bf{A}$<br>
+$\bf{A}x - \lambda Ix = 0$<br>
+$(\bf{A} - \lambda I)x = 0$<br>
+$\det(\bf{A} - \lambda I)$ = 0 &nbps; <- roots of this yield eigenvalues of $\bf{A}$
 
 ----
 
@@ -456,7 +493,8 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
+
 
 ----
 
@@ -464,7 +502,7 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
 
 ----
@@ -473,7 +511,7 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X - \lambda X = 0\]
 \[(\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I)X = 0\]
@@ -582,7 +620,19 @@ $x_{1} = x_{2}$<br>
 <space>
 
 $Ax = \lambda x$
-```{r eigen_proof}
+```{r eigen_proof, comment="",echo=FALSE}
+A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
+A %*% c(1,1) == 7 * as.matrix(c(1,1))
+```
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+$Ax = \lambda x$
+```{r eigen_proof_2, comment="",echo=TRUE}
 A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
 A %*% c(1,1) == 7 * as.matrix(c(1,1))
 ```
@@ -617,7 +667,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\bf{PX(PX)^{T}}$<br>
-$=\bf{PXX^{T}P^{T}}$<br>
+$=\bf{P(XX^{T})P^{T}}$<br>
 
 ----
 
@@ -628,10 +678,10 @@ $=\bf{PXX^{T}P^{T}}$<br>
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\bf{PX(PX)^{T}}$<br>
-$=\bf{PXX^{T}P^{T}}$<br>
+$=\bf{P(XX^{T})P^{T}}$<br>
 $=\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with columns that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and symmetric<br>
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
 $\bf{A} = \bf{EDE^{T}}$
 
 ----
@@ -643,7 +693,18 @@ $\bf{A} = \bf{EDE^{T}}$
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 $\bf{P} = \bf{E^{T}}$
 - Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
+
+----
+
+## Principle Component Analysis
+# Motivation
+<space>
+
+- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+$\bf{P} = \bf{E^{T}}$
+- Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
+$\bf{C_{Y}} = \bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \bf{PP^{T}DPP^{T}} = \frac{1}{n-1}\bf{D}$
 - $\bf{D}$ is a diagonal matrix, depending on how we choose $\bf{P}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
@@ -681,7 +742,7 @@ dim(features)
 # Example
 <space>
 
-```{r}
+```{r tennis_eigen_setup}
 scaled_features <- as.matrix(scale(features))
 Cx <- cov(scaled_features)
 eigenvalues <- eigen(Cx)$values
@@ -695,7 +756,7 @@ PC <- scaled_features %*% eigenvectors
 # Example
 <space>
 
-```{r}
+```{r tennis_proof}
 Cy <- cov(PC)
 sum(round(diag(Cy) - eigenvalues,5))
 sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
@@ -707,7 +768,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 # Example
 <space>
 
-```{r}
+```{r var_expl_plot, echo=FALSE}
 var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
 cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
 
@@ -728,7 +789,7 @@ ggplot(var_explained) +
 # Example
 <space>
 
-```{r}
+```{r tennis_check}
 pca.df <- prcomp(scaled_features)
 eigenvalues == (pca.df$sdev)^2
 eigenvectors[,1] == pca.df$rotation[,1]
@@ -741,7 +802,7 @@ sum((eigenvectors[,1])^2)
 # Example
 <space>
 
-```{r}
+```{r tennis_plot_gender, echo=FALSE}
 rows <- nrow(tennis)
 pca.plot <- as.data.frame(pca.df$x[,1:2])
 pca.plot$gender <- data$Gender
@@ -754,15 +815,23 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
 # Example
 <space>
 
-- how accurate is the first PC at dividing the dataset?
+- Classify based on PC1?
+
+```{r}
 gen <- ifelse(pca.df$x[,1] > abs(mean(pca.df$x[,1]))*2,"F","M")
 sum(diag(table(gen,as.character(data$Gender))))/rows
+```
 
 ----
 
 ## Principle Component Analysis
 # Summary
 <space>
+
+- Very popular dimensionality reduction technique
+- Intuitive
+- Cannot reverse engineer dataset easily
+- Extensions (ICA, kernel PCA) developed to generalize
 
 ----
 

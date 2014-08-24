@@ -34,20 +34,6 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-- Describes how a binary response variable (Y = 1 or Y = 0) is associated a set of explanatory variables
-- Like Linear Regression, but the outcome is categorical, not continuous
-- Instead of:<br>
-$\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-- We have:<br>
-$\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-- Can be extended to multiple and/or ordered categories
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
 ![plot of chunk log_bad_fit](figure/log_bad_fit.png) 
 
 ----
@@ -93,21 +79,54 @@ $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x
 ----
 
 ## Logistic Regression
+# Motivation
+<space>
+
+- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
+- Like Linear Regression with a categorical outcome
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
+- Like Linear Regression with a categorical outcome
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- becomes<br>
+- $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+- Can be extended to multiple and/or ordered categories
+
+----
+
+## Logistic Regression
 # Concepts
 <space>
 
 - Type of regression to predict the probability of being in a class
-  - Typical to set threshold to 0.5
+  - Typical threshold is 0.5
 - Assumes error terms are Binomially distributed
-  - Which generates 1's and 0's as the error term
-- Sigmoid or logistic function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Interpret the output as $P(Y=1 | X)$
+  - Generates 1's and 0's as the error term
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Type of regression to predict the probability of being in a class
+  - Output is $P(Y=1 | X)$
+  - Typical threshold is 0.5
+- Assumes error terms are Binomially distributed
+  - Generates 1's and 0's as the error term
+- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
   - Bounded by 0 and 1
 
 ----
 
 ## Logistic Regression
-# Notation
+# Concepts
 <space>
 
 ![plot of chunk log_curve](figure/log_curve.png) 
@@ -133,9 +152,10 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 - Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
 <br>
 $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
-- *Log odds* are linear in $X$
+- **Log odds** are linear in $X$
 - This is called the logit of $Y$
-  - Links $X$ linearly with some function of $Y$
+  - Links the odds of $Y$ (a probability) to a linear regression in $X$
+  - Logit ranges from -ve infite to +ve infinite
   - When $x_{1}$ increases by 1 unit, $P(Y=1)$ increases by $e^{\theta_{1}}$
 
 ----
@@ -166,11 +186,40 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 # Find parameters
 <space>
 
-- Define logistic cost function as:
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
 
-$cost(h_{\theta}(x)):$<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(x)$, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $y = 1$<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $= -\log(1-x)$, &nbsp;   $y = 0$
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
+- $P(Y|X) = p$, when $Y$ = 1
+- $P(Y|X) = 1-p$, when $Y$ = 0
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $Y$ can be 1 or 0 (binary case)
+- $Y | X$ ~ Bernoulli
+- $P(Y|X) = p$, when $Y$ = 1
+- $P(Y|X) = 1-p$, when $Y$ = 0
+- $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
+- Taking the log of both sides...
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
 
@@ -180,16 +229,6 @@ $cost(h_{\theta}(x)):$<br>
 # Find parameters
 <space>
 
-- Using statistics, it can be shown that<br>
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- Using statistics, it can be shown that<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
@@ -200,11 +239,8 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Find parameters
 <space>
 
-- Using statistics, it can be shown that<br>
-<br>
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
-<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
 - Minimize the cost
 
@@ -238,7 +274,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 # Newton-Raphson Method
 <space>
 
-- Assume $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
 
@@ -246,7 +282,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 # Newton-Raphson Method
 <space>
 
-- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 
@@ -256,7 +292,7 @@ $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 # Newton-Raphson Method
 <space>
 
-- Assume of $f'(x_{0})$ is zero and $f''(x_{0})$ is positive
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
@@ -311,11 +347,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   15.000
-[2,]         2   10.000
-[3,]         3    6.667
-[4,]         4    4.446
-[5,]         5    2.968
+[1,]         1   48.000
+[2,]         2   32.000
+[3,]         3   21.333
+[4,]         4   14.222
+[5,]         5    9.482
 ```
 
 ```
@@ -353,11 +389,12 @@ $objective
 ----
 
 ## Logistic Regression
-# Newton-Raphson - summary
+# Newton-Raphson
 <space>
 
 - Minimization algorithm
 - Approximation, non-closed form solution
+- Built-in to many programs
 
 ----
 
@@ -428,11 +465,11 @@ $\bf{C} = \bf{XX}^{T}$
 # Eigenwhat?
 <space>
 
-$Ax = \lambda x$
-  - $\lambda$ is an eigenvalue of $A$ and $x$ is an eigenvector of $A$<br>
-$Ax - \lambda Ix = 0$<br>
-$(A - \lambda I)x = 0$<br>
-$\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
+$\bf{A}x = \lambda x$
+  - $\lambda$ is an eigenvalue of $\bf{A}$ and $x$ is an eigenvector of $\bf{A}$<br>
+$\bf{A}x - \lambda Ix = 0$<br>
+$(\bf{A} - \lambda I)x = 0$<br>
+$\det(\bf{A} - \lambda I)$ = 0 &nbps; <- roots of this yield eigenvalues of $\bf{A}$
 
 ----
 
@@ -440,7 +477,8 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
+
 
 ----
 
@@ -448,7 +486,7 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
 
 ----
@@ -457,7 +495,7 @@ $\det(A - \lambda I)$ = 0 <- roots of this yield eigenvalues of A
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}\]
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
 \[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X - \lambda X = 0\]
 \[(\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I)X = 0\]
@@ -572,14 +610,34 @@ $x_{1} = x_{2}$<br>
 
 $Ax = \lambda x$
 
+```
+     [,1]
+[1,] TRUE
+[2,] TRUE
+```
+
+```
+     [,1]
+[1,] TRUE
+[2,] TRUE
+```
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+$Ax = \lambda x$
+
 ```r
 A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
 ```
 
 ```
-##      [,1]
-## [1,] TRUE
-## [2,] TRUE
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ```r
@@ -587,9 +645,9 @@ A %*% c(1,1) == 7 * as.matrix(c(1,1))
 ```
 
 ```
-##      [,1]
-## [1,] TRUE
-## [2,] TRUE
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ----
@@ -629,7 +687,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\bf{PX(PX)^{T}}$<br>
-$=\bf{PXX^{T}P^{T}}$<br>
+$=\bf{P(XX^{T})P^{T}}$<br>
 
 ----
 
@@ -640,10 +698,10 @@ $=\bf{PXX^{T}P^{T}}$<br>
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\bf{PX(PX)^{T}}$<br>
-$=\bf{PXX^{T}P^{T}}$<br>
+$=\bf{P(XX^{T})P^{T}}$<br>
 $=\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with columns that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and symmetric<br>
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
 $\bf{A} = \bf{EDE^{T}}$
 
 ----
@@ -655,7 +713,18 @@ $\bf{A} = \bf{EDE^{T}}$
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 $\bf{P} = \bf{E^{T}}$
 - Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
+
+----
+
+## Principle Component Analysis
+# Motivation
+<space>
+
+- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+$\bf{P} = \bf{E^{T}}$
+- Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
+$\bf{C_{Y}} = \bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \bf{PP^{T}DPP^{T}} = \frac{1}{n-1}\bf{D}$
 - $\bf{D}$ is a diagonal matrix, depending on how we choose $\bf{P}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
@@ -805,23 +874,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 # Example
 <space>
 
-
-```r
-var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
-cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
-
-var_explained <- as.data.frame(var_explained)
-names(var_explained) <- "variance_explained"
-var_explained$PC <- as.numeric(rownames(var_explained))
-var_explained <- cbind(var_explained,cum_var_explained)
-
-library(ggplot2)
-ggplot(var_explained) +
-  geom_bar(aes(x=PC,y=variance_explained),stat='identity') +
-  geom_line(aes(x=PC,y=cum_var_explained))
-```
-
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+![plot of chunk var_expl_plot](figure/var_expl_plot.png) 
 
 ----
 
@@ -863,13 +916,6 @@ sum((eigenvectors[,1])^2)
 <space>
 
 
-```r
-rows <- nrow(tennis)
-pca.plot <- as.data.frame(pca.df$x[,1:2])
-pca.plot$gender <- data$Gender
-ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
-```
-
 ```
 ## Error: object 'gender' not found
 ```
@@ -880,15 +926,28 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
 # Example
 <space>
 
-- how accurate is the first PC at dividing the dataset?
+- Classify based on PC1?
+
+
+```r
 gen <- ifelse(pca.df$x[,1] > abs(mean(pca.df$x[,1]))*2,"F","M")
 sum(diag(table(gen,as.character(data$Gender))))/rows
+```
+
+```
+## Error: all arguments must have the same length
+```
 
 ----
 
 ## Principle Component Analysis
 # Summary
 <space>
+
+- Very popular dimensionality reduction technique
+- Intuitive
+- Cannot reverse engineer dataset easily
+- Extensions (ICA, kernel PCA) developed to generalize
 
 ----
 
@@ -1012,17 +1071,6 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 
 ```r
 wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
-```
-
-```
-## Warning: cannot open: HTTP status was '403 Forbidden'
-```
-
-```
-## Error: cannot open the connection
-```
-
-```r
 names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
                  'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
 str(wine)
@@ -1071,7 +1119,7 @@ barplot(best_k, xlab = "Number of clusters",
         main="Scree Plot for Wine dataset")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 ----
 
@@ -1198,7 +1246,7 @@ best_k
 clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 ----
 
@@ -1279,7 +1327,7 @@ cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
 plot(cluster)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 ----
 
@@ -1518,17 +1566,6 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy",
 
 ```r
 voting_data <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data')
-```
-
-```
-## Warning: cannot open: HTTP status was '403 Forbidden'
-```
-
-```
-## Error: cannot open the connection
-```
-
-```r
 names(voting_data) <- c('party','handicapped-infants','water-project-cost-sharing',
                         'adoption-of-the-budget-resolution','physician-fee-freeze',
                         'el-salvador-aid','religious-groups-in-schools',
@@ -1594,13 +1631,13 @@ Total Observations in Table:  145
              | predicted class 
 actual class |   democrat | republican |  Row Total | 
 -------------|------------|------------|------------|
-    democrat |         77 |          0 |         77 | 
-             |      0.531 |      0.000 |            | 
+    democrat |         82 |          4 |         86 | 
+             |      0.566 |      0.028 |            | 
 -------------|------------|------------|------------|
-  republican |         12 |         56 |         68 | 
-             |      0.083 |      0.386 |            | 
+  republican |          4 |         55 |         59 | 
+             |      0.028 |      0.379 |            | 
 -------------|------------|------------|------------|
-Column Total |         89 |         56 |        145 | 
+Column Total |         86 |         59 |        145 | 
 -------------|------------|------------|------------|
 
  
@@ -1620,12 +1657,12 @@ head(C5imp(tree_model))
 
 ```
 ##                                   Overall
-## physician-fee-freeze                98.27
-## el-salvador-aid                     39.45
-## anti-satellite-test-ban             37.02
-## adoption-of-the-budget-resolution   29.07
+## physician-fee-freeze                97.92
+## synfuels-corporation-cutback        40.14
+## mx-missile                           9.34
 ## handicapped-infants                  0.00
 ## water-project-cost-sharing           0.00
+## adoption-of-the-budget-resolution    0.00
 ```
 
 ----
@@ -1646,7 +1683,7 @@ summary(tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 1)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 20 20:54:00 2014
+## C5.0 [Release 2.07 GPL Edition]  	Sun Aug 24 15:46:32 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1655,15 +1692,12 @@ summary(tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (176)
+## physician-fee-freeze in {?,n}: democrat (170.5/1.2)
 ## physician-fee-freeze = y:
-## :...el-salvador-aid = ?: republican (0)
-##     el-salvador-aid = n: democrat (4.2/1)
-##     el-salvador-aid = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (24.7)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (76.5/5.3)
-##             adoption-of-the-budget-resolution = y: democrat (7.5/2)
+## :...synfuels-corporation-cutback in {?,n}: republican (97.4/2.3)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,n}: republican (16.6/4.8)
+##         mx-missile = y: democrat (4.5)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -1672,21 +1706,20 @@ summary(tree_model)
 ## 	  ----------------  
 ## 	  Size      Errors  
 ## 
-## 	     5    8( 2.8%)   <<
+## 	     4    8( 2.8%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   185     5    (a): class democrat
-## 	     3    96    (b): class republican
+## 	   175     6    (a): class democrat
+## 	     2   106    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 98.27%	physician-fee-freeze
-## 	 39.45%	el-salvador-aid
-## 	 37.02%	anti-satellite-test-ban
-## 	 29.07%	adoption-of-the-budget-resolution
+## 	 97.92%	physician-fee-freeze
+## 	 40.14%	synfuels-corporation-cutback
+## 	  9.34%	mx-missile
 ## 
 ## 
 ## Time: 0.0 secs
@@ -1733,13 +1766,13 @@ boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq =
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         76 |          1 |         77 | 
-##              |      0.524 |      0.007 |            | 
+##     democrat |         84 |          2 |         86 | 
+##              |      0.579 |      0.014 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          5 |         63 |         68 | 
-##              |      0.034 |      0.434 |            | 
+##   republican |          3 |         56 |         59 | 
+##              |      0.021 |      0.386 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         81 |         64 |        145 | 
+## Column Total |         87 |         58 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 
@@ -1763,7 +1796,7 @@ summary(boosted_tree_model)
 ## C5.0.default(x = voting_train[, -1], y = voting_train[, 1], trials = 25)
 ## 
 ## 
-## C5.0 [Release 2.07 GPL Edition]  	Wed Aug 20 20:54:00 2014
+## C5.0 [Release 2.07 GPL Edition]  	Sun Aug 24 15:46:33 2014
 ## -------------------------------
 ## 
 ## Class specified by attribute `outcome'
@@ -1774,478 +1807,357 @@ summary(boosted_tree_model)
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (176)
+## physician-fee-freeze in {?,n}: democrat (170.5/1.2)
 ## physician-fee-freeze = y:
-## :...el-salvador-aid = ?: republican (0)
-##     el-salvador-aid = n: democrat (4.2/1)
-##     el-salvador-aid = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (24.7)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (76.5/5.3)
-##             adoption-of-the-budget-resolution = y: democrat (7.5/2)
+## :...synfuels-corporation-cutback in {?,n}: republican (97.4/2.3)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,n}: republican (16.6/4.8)
+##         mx-missile = y: democrat (4.5)
 ## 
 ## -----  Trial 1:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (132.7)
+## physician-fee-freeze in {?,n}: democrat (136.9/9)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (70.3/2.3)
-##     immigration = n:
-##     :...synfuels-corporation-cutback = n: republican (38.6/11)
-##         synfuels-corporation-cutback in {?,y}: democrat (47.3/5.7)
+## :...synfuels-corporation-cutback in {?,n}: republican (98.4/19.3)
+##     synfuels-corporation-cutback = y: democrat (53.7/11.2)
 ## 
 ## -----  Trial 2:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (104.9)
+## physician-fee-freeze in {?,n}: democrat (111.7/9.9)
 ## physician-fee-freeze = y:
-## :...duty-free-exports in {?,n}: republican (146.4/44.4)
-##     duty-free-exports = y: democrat (37.7/10.5)
+## :...education-spending = ?: republican (0)
+##     education-spending = n: democrat (42/11.1)
+##     education-spending = y:
+##     :...adoption-of-the-budget-resolution in {?,n}: republican (101.8/8)
+##         adoption-of-the-budget-resolution = y: democrat (33.6/12.4)
 ## 
 ## -----  Trial 3:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (83.4)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (87.8/7.8)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (77.8/17.4)
-##     immigration = n:
-##     :...mx-missile in {?,y}: democrat (19.5/0.9)
-##         mx-missile = n:
-##         :...anti-satellite-test-ban in {?,y}: republican (14.7)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,y}: democrat (11.8)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...superfund-right-to-sue in {?,n}: democrat (12.5/0.5)
-##                     superfund-right-to-sue = y: republican (69.2/30.2)
+## :...anti-satellite-test-ban in {?,y}: republican (65.8/1.6)
+##     anti-satellite-test-ban = n:
+##     :...duty-free-exports = ?: republican (0)
+##         duty-free-exports = y: democrat (11.3/1.2)
+##         duty-free-exports = n:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (89.7/18.9)
+##             adoption-of-the-budget-resolution = y: democrat (34.3/10.4)
 ## 
 ## -----  Trial 4:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (68.5)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (72.3/6.8)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback = ?: republican (0)
-##     synfuels-corporation-cutback = n:
-##     :...education-spending = n: democrat (23/8.1)
-##     :   education-spending in {?,y}: republican (76.8/6.2)
-##     synfuels-corporation-cutback = y:
-##     :...religious-groups-in-schools = ?: democrat (0)
-##         religious-groups-in-schools = n: republican (7.5/2.8)
-##         religious-groups-in-schools = y:
-##         :...mx-missile in {?,y}: democrat (32.5)
-##             mx-missile = n:
-##             :...anti-satellite-test-ban in {?,n}: democrat (70.6/19.1)
-##                 anti-satellite-test-ban = y: republican (10.1)
+## :...synfuels-corporation-cutback in {?,n}: republican (118.1/18.1)
+##     synfuels-corporation-cutback = y: democrat (98.6/37.9)
 ## 
 ## -----  Trial 5:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (52.8)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (57.7/4.4)
 ## physician-fee-freeze = y:
-## :...el-salvador-aid = ?: republican (0)
-##     el-salvador-aid = n: democrat (21.5/3.7)
-##     el-salvador-aid = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (48.2)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution = ?: republican (0)
-##             adoption-of-the-budget-resolution = y: democrat (40.2/7.3)
-##             adoption-of-the-budget-resolution = n:
-##             :...immigration in {?,y}: republican (30.5)
-##                 immigration = n:
-##                 :...mx-missile = ?: republican (0)
-##                     mx-missile = y: democrat (4.9)
-##                     mx-missile = n:
-##                     :...religious-groups-in-schools in {?,
-##                         :                               n}: republican (4.4)
-##                         religious-groups-in-schools = y:
-##                         :...superfund-right-to-sue = ?: republican (0)
-##                             superfund-right-to-sue = n: democrat (7.3/0.4)
-##                             superfund-right-to-sue = y:
-##                             :...education-spending = n: democrat (28.6/10.2)
-##                                 education-spending in {?,
-##                                                        y}: republican (50.6/12.1)
+## :...education-spending = n: democrat (71.1/26.1)
+##     education-spending in {?,y}: republican (160.2/32)
 ## 
 ## -----  Trial 6:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (40.8)
+## physician-fee-freeze = n: democrat (45.6/2.8)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (112.2/16.5)
-##     synfuels-corporation-cutback = y:
-##     :...export-administration-act-south-africa in {?,n}: democrat (54.9/16.1)
-##         export-administration-act-south-africa = y:
-##         :...mx-missile in {?,n}: republican (49/10.8)
-##             mx-missile = y: democrat (32.1/13)
+## :...immigration in {?,y}: republican (108.1/15.5)
+##     immigration = n:
+##     :...aid-to-nicaraguan-contras = ?: democrat (0)
+##         aid-to-nicaraguan-contras = y: republican (28.5/6.9)
+##         aid-to-nicaraguan-contras = n:
+##         :...anti-satellite-test-ban in {?,n}: democrat (99.8/36.1)
+##             anti-satellite-test-ban = y: republican (7)
 ## 
 ## -----  Trial 7:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (34.2)
+## physician-fee-freeze = n: democrat (36.8/1.8)
 ## physician-fee-freeze = y:
-## :...religious-groups-in-schools in {?,n}: republican (29.4/3.7)
-##     religious-groups-in-schools = y:
-##     :...el-salvador-aid = ?: republican (0)
-##         el-salvador-aid = n: democrat (12.1)
-##         el-salvador-aid = y:
-##         :...anti-satellite-test-ban in {?,y}: republican (23.8)
-##             anti-satellite-test-ban = n:
-##             :...duty-free-exports = ?: republican (0)
-##                 duty-free-exports = y: democrat (25.1/3.1)
-##                 duty-free-exports = n:
-##                 :...immigration in {?,y}: republican (53.1/6.5)
-##                     immigration = n: [S1]
-## 
-## SubTree [S1]
-## 
-## adoption-of-the-budget-resolution = n: republican (95.1/40.1)
-## adoption-of-the-budget-resolution in {?,y}: democrat (16.2)
+## :...synfuels-corporation-cutback in {?,n}: republican (131.4/22.8)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,n}: republican (91/28.7)
+##         mx-missile = y: democrat (29.8/0.7)
 ## 
 ## -----  Trial 8:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (27)
+## physician-fee-freeze in {?,n}: democrat (30.2/1.2)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (98.4/21.2)
+## :...synfuels-corporation-cutback in {?,n}: republican (120.5/33.9)
 ##     synfuels-corporation-cutback = y:
-##     :...religious-groups-in-schools = ?: democrat (0)
-##         religious-groups-in-schools = n: republican (23.5/10.6)
-##         religious-groups-in-schools = y:
-##         :...mx-missile in {?,y}: democrat (24.2)
-##             mx-missile = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     y}: democrat (11.3/0.2)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...immigration = ?: democrat (0)
-##                     immigration = y: republican (14.2)
-##                     immigration = n: [S1]
-## 
-## SubTree [S1]
-## 
-## export-administration-act-south-africa in {?,n}: democrat (61.9/13)
-## export-administration-act-south-africa = y: republican (28.6/8.3)
+##     :...mx-missile in {?,y}: democrat (24.2/0.4)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban in {?,n}: democrat (103.3/39.7)
+##             anti-satellite-test-ban = y: republican (10.8)
 ## 
 ## -----  Trial 9:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (21.7)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (25.1/1.2)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (92.6/24)
-##     immigration = n:
-##     :...el-salvador-aid in {?,n}: democrat (17.1)
-##         el-salvador-aid = y:
-##         :...anti-satellite-test-ban = ?: democrat (0)
-##             anti-satellite-test-ban = y: republican (8.4)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     y}: democrat (28.2)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...superfund-right-to-sue in {?,n}: democrat (12/2)
-##                     superfund-right-to-sue = y:
-##                     :...education-spending = n: democrat (48.1/15.1)
-##                         education-spending in {?,y}: republican (60.8/20.7)
+## :...water-project-cost-sharing in {?,n}: republican (91.3/18.2)
+##     water-project-cost-sharing = y:
+##     :...adoption-of-the-budget-resolution in {?,y}: democrat (65/10.8)
+##         adoption-of-the-budget-resolution = n:
+##         :...education-spending = n: democrat (56.4/17.1)
+##             education-spending in {?,y}: republican (51.3/1.6)
 ## 
 ## -----  Trial 10:  -----
 ## 
 ## Decision tree:
 ## 
-## mx-missile in {?,y}: democrat (88.8/18)
-## mx-missile = n:
-## :...anti-satellite-test-ban in {?,y}: republican (22.8/1.9)
-##     anti-satellite-test-ban = n:
-##     :...religious-groups-in-schools in {?,n}: republican (7)
-##         religious-groups-in-schools = y:
-##         :...adoption-of-the-budget-resolution in {?,y}: democrat (32.6/5.5)
-##             adoption-of-the-budget-resolution = n:
-##             :...immigration in {?,y}: republican (18.7/0.3)
-##                 immigration = n:
-##                 :...crime in {?,n}: democrat (5.5/0.1)
-##                     crime = y:
-##                     :...handicapped-infants = n: democrat (63.7/21.5)
-##                         handicapped-infants in {?,y}: republican (49.8/13)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (19.2/0.7)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (95.9/15.3)
+##     immigration = n:
+##     :...duty-free-exports = ?: republican (0)
+##         duty-free-exports = y: democrat (18/2.5)
+##         duty-free-exports = n:
+##         :...aid-to-nicaraguan-contras in {?,y}: republican (19.4/2.4)
+##             aid-to-nicaraguan-contras = n:
+##             :...adoption-of-the-budget-resolution = n: republican (105/38.4)
+##                 adoption-of-the-budget-resolution in {?,
+##                                                       y}: democrat (31.5/1.4)
 ## 
 ## -----  Trial 11:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (34.1)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (105.5/26.8)
-##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports in {?,y}: democrat (16.1/1.4)
-##         duty-free-exports = n:
-##         :...mx-missile in {?,y}: democrat (39.1/8.9)
-##             mx-missile = n:
-##             :...immigration = n: democrat (80.7/34.5)
-##                 immigration in {?,y}: republican (13.5)
+## el-salvador-aid = ?: republican (0)
+## el-salvador-aid = n: democrat (46.8/8.6)
+## el-salvador-aid = y:
+## :...anti-satellite-test-ban in {?,y}: republican (53.8/0.8)
+##     anti-satellite-test-ban = n:
+##     :...aid-to-nicaraguan-contras in {?,y}: democrat (8.3/0.2)
+##         aid-to-nicaraguan-contras = n:
+##         :...export-administration-act-south-africa in {?,
+##             :                                          n}: democrat (86/25.2)
+##             export-administration-act-south-africa = y: republican (94.1/34.3)
 ## 
 ## -----  Trial 12:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (27.8)
+## physician-fee-freeze = n: democrat (27.2/0.8)
 ## physician-fee-freeze = y:
-## :...mx-missile = ?: republican (0)
-##     mx-missile = y: democrat (67.3/24.7)
-##     mx-missile = n:
-##     :...anti-satellite-test-ban in {?,y}: republican (21.6)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution = ?: republican (0)
-##             adoption-of-the-budget-resolution = y: democrat (27.3/5.1)
-##             adoption-of-the-budget-resolution = n:
-##             :...immigration in {?,y}: republican (12.5)
-##                 immigration = n:
-##                 :...crime = ?: republican (0)
-##                     crime = n: democrat (3.5/0.1)
-##                     crime = y:
-##                     :...duty-free-exports = ?: republican (0)
-##                         duty-free-exports = y: democrat (17.4/5.7)
-##                         duty-free-exports = n: [S1]
-## 
-## SubTree [S1]
-## 
-## synfuels-corporation-cutback in {?,n}: republican (27.9)
-## synfuels-corporation-cutback = y:
-## :...water-project-cost-sharing = n: democrat (22.8/6.1)
-##     water-project-cost-sharing in {?,y}: republican (60.9/15.8)
+## :...synfuels-corporation-cutback in {?,n}: republican (122.6/25.2)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,y}: democrat (26/0.4)
+##         mx-missile = n:
+##         :...anti-satellite-test-ban = ?: democrat (0)
+##             anti-satellite-test-ban = y: republican (9.1)
+##             anti-satellite-test-ban = n:
+##             :...adoption-of-the-budget-resolution = n: republican (84.3/37.3)
+##                 adoption-of-the-budget-resolution in {?,
+##                                                       y}: democrat (19.8/0.3)
 ## 
 ## -----  Trial 13:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (22.3)
+## physician-fee-freeze in {?,n}: democrat (21.6/0.5)
 ## physician-fee-freeze = y:
-## :...education-spending = ?: republican (0)
-##     education-spending = n:
-##     :...duty-free-exports = n: republican (69.3/30.4)
-##     :   duty-free-exports in {?,y}: democrat (23.8/2.2)
-##     education-spending = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (40)
+## :...immigration = ?: democrat (0)
+##     immigration = y: republican (79.5/22.9)
+##     immigration = n:
+##     :...anti-satellite-test-ban = ?: democrat (0)
+##         anti-satellite-test-ban = y: republican (23.3/6.2)
 ##         anti-satellite-test-ban = n:
-##         :...aid-to-nicaraguan-contras in {?,n}: republican (124.2/39.6)
-##             aid-to-nicaraguan-contras = y: democrat (9.5/0.7)
+##         :...adoption-of-the-budget-resolution in {?,y}: democrat (31.4/0.9)
+##             adoption-of-the-budget-resolution = n:
+##             :...duty-free-exports in {?,y}: democrat (22.6/0.4)
+##                 duty-free-exports = n:
+##                 :...synfuels-corporation-cutback = n: republican (23)
+##                     synfuels-corporation-cutback in {?,y}: democrat (87.7/27.1)
 ## 
 ## -----  Trial 14:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (19.1)
+## physician-fee-freeze in {?,n}: democrat (18.1/0.6)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (111.1/30.9)
-##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports in {?,y}: democrat (15.5/3.3)
-##         duty-free-exports = n:
-##         :...immigration in {?,n}: democrat (111/40.8)
-##             immigration = y: republican (32.4/12)
+## :...education-spending in {?,n}: democrat (115.1/35.8)
+##     education-spending = y:
+##     :...anti-satellite-test-ban in {?,y}: republican (20.6)
+##         anti-satellite-test-ban = n:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (96.8/29.3)
+##             adoption-of-the-budget-resolution = y: democrat (38.3/7.7)
 ## 
 ## -----  Trial 15:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (16.4)
+## physician-fee-freeze = n: democrat (15/0.6)
 ## physician-fee-freeze = y:
-## :...education-spending = ?: republican (0)
-##     education-spending = n:
-##     :...immigration in {?,n}: democrat (68.6/17.7)
-##     :   immigration = y: republican (34/13.4)
-##     education-spending = y:
-##     :...anti-satellite-test-ban in {?,y}: republican (34.2)
-##         anti-satellite-test-ban = n:
-##         :...adoption-of-the-budget-resolution in {?,n}: republican (87.5/24.4)
-##             adoption-of-the-budget-resolution = y: democrat (48.2/11.4)
+## :...synfuels-corporation-cutback in {?,n}: republican (124.7/33)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,y}: democrat (29.3/1)
+##         mx-missile = n:
+##         :...export-administration-act-south-africa in {?,
+##             :                                          n}: democrat (70.6/20.1)
+##             export-administration-act-south-africa = y: republican (49.4/11.7)
 ## 
 ## -----  Trial 16:  -----
 ## 
 ## Decision tree:
 ## 
-## el-salvador-aid = ?: republican (0)
-## el-salvador-aid = n: democrat (48.2/9.1)
-## el-salvador-aid = y:
-## :...anti-satellite-test-ban in {?,y}: republican (41.3/1.6)
-##     anti-satellite-test-ban = n:
-##     :...aid-to-nicaraguan-contras in {?,y}: democrat (8.5/0.4)
-##         aid-to-nicaraguan-contras = n:
-##         :...immigration in {?,y}: republican (35.2/7.1)
-##             immigration = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     y}: democrat (26.3)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...superfund-right-to-sue = ?: republican (0)
-##                     superfund-right-to-sue = n: democrat (17.6/2.4)
-##                     superfund-right-to-sue = y:
-##                     :...mx-missile in {?,n}: republican (109.6/41.2)
-##                         mx-missile = y: democrat (2.3)
+## physician-fee-freeze = ?: republican (0)
+## physician-fee-freeze = n: democrat (12.1/0.4)
+## physician-fee-freeze = y:
+## :...immigration in {?,y}: republican (85/23.4)
+##     immigration = n:
+##     :...duty-free-exports in {?,y}: democrat (27.1/3.6)
+##         duty-free-exports = n:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (121.6/49)
+##             adoption-of-the-budget-resolution = y: democrat (43.2/9.9)
 ## 
 ## -----  Trial 17:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (49.3)
+## physician-fee-freeze in {?,n}: democrat (10.4/0.4)
 ## physician-fee-freeze = y:
-## :...religious-groups-in-schools in {?,n}: republican (25.9/5.7)
-##     religious-groups-in-schools = y:
-##     :...el-salvador-aid in {?,n}: democrat (15.8)
-##         el-salvador-aid = y:
-##         :...anti-satellite-test-ban in {?,y}: republican (26.2)
-##             anti-satellite-test-ban = n:
-##             :...superfund-right-to-sue in {?,n}: democrat (12/0.4)
-##                 superfund-right-to-sue = y:
-##                 :...duty-free-exports in {?,y}: democrat (28/5.3)
-##                     duty-free-exports = n:
-##                     :...aid-to-nicaraguan-contras = ?: republican (0)
-##                         aid-to-nicaraguan-contras = y: democrat (6.9/0.4)
-##                         aid-to-nicaraguan-contras = n:
-##                         :...immigration in {?,y}: republican (21.1)
-##                             immigration = n: [S1]
-## 
-## SubTree [S1]
-## 
-## adoption-of-the-budget-resolution = n: republican (89.1/37.2)
-## adoption-of-the-budget-resolution in {?,y}: democrat (14.8)
+## :...synfuels-corporation-cutback = ?: democrat (0)
+##     synfuels-corporation-cutback = n: republican (113.8/38.1)
+##     synfuels-corporation-cutback = y:
+##     :...mx-missile in {?,y}: democrat (34.9/0.8)
+##         mx-missile = n:
+##         :...adoption-of-the-budget-resolution = n: republican (109.1/47.6)
+##             adoption-of-the-budget-resolution in {?,y}: democrat (20.8/1.2)
 ## 
 ## -----  Trial 18:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (38.5)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (104.8/24.5)
-##     synfuels-corporation-cutback = y:
-##     :...export-administration-act-south-africa in {?,n}: democrat (62.7/13)
-##         export-administration-act-south-africa = y:
-##         :...water-project-cost-sharing = n: republican (13.4/1.1)
-##             water-project-cost-sharing in {?,y}: democrat (69.7/28.8)
+## anti-satellite-test-ban = ?: democrat (0)
+## anti-satellite-test-ban = y: republican (76/27.7)
+## anti-satellite-test-ban = n:
+## :...religious-groups-in-schools = ?: democrat (0)
+##     religious-groups-in-schools = n: republican (7.7/0.1)
+##     religious-groups-in-schools = y:
+##     :...duty-free-exports in {?,y}: democrat (25/1.8)
+##         duty-free-exports = n:
+##         :...adoption-of-the-budget-resolution in {?,y}: democrat (59.7/10.8)
+##             adoption-of-the-budget-resolution = n:
+##             :...immigration in {?,y}: republican (14.3/0.2)
+##                 immigration = n:
+##                 :...synfuels-corporation-cutback = n: republican (10.5/0.2)
+##                     synfuels-corporation-cutback in {?,y}: democrat (95.8/37.3)
 ## 
 ## -----  Trial 19:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (31.1)
+## physician-fee-freeze in {?,n}: democrat (40.9/2.1)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (92/19.9)
-##     immigration = n:
-##     :...el-salvador-aid in {?,n}: democrat (9.4)
-##         el-salvador-aid = y:
-##         :...anti-satellite-test-ban = ?: democrat (0)
-##             anti-satellite-test-ban = y: republican (17.2)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution in {?,
-##                 :                                     y}: democrat (22)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...handicapped-infants = n: democrat (66.3/27.7)
-##                     handicapped-infants in {?,y}: republican (51/18.2)
+## :...anti-satellite-test-ban = ?: democrat (0)
+##     anti-satellite-test-ban = y: republican (62.4/21.4)
+##     anti-satellite-test-ban = n:
+##     :...religious-groups-in-schools = ?: democrat (0)
+##         religious-groups-in-schools = n: republican (6.5)
+##         religious-groups-in-schools = y:
+##         :...adoption-of-the-budget-resolution in {?,y}: democrat (50.3/10.4)
+##             adoption-of-the-budget-resolution = n:
+##             :...immigration = n: democrat (116.1/47.8)
+##                 immigration in {?,y}: republican (12.8)
 ## 
 ## -----  Trial 20:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (25.7)
+## physician-fee-freeze in {?,n}: democrat (35.4/2)
 ## physician-fee-freeze = y:
 ## :...education-spending = ?: republican (0)
-##     education-spending = n: democrat (89.5/33.7)
+##     education-spending = n:
+##     :...water-project-cost-sharing = n: republican (16/2.1)
+##     :   water-project-cost-sharing in {?,y}: democrat (87.1/23.4)
 ##     education-spending = y:
-##     :...adoption-of-the-budget-resolution in {?,n}: republican (138.6/24.2)
-##         adoption-of-the-budget-resolution = y: democrat (35.2/13.1)
+##     :...anti-satellite-test-ban in {?,y}: republican (17)
+##         anti-satellite-test-ban = n:
+##         :...adoption-of-the-budget-resolution in {?,n}: republican (95.3/25.1)
+##             adoption-of-the-budget-resolution = y: democrat (38.2/11.7)
 ## 
 ## -----  Trial 21:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (21.2)
+## physician-fee-freeze = n: democrat (29.2/2.3)
 ## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (125.2/23.7)
+## :...synfuels-corporation-cutback = ?: republican (0)
+##     synfuels-corporation-cutback = n:
+##     :...duty-free-exports in {?,n}: republican (100.1/16)
+##     :   duty-free-exports = y: democrat (18.7/5.3)
 ##     synfuels-corporation-cutback = y:
-##     :...export-administration-act-south-africa = ?: republican (0)
-##         export-administration-act-south-africa = n: democrat (63.4/22.6)
-##         export-administration-act-south-africa = y:
-##         :...mx-missile in {?,n}: republican (51.7/12.9)
-##             mx-missile = y: democrat (27.6/10.9)
+##     :...mx-missile in {?,y}: democrat (25/1.7)
+##         mx-missile = n:
+##         :...export-administration-act-south-africa = n: democrat (69.1/25.8)
+##             export-administration-act-south-africa in {?,
+##                                                        y}: republican (47/11.7)
 ## 
 ## -----  Trial 22:  -----
 ## 
 ## Decision tree:
 ## 
 ## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (18.2)
+## physician-fee-freeze = n: democrat (23.2/1.5)
 ## physician-fee-freeze = y:
-## :...immigration in {?,y}: republican (98.6/23.9)
+## :...immigration in {?,y}: republican (87.6/16.7)
 ##     immigration = n:
-##     :...mx-missile = ?: republican (0)
-##         mx-missile = y: democrat (19.8/3.2)
-##         mx-missile = n:
-##         :...anti-satellite-test-ban in {?,y}: republican (12.8)
-##             anti-satellite-test-ban = n:
-##             :...adoption-of-the-budget-resolution = ?: republican (0)
-##                 adoption-of-the-budget-resolution = y: democrat (14.5)
-##                 adoption-of-the-budget-resolution = n:
-##                 :...education-spending = n: democrat (45.7/16.5)
-##                     education-spending in {?,y}: republican (79.3/22.1)
+##     :...adoption-of-the-budget-resolution in {?,y}: democrat (36.8/8.9)
+##         adoption-of-the-budget-resolution = n:
+##         :...education-spending = n: democrat (60.7/21.3)
+##             education-spending in {?,y}: republican (80.7/25.7)
 ## 
 ## -----  Trial 23:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze = ?: republican (0)
-## physician-fee-freeze = n: democrat (15.4)
-## physician-fee-freeze = y:
-## :...synfuels-corporation-cutback in {?,n}: republican (112.1/28.2)
-##     synfuels-corporation-cutback = y:
-##     :...duty-free-exports in {?,y}: democrat (21.3/2.9)
-##         duty-free-exports = n:
-##         :...religious-groups-in-schools = ?: democrat (0)
-##             religious-groups-in-schools = n: republican (15.4/4.4)
-##             religious-groups-in-schools = y:
-##             :...mx-missile in {?,y}: democrat (18.4)
-##                 mx-missile = n:
-##                 :...immigration in {?,y}: republican (17)
-##                     immigration = n:
-##                     :...superfund-right-to-sue in {?,n}: democrat (10.3)
-##                         superfund-right-to-sue = y: [S1]
-## 
-## SubTree [S1]
-## 
-## water-project-cost-sharing = n: democrat (22.9/3.1)
-## water-project-cost-sharing in {?,y}: republican (56.3/19.7)
+## el-salvador-aid = ?: republican (0)
+## el-salvador-aid = n: democrat (56.9/11.4)
+## el-salvador-aid = y:
+## :...water-project-cost-sharing in {?,n}: republican (71.6/1.3)
+##     water-project-cost-sharing = y:
+##     :...anti-satellite-test-ban in {?,y}: republican (21.2/1.1)
+##         anti-satellite-test-ban = n:
+##         :...adoption-of-the-budget-resolution = n: republican (80.3/27.1)
+##             adoption-of-the-budget-resolution in {?,y}: democrat (57.9/11.6)
 ## 
 ## -----  Trial 24:  -----
 ## 
 ## Decision tree:
 ## 
-## physician-fee-freeze in {?,n}: democrat (13.1)
+## physician-fee-freeze in {?,n}: democrat (57.9/3.2)
 ## physician-fee-freeze = y:
-## :...adoption-of-the-budget-resolution = ?: republican (0)
-##     adoption-of-the-budget-resolution = y:
-##     :...anti-satellite-test-ban in {?,n}: democrat (68.2/6.9)
-##     :   anti-satellite-test-ban = y: republican (37/10.2)
-##     adoption-of-the-budget-resolution = n:
-##     :...el-salvador-aid = ?: republican (0)
-##         el-salvador-aid = n: democrat (17.7)
-##         el-salvador-aid = y:
-##         :...immigration in {?,y}: republican (26.3)
-##             immigration = n:
-##             :...crime = ?: republican (0)
-##                 crime = n: democrat (4.9/0.1)
-##                 crime = y:
-##                 :...handicapped-infants in {?,y}: republican (32.8/1.5)
-##                     handicapped-infants = n:
-##                     :...education-spending = n: democrat (14.4/0.3)
-##                         education-spending in {?,y}: republican (73.5/24.8)
+## :...water-project-cost-sharing in {?,n}: republican (83/6)
+##     water-project-cost-sharing = y:
+##     :...education-spending in {?,n}: democrat (70.5/11.9)
+##         education-spending = y: republican (75.6/28.3)
 ## 
 ## 
 ## Evaluation on training data (289 cases):
@@ -2254,58 +2166,55 @@ summary(boosted_tree_model)
 ## -----	  ----------------  
 ## 	  Size      Errors  
 ## 
-##    0	     5    8( 2.8%)
-##    1	     4   15( 5.2%)
-##    2	     3   16( 5.5%)
-##    3	     7   10( 3.5%)
-##    4	     7   19( 6.6%)
-##    5	    10    6( 2.1%)
-##    6	     5   13( 4.5%)
-##    7	     8    7( 2.4%)
-##    8	     8    9( 3.1%)
-##    9	     8    8( 2.8%)
-##   10	     8   72(24.9%)
-##   11	     6   11( 3.8%)
-##   12	    10   15( 5.2%)
-##   13	     6   13( 4.5%)
+##    0	     4    8( 2.8%)
+##    1	     3   15( 5.2%)
+##    2	     4   20( 6.9%)
+##    3	     5   11( 3.8%)
+##    4	     3   14( 4.8%)
+##    5	     3   13( 4.5%)
+##    6	     5   41(14.2%)
+##    7	     4    8( 2.8%)
+##    8	     5   11( 3.8%)
+##    9	     5    6( 2.1%)
+##   10	     6    9( 3.1%)
+##   11	     5   72(24.9%)
+##   12	     6    4( 1.4%)
+##   13	     7   14( 4.8%)
 ##   14	     5   12( 4.2%)
-##   15	     6    9( 3.1%)
-##   16	     8   31(10.7%)
-##   17	    10    9( 3.1%)
-##   18	     5   14( 4.8%)
-##   19	     7   37(12.8%)
-##   20	     4   23( 8.0%)
-##   21	     5   13( 4.5%)
-##   22	     7   10( 3.5%)
-##   23	     9   10( 3.5%)
-##   24	     9    8( 2.8%)
+##   15	     5    8( 2.8%)
+##   16	     5   13( 4.5%)
+##   17	     5    6( 2.1%)
+##   18	     7  158(54.7%)
+##   19	     6   39(13.5%)
+##   20	     6    6( 2.1%)
+##   21	     6   11( 3.8%)
+##   22	     5    9( 3.1%)
+##   23	     5   27( 9.3%)
+##   24	     4   12( 4.2%)
 ## boost	          2( 0.7%)   <<
 ## 
 ## 
 ## 	   (a)   (b)    <-classified as
 ## 	  ----  ----
-## 	   188     2    (a): class democrat
-## 	          99    (b): class republican
+## 	   180     1    (a): class democrat
+## 	     1   107    (b): class republican
 ## 
 ## 
 ## 	Attribute usage:
 ## 
-## 	 98.27%	physician-fee-freeze
-## 	 96.54%	el-salvador-aid
-## 	 95.16%	mx-missile
-## 	 56.75%	anti-satellite-test-ban
-## 	 48.10%	religious-groups-in-schools
-## 	 47.06%	adoption-of-the-budget-resolution
-## 	 46.71%	immigration
-## 	 38.75%	synfuels-corporation-cutback
-## 	 38.06%	education-spending
-## 	 38.06%	duty-free-exports
-## 	 36.33%	aid-to-nicaraguan-contras
-## 	 30.80%	superfund-right-to-sue
-## 	 17.99%	handicapped-infants
-## 	 17.30%	crime
-## 	  8.65%	water-project-cost-sharing
-## 	  8.65%	export-administration-act-south-africa
+## 	 97.92%	physician-fee-freeze
+## 	 97.23%	el-salvador-aid
+## 	 97.23%	anti-satellite-test-ban
+## 	 47.75%	duty-free-exports
+## 	 47.40%	water-project-cost-sharing
+## 	 46.71%	adoption-of-the-budget-resolution
+## 	 43.25%	immigration
+## 	 41.52%	religious-groups-in-schools
+## 	 41.18%	synfuels-corporation-cutback
+## 	 40.48%	aid-to-nicaraguan-contras
+## 	 39.10%	education-spending
+## 	 30.45%	export-administration-act-south-africa
+## 	  9.34%	mx-missile
 ## 
 ## 
 ## Time: 0.0 secs
@@ -2354,13 +2263,13 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 ##              | predicted class 
 ## actual class |   democrat | republican |  Row Total | 
 ## -------------|------------|------------|------------|
-##     democrat |         72 |          5 |         77 | 
-##              |      0.497 |      0.034 |            | 
+##     democrat |         81 |          5 |         86 | 
+##              |      0.559 |      0.034 |            | 
 ## -------------|------------|------------|------------|
-##   republican |          2 |         66 |         68 | 
-##              |      0.014 |      0.455 |            | 
+##   republican |          3 |         56 |         59 | 
+##              |      0.021 |      0.386 |            | 
 ## -------------|------------|------------|------------|
-## Column Total |         74 |         71 |        145 | 
+## Column Total |         84 |         61 |        145 | 
 ## -------------|------------|------------|------------|
 ## 
 ## 

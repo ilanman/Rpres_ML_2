@@ -188,3 +188,9 @@ ol ul {
 ol {
   list-style-type: decimal;
 }
+
+<style>
+em {
+  font-style: italic
+}
+</style>
