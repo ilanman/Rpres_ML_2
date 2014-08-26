@@ -442,6 +442,78 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
+![original_data](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/original_data.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![calc_centroid](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/calc_centroid.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![sub_mean](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/sub_mean.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![max_var_dir](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/max_var_dir.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![second_PC](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/second_PC.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![rotated_grid](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_grid.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![rotated_PCs](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_PCs.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![new_axes](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/new_axes.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
+![final_PC](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/final_PC.png)
+
+----
+
+## Principle Component Analysis
+# Concepts
+<space>
+
 - Assumes linearity
 - $\bf{PX}=\bf{Y}$
   - $\bf{X}$ is original dataset, $\bf{P}$ is a transformation of $\bf{X}$ into $\bf{Y}$
@@ -611,6 +683,18 @@ $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
 
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- when $\lambda = 7$<br>
+$Ax = 7x$<br>
+$5x_{1} + 2x_{2} = 7x_{1}$<br>
+$2x_{2} + 5x_{2} = 7x_{2}$<br>
+$x_{1} = x_{2}$<br>
+
 \[Eigenvector = \begin{bmatrix} 1\\ 1 \end{bmatrix}\]
 
 ----
@@ -620,7 +704,7 @@ $x_{1} = x_{2}$<br>
 <space>
 
 $Ax = \lambda x$
-```{r eigen_proof, comment="",echo=FALSE}
+```{r eigen_proof, comment="",eval=FALSE}
 A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
 A %*% c(1,1) == 7 * as.matrix(c(1,1))
 ```
@@ -831,6 +915,8 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 - Very popular dimensionality reduction technique
 - Intuitive
 - Cannot reverse engineer dataset easily
+- Sparse PCA emphasizes important features
+- Non-linear structure is difficult to model with PCA
 - Extensions (ICA, kernel PCA) developed to generalize
 
 ----
@@ -839,12 +925,12 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Motivation
 <space>
 
-- separate data into meaningful or useful groups
-  - capture natural structure of the data
-  - starting point for further analysis
-- cluster for utility
-  - summarizing data for less expensive computation
-  - data compression
+- Separate data into meaningful or useful groups
+  - Capture natural structure of the data
+  - Starting point for further analysis
+- Cluster for utility
+  - Summarizing data for less expensive computation
+  - Data compression
 
 ----
 
@@ -852,9 +938,9 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Types of Clusters
 <space>
 
-- data that looks more like other data in that cluster than outside
-- each data point is more similar to the prototype (centeroid) of the cluster than the prototype of other clusters
-- where the density is highest, that is a cluster
+- Data that looks similar
+- Prototype based
+- Density based
 
 ----
 
@@ -1121,6 +1207,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 - A cluster is a dense region of points separated by low-density regions
 - Group objects into one cluster if they are connected to one another by densely populated area
 - Used when the clusters are irregular or intertwined, and when noise and outliers are present
+- 
 
 ----
 
@@ -1210,6 +1297,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 - Unsupervised learning
 - Not a perfect science - lots of interpretation
+  - Dependent on values of K, Eps
 - Hard to define "correct" clustering
 - Many types of algorithms
 
