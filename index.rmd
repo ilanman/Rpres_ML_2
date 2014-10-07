@@ -34,13 +34,13 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE,warning=FALSE}
 library(ggplot2)
 x <- 1:10
-log_ex <- data.frame(Y=c(rnorm(5,0,0.01),rnorm(5,5,0.01)),X=x)
-log_ex$sig <- 5/(1+exp(-(log_ex$X-5)))
+log_ex <- data.frame(Y=c(rnorm(5,0,0.05),rnorm(5,6,0.05)),X=x)
+log_ex$sig <- 6/(1+exp(-(log_ex$X-6)))
 pts <- ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) +
-  scale_y_continuous(limits = c(-1, 6))
+  scale_y_continuous(limits = c(-1, 7))
 pts
 ```
 
@@ -50,7 +50,7 @@ pts
 # Motivation
 <space>
 
-```{r log_bad_fit2, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+```{r log_bad_fit2, fig.height=5,fig.width=5,message=FALSE,echo=FALSE,warning=FALSE}
 bad_line <- pts + stat_smooth(method='lm',se=F,color='green',size=1)
 bad_line
 ```
@@ -61,7 +61,7 @@ bad_line
 # Motivation
 <space>
 
-```{r log_bad_fit3, fig.height=5,fig.width=5,message=FALSE,echo=FALSE}
+```{r log_bad_fit3, fig.height=5,fig.width=5,message=FALSE,echo=FALSE,warning=FALSE}
 sig_curve <- bad_line + stat_smooth(data=log_ex,aes(X,sig),se=F,color='red',size=1,method='auto')
 sig_curve
 ```
@@ -69,51 +69,7 @@ sig_curve
 ----
 
 ## Logistic Regression
-# Motivation
-<space>
-
-```{r log_motivation, fig.height=5,fig.width=5,echo=FALSE}
-library("MASS")
-library(ggplot2)
-data(menarche)
-log_data <- data.frame(Y=menarche$Menarche/menarche$Total)
-log_data$X <- menarche$Age
-
-glm.out <- glm(cbind(Menarche, Total-Menarche) ~ Age,family=binomial(logit), data=menarche)
-lm.out <- lm(Y~X, data=log_data)
-
-log_data$fitted <- glm.out$fitted
-
-data_points <- ggplot(log_data) + geom_point(aes(x=X,y=Y),color='blue',size=3)
-data_points
-```
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
-```{r log_motivation2, fig.height=5,fig.width=5, echo=FALSE}
-line_points <- data_points + geom_abline(intercept = coef(lm.out)[1], slope = coef(lm.out)[2],color='green',size=1)
-line_points
-```
-
-----
-
-## Logistic Regression
-# Motivation
-<space>
-
-```{r log_motivation3, fig.height=5,fig.width=5, echo=FALSE}
-curve_points <- line_points + geom_line(aes(x=X,y=fitted),color='red',size=1)
-curve_points
-```
-
-----
-
-## Logistic Regression
-# Motivation
+# Concepts
 <space>
 
 - Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
@@ -128,7 +84,16 @@ curve_points
 - Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
 - Like Linear Regression with a categorical outcome
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-- becomes<br>
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
+- Like Linear Regression with a categorical outcome
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ becomes<br>
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
 - Can be extended to multiple and/or ordered categories
 
@@ -138,7 +103,34 @@ curve_points
 # Concepts
 <space>
 
+- Family of GLMs
+<ol>
+<li>Random component <br>- Noise or Errors
+<li>Systematic Component <br>- Linear combination in $X_{i}$
+<li>Link Function <br>- Connects Random and Systematic components
+</ol>
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Data is I.I.D.
+  - $Y$'s assume to come from family of exponential distributions
+- Uses MLE to determine parameters - Not OLS
+  - MLE satisfies lots of nice properties (unbiased, consistent)
+  - Does not require transformation of $Y$'s to be Normal
+  - Does not require constant variance
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
 - Type of regression to predict the probability of being in a class
+  - Output is $P(Y=1 | X)$
   - Typical threshold is 0.5
 - Assumes error terms are Binomially distributed
   - Generates 1's and 0's as the error term
@@ -150,7 +142,7 @@ curve_points
 <space>
 
 - Type of regression to predict the probability of being in a class
-  - Output is $P(Y=1 | X)$
+  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
 - Assumes error terms are Binomially distributed
   - Generates 1's and 0's as the error term
@@ -175,7 +167,18 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
-- Linear regression: $h_{\theta}(x) = \theta x^{T}$
+- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
+(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
+- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
+(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
 - Logistic regression: $h_{\theta}(x) = g(\theta x^{T})$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
@@ -188,8 +191,8 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 
 - Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
 <br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$
-- **Log odds** are linear in $X$
+$\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
+- Log odds are linear in $X$
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
   - Logit ranges from -ve infite to +ve infinite
@@ -224,7 +227,19 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 <space>
 
 - $Y$ can be 1 or 0 (binary case)
-- $Y | X$ ~ Bernoulli
+- $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $Y$ can be 1 or 0 (binary case)
+- $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
+- $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
+  - $p = h_{\theta}(x)$
+- $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 
 ----
 
@@ -235,17 +250,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 - $Y$ can be 1 or 0 (binary case)
 - $Y | X$ ~ Bernoulli
 - $P(Y|X) = p$, when $Y$ = 1
-- $P(Y|X) = 1-p$, when $Y$ = 0
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- $Y$ can be 1 or 0 (binary case)
-- $Y | X$ ~ Bernoulli
-- $P(Y|X) = p$, when $Y$ = 1
+  - $p = h_{\theta}(x)$
 - $P(Y|X) = 1-p$, when $Y$ = 0
 - $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
 - Taking the log of both sides...
@@ -259,8 +264,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$
 $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
-curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=1")
-curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "cost", main = "When Y=0")
+curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
+curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=0")
 ```
 
 ----
@@ -303,10 +308,11 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 # Newton-Raphson Method
 <space>
 
+- Class of hill-climbing techniques
 - Efficient
 - Easier to calculate that gradient descent
   - Except for first and second derivatives
-- Converges on *global* minimum
+- Fast
 
 ----
 
@@ -405,12 +411,13 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 ----
 
 ## Logistic Regression
-# Newton-Raphson
+# Newton-Raphson Method
 <space>
 
 - Minimization algorithm
 - Approximation, non-closed form solution
 - Built-in to many programs
+- Can be used to find the parameters of a logistic regression equation
 
 ----
 
@@ -420,9 +427,10 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 
 - Very popular classification algorithm
 - Part of family of GLMs
-- Based on Binomial error terms, i.e. 1's and 0's
+- Based on Binomial error terms, 1's and 0's
 - Usually requires large sample size
 - Assumes linearity between logit function and independent variables
+- Uses sigmoid to link the probabilities with regression
 - Does not work out of the box with correlated features...
 
 ----
@@ -520,32 +528,25 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 - How to choose $\bf{P}$?<br>
   1) Reduce noise<br>
   2) Maximize variance
+  - Provides most information
 
 ----
 
 ## Principle Component Analysis
-# Concepts
+# Digression...
 <space>
 
-- Covariance matrix<br>
-$\bf{C} = \bf{XX}^{T}$
-
-- Restated goals are
-  - Minimize covariance and maximize variance
-  - Optimal $\bf{C}$ is a diagonal matrix, off diagonals are = 0
+- eigenvalues
+- eigenvectors
+- 
 
 ----
 
 ## Principle Component Analysis
-# Concepts
+# Assumptions
 <space>
 
-- Assumes linear relationship between $\bf{X}$ and $\bf{Y}$ (non-linear is a kernel PCA)
-- Largest variance indicates most signal
-- Orthogonal components - makes the linear algebra easier
-- Assumes data is normally distributed, otherwise PCA might not diagonalize matrix
-  - Can use ICA...
-  - But most data is normal and PCA is robust to slight deviance from normality
+Eigenvectors and values exist in pairs: every eigenvector has a corresponding eigenvalue. An eigenvector is a direction, in the example above the eigenvector was the direction of the line (vertical, horizontal, 45 degrees etc.) . An eigenvalue is a number, telling you how much variance there is in the data in that direction, in the example above the eigenvalue is a number telling us how spread out the data is on the line. The eigenvector with the highest eigenvalue is therefore the principal component.
 
 ----
 
@@ -554,10 +555,10 @@ $\bf{C} = \bf{XX}^{T}$
 <space>
 
 $\bf{A}x = \lambda x$
-  - $\lambda$ is an eigenvalue of $\bf{A}$ and $x$ is an eigenvector of $\bf{A}$<br>
+  - $\lambda$ is an eigenvalue of $\bf{A}$ and $\bf{x}$ is an eigenvector of $\bf{A}$<br>
 $\bf{A}x - \lambda Ix = 0$<br>
 $(\bf{A} - \lambda I)x = 0$<br>
-$\det(\bf{A} - \lambda I)$ = 0 &nbps; <- roots of this yield eigenvalues of $\bf{A}$
+$\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf{A}$
 
 ----
 
@@ -594,9 +595,6 @@ $\det(\bf{A} - \lambda I)$ = 0 &nbps; <- roots of this yield eigenvalues of $\bf
 # Eigenwhat?
 <space>
 
-\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X = \lambda X\]
-\[\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}X - \lambda X = 0\]
-\[(\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I)X = 0\]
 \[\left | \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I \right |= 0\]
 \[\left|\begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix} \right| = 0\]
 \[\left|\begin{bmatrix} 5-\lambda & 2\\ 2 & 5-\lambda \end{bmatrix}\right| = 0\]
@@ -624,11 +622,12 @@ A = matrix(c(5,2,2,5),nrow=2)
 roots <- Re(polyroot(c(21,-10,1)))
 roots
 ```
+$\lambda = 3, 7$
 
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 3$<br>
@@ -637,7 +636,7 @@ $Ax = 3x$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 3$<br>
@@ -648,7 +647,7 @@ $2x_{1} + 5x_{2} = 3x_{2}$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 3$<br>
@@ -660,7 +659,7 @@ $x_{1} = -x_{2}$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 3$<br>
@@ -674,7 +673,7 @@ $x_{1} = -x_{2}$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 7$<br>
@@ -686,7 +685,7 @@ $x_{1} = x_{2}$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 - when $\lambda = 7$<br>
@@ -700,42 +699,70 @@ $x_{1} = x_{2}$<br>
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 $Ax = \lambda x$
 ```{r eigen_proof, comment="",eval=FALSE}
-A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
-A %*% c(1,1) == 7 * as.matrix(c(1,1))
+x1 = c(1,-1)
+x2 = c(1,1)
+A %*% x1 == 3 * x1
+A %*% x2 == 7 * x2
 ```
 
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
 $Ax = \lambda x$
 ```{r eigen_proof_2, comment="",echo=TRUE}
-A %*% c(1,-1) == 3 * as.matrix(c(1,-1))
-A %*% c(1,1) == 7 * as.matrix(c(1,1))
+A %*% x1 == 3 * x1
+A %*% x2 == 7 * x2
 ```
 
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# Eigencheck
 <space>
 
+$A = \bf{x}\lambda\bf{x}^{T}$
 ```{r eigen_check}
-m <- matrix(c(1,-1,1,1),ncol=2)   ## two eigenvectors
+m <- matrix(c(x1,x2),ncol=2)
 m <- m/sqrt(norm(m))  ## normalize
-as.matrix(m%*%diag(roots)%*%t(m))
+as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ----
 
 ## Principle Component Analysis
+# Eigencheck
+<space>
+
+- Rewrite $A = \bf{x}\lambda\bf{x}$ into
+$\lambda = \bf{x}^{T}A\bf{x}$
+  - Diagonlization
+
+----
+
+## Principle Component Analysis
+# Objective
+<space>
+
+- Covariance matrix<br>
+$\bf{C} = \bf{XX}^{T}$
+  - Diagonals are the variances, off-diagonals are covariances
+  - Symmetric, positive semi-definite
+
+- Restated goals are
+  - Minimize covariance and maximize variance
+  - Optimal $\bf{C}$ is a diagonal matrix, off diagonals are = 0
+
+----
+
+## Principle Component Analysis
 # Motivation
 <space>
 
@@ -750,8 +777,8 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
-$=\bf{PX(PX)^{T}}$<br>
-$=\bf{P(XX^{T})P^{T}}$<br>
+$=\bf{PX(PX)^{T}}$,  drop the $\frac{1}{n-1}$<br>
+$=\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
 
 ----
 
@@ -761,11 +788,11 @@ $=\bf{P(XX^{T})P^{T}}$<br>
 
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
-$=\bf{PX(PX)^{T}}$<br>
-$=\bf{P(XX^{T})P^{T}}$<br>
+$=\bf{PX(PX)^{T}}$, drop the $\frac{1}{n-1}$<br>
+$=\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
 $=\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with columns that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric, positive definite<br>
 $\bf{A} = \bf{EDE^{T}}$
 
 ----
@@ -775,8 +802,8 @@ $\bf{A} = \bf{EDE^{T}}$
 <space>
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
-$\bf{P} = \bf{E^{T}}$
-- Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
+$\bf{P} = \bf{E^{T}}$<br>
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 
 ----
 
@@ -785,14 +812,28 @@ $\bf{P} = \bf{E^{T}}$
 <space>
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
-$\bf{P} = \bf{E^{T}}$
-- Note that $\bf{P^{T}} = \bf{P^{-1}}$ (linear algebra)<br>
+$\bf{P} = \bf{E^{T}}$<br>
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \bf{PAP^{T}}$<br>
-$\bf{C_{Y}} = \bf{PP^{T}DPP^{T}} = \frac{1}{n-1}\bf{D}$
+$\bf{C_{Y}} = \bf{PP^{T}DPP^{T}}$<br> because $P^{T}=P^{-1}$ since $\bf{C_{Y}}$ is positive semi-definite
+$= \frac{1}{n-1}\bf{D}$
 - $\bf{D}$ is a diagonal matrix, depending on how we choose $\bf{P}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
 
+----
+
+## Principle Component Analysis
+# Assumptions
+<space>
+
+- Assumes linear relationship between $\bf{X}$ and $\bf{Y}$ (non-linear is a kernel PCA)
+- Orthogonal components - ensures no correlation among PCs
+- Largest variance indicates most signal
+- Assumes data is normally distributed, otherwise PCA might not diagonalize matrix
+  - Can use ICA...
+  - But most data is normal and PCA is robust to slight deviance from normality
+  
 ----
 
 ## Principle Component Analysis
@@ -842,8 +883,8 @@ PC <- scaled_features %*% eigenvectors
 
 ```{r tennis_proof}
 Cy <- cov(PC)
-sum(round(diag(Cy) - eigenvalues,5))
-sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
+sum(diag(Cy) - eigenvalues)
+sum(Cy[(upper.tri(Cy)|lower.tri(Cy))])   ## off diagonals are 0 since PC's are orthogonal
 ```
 
 ----
@@ -852,7 +893,7 @@ sum(round(Cy[upper.tri(Cy)],5)) ## off diagonals are 0 since PC's are orthogonal
 # Example
 <space>
 
-```{r var_expl_plot, echo=FALSE}
+```{r var_expl_plot, echo=FALSE,message=FALSE,warning=FALSE}
 var_explained <- round(eigenvalues/sum(eigenvalues) * 100, digits = 2)
 cum_var_explained <- round(cumsum(eigenvalues)/sum(eigenvalues) * 100, digits = 2)
 
@@ -861,11 +902,14 @@ names(var_explained) <- "variance_explained"
 var_explained$PC <- as.numeric(rownames(var_explained))
 var_explained <- cbind(var_explained,cum_var_explained)
 
-library(ggplot2)
-ggplot(var_explained) +
-  geom_bar(aes(x=PC,y=variance_explained),stat='identity') +
-  geom_line(aes(x=PC,y=cum_var_explained))
+par(mar=c(5,4,4,5)+.1)
+barplot(var_explained$variance_explained,type="b",col="red",ylim=c(0,30),main="Variance Explained")
+par(new=TRUE)
+plot(var_explained$PC, var_explained$cum_var_explained,type="l",col="blue",xaxt="n",yaxt="n",xlab="Principle Component",ylab="Variance Explained",ylim=c(0,100))
+axis(4)
+mtext("Cumulative Variance Explained",side=4,line=3)
 ```
+
 
 ----
 
@@ -875,8 +919,8 @@ ggplot(var_explained) +
 
 ```{r tennis_check}
 pca.df <- prcomp(scaled_features)
-eigenvalues == (pca.df$sdev)^2
-eigenvectors[,1] == pca.df$rotation[,1]
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)
+round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
 sum((eigenvectors[,1])^2)
 ```
 
