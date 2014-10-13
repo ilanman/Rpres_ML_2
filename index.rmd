@@ -526,27 +526,44 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 - $\bf{PX}=\bf{Y}$
   - $\bf{X}$ is original dataset, $\bf{P}$ is a transformation of $\bf{X}$ into $\bf{Y}$
 - How to choose $\bf{P}$?<br>
-  1) Reduce noise<br>
-  2) Maximize variance
+  1) Reduce noise (redundancy)<br>
+  2) Maximize signal (variance)
   - Provides most information
 
 ----
 
 ## Principle Component Analysis
-# Digression...
+# Concepts
 <space>
 
-- eigenvalues
-- eigenvectors
-- 
+- Covariance matrix is square, symmetric
+  - $\bf{C_{x}} = \bf{XX^{T}}$
+- Diagonals are variances, off-diagonals are covariances
+  - Want to maximize diagonals and minimize off-diagonals
+- The optimal $\bf{Y}$ would have a covariance matrix, $\bf{C_{Y}}$, with positive values on the diagonal and 0's on the off-diagonals
+  - Diagonalization
 
 ----
 
 ## Principle Component Analysis
-# Assumptions
+# The Objective
 <space>
 
-Eigenvectors and values exist in pairs: every eigenvector has a corresponding eigenvalue. An eigenvector is a direction, in the example above the eigenvector was the direction of the line (vertical, horizontal, 45 degrees etc.) . An eigenvalue is a number, telling you how much variance there is in the data in that direction, in the example above the eigenvalue is a number telling us how spread out the data is on the line. The eigenvector with the highest eigenvalue is therefore the principal component.
+- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
+  - The rows of $\bf{P}$ are the principle components
+  - PCA by "eigen decomposition"
+
+----
+
+## Principle Component Analysis
+# Eigenwhat?
+<space>
+
+- Eigenvalues/vectors come up extensively in physics, engineering, statistics
+- Eigenvalues are scalars derived from a square matrix, "characteristic roots" it
+- Eigenvectors are non-zero vectors associated with eigenvalues
+- Every square matrix has at least 1 eigenvalue/vector combo (otherwise its "degenerative")
+- Decomposing a square matrix into eigenvalues/vectors is eigen decomposition
 
 ----
 
@@ -556,9 +573,6 @@ Eigenvectors and values exist in pairs: every eigenvector has a corresponding ei
 
 $\bf{A}x = \lambda x$
   - $\lambda$ is an eigenvalue of $\bf{A}$ and $\bf{x}$ is an eigenvector of $\bf{A}$<br>
-$\bf{A}x - \lambda Ix = 0$<br>
-$(\bf{A} - \lambda I)x = 0$<br>
-$\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf{A}$
 
 ----
 
@@ -566,13 +580,25 @@ $\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf
 # Eigenwhat?
 <space>
 
-\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
-
+$\bf{A}x - \lambda Ix = 0$<br>
+$(\bf{A} - \lambda I)x = 0$<br>
+$\det(\bf{A} - \lambda I)$ = 0<br>
+  - singular
+  - roots yield eigenvalues of $\bf{A}$
+  - characteristic equation of $\bf{A}$
 
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# EigenExample
+<space>
+
+\[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
+
+----
+
+## Principle Component Analysis
+# EigenExample
 <space>
 
 \[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
@@ -581,7 +607,7 @@ $\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# EigenExample
 <space>
 
 \[A = \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix}, I= \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}, X = \begin{bmatrix} x_{1}\\ x_{2} \end{bmatrix}\]
@@ -592,7 +618,7 @@ $\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# EigenExample
 <space>
 
 \[\left | \begin{bmatrix} 5 & 2\\ 2 & 5 \end{bmatrix} - \lambda I \right |= 0\]
@@ -602,7 +628,7 @@ $\det(\bf{A} - \lambda I)$ = 0 &nbsp; <- roots of this yield eigenvalues of $\bf
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# EigenExample
 <space>
 
 $(5-\lambda)\times(5-\lambda) - 4 = 0$
@@ -614,7 +640,7 @@ $\lambda = ?$
 ----
 
 ## Principle Component Analysis
-# Eigenwhat?
+# EigenExample
 <space>
 
 ```{r eigen_ex3}
@@ -725,10 +751,24 @@ A %*% x2 == 7 * x2
 ----
 
 ## Principle Component Analysis
+# More Math
+<space>
+
+- If $\bf{A}$ has n linearly independent eigenvectors, then it can be diagonalized
+  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$, 
+  - $\bf{P}$ are rows of eigenvectors
+  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
+- Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
+- If a eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
+$\bf{A} = \bf{PD{P}^{T}}$
+
+----
+
+## Principle Component Analysis
 # Eigencheck
 <space>
 
-$A = \bf{x}\lambda\bf{x}^{T}$
+$\bf{A} = \bf{PDP^{T}}$
 ```{r eigen_check}
 m <- matrix(c(x1,x2),ncol=2)
 m <- m/sqrt(norm(m))  ## normalize
@@ -738,12 +778,15 @@ as.matrix(m %*% diag(roots) %*% t(m))
 ----
 
 ## Principle Component Analysis
-# Eigencheck
+# EigenDecomposition
 <space>
 
-- Rewrite $A = \bf{x}\lambda\bf{x}$ into
-$\lambda = \bf{x}^{T}A\bf{x}$
-  - Diagonlization
+- Eigenvalue and eigenvectors are important
+- Linear Algebra theorems allow for matrix manipulation
+- Steps:
+ - 1) Set up characteristic equation
+ - 2) Solve for eigenvalues by finding roots of equation
+ - 3) Plug eigenvalues back in to find eigenvectors
 
 ----
 
@@ -751,19 +794,15 @@ $\lambda = \bf{x}^{T}A\bf{x}$
 # Objective
 <space>
 
+- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
 - Covariance matrix<br>
-$\bf{C} = \bf{XX}^{T}$
+$\bf{C_{X}} = \bf{XX}^{T}$
   - Diagonals are the variances, off-diagonals are covariances
-  - Symmetric, positive semi-definite
-
-- Restated goals are
-  - Minimize covariance and maximize variance
-  - Optimal $\bf{C}$ is a diagonal matrix, off diagonals are = 0
 
 ----
 
 ## Principle Component Analysis
-# Motivation
+# Proof
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
@@ -772,27 +811,27 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 ----
 
 ## Principle Component Analysis
-# Motivation
+# Proof
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
-$=\bf{PX(PX)^{T}}$,  drop the $\frac{1}{n-1}$<br>
-$=\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
+$=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
+$=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
 
 ----
 
 ## Principle Component Analysis
-# Motivation
+# Proof
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
-$=\bf{PX(PX)^{T}}$, drop the $\frac{1}{n-1}$<br>
-$=\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
-$=\bf{PAP^{T}}$<br>
+$=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
+$=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
+$=\frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with columns that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric, positive definite<br>
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
 $\bf{A} = \bf{EDE^{T}}$
 
 ----
@@ -801,9 +840,8 @@ $\bf{A} = \bf{EDE^{T}}$
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
-$\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$<br>
+- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$
+- Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 
 ----
 
@@ -812,13 +850,24 @@ Since $\bf{A} = \bf{EDE^{T}}$<br>
 <space>
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
-$\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$<br>
+- Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
+Since $\bf{A} = \bf{EDE^{T}}$
 $\bf{A} = \bf{P^{T}DP}$<br>
-$\bf{C_{Y}} = \bf{PAP^{T}}$<br>
-$\bf{C_{Y}} = \bf{PP^{T}DPP^{T}}$<br> because $P^{T}=P^{-1}$ since $\bf{C_{Y}}$ is positive semi-definite
+
+----
+
+## Principle Component Analysis
+# Motivation
+<space>
+
+- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+- Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
+Since $\bf{A} = \bf{EDE^{T}}$
+$\bf{A} = \bf{P^{T}DP}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$<br> because $\bf{P^{T}}=\bf{P^{-1}}$
 $= \frac{1}{n-1}\bf{D}$
-- $\bf{D}$ is a diagonal matrix, depending on how we choose $\bf{P}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
 
 ----
@@ -909,7 +958,6 @@ plot(var_explained$PC, var_explained$cum_var_explained,type="l",col="blue",xaxt=
 axis(4)
 mtext("Cumulative Variance Explained",side=4,line=3)
 ```
-
 
 ----
 
@@ -1032,7 +1080,7 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 
 - Use similarity measures (Euclidean or cosine) depending on the data
 - Minimize the squared distance of each point to closest centroid
-$SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
+$SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 
 ----
 
@@ -1040,12 +1088,12 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 # Kmeans - notes
 <space>
 
+- There is no "correct" number of clusters
 - Choose initial K randomly 
-  - can lead to poor centroids - local minimuum
+  - Can lead to poor centroids - local minimum
   - Run kmeans multiple times
 - Reduce the total SSE by increasing K
 - Increase the cluster with largest SSE
-- Decrease K and minimize SSE
 - Split up a cluster into other clusters
   - The centroid that is split will increase total SSE the least
 
@@ -1055,10 +1103,10 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 # Kmeans
 <space>
 
-- Bisecting K means
+- Bisecting Kmeans
   - Split points into 2 clusters
     - Take cluster with largest SSE - split that into two clusters
-  - Rerun bisecting K mean on resulting clusters
+  - Rerun bisecting Kmeans on resulting clusters
   - Stop when you have K clusters
 - Less susceptible to initialization problems
 
@@ -1096,12 +1144,8 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})$
 wine <- read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data')
 names(wine) <- c("class",'Alcohol','Malic','Ash','Alcalinity','Magnesium','Total_phenols',
                  'Flavanoids','NFphenols','Proanthocyanins','Color','Hue','Diluted','Proline')
-str(wine)
+str(wine[,1:7])
 ```
-
-- set.seed() to make sure results are reproducible
-- add nstart to the function call so that it attempts multiple configurations, selecting the best
-- use a screeplot to select optimal K
 
 ----
 
@@ -1109,13 +1153,13 @@ str(wine)
 # Kmeans
 <space>
 
-```{r}
+```{r,echo=FALSE,results='asis',eval=TRUE}
 s.wine <- scale(wine[,-1])
 best_k <- 0
 num_k <- 20
 for (i in 1:num_k){
   best_k[i] <- sum(kmeans(s.wine,centers=i)$withinss)
-  }
+}
 
 barplot(best_k, xlab = "Number of clusters",
         names.arg = 1:num_k,
@@ -1188,10 +1232,10 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 # K-medoid
 <space>
 
-- multiple distance metrics
-- robust medioids
-- computationally expensive
-- cluster center is one of the points itself
+- Multiple distance metrics
+- Robust medioids
+- Computationally expensive
+- Cluster center is one of the points itself
 
 ----
 
@@ -1199,8 +1243,8 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 # K-medoid
 <space>
 
-- cluster each point based on the closest center
-- replace each center by the medioid of points in its cluster
+- Cluster each point based on the closest center
+- Replace each center by the medioid of points in its cluster
 
 ----
 
@@ -1212,7 +1256,7 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 - For each point p, first find the average distance between p and all other points in the same cluster, $A$
 - Then find the average distance between p and all points in the nearest cluster, $B$
 - The silhouette coefficient for p is $\frac{A - B}{\max(A,B)}$
-  - Values close to 1 mean point clearly belongs to that cluster
+  - Values close to 1 mean points clearly belong to that cluster
   - Values close to 0 mean points might belong in another cluster
 
 ----
@@ -1238,7 +1282,7 @@ best_k
 # K-medoid
 <space>
 
-```{r}
+```{r,echo=FALSE,eval=TRUE,results='asis'}
 clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 ```
 
@@ -1251,7 +1295,6 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 - A cluster is a dense region of points separated by low-density regions
 - Group objects into one cluster if they are connected to one another by densely populated area
 - Used when the clusters are irregular or intertwined, and when noise and outliers are present
-- 
 
 ----
 
@@ -1261,7 +1304,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
-- Neighborhood of p are all points within some radius of p, Eps
+- Neighborhood of p are all points within some radius of p, $Eps$
 
 ----
 
@@ -1271,7 +1314,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
-- Neighborhood of p are all points within some radius of p, Eps
+- Neighborhood of p are all points within some radius of p, $Eps$<br>
 ![density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_structure.png)
 
 ----
@@ -1282,9 +1325,9 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
-- Neighborhood of p are all points within some radius of p, Eps
-- High density region has at least Minpts within Eps of point p
-- Noise points are not within Eps of border or core points
+- Neighborhood of p are all points within some radius of p, $Eps$
+- High density region has at least $Minpts$ within $Eps$ of point p
+- Noise points are not within $Eps$ of border or core points
 
 ----
 
@@ -1294,11 +1337,11 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
-- Neighborhood of p are all points within some radius of p, Eps
-- High density region has at least Minpts within Eps of point p
-- Noise points are not within Eps of border or core points
+- Neighborhood of p are all points within some radius of p, $Eps$
+- High density region has at least $Minpts$ within $Eps$ of point p
+- Noise points are not within $Eps$ of border or core points
 - If p is density connected to q, they are part of the same cluster, if not, then they are not
-- If p is not density connected to any other point, its considered noise
+- If p is not density connected to any other point, considered noise
 
 ----
 
@@ -1314,7 +1357,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 # DBSCAN
 <space>
 
-```{r}
+```{r,echo=FALSE,eval=TRUE}
 x <- c(2,2,8,5,7,6,1,4)
 y <- c(10,5,4,8,5,4,2,9)
 cluster <- data.frame(X=c(x,2*x,3*x),Y=c(y,-2*x,1/4*y))
@@ -1327,7 +1370,7 @@ plot(cluster)
 # DBSCAN
 <space>
 
-```{r dbscan_ex, message=FALSE}
+```{r dbscan_ex, message=FALSE,echo=FALSE,eval=TRUE}
 library(fpc)
 cluster_DBSCAN<-dbscan(cluster, eps=3, MinPts=2, method="hybrid")
 plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, MinPts=3)")
@@ -1341,7 +1384,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 - Unsupervised learning
 - Not a perfect science - lots of interpretation
-  - Dependent on values of K, Eps
+  - Dependent on values of K, $Eps$
 - Hard to define "correct" clustering
 - Many types of algorithms
 
@@ -1351,7 +1394,6 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Motivation
 <space>
 
-- representation of decisions made in order to classify or predict
 ![overview](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png)
 
 ----
@@ -1368,10 +1410,10 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Structure
 <space>
 
-- recursive partitioning -> "divide and conquer"
-- going down, choose feature that is most *predictive* of target class
-  - split the data according to feature
-  - continue...
+- Recursive partitioning -> "divide and conquer"
+- Going down, choose feature that is most *predictive* of target class
+  - Split the data according to feature
+  - Continue...
 
 ----
 
@@ -1379,10 +1421,10 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Structure
 <space>
 
-until...
-- all examples at a node are in same class
-- no more features left to distinguish (prone to overfitting)
-- tree has grown to some prespecified limit (prune)
+Until...
+- All examples at a node are in same class
+- No more features left to distinguish (prone to overfitting)
+- Tree has grown to some prespecified limit (prune)
 
 ----
 
@@ -1391,17 +1433,17 @@ until...
 <space>
 
 - ID3
-  - original, popular, DT implementation
+  - Original, popular, DT implementation
 - C4.5
-  - like ID3 +
-  - handles continuous cases
-  - imputing missing values
-  - weighing costs
-  - pruning post creation
+  - Like ID3 +
+  - Handles continuous cases
+  - Imputing missing values
+  - Weighing costs
+  - Pruning post creation
 - C5.0
-  - like C4.5 + 
-  - faster, less memory usage
-  - boosting
+  - Like C4.5 + 
+  - Faster, less memory usage
+  - Boosting
 
 ----
 
@@ -1409,12 +1451,12 @@ until...
 # Selecting features
 <space>
 
-- How does tree decide how to select feature?
-  - purity of resulting split
-- __Entropy__: amount of information contained in a random variable
-  - For a feature with N classes:
-    - 0 = purely homogenous
-    - $\log_{2}(N)$ = completely mixed
+- How to select feature?
+  - Purity of resulting split
+- Entropy: amount of information contained in a random variable
+  - For a feature with N classes:<br>
+  &nbsp;&nbsp;- 0 = purely homogenous<br>
+  &nbsp;&nbsp;- $\log_{2}(N)$ = completely mixed
 
 ----
 
@@ -1509,11 +1551,11 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy",
   - Entropy (pre split) = current Entropy
   - Entropy (post split) is trickier
     - need to consider Entropy of each possible split
-  - $E(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})$
-
+  - $Entropy(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})$
+<br>
 - Notes:
-  - The more a feature splits the data in obvious ways, the less informative it is, entropy is lower
-  - The more a feature splits the data - in general - the higher the entropy and hence information gained by splitting at that feature
+  - The more a feature splits the data in obvious ways the less informative it is
+  - The more a feature splits the data - in general - the more information is gained by splitting at that feature
 
 ----
 
@@ -1572,7 +1614,7 @@ p_tree <- ctree(tree_formula,data=voting_train)
 # Example
 <space>
 
-```{r tree_conf_mat, comment="",echo=FALSE}
+```{r tree_conf_mat, comment="",echo=FALSE,results='hold'}
 # make tree using C5.0
 tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1)
 tree_predict <- predict(tree_model, newdata=voting_test[,-1])
@@ -1581,15 +1623,8 @@ conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
                    dnn = c("actual class", "predicted class"))
 ```
 
-----
-
-## Trees
-# Example
-<space>
-
-```{r most_imp}
-# most important variables
-head(C5imp(tree_model))
+```{r tree_conf_show}
+conf$t
 ```
 
 ----
@@ -1598,10 +1633,21 @@ head(C5imp(tree_model))
 # Example
 <space>
 
-```{r summary_tree}
-# in-sample error rate
-summary(tree_model)
+```{r most_imp,comment=""}
+head(C5imp(tree_model))   # most important variables
 ```
+
+----
+
+## Trees
+# Example
+<space>
+
+```{r summary_tree, echo=FALSE,comment=""}
+summary(tree_model)   # in-sample error rate
+```
+str(summary(tree_model))
+str(tree_model)
 
 ----
 
@@ -1609,13 +1655,13 @@ summary(tree_model)
 # Boosting
 <space>
 
-- by combining a number of weak performing learners create a team that is much stronger than any one of the learners alone.
-- this is where C5.0 improves on C4.5
+- Combine a bunch of weak learners to create a team that is much stronger
+- This is where C5.0 improves on C4.5
 
 ----
 
 ## Trees
-# Example - Boosting
+# Boosting Example
 <space>
 
 ```{r boost, echo=TRUE,message=FALSE}
@@ -1644,10 +1690,17 @@ summary(boosted_tree_model)
 # Error Cost
 <space>
 
-- still getting too many false positives (predict republican but actually democrat)
-- introduce higher cost to getting this wrong
+- Still getting too many false positives (predict Republican but actually Democrat)
+- Introduce higher cost to getting this wrong
 
-```{r tree_cost, message=FALSE}
+
+----
+
+## Trees
+# Error Cost
+<space>
+
+```{r tree_cost, message=FALSE,warning=FALSE}
 error_cost <- matrix(c(0,1,2,0),nrow=2)
 cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
 cost_predict <- predict(cost_model, newdata=voting_test[,-1])
@@ -1680,17 +1733,17 @@ plot(boost_acc,type='l')
 # Pros and Cons
 <space>
 
-- trees are non-parametric, rule based classification or regression method
-- simple to understand and interpret
-- little data preparation
-- works well with small or large number of features
+- Trees are non-parametric, rule based classification or regression method
+- Simple to understand and interpret
+- Little data preparation
+- Works well with small or large number of features
 <br>
-- easy to overfit
-- biased towards splits on features with large number of levels
-- usually finds local optimum
-- difficult concepts are hard to learn
-- avoid pre-pruning
-- hard to know optimal length of tree without growing it there first
+- Easy to overfit
+- Biased towards splits on features with large number of levels
+- Usually finds local optimum
+- Difficult concepts are hard to learn
+- Avoid pre-pruning
+- Hard to know optimal length of tree without growing it there first
 
 ----
 
