@@ -11,6 +11,15 @@ mode        : selfcontained # {standalone, draft}
 
 ----
 
+## Objectives 
+<space>
+
+1. Understand what's happening under the hood of some popular ML algorithms and techniques
+2. Learn how to tune parameters
+3. Practice R
+
+----
+
 ## Agenda 
 <space>
 
@@ -18,15 +27,6 @@ mode        : selfcontained # {standalone, draft}
 2. Principle Component Analysis
 3. Clustering
 4. Trees
-
-----
-
-## Objectives 
-<space>
-
-1. Understand some popular algorithms and techniques
-2. Learn how to tune parameters
-3. Practice R
 
 ----
 
@@ -559,6 +559,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Eigenwhat?
 <space>
 
+- Eigenvalues help uncover valuable insight into the underlying structure of a vector space
 - Eigenvalues/vectors come up extensively in physics, engineering, statistics
 - Eigenvalues are scalars derived from a square matrix, "characteristic roots" it
 - Eigenvectors are non-zero vectors associated with eigenvalues
@@ -582,10 +583,12 @@ $\bf{A}x = \lambda x$
 
 $\bf{A}x - \lambda Ix = 0$<br>
 $(\bf{A} - \lambda I)x = 0$<br>
+For this to be non-trivial then:<br>
 $\det(\bf{A} - \lambda I)$ = 0<br>
   - singular
-  - roots yield eigenvalues of $\bf{A}$
-  - characteristic equation of $\bf{A}$
+  - roots are eigenvalues of $\bf{A}$
+  - characteristic polynomial of $\bf{A}$
+  - ${\lambda}$ is called the spectrum
 
 ----
 
@@ -657,7 +660,7 @@ $\lambda = 3, 7$
 <space>
 
 - when $\lambda = 3$<br>
-$Ax = 3x$<br>
+$A\bf{x} = 3\bf{x}$<br>
 
 ----
 
@@ -666,7 +669,7 @@ $Ax = 3x$<br>
 <space>
 
 - when $\lambda = 3$<br>
-$Ax = 3x$<br>
+$A\bf{x} = 3\bf{x}$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
 
@@ -677,7 +680,7 @@ $2x_{1} + 5x_{2} = 3x_{2}$<br>
 <space>
 
 - when $\lambda = 3$<br>
-$Ax = 3x$<br>
+$A\bf{x} = 3\bf{x}$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
 $x_{1} = -x_{2}$<br>
@@ -703,7 +706,7 @@ $x_{1} = -x_{2}$<br>
 <space>
 
 - when $\lambda = 7$<br>
-$Ax = 7x$<br>
+$A\bf{x} = 7\bf{x}$<br>
 $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
@@ -715,7 +718,7 @@ $x_{1} = x_{2}$<br>
 <space>
 
 - when $\lambda = 7$<br>
-$Ax = 7x$<br>
+$A\bf{x} = 7\bf{x}$<br>
 $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
@@ -728,7 +731,7 @@ $x_{1} = x_{2}$<br>
 # Eigencheck
 <space>
 
-$Ax = \lambda x$
+$A\bf{x} = \lambda \bf{x}$
 ```{r eigen_proof, comment="",eval=FALSE}
 x1 = c(1,-1)
 x2 = c(1,1)
@@ -751,13 +754,14 @@ A %*% x2 == 7 * x2
 ----
 
 ## Principle Component Analysis
-# More Math
+# Diagonalization
 <space>
 
-- If $\bf{A}$ has n linearly independent eigenvectors, then it can be diagonalized
+- If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
   - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$, 
   - $\bf{P}$ are rows of eigenvectors
   - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
+  - $\bf{A}$ is similar to $\bf{D}$
 - Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
 - If a eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
 $\bf{A} = \bf{PD{P}^{T}}$
@@ -765,7 +769,7 @@ $\bf{A} = \bf{PD{P}^{T}}$
 ----
 
 ## Principle Component Analysis
-# Eigencheck
+# Diagonalization
 <space>
 
 $\bf{A} = \bf{PDP^{T}}$
@@ -783,10 +787,11 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
 - Eigenvalue and eigenvectors are important
 - Linear Algebra theorems allow for matrix manipulation
-- Steps:
+- Steps to eigendecomposition:
  - 1) Set up characteristic equation
  - 2) Solve for eigenvalues by finding roots of equation
  - 3) Plug eigenvalues back in to find eigenvectors
+- There's a lot more to eigenvalues!
 
 ----
 
@@ -866,7 +871,7 @@ Since $\bf{A} = \bf{EDE^{T}}$
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
-$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$<br> because $\bf{P^{T}}=\bf{P^{-1}}$
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$, because $\bf{P^{T}}=\bf{P^{-1}}$<br>
 $= \frac{1}{n-1}\bf{D}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
 
@@ -882,7 +887,7 @@ $= \frac{1}{n-1}\bf{D}$
 - Assumes data is normally distributed, otherwise PCA might not diagonalize matrix
   - Can use ICA...
   - But most data is normal and PCA is robust to slight deviance from normality
-  
+
 ----
 
 ## Principle Component Analysis
@@ -932,8 +937,10 @@ PC <- scaled_features %*% eigenvectors
 
 ```{r tennis_proof}
 Cy <- cov(PC)
-sum(diag(Cy) - eigenvalues)
-sum(Cy[(upper.tri(Cy)|lower.tri(Cy))])   ## off diagonals are 0 since PC's are orthogonal
+sum_diff <- sum(diag(Cy) - eigenvalues)
+round(sum_diff,6)
+off_diag <- upper.tri(Cy)|lower.tri(Cy) ## remove diagonal elements
+round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 ```
 
 ----
@@ -965,9 +972,18 @@ mtext("Cumulative Variance Explained",side=4,line=3)
 # Example
 <space>
 
-```{r tennis_check}
+```{r tennis_check, comment=""}
 pca.df <- prcomp(scaled_features)
 round(eigenvalues,10) == round((pca.df$sdev)^2,10)
+```
+
+----
+
+## Principle Component Analysis
+# Example
+<space>
+
+```{r tennis_check_2, comment=""}
 round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
 sum((eigenvectors[,1])^2)
 ```
@@ -978,7 +994,9 @@ sum((eigenvectors[,1])^2)
 # Example
 <space>
 
-```{r tennis_plot_gender, echo=FALSE}
+- Can Principle Components separate our data?
+
+```{r tennis_plot_gender, echo=FALSE,fig.height=5,fig.width=5}
 rows <- nrow(tennis)
 pca.plot <- as.data.frame(pca.df$x[,1:2])
 pca.plot$gender <- data$Gender
@@ -993,8 +1011,10 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
 
 - Classify based on PC1?
 
-```{r}
-gen <- ifelse(pca.df$x[,1] > abs(mean(pca.df$x[,1]))*2,"F","M")
+```{r gender_pc_score, comment=""}
+PC1 <- pca.df$x[,1]
+mean_PC1 <- mean(pca.df$x[,1])
+gen <- ifelse(PC1 > abs(mean_PC1)*2,"F","M")
 sum(diag(table(gen,as.character(data$Gender))))/rows
 ```
 
@@ -1423,8 +1443,8 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 Until...
 - All examples at a node are in same class
-- No more features left to distinguish (prone to overfitting)
-- Tree has grown to some prespecified limit (prune)
+- No more features left to distinguish (as a result, prone to overfitting)
+- Tree has grown to some prespecified limit (called pruning)
 
 ----
 
@@ -1434,14 +1454,12 @@ Until...
 
 - ID3
   - Original, popular, DT implementation
-- C4.5
-  - Like ID3 +
+- C4.5: Like ID3 +
   - Handles continuous cases
   - Imputing missing values
   - Weighing costs
   - Pruning post creation
-- C5.0
-  - Like C4.5 + 
+- C5.0: Like C4.5 + 
   - Faster, less memory usage
   - Boosting
 
@@ -1453,6 +1471,17 @@ Until...
 
 - How to select feature?
   - Purity of resulting split
+  - After splitting, how homogenous are the resulting classes?
+
+----
+
+## Trees
+# Selecting features
+<space>
+
+- How to select feature?
+  - Purity of resulting split
+  - After splitting, how homogenous are the resulting classes?
 - Entropy: amount of information contained in a random variable
   - For a feature with N classes:<br>
   &nbsp;&nbsp;- 0 = purely homogenous<br>
@@ -1466,8 +1495,8 @@ Until...
 
 $Entropy(S) = \sum_{i=1}^{c} -p_{i}\log_{2}(p_{i})$
   - where $S$ is a dataset
-  - $c$ is the number of levels in that data
-  - $p_{i}$ is the proportion of values in that level
+  - $c$ is the number of classes in that data
+  - $p_{i}$ is the proportion of values in that class
 
 ----
 
@@ -1479,6 +1508,7 @@ What is the entropy of a fair, 6 sided die?
 
 ```{r entropy_function}
 entropy <- function(probs){
+  # probs is a list of probabilities
   ent <- 0
   for(i in probs){
     ent_temp <- -i*log2(i)
@@ -1494,7 +1524,7 @@ entropy <- function(probs){
 # Entropy - example
 <space>
 
-```{r entropy_fair}
+```{r entropy_fair, comment=FALSE}
 fair <- rep(1/6,6)
 entropy(fair)
 log2(6)
@@ -1507,8 +1537,8 @@ log2(6)
 <space>
 
 What is the entropy of a biased, 6 sided die?
-- $P(X=1) = P(X=2) = P(X=3) = 1/9$
-- $P(X=4) = P(X=5) = P(X=6) = 2/9$
+$P(X=1) = P(X=2) = P(X=3) = 1/9$
+$P(X=4) = P(X=5) = P(X=6) = 2/9$
 
 ```{r entropy_biased,comment=""}
 biased <- c(rep(1/9,3),rep(2/9,3))
@@ -1548,9 +1578,8 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy",
 
 - C5.0 uses the change in entropy to determine the change in purity
 - InfoGain = Entropy (pre split) - Entropy (post split)
-  - Entropy (pre split) = current Entropy
-  - Entropy (post split) is trickier
-    - need to consider Entropy of each possible split
+  - Entropy (pre split) >> current Entropy
+  - Entropy (post split) >> need to consider Entropy of each possible split
   - $Entropy(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})$
 <br>
 - Notes:
