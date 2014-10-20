@@ -130,7 +130,7 @@ sig_curve
 <space>
 
 - Type of regression to predict the probability of being in a class
-  - Output is $P(Y=1 | X)$
+  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
 - Assumes error terms are Binomially distributed
   - Generates 1's and 0's as the error term
@@ -248,10 +248,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 <space>
 
 - $Y$ can be 1 or 0 (binary case)
-- $Y | X$ ~ Bernoulli
-- $P(Y|X) = p$, when $Y$ = 1
+- $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
+- $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
   - $p = h_{\theta}(x)$
-- $P(Y|X) = 1-p$, when $Y$ = 0
+- $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 - $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
 - Taking the log of both sides...
 
@@ -395,7 +395,7 @@ newton <- function(num.its, dfn, d2fn){
 ans <- newton(20,dfn, d2fn)
 head(ans,5)
 tail(ans,5)
-fn(rev(ans[,2])[1])   ## value of f(x) at minimum
+cat(fn(rev(ans[,2])[1]),"    ## value of f(x) at minimum")
 ```
 
 ----
@@ -669,7 +669,7 @@ $A\bf{x} = 3\bf{x}$<br>
 <space>
 
 - when $\lambda = 3$<br>
-$A\bf{x} = 3\bf{x}$<br>
+$\bf{Ax} = 3\bf{x}$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
 
@@ -680,7 +680,7 @@ $2x_{1} + 5x_{2} = 3x_{2}$<br>
 <space>
 
 - when $\lambda = 3$<br>
-$A\bf{x} = 3\bf{x}$<br>
+$\bf{Ax} = 3\bf{x}$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
 $x_{1} = -x_{2}$<br>
@@ -692,7 +692,7 @@ $x_{1} = -x_{2}$<br>
 <space>
 
 - when $\lambda = 3$<br>
-$Ax = 3x$<br>
+$\bf{Ax} = 3\bf{x}$<br>
 $5x_{1} + 2x_{2} = 3x_{1}$<br>
 $2x_{1} + 5x_{2} = 3x_{2}$<br>
 $x_{1} = -x_{2}$<br>
@@ -706,7 +706,7 @@ $x_{1} = -x_{2}$<br>
 <space>
 
 - when $\lambda = 7$<br>
-$A\bf{x} = 7\bf{x}$<br>
+$\bf{Ax} = 7\bf{x}$<br>
 $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
@@ -718,7 +718,7 @@ $x_{1} = x_{2}$<br>
 <space>
 
 - when $\lambda = 7$<br>
-$A\bf{x} = 7\bf{x}$<br>
+$\bf{Ax} = 7\bf{x}$<br>
 $5x_{1} + 2x_{2} = 7x_{1}$<br>
 $2x_{2} + 5x_{2} = 7x_{2}$<br>
 $x_{1} = x_{2}$<br>
@@ -731,7 +731,7 @@ $x_{1} = x_{2}$<br>
 # Eigencheck
 <space>
 
-$A\bf{x} = \lambda \bf{x}$
+$\bf{Ax} = \lambda \bf{x}$
 ```{r eigen_proof, comment="",eval=FALSE}
 x1 = c(1,-1)
 x2 = c(1,1)
@@ -745,7 +745,7 @@ A %*% x2 == 7 * x2
 # Eigencheck
 <space>
 
-$Ax = \lambda x$
+$\bf{Ax} = \lambda \bf{x}$
 ```{r eigen_proof_2, comment="",echo=TRUE}
 A %*% x1 == 3 * x1
 A %*% x2 == 7 * x2
@@ -1083,6 +1083,16 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 ----
 
 ## Clustering
+# Kmeans
+<space>
+
+- One of the simplest unsupervised learning algorithms
+- Group points into clusters; clusters center around a centroid
+- Minimize the distance between a points and its centroid
+
+----
+
+## Clustering
 # Kmeans algorithm
 <space>
 
@@ -1090,7 +1100,8 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 - Do
   - Form K clusters by assigning each point to its closest centroid
   - Recompute the centroid of each cluster 
-- Until centroids do not change, or change very minimally, i.e. <1%
+- Until centroids do not change, or change very minimally, i.e. < 1%
+- Computatinal complexity: $O(nkI)$
 
 ----
 
@@ -1120,7 +1131,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 ----
 
 ## Clustering
-# Kmeans
+# Kmeans - notes
 <space>
 
 - Bisecting Kmeans
@@ -1157,7 +1168,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 ----
 
 ## Clustering
-# Kmeans
+# Kmeans - example
 <space>
 
 ```{r kmeans_wine, message=FALSE}
@@ -1170,7 +1181,7 @@ str(wine[,1:7])
 ----
 
 ## Clustering
-# Kmeans
+# Kmeans - example
 <space>
 
 ```{r,echo=FALSE,results='asis',eval=TRUE}
@@ -1314,7 +1325,8 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 
 - A cluster is a dense region of points separated by low-density regions
 - Group objects into one cluster if they are connected to one another by densely populated area
-- Used when the clusters are irregular or intertwined, and when noise and outliers are present
+- Used when the clusters are irregularly shaped, and when noise and outliers are present
+- computational complexity: $O(n\log{n})$
 
 ----
 
@@ -1404,7 +1416,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 - Unsupervised learning
 - Not a perfect science - lots of interpretation
-  - Dependent on values of K, $Eps$
+  - Dependent on values of K, $Eps$, $Minpts$
 - Hard to define "correct" clustering
 - Many types of algorithms
 
@@ -1536,8 +1548,8 @@ log2(6)
 # Entropy - example
 <space>
 
-What is the entropy of a biased, 6 sided die?
-$P(X=1) = P(X=2) = P(X=3) = 1/9$
+What is the entropy of a biased, 6 sided die?<br>
+$P(X=1) = P(X=2) = P(X=3) = 1/9$<br>
 $P(X=4) = P(X=5) = P(X=6) = 2/9$
 
 ```{r entropy_biased,comment=""}
@@ -1647,13 +1659,8 @@ p_tree <- ctree(tree_formula,data=voting_train)
 # make tree using C5.0
 tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1)
 tree_predict <- predict(tree_model, newdata=voting_test[,-1])
-conf <- CrossTable(voting_test[,1], tree_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c("actual class", "predicted class"))
-```
-
-```{r tree_conf_show}
-conf$t
+conf <- table(voting_test[,1], tree_predict)
+conf
 ```
 
 ----
@@ -1665,18 +1672,6 @@ conf$t
 ```{r most_imp,comment=""}
 head(C5imp(tree_model))   # most important variables
 ```
-
-----
-
-## Trees
-# Example
-<space>
-
-```{r summary_tree, echo=FALSE,comment=""}
-summary(tree_model)   # in-sample error rate
-```
-str(summary(tree_model))
-str(tree_model)
 
 ----
 
@@ -1693,24 +1688,11 @@ str(tree_model)
 # Boosting Example
 <space>
 
-```{r boost, echo=TRUE,message=FALSE}
+```{r boost, echo=TRUE,message=FALSE,comment=""}
 boosted_tree_model <- C5.0(voting_train[,-1],voting_train[,1], trials=25)
 boosted_tennis_predict <- predict(boosted_tree_model,voting_test[,-1])
-
-boosted_conf <- CrossTable(voting_test[,1], boosted_tennis_predict, prop.chisq = FALSE,
-                           prop.c = FALSE, prop.r = FALSE, 
-                           dnn = c("actual class", "predicted class"))
-```
-
-----
-
-## Trees
-# Example - Boosting
-<space>
-
-```{r boost_summary}
-# in-sample error rate
-summary(boosted_tree_model)
+boosted_conf <- table(voting_test[,1], boosted_tennis_predict)
+boosted_conf
 ```
 
 ----
@@ -1722,20 +1704,18 @@ summary(boosted_tree_model)
 - Still getting too many false positives (predict Republican but actually Democrat)
 - Introduce higher cost to getting this wrong
 
-
 ----
 
 ## Trees
 # Error Cost
 <space>
 
-```{r tree_cost, message=FALSE,warning=FALSE}
+```{r tree_cost, message=FALSE,warning=FALSE,comment=""}
 error_cost <- matrix(c(0,1,2,0),nrow=2)
 cost_model <- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
 cost_predict <- predict(cost_model, newdata=voting_test[,-1])
-conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
-                   prop.c = FALSE, prop.r = FALSE,
-                   dnn = c("actual class", "predicted class"))
+conf <- table(voting_test[,1], cost_predict)
+conf
 ```
 
 ----
@@ -1744,7 +1724,7 @@ conf <- CrossTable(voting_test[,1], cost_predict, prop.chisq = FALSE,
 # Error Cost
 <space>
 
-```{r plot_boost_acc, echo=FALSE}
+```{r plot_boost_acc, echo=FALSE,comment="",message=FALSE,warning=FALSE}
 tris <- seq(1,50,by=2)
 boost_acc <- NULL
 for (i in tris){  
