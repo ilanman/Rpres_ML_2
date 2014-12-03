@@ -450,7 +450,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![original_data](/figure/original_data.png)
+![original_data](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/original_data.png)
 
 ----
 
@@ -458,7 +458,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![calc_centroid](/figure/calc_centroid.png)
+![calc_centroid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/calc_centroid.png)
 
 ----
 
@@ -466,7 +466,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![sub_mean](/figure/sub_mean.png)
+![sub_mean](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/sub_mean.png)
 
 ----
 
@@ -474,7 +474,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![max_var_dir](/figure/max_var_dir.png)
+![max_var_dir](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/max_var_dir.png)
 
 ----
 
@@ -482,7 +482,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![second_PC](/figure/second_PC.png)
+![second_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/second_PC.png)
 
 ----
 
@@ -490,7 +490,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![rotated_grid](/figure/rotated_grid.png)
+![rotated_grid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_grid.png)
 
 ----
 
@@ -498,7 +498,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![rotated_PCs](/figure/rotated_PCs.png)
+![rotated_PCs](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_PCs.png)
 
 ----
 
@@ -506,7 +506,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![new_axes](/figure/new_axes.png)
+![new_axes](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/new_axes.png)
 
 ----
 
@@ -514,7 +514,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![final_PC](/figure/final_PC.png)
+![final_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/final_PC.png)
 
 ----
 
@@ -1147,7 +1147,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](/figure/different_density.png)
+![different_density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_density.png)
 
 ----
 
@@ -1155,7 +1155,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](/figure/different_size_clusters.png)
+![different_size_clusters](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_size_clusters.png)
 
 ----
 
@@ -1163,7 +1163,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](/figure/non-globular.png)
+![non-globular](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/non-globular.png)
 
 ----
 
@@ -1197,65 +1197,6 @@ barplot(best_k, xlab = "Number of clusters",
         ylab="Within groups sum of squares",
         main="Scree Plot for Wine dataset")
 ```
-
-----
-
-## Clustering
-# Kmeans animation
-<space>
-
-install.packages('animation')
-library(animation)
-
-oopt = ani.options(interval = 1)
-ani_ex = rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), 
-          matrix(rnorm(100, sd = 0.3), 
-          ncol = 2))
-colnames(ani_ex) = c("x", "y")
-
-kmeans.an = function(
-  x = cbind(X1 = runif(50), X2 = runif(50)), centers = 4, hints = c('Move centers!', 'Find cluster?'),
-  pch = 1:5, col = 1:5
-) {
-  x = as.matrix(x)
-  ocluster = sample(centers, nrow(x), replace = TRUE)
-  if (length(centers) == 1) centers = x[sample(nrow(x), centers), ] else
-    centers = as.matrix(centers)
-  numcent = nrow(centers)
-  dst = matrix(nrow = nrow(x), ncol = numcent)
-  j = 1
-  pch = rep(pch, length = numcent)
-  col = rep(col, length = numcent)
-  
-  for (j in 1:ani.options('nmax')) {
-    dev.hold()
-    plot(x, pch = pch[ocluster], col = col[ocluster], panel.first = grid())
-    mtext(hints[1], 4)
-    points(centers, pch = pch[1:numcent], cex = 3, lwd = 2, col = col[1:numcent])
-    ani.pause()
-    for (i in 1:numcent) {
-      dst[, i] = sqrt(apply((t(t(x) - unlist(centers[i, ])))^2, 1, sum))
-    }
-    ncluster = apply(dst, 1, which.min)
-    plot(x, type = 'n')
-    mtext(hints[2], 4)
-    grid()
-    ocenters = centers
-    for (i in 1:numcent) {
-      xx = subset(x, ncluster == i)
-      polygon(xx[chull(xx), ], density = 10, col = col[i], lty = 2)
-      points(xx, pch = pch[i], col = col[i])
-      centers[i, ] = apply(xx, 2, mean)
-    }
-    points(ocenters, cex = 3, col = col[1:numcent], pch = pch[1:numcent], lwd = 2)
-    ani.pause()
-    if (all(ncluster == ocluster)) break
-    ocluster = ncluster
-  }
-  invisible(list(cluster = ncluster, centers = centers))
-}
-
-kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
 ----
 
@@ -1347,7 +1288,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](/figure/density_structure.png)
+![density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_structure.png)
 
 ----
 
@@ -1381,7 +1322,7 @@ clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 # DBSCAN
 <space>
 
-![density_win](/figure/density_ex_win.png)
+![density_win](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_ex_win.png)
 
 ----
 
@@ -1426,7 +1367,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Motivation
 <space>
 
-![overview](/figure/tree_example.png)
+![overview](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_example.png)
 
 ----
 
@@ -1434,7 +1375,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Structure
 <space>
 
-![structure](/figure/tree_structure.png)
+![structure](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_structure.png)
 
 ----
 
@@ -1635,7 +1576,7 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
 ```{r tree_plot,message=FALSE,echo=FALSE, results='hide'}
 library(C50)
 library(party)

@@ -373,11 +373,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1    99.00
+[2,]         2    66.00
+[3,]         3    44.00
+[4,]         4    29.33
+[5,]         5    19.56
 ```
 
 ```
@@ -454,7 +454,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](/figure/original_data.png)
+![original_data](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/original_data.png)
 
 ----
 
@@ -462,7 +462,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](/figure/calc_centroid.png)
+![calc_centroid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/calc_centroid.png)
 
 ----
 
@@ -470,7 +470,7 @@ $objective
 # Concepts
 <space>
 
-![sub_mean](/figure/sub_mean.png)
+![sub_mean](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/sub_mean.png)
 
 ----
 
@@ -478,7 +478,7 @@ $objective
 # Concepts
 <space>
 
-![max_var_dir](/figure/max_var_dir.png)
+![max_var_dir](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/max_var_dir.png)
 
 ----
 
@@ -486,7 +486,7 @@ $objective
 # Concepts
 <space>
 
-![second_PC](/figure/second_PC.png)
+![second_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/second_PC.png)
 
 ----
 
@@ -494,7 +494,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_grid](/figure/rotated_grid.png)
+![rotated_grid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_grid.png)
 
 ----
 
@@ -502,7 +502,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_PCs](/figure/rotated_PCs.png)
+![rotated_PCs](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_PCs.png)
 
 ----
 
@@ -510,7 +510,7 @@ $objective
 # Concepts
 <space>
 
-![new_axes](/figure/new_axes.png)
+![new_axes](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/new_axes.png)
 
 ----
 
@@ -518,7 +518,7 @@ $objective
 # Concepts
 <space>
 
-![final_PC](/figure/final_PC.png)
+![final_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/final_PC.png)
 
 ----
 
@@ -762,7 +762,9 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-Error: non-conformable arguments
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ```r
@@ -770,7 +772,9 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-Error: object 'x2' not found
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ----
@@ -798,26 +802,14 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)
-```
-
-```
-## Error: object 'x2' not found
-```
-
-```r
 m <- m/sqrt(norm(m))  ## normalize
-```
-
-```
-## Error: object 'm' not found
-```
-
-```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-## Error: object 'm' not found
+##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 ```
 
 ----
@@ -1305,7 +1297,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](/figure/different_density.png)
+![different_density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_density.png)
 
 ----
 
@@ -1313,7 +1305,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](/figure/different_size_clusters.png)
+![different_size_clusters](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_size_clusters.png)
 
 ----
 
@@ -1321,7 +1313,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](/figure/non-globular.png)
+![non-globular](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/non-globular.png)
 
 ----
 
@@ -1355,65 +1347,6 @@ str(wine[,1:7])
 <space>
 
 ![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
-
-----
-
-## Clustering
-# Kmeans animation
-<space>
-
-install.packages('animation')
-library(animation)
-
-oopt = ani.options(interval = 1)
-ani_ex = rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), 
-          matrix(rnorm(100, sd = 0.3), 
-          ncol = 2))
-colnames(ani_ex) = c("x", "y")
-
-kmeans.an = function(
-  x = cbind(X1 = runif(50), X2 = runif(50)), centers = 4, hints = c('Move centers!', 'Find cluster?'),
-  pch = 1:5, col = 1:5
-) {
-  x = as.matrix(x)
-  ocluster = sample(centers, nrow(x), replace = TRUE)
-  if (length(centers) == 1) centers = x[sample(nrow(x), centers), ] else
-    centers = as.matrix(centers)
-  numcent = nrow(centers)
-  dst = matrix(nrow = nrow(x), ncol = numcent)
-  j = 1
-  pch = rep(pch, length = numcent)
-  col = rep(col, length = numcent)
-  
-  for (j in 1:ani.options('nmax')) {
-    dev.hold()
-    plot(x, pch = pch[ocluster], col = col[ocluster], panel.first = grid())
-    mtext(hints[1], 4)
-    points(centers, pch = pch[1:numcent], cex = 3, lwd = 2, col = col[1:numcent])
-    ani.pause()
-    for (i in 1:numcent) {
-      dst[, i] = sqrt(apply((t(t(x) - unlist(centers[i, ])))^2, 1, sum))
-    }
-    ncluster = apply(dst, 1, which.min)
-    plot(x, type = 'n')
-    mtext(hints[2], 4)
-    grid()
-    ocenters = centers
-    for (i in 1:numcent) {
-      xx = subset(x, ncluster == i)
-      polygon(xx[chull(xx), ], density = 10, col = col[i], lty = 2)
-      points(xx, pch = pch[i], col = col[i])
-      centers[i, ] = apply(xx, 2, mean)
-    }
-    points(ocenters, cex = 3, col = col[1:numcent], pch = pch[1:numcent], lwd = 2)
-    ani.pause()
-    if (all(ncluster == ocluster)) break
-    ocluster = ncluster
-  }
-  invisible(list(cluster = ncluster, centers = centers))
-}
-
-kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
 ----
 
@@ -1457,13 +1390,7 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
 ```r
 library(cluster)
-```
 
-```
-## Warning: package 'cluster' was built under R version 3.0.2
-```
-
-```r
 pam.best <- as.numeric()
 for (i in 2:20){
   pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
@@ -1514,7 +1441,7 @@ best_k
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](/figure/density_structure.png)
+![density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_structure.png)
 
 ----
 
@@ -1548,7 +1475,7 @@ best_k
 # DBSCAN
 <space>
 
-![density_win](/figure/density_ex_win.png)
+![density_win](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_ex_win.png)
 
 ----
 
@@ -1563,15 +1490,6 @@ best_k
 ## Clustering
 # DBSCAN
 <space>
-
-
-```
-## Warning: package 'fpc' was built under R version 3.0.2
-## Warning: package 'MASS' was built under R version 3.0.2
-## Warning: package 'mclust' was built under R version 3.0.2
-## Warning: package 'flexmix' was built under R version 3.0.2
-## Warning: package 'lattice' was built under R version 3.0.2
-```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
 
@@ -1593,7 +1511,7 @@ best_k
 # Motivation
 <space>
 
-![overview](/figure/tree_example.png)
+![overview](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_example.png)
 
 ----
 
@@ -1601,7 +1519,7 @@ best_k
 # Structure
 <space>
 
-![structure](/figure/tree_structure.png)
+![structure](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_structure.png)
 
 ----
 
@@ -1845,17 +1763,8 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
 
-```
-## Warning: package 'C50' was built under R version 3.0.2
-## Warning: package 'party' was built under R version 3.0.2
-## Warning: package 'zoo' was built under R version 3.0.2
-## Warning: package 'sandwich' was built under R version 3.0.2
-## Warning: package 'strucchange' was built under R version 3.0.2
-## Warning: package 'modeltools' was built under R version 3.0.2
-## Warning: package 'gmodels' was built under R version 3.0.2
-```
 
 ----
 
@@ -1867,8 +1776,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         89          1
-  republican        3         52
+  democrat         97          2
+  republican        3         43
 ```
 
 ----
@@ -1884,12 +1793,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.92
+physician-fee-freeze                97.23
 synfuels-corporation-cutback        42.91
-mx-missile                           9.69
-anti-satellite-test-ban              7.27
-adoption-of-the-budget-resolution    6.23
+mx-missile                          11.42
+adoption-of-the-budget-resolution    9.69
 handicapped-infants                  0.00
+water-project-cost-sharing           0.00
 ```
 
 ----
@@ -1918,8 +1827,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         88          2
-  republican        4         51
+  democrat         97          2
+  republican        2         44
 ```
 
 ----
@@ -1949,8 +1858,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         86          4
-  republican        2         53
+  democrat         97          2
+  republican        1         45
 ```
 
 ----

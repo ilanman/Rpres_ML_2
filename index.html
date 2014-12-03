@@ -708,11 +708,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1    99.00
+[2,]         2    66.00
+[3,]         3    44.00
+[4,]         4    29.33
+[5,]         5    19.56
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -825,7 +825,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/original_data.png" alt="original_data"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/original_data.png" alt="original_data"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -840,7 +840,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/calc_centroid.png" alt="calc_centroid"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/calc_centroid.png" alt="calc_centroid"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -855,7 +855,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/sub_mean.png" alt="sub_mean"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/sub_mean.png" alt="sub_mean"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -870,7 +870,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/max_var_dir.png" alt="max_var_dir"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/max_var_dir.png" alt="max_var_dir"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -885,7 +885,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/second_PC.png" alt="second_PC"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/second_PC.png" alt="second_PC"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -900,7 +900,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/rotated_grid.png" alt="rotated_grid"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_grid.png" alt="rotated_grid"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -915,7 +915,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/rotated_PCs.png" alt="rotated_PCs"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_PCs.png" alt="rotated_PCs"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -930,7 +930,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/new_axes.png" alt="new_axes"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/new_axes.png" alt="new_axes"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -945,7 +945,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/figure/final_PC.png" alt="final_PC"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/final_PC.png" alt="final_PC"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -1368,13 +1368,17 @@ A %*% x2 == 7 * x2
 <pre><code class="r">A %*% x1 == 3 * x1
 </code></pre>
 
-<pre><code>Error: non-conformable arguments
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
 <pre><code class="r">A %*% x2 == 7 * x2
 </code></pre>
 
-<pre><code>Error: object &#39;x2&#39; not found
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
   </article>
@@ -1420,21 +1424,13 @@ A %*% x2 == 7 * x2
 <p>\(\bf{A} = \bf{PDP^{T}}\)</p>
 
 <pre><code class="r">m &lt;- matrix(c(x1,x2),ncol=2)
+m &lt;- m/sqrt(norm(m))  ## normalize
+as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
-<pre><code>## Error: object &#39;x2&#39; not found
-</code></pre>
-
-<pre><code class="r">m &lt;- m/sqrt(norm(m))  ## normalize
-</code></pre>
-
-<pre><code>## Error: object &#39;m&#39; not found
-</code></pre>
-
-<pre><code class="r">as.matrix(m %*% diag(roots) %*% t(m))
-</code></pre>
-
-<pre><code>## Error: object &#39;m&#39; not found
+<pre><code>##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 </code></pre>
 
   </article>
@@ -2153,7 +2149,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="/figure/different_density.png" alt="different_density"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_density.png" alt="different_density"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2168,7 +2164,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="/figure/different_size_clusters.png" alt="different_size_clusters"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_size_clusters.png" alt="different_size_clusters"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2183,7 +2179,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="/figure/non-globular.png" alt="non-globular"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/non-globular.png" alt="non-globular"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2238,72 +2234,6 @@ str(wine[,1:7])
     <h2>Clustering</h2>
   </hgroup>
   <article>
-    <h1>Kmeans animation</h1>
-
-<p><space></p>
-
-<p>install.packages(&#39;animation&#39;)
-library(animation)</p>
-
-<p>oopt = ani.options(interval = 1)
-ani_ex = rbind(matrix(rnorm(100, sd = 0.3), ncol = 2), 
-          matrix(rnorm(100, sd = 0.3), 
-          ncol = 2))
-colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
-
-<p>kmeans.an = function(
-  x = cbind(X1 = runif(50), X2 = runif(50)), centers = 4, hints = c(&#39;Move centers!&#39;, &#39;Find cluster?&#39;),
-  pch = 1:5, col = 1:5
-) {
-  x = as.matrix(x)
-  ocluster = sample(centers, nrow(x), replace = TRUE)
-  if (length(centers) == 1) centers = x[sample(nrow(x), centers), ] else
-    centers = as.matrix(centers)
-  numcent = nrow(centers)
-  dst = matrix(nrow = nrow(x), ncol = numcent)
-  j = 1
-  pch = rep(pch, length = numcent)
-  col = rep(col, length = numcent)</p>
-
-<p>for (j in 1:ani.options(&#39;nmax&#39;)) {
-    dev.hold()
-    plot(x, pch = pch[ocluster], col = col[ocluster], panel.first = grid())
-    mtext(hints[1], 4)
-    points(centers, pch = pch[1:numcent], cex = 3, lwd = 2, col = col[1:numcent])
-    ani.pause()
-    for (i in 1:numcent) {
-      dst[, i] = sqrt(apply((t(t(x) - unlist(centers[i, ])))<sup>2,</sup> 1, sum))
-    }
-    ncluster = apply(dst, 1, which.min)
-    plot(x, type = &#39;n&#39;)
-    mtext(hints[2], 4)
-    grid()
-    ocenters = centers
-    for (i in 1:numcent) {
-      xx = subset(x, ncluster == i)
-      polygon(xx[chull(xx), ], density = 10, col = col[i], lty = 2)
-      points(xx, pch = pch[i], col = col[i])
-      centers[i, ] = apply(xx, 2, mean)
-    }
-    points(ocenters, cex = 3, col = col[1:numcent], pch = pch[1:numcent], lwd = 2)
-    ani.pause()
-    if (all(ncluster == ocluster)) break
-    ocluster = ncluster
-  }
-  invisible(list(cluster = ncluster, centers = centers))
-}</p>
-
-<p>kmeans.an(ani_ex, centers = 5, hints = c(&quot;Move centers&quot;,&quot;Cluster found?&quot;))</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-101" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
     <h1>K-medoid</h1>
 
 <p><space></p>
@@ -2319,7 +2249,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-102" style="background:;">
+      <slide class="" id="slide-101" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2337,7 +2267,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-103" style="background:;">
+      <slide class="" id="slide-102" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2362,7 +2292,7 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-104" style="background:;">
+      <slide class="" id="slide-103" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2372,12 +2302,8 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
 <p><space></p>
 
 <pre><code class="r">library(cluster)
-</code></pre>
 
-<pre><code>## Warning: package &#39;cluster&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code class="r">pam.best &lt;- as.numeric()
+pam.best &lt;- as.numeric()
 for (i in 2:20){
   pam.best[i] &lt;- pam(s.wine, k=i)$silinfo$avg.width
 }
@@ -2392,7 +2318,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-105" style="background:;">
+      <slide class="" id="slide-104" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2407,7 +2333,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-106" style="background:;">
+      <slide class="" id="slide-105" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2427,7 +2353,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-107" style="background:;">
+      <slide class="" id="slide-106" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2446,7 +2372,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-108" style="background:;">
+      <slide class="" id="slide-107" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2459,14 +2385,14 @@ best_k
 <li>Core points are located inside a cluster</li>
 <li>Border points are on the borders between two clusters</li>
 <li>Neighborhood of p are all points within some radius of p, \(Eps\)<br>
-<img src="/figure/density_structure.png" alt="density"></li>
+<img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_structure.png" alt="density"></li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-109" style="background:;">
+      <slide class="" id="slide-108" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2487,7 +2413,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-110" style="background:;">
+      <slide class="" id="slide-109" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2510,7 +2436,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-111" style="background:;">
+      <slide class="" id="slide-110" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2519,13 +2445,13 @@ best_k
 
 <p><space></p>
 
-<p><img src="/figure/density_ex_win.png" alt="density_win"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_ex_win.png" alt="density_win"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-112" style="background:;">
+      <slide class="" id="slide-111" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2540,7 +2466,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-113" style="background:;">
+      <slide class="" id="slide-112" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2549,20 +2475,13 @@ best_k
 
 <p><space></p>
 
-<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
-## Warning: package &#39;MASS&#39; was built under R version 3.0.2
-## Warning: package &#39;mclust&#39; was built under R version 3.0.2
-## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
-## Warning: package &#39;lattice&#39; was built under R version 3.0.2
-</code></pre>
-
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-114" style="background:;">
+      <slide class="" id="slide-113" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2586,7 +2505,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-115" style="background:;">
+      <slide class="" id="slide-114" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2595,13 +2514,13 @@ best_k
 
 <p><space></p>
 
-<p><img src="/figure/tree_example.png" alt="overview"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_example.png" alt="overview"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-116" style="background:;">
+      <slide class="" id="slide-115" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2610,13 +2529,13 @@ best_k
 
 <p><space></p>
 
-<p><img src="/figure/tree_structure.png" alt="structure"></p>
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_structure.png" alt="structure"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-117" style="background:;">
+      <slide class="" id="slide-116" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2639,7 +2558,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-118" style="background:;">
+      <slide class="" id="slide-117" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2660,7 +2579,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-119" style="background:;">
+      <slide class="" id="slide-118" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2695,7 +2614,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-120" style="background:;">
+      <slide class="" id="slide-119" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2717,7 +2636,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-121" style="background:;">
+      <slide class="" id="slide-120" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2746,7 +2665,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-122" style="background:;">
+      <slide class="" id="slide-121" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2767,7 +2686,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-123" style="background:;">
+      <slide class="" id="slide-122" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2793,7 +2712,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-124" style="background:;">
+      <slide class="" id="slide-123" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2819,7 +2738,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-125" style="background:;">
+      <slide class="" id="slide-124" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2843,7 +2762,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-126" style="background:;">
+      <slide class="" id="slide-125" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2870,7 +2789,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-127" style="background:;">
+      <slide class="" id="slide-126" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2889,7 +2808,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-128" style="background:;">
+      <slide class="" id="slide-127" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2920,7 +2839,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-129" style="background:;">
+      <slide class="" id="slide-128" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2943,7 +2862,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-130" style="background:;">
+      <slide class="" id="slide-129" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2970,6 +2889,21 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
+      <slide class="" id="slide-130" style="background:;">
+  <hgroup>
+    <h2>Trees</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
       <slide class="" id="slide-131" style="background:;">
   <hgroup>
     <h2>Trees</h2>
@@ -2979,15 +2913,10 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><space></p>
 
-<p><img src="/figure/real_tree_example.png" height="500px" width="500px" /></p>
-
-<pre><code>## Warning: package &#39;C50&#39; was built under R version 3.0.2
-## Warning: package &#39;party&#39; was built under R version 3.0.2
-## Warning: package &#39;zoo&#39; was built under R version 3.0.2
-## Warning: package &#39;sandwich&#39; was built under R version 3.0.2
-## Warning: package &#39;strucchange&#39; was built under R version 3.0.2
-## Warning: package &#39;modeltools&#39; was built under R version 3.0.2
-## Warning: package &#39;gmodels&#39; was built under R version 3.0.2
+<pre><code>            tree_predict
+             democrat republican
+  democrat         97          2
+  republican        3         43
 </code></pre>
 
   </article>
@@ -3003,10 +2932,16 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><space></p>
 
-<pre><code>            tree_predict
-             democrat republican
-  democrat         89          1
-  republican        3         52
+<pre><code class="r">head(C5imp(tree_model))   # most important variables
+</code></pre>
+
+<pre><code>                                  Overall
+physician-fee-freeze                97.23
+synfuels-corporation-cutback        42.91
+mx-missile                          11.42
+adoption-of-the-budget-resolution    9.69
+handicapped-infants                  0.00
+water-project-cost-sharing           0.00
 </code></pre>
 
   </article>
@@ -3014,31 +2949,6 @@ voting_test &lt;- voting_data[-train_ind,]
 </slide>
 
       <slide class="" id="slide-133" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">head(C5imp(tree_model))   # most important variables
-</code></pre>
-
-<pre><code>                                  Overall
-physician-fee-freeze                97.92
-synfuels-corporation-cutback        42.91
-mx-missile                           9.69
-anti-satellite-test-ban              7.27
-adoption-of-the-budget-resolution    6.23
-handicapped-infants                  0.00
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-134" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3056,7 +2966,7 @@ handicapped-infants                  0.00
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-135" style="background:;">
+      <slide class="" id="slide-134" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3073,15 +2983,15 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         88          2
-  republican        4         51
+  democrat         97          2
+  republican        2         44
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-136" style="background:;">
+      <slide class="" id="slide-135" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3099,7 +3009,7 @@ boosted_conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-137" style="background:;">
+      <slide class="" id="slide-136" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3117,15 +3027,15 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         86          4
-  republican        2         53
+  democrat         97          2
+  republican        1         45
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-138" style="background:;">
+      <slide class="" id="slide-137" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3140,7 +3050,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-139" style="background:;">
+      <slide class="" id="slide-138" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3167,7 +3077,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-140" style="background:;">
+      <slide class="" id="slide-139" style="background:;">
   <hgroup>
     <h2>Summary</h2>
   </hgroup>
@@ -3187,7 +3097,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-141" style="background:;">
+      <slide class="" id="slide-140" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -3204,7 +3114,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-142" style="background:;">
+      <slide class="" id="slide-141" style="background:;">
   <hgroup>
     
   </hgroup>
