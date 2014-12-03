@@ -373,11 +373,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    91.00
-[2,]         2    60.67
-[3,]         3    40.44
-[4,]         4    26.96
-[5,]         5    17.98
+[1,]         1   18.000
+[2,]         2   12.000
+[3,]         3    8.000
+[4,]         4    5.334
+[5,]         5    3.558
 ```
 
 ```
@@ -454,7 +454,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/original_data.png)
+![original_data](/figure/original_data.png)
 
 ----
 
@@ -462,7 +462,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/calc_centroid.png)
+![calc_centroid](/figure/calc_centroid.png)
 
 ----
 
@@ -470,7 +470,7 @@ $objective
 # Concepts
 <space>
 
-![sub_mean](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/sub_mean.png)
+![sub_mean](/figure/sub_mean.png)
 
 ----
 
@@ -478,7 +478,7 @@ $objective
 # Concepts
 <space>
 
-![max_var_dir](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/max_var_dir.png)
+![max_var_dir](/figure/max_var_dir.png)
 
 ----
 
@@ -486,7 +486,7 @@ $objective
 # Concepts
 <space>
 
-![second_PC](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/second_PC.png)
+![second_PC](/figure/second_PC.png)
 
 ----
 
@@ -494,7 +494,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_grid](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_grid.png)
+![rotated_grid](/figure/rotated_grid.png)
 
 ----
 
@@ -502,7 +502,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_PCs](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_PCs.png)
+![rotated_PCs](/figure/rotated_PCs.png)
 
 ----
 
@@ -510,7 +510,7 @@ $objective
 # Concepts
 <space>
 
-![new_axes](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/new_axes.png)
+![new_axes](/figure/new_axes.png)
 
 ----
 
@@ -518,7 +518,7 @@ $objective
 # Concepts
 <space>
 
-![final_PC](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/final_PC.png)
+![final_PC](/figure/final_PC.png)
 
 ----
 
@@ -762,9 +762,7 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error: non-conformable arguments
 ```
 
 ```r
@@ -772,9 +770,7 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error: object 'x2' not found
 ```
 
 ----
@@ -802,14 +798,26 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)
+```
+
+```
+## Error: object 'x2' not found
+```
+
+```r
 m <- m/sqrt(norm(m))  ## normalize
+```
+
+```
+## Error: object 'm' not found
+```
+
+```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-##      [,1] [,2]
-## [1,]    5    2
-## [2,]    2    5
+## Error: object 'm' not found
 ```
 
 ----
@@ -1297,7 +1305,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_density.png)
+![different_density](/figure/different_density.png)
 
 ----
 
@@ -1305,7 +1313,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](/figure/different_size_clusters.png)
 
 ----
 
@@ -1313,7 +1321,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/non-globular.png)
+![non-globular](/figure/non-globular.png)
 
 ----
 
@@ -1449,7 +1457,13 @@ kmeans.an(ani_ex, centers = 5, hints = c("Move centers","Cluster found?"))
 
 ```r
 library(cluster)
+```
 
+```
+## Warning: package 'cluster' was built under R version 3.0.2
+```
+
+```r
 pam.best <- as.numeric()
 for (i in 2:20){
   pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
@@ -1500,7 +1514,7 @@ best_k
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_structure.png)
+![density](/figure/density_structure.png)
 
 ----
 
@@ -1534,7 +1548,7 @@ best_k
 # DBSCAN
 <space>
 
-![density_win](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_ex_win.png)
+![density_win](/figure/density_ex_win.png)
 
 ----
 
@@ -1549,6 +1563,15 @@ best_k
 ## Clustering
 # DBSCAN
 <space>
+
+
+```
+## Warning: package 'fpc' was built under R version 3.0.2
+## Warning: package 'MASS' was built under R version 3.0.2
+## Warning: package 'mclust' was built under R version 3.0.2
+## Warning: package 'flexmix' was built under R version 3.0.2
+## Warning: package 'lattice' was built under R version 3.0.2
+```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
 
@@ -1570,7 +1593,7 @@ best_k
 # Motivation
 <space>
 
-![overview](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png)
+![overview](/figure/tree_example.png)
 
 ----
 
@@ -1578,7 +1601,7 @@ best_k
 # Structure
 <space>
 
-![structure](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_structure.png)
+![structure](/figure/tree_structure.png)
 
 ----
 
@@ -1822,8 +1845,17 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="/figure/real_tree_example.png" height="500px" width="500px" />
 
+```
+## Warning: package 'C50' was built under R version 3.0.2
+## Warning: package 'party' was built under R version 3.0.2
+## Warning: package 'zoo' was built under R version 3.0.2
+## Warning: package 'sandwich' was built under R version 3.0.2
+## Warning: package 'strucchange' was built under R version 3.0.2
+## Warning: package 'modeltools' was built under R version 3.0.2
+## Warning: package 'gmodels' was built under R version 3.0.2
+```
 
 ----
 
@@ -1835,8 +1867,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         79          3
-  republican        2         61
+  democrat         89          1
+  republican        3         52
 ```
 
 ----
@@ -1852,12 +1884,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                96.89
-synfuels-corporation-cutback        38.06
-mx-missile                          11.42
-adoption-of-the-budget-resolution    7.96
+physician-fee-freeze                97.92
+synfuels-corporation-cutback        42.91
+mx-missile                           9.69
+anti-satellite-test-ban              7.27
+adoption-of-the-budget-resolution    6.23
 handicapped-infants                  0.00
-water-project-cost-sharing           0.00
 ```
 
 ----
@@ -1886,8 +1918,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         79          3
-  republican        4         59
+  democrat         88          2
+  republican        4         51
 ```
 
 ----
@@ -1917,8 +1949,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         77          5
-  republican        4         59
+  democrat         86          4
+  republican        2         53
 ```
 
 ----

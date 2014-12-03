@@ -708,11 +708,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1    91.00
-[2,]         2    60.67
-[3,]         3    40.44
-[4,]         4    26.96
-[5,]         5    17.98
+[1,]         1   18.000
+[2,]         2   12.000
+[3,]         3    8.000
+[4,]         4    5.334
+[5,]         5    3.558
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -825,7 +825,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/original_data.png" alt="original_data"></p>
+<p><img src="/figure/original_data.png" alt="original_data"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -840,7 +840,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/calc_centroid.png" alt="calc_centroid"></p>
+<p><img src="/figure/calc_centroid.png" alt="calc_centroid"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -855,7 +855,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/sub_mean.png" alt="sub_mean"></p>
+<p><img src="/figure/sub_mean.png" alt="sub_mean"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -870,7 +870,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/max_var_dir.png" alt="max_var_dir"></p>
+<p><img src="/figure/max_var_dir.png" alt="max_var_dir"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -885,7 +885,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/second_PC.png" alt="second_PC"></p>
+<p><img src="/figure/second_PC.png" alt="second_PC"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -900,7 +900,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_grid.png" alt="rotated_grid"></p>
+<p><img src="/figure/rotated_grid.png" alt="rotated_grid"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -915,7 +915,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/rotated_PCs.png" alt="rotated_PCs"></p>
+<p><img src="/figure/rotated_PCs.png" alt="rotated_PCs"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -930,7 +930,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/new_axes.png" alt="new_axes"></p>
+<p><img src="/figure/new_axes.png" alt="new_axes"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -945,7 +945,7 @@ $objective
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/final_PC.png" alt="final_PC"></p>
+<p><img src="/figure/final_PC.png" alt="final_PC"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -1368,17 +1368,13 @@ A %*% x2 == 7 * x2
 <pre><code class="r">A %*% x1 == 3 * x1
 </code></pre>
 
-<pre><code>     [,1]
-[1,] TRUE
-[2,] TRUE
+<pre><code>Error: non-conformable arguments
 </code></pre>
 
 <pre><code class="r">A %*% x2 == 7 * x2
 </code></pre>
 
-<pre><code>     [,1]
-[1,] TRUE
-[2,] TRUE
+<pre><code>Error: object &#39;x2&#39; not found
 </code></pre>
 
   </article>
@@ -1424,13 +1420,21 @@ A %*% x2 == 7 * x2
 <p>\(\bf{A} = \bf{PDP^{T}}\)</p>
 
 <pre><code class="r">m &lt;- matrix(c(x1,x2),ncol=2)
-m &lt;- m/sqrt(norm(m))  ## normalize
-as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
-<pre><code>##      [,1] [,2]
-## [1,]    5    2
-## [2,]    2    5
+<pre><code>## Error: object &#39;x2&#39; not found
+</code></pre>
+
+<pre><code class="r">m &lt;- m/sqrt(norm(m))  ## normalize
+</code></pre>
+
+<pre><code>## Error: object &#39;m&#39; not found
+</code></pre>
+
+<pre><code class="r">as.matrix(m %*% diag(roots) %*% t(m))
+</code></pre>
+
+<pre><code>## Error: object &#39;m&#39; not found
 </code></pre>
 
   </article>
@@ -2149,7 +2153,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_density.png" alt="different_density"></p>
+<p><img src="/figure/different_density.png" alt="different_density"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2164,7 +2168,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/different_size_clusters.png" alt="different_size_clusters"></p>
+<p><img src="/figure/different_size_clusters.png" alt="different_size_clusters"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2179,7 +2183,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="C:/Users/Ilan%20Man/Desktop/Personal/RPres_ML_2/figure/non-globular.png" alt="non-globular"></p>
+<p><img src="/figure/non-globular.png" alt="non-globular"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2368,8 +2372,12 @@ colnames(ani_ex) = c(&quot;x&quot;, &quot;y&quot;)</p>
 <p><space></p>
 
 <pre><code class="r">library(cluster)
+</code></pre>
 
-pam.best &lt;- as.numeric()
+<pre><code>## Warning: package &#39;cluster&#39; was built under R version 3.0.2
+</code></pre>
+
+<pre><code class="r">pam.best &lt;- as.numeric()
 for (i in 2:20){
   pam.best[i] &lt;- pam(s.wine, k=i)$silinfo$avg.width
 }
@@ -2451,7 +2459,7 @@ best_k
 <li>Core points are located inside a cluster</li>
 <li>Border points are on the borders between two clusters</li>
 <li>Neighborhood of p are all points within some radius of p, \(Eps\)<br>
-<img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_structure.png" alt="density"></li>
+<img src="/figure/density_structure.png" alt="density"></li>
 </ul>
 
   </article>
@@ -2511,7 +2519,7 @@ best_k
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/density_ex_win.png" alt="density_win"></p>
+<p><img src="/figure/density_ex_win.png" alt="density_win"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2540,6 +2548,13 @@ best_k
     <h1>DBSCAN</h1>
 
 <p><space></p>
+
+<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
+## Warning: package &#39;MASS&#39; was built under R version 3.0.2
+## Warning: package &#39;mclust&#39; was built under R version 3.0.2
+## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
+## Warning: package &#39;lattice&#39; was built under R version 3.0.2
+</code></pre>
 
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 
@@ -2580,7 +2595,7 @@ best_k
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_example.png" alt="overview"></p>
+<p><img src="/figure/tree_example.png" alt="overview"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2595,7 +2610,7 @@ best_k
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/tree_structure.png" alt="structure"></p>
+<p><img src="/figure/tree_structure.png" alt="structure"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2964,7 +2979,16 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><space></p>
 
-<p><img src="/Users/ilanman/Desktop/Data/RPres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
+<p><img src="/figure/real_tree_example.png" height="500px" width="500px" /></p>
+
+<pre><code>## Warning: package &#39;C50&#39; was built under R version 3.0.2
+## Warning: package &#39;party&#39; was built under R version 3.0.2
+## Warning: package &#39;zoo&#39; was built under R version 3.0.2
+## Warning: package &#39;sandwich&#39; was built under R version 3.0.2
+## Warning: package &#39;strucchange&#39; was built under R version 3.0.2
+## Warning: package &#39;modeltools&#39; was built under R version 3.0.2
+## Warning: package &#39;gmodels&#39; was built under R version 3.0.2
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -2981,8 +3005,8 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         79          3
-  republican        2         61
+  democrat         89          1
+  republican        3         52
 </code></pre>
 
   </article>
@@ -3002,12 +3026,12 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                96.89
-synfuels-corporation-cutback        38.06
-mx-missile                          11.42
-adoption-of-the-budget-resolution    7.96
+physician-fee-freeze                97.92
+synfuels-corporation-cutback        42.91
+mx-missile                           9.69
+anti-satellite-test-ban              7.27
+adoption-of-the-budget-resolution    6.23
 handicapped-infants                  0.00
-water-project-cost-sharing           0.00
 </code></pre>
 
   </article>
@@ -3049,8 +3073,8 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         79          3
-  republican        4         59
+  democrat         88          2
+  republican        4         51
 </code></pre>
 
   </article>
@@ -3093,8 +3117,8 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         77          5
-  republican        4         59
+  democrat         86          4
+  republican        2         53
 </code></pre>
 
   </article>
