@@ -450,7 +450,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![original_data](/Users/ilanman/Desktop/Data/RPres_ML_2/figure/original_data.png)
+![original_data](/figure/original_data.png)
 
 ----
 
