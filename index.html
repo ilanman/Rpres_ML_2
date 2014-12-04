@@ -471,7 +471,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <p><space></p>
 
 <ul>
-<li>\(cost(h_{\theta}(x), y) = -y \log(p) + (1-y) \log(1-p)\)<br></li>
+<li>\(cost(p, y) = -y \log(p) + (1-y) \log(1-p)\)<br></li>
 <li>\(p = h_{\theta}(x)\)</li>
 <li>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
 </ul>
@@ -510,9 +510,8 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></p>
-
 <ul>
+<li>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
 <li>Logistic regression cost function is then<br>
 \(cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))\)</li>
 <li>Minimize the cost</li>
@@ -693,11 +692,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1   15.000
+[2,]         2   10.000
+[3,]         3    6.667
+[4,]         4    4.446
+[5,]         5    2.968
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -976,7 +975,7 @@ $objective
 
 <ul>
 <li>Covariance matrix is square, symmetric</li>
-<li>\(\bf{C_{x}} = \bf{XX^{T}}\)</li>
+<li>\(\bf{C_{x}} = \frac{1}{(n-1)}\bf{XX^{T}}\)</li>
 <li>Diagonals are variances, off-diagonals are covariances
 
 <ul>
@@ -1026,10 +1025,10 @@ $objective
 
 <ul>
 <li>Eigenvalues help uncover valuable insight into the underlying structure of a vector space</li>
-<li>Eigenvalues/vectors come up extensively in physics, engineering, statistics</li>
-<li>Eigenvalues are scalars derived from a square matrix, &quot;characteristic roots&quot; it</li>
+<li>Eigenvalues/vectors come up extensively in physics, engineering, statistics<br><br></li>
+<li>Eigenvalues are scalars derived from a square matrix, &quot;characteristic roots&quot;</li>
 <li>Eigenvectors are non-zero vectors associated with eigenvalues</li>
-<li>Every square matrix has at least 1 eigenvalue/vector combo (otherwise its &quot;degenerative&quot;)</li>
+<li>Almost every square matrix has at least 1 eigenvalue/vector combo (otherwise its &quot;degenerative&quot;)</li>
 <li>Decomposing a square matrix into eigenvalues/vectors is eigen decomposition</li>
 </ul>
 
@@ -1065,13 +1064,12 @@ $objective
 
 <p><space></p>
 
-<p>\(\bf{A}x - \lambda Ix = 0\)<br>
+<p>\(\bf{A}x = \lambda x\)<br>
+\(\bf{A}x - \lambda Ix = 0\)<br>
 \((\bf{A} - \lambda I)x = 0\)<br>
-For this to be non-trivial then:<br>
-\(\det(\bf{A} - \lambda I)\) = 0<br></p>
+For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
 
 <ul>
-<li>singular</li>
 <li>roots are eigenvalues of \(\bf{A}\)</li>
 <li>characteristic polynomial of \(\bf{A}\)</li>
 <li>\({\lambda}\) is called the spectrum</li>
@@ -1200,7 +1198,7 @@ roots
 
 <ul>
 <li>when \(\lambda = 3\)<br>
-\(A\bf{x} = 3\bf{x}\)<br></li>
+\(\bf{Ax} = 3\bf{x}\)<br></li>
 </ul>
 
   </article>
@@ -1324,7 +1322,7 @@ roots
 
 <p><space></p>
 
-<p>\(\bf{Ax} = \lambda \bf{x}\)</p>
+<p>\(\bf{Ax} = \bf{\lambdax}\)</p>
 
 <pre><code class="r">x1 = c(1,-1)
 x2 = c(1,1)
@@ -1350,13 +1348,17 @@ A %*% x2 == 7 * x2
 <pre><code class="r">A %*% x1 == 3 * x1
 </code></pre>
 
-<pre><code>Error: non-conformable arguments
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
 <pre><code class="r">A %*% x2 == 7 * x2
 </code></pre>
 
-<pre><code>Error: object &#39;x2&#39; not found
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
   </article>
@@ -1376,13 +1378,13 @@ A %*% x2 == 7 * x2
 <li>If \(\bf{A}\) has n linearly independent eigenvectors, then it is diagonalizable
 
 <ul>
-<li>Written in the form \(\bf{A} = \bf{PD{P}^{-1}}\), </li>
-<li>\(\bf{P}\) are rows of eigenvectors</li>
+<li>Written in the form \(\bf{A} = \bf{PD{P}^{-1}}\)</li>
+<li>\(\bf{P}\) is row matrix of eigenvectors</li>
 <li>\(\bf{D}\) is diagonal matrix of eigenvalues of \(\bf{A}\)</li>
 <li>\(\bf{A}\) is similar to \(\bf{D}\)</li>
 </ul></li>
 <li>Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)</li>
-<li>If a eigenvectors are orthonormal, then \(\bf{{P}^{T} = {P}^{-1}}\)<br>
+<li>If the eigenvectors are orthonormal, then \(\bf{{P}^{T} = {P}^{-1}}\)<br>
 \(\bf{A} = \bf{PD{P}^{T}}\)</li>
 </ul>
 
@@ -1402,21 +1404,13 @@ A %*% x2 == 7 * x2
 <p>\(\bf{A} = \bf{PDP^{T}}\)</p>
 
 <pre><code class="r">m &lt;- matrix(c(x1,x2),ncol=2)
+m &lt;- m/sqrt(norm(m))  ## normalize
+as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
-<pre><code>## Error: object &#39;x2&#39; not found
-</code></pre>
-
-<pre><code class="r">m &lt;- m/sqrt(norm(m))  ## normalize
-</code></pre>
-
-<pre><code>## Error: object &#39;m&#39; not found
-</code></pre>
-
-<pre><code class="r">as.matrix(m %*% diag(roots) %*% t(m))
-</code></pre>
-
-<pre><code>## Error: object &#39;m&#39; not found
+<pre><code>##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 </code></pre>
 
   </article>
@@ -1428,7 +1422,7 @@ A %*% x2 == 7 * x2
     <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
-    <h1>EigenDecomposition</h1>
+    <h1>EigenDecomposition summary</h1>
 
 <p><space></p>
 
@@ -1461,7 +1455,7 @@ A %*% x2 == 7 * x2
 <ul>
 <li>Find some matrix \(\bf{P}\) where \(\bf{PX}=\bf{Y}\) such that \(\bf{Y}\)&#39;s covariance matrix is diagonalized</li>
 <li>Covariance matrix<br>
-\(\bf{C_{X}} = \bf{XX}^{T}\)
+\(\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}\)
 
 <ul>
 <li>Diagonals are the variances, off-diagonals are covariances</li>
@@ -1522,7 +1516,7 @@ A %*% x2 == 7 * x2
 \(=\frac{1}{(n-1)}\bf{PAP^{T}}\)<br></p>
 
 <ul>
-<li>\(\bf{P}\) is a matrix with columns that are eigenvectors</li>
+<li>\(\bf{P}\) is a matrix with rows that are eigenvectors</li>
 <li>\(\bf{A}\) is a diagonalized matrix of eigenvalues and is symmetric<br>
 \(\bf{A} = \bf{EDE^{T}}\)</li>
 </ul>
@@ -1561,7 +1555,7 @@ A %*% x2 == 7 * x2
 <ul>
 <li>Each row of \(\bf{P}\) should be an eigenvector of \(\bf{A}\)<br></li>
 <li>Therefore we are forcing this relationship to hold \(\bf{P} = \bf{E^{T}}\)<br>
-Since \(\bf{A} = \bf{EDE^{T}}\)
+Since \(\bf{A} = \bf{EDE^{T}}\)<br>
 \(\bf{A} = \bf{P^{T}DP}\)<br></li>
 </ul>
 
@@ -1581,7 +1575,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)
 <ul>
 <li>Each row of \(\bf{P}\) should be an eigenvector of \(\bf{A}\)<br></li>
 <li>Therefore we are forcing this relationship to hold \(\bf{P} = \bf{E^{T}}\)<br>
-Since \(\bf{A} = \bf{EDE^{T}}\)
+Since \(\bf{A} = \bf{EDE^{T}}\)<br>
 \(\bf{A} = \bf{P^{T}DP}\)<br>
 \(\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}\)<br>
 \(\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}\)<br>
@@ -1638,47 +1632,20 @@ m &lt;- length(data)
 for (i in 10:m){
   tennis[,i] &lt;- ifelse(is.na(data[,i]),0,data[,i])
 }
-
-str(tennis)
 </code></pre>
 
-<pre><code>## &#39;data.frame&#39;:    943 obs. of  35 variables:
-##  $ unique_ID : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Tournament: Factor w/ 4 levels &quot;AUS&quot;,&quot;FRE&quot;,&quot;USA&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Gender    : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ Player1   : chr  &quot;LukasLacko&quot; &quot;LeonardoMayer&quot; &quot;MarcosBaghdatis&quot; &quot;DmitryTursunov&quot; ...
-##  $ Player2   : chr  &quot;NovakDjokovic&quot; &quot;AlbertMontanes&quot; &quot;DenisIstomin&quot; &quot;MichaelRussell&quot; ...
-##  $ Round     : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ Result    : int  0 1 0 1 0 0 0 1 0 1 ...
-##  $ FNL1      : int  0 3 0 3 1 1 2 2 0 3 ...
-##  $ FNL2      : int  3 0 3 0 3 3 3 0 3 2 ...
-##  $ FSP.1     : int  61 61 52 53 76 65 68 47 64 77 ...
-##  $ FSW.1     : int  35 31 53 39 63 51 73 18 26 76 ...
-##  $ SSP.1     : int  39 39 48 47 24 35 32 53 36 23 ...
-##  $ SSW.1     : int  18 13 20 24 12 22 24 15 12 11 ...
-##  $ ACE.1     : num  5 13 8 8 0 9 5 3 3 6 ...
-##  $ DBF.1     : num  1 1 4 6 4 3 3 4 0 4 ...
-##  $ WNR.1     : num  17 13 37 8 16 35 41 21 20 6 ...
-##  $ UFE.1     : num  29 1 50 6 35 41 50 31 39 4 ...
-##  $ BPC.1     : num  1 7 1 6 3 2 9 6 3 7 ...
-##  $ BPW.1     : num  3 14 9 9 12 7 17 20 7 24 ...
-##  $ NPA.1     : num  8 0 16 0 9 6 14 6 5 0 ...
-##  $ NPW.1     : num  11 0 23 0 13 12 30 9 14 0 ...
-##  $ TPW.1     : num  70 80 106 104 128 108 173 78 67 162 ...
-##  $ FSP.2     : int  68 60 77 50 53 63 60 54 67 60 ...
-##  $ FSW.2     : int  45 23 57 24 59 60 66 26 42 68 ...
-##  $ SSP.2     : int  32 40 23 50 47 37 40 46 33 40 ...
-##  $ SSW.2     : int  17 9 15 19 32 22 34 13 14 25 ...
-##  $ ACE.2     : num  10 1 9 1 17 24 2 0 12 8 ...
-##  $ DBF.2     : num  0 4 1 8 11 4 6 11 0 12 ...
-##  $ WNR.2     : num  40 1 41 1 59 47 57 11 32 8 ...
-##  $ UFE.2     : num  30 4 41 8 79 45 72 46 20 12 ...
-##  $ BPC.2     : num  4 0 4 1 3 4 10 2 7 6 ...
-##  $ BPW.2     : num  8 0 13 7 5 7 17 6 10 14 ...
-##  $ NPA.2     : num  8 0 12 0 16 14 25 8 8 0 ...
-##  $ NPW.2     : num  9 0 16 0 28 17 36 12 11 0 ...
-##  $ TPW.2     : num  101 42 126 79 127 122 173 61 94 141 ...
-</code></pre>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-78" style="background:;">
+  <hgroup>
+    <h2>Principal Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
 
 <pre><code class="r">features &lt;- tennis[,10:m]
 
@@ -1750,26 +1717,6 @@ head(features)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-78" style="background:;">
-  <hgroup>
-    <h2>Principal Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">scaled_features &lt;- as.matrix(scale(features))
-Cx &lt;- cov(scaled_features)
-eigenvalues &lt;- eigen(Cx)$values
-eigenvectors &lt;- eigen(Cx)$vectors
-PC &lt;- scaled_features %*% eigenvectors
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-79" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
@@ -1779,8 +1726,38 @@ PC &lt;- scaled_features %*% eigenvectors
 
 <p><space></p>
 
-<pre><code class="r">Cy &lt;- cov(PC)
-sum_diff &lt;- sum(diag(Cy) - eigenvalues)
+<pre><code class="r">## Manually Calculated PCs
+scaled_features &lt;- as.matrix(scale(features))
+Cx &lt;- cov(scaled_features)
+eigenvalues &lt;- eigen(Cx)$values
+eigenvectors &lt;- eigen(Cx)$vectors
+PC &lt;- scaled_features %*% eigenvectors
+Cy &lt;- cov(PC)
+</code></pre>
+
+<ul>
+<li>Cy should be diagonalized matrix
+
+<ul>
+<li>diagonals of Cy should be the eigenvalues of Cx</li>
+<li>off diagonals should be 0</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-80" style="background:;">
+  <hgroup>
+    <h2>Principal Component Analysis</h2>
+  </hgroup>
+  <article>
+    <h1>Example</h1>
+
+<p><space></p>
+
+<pre><code class="r">sum_diff &lt;- (sum(diag(Cy) - eigenvalues))^2
 round(sum_diff,6)
 </code></pre>
 
@@ -1798,7 +1775,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-80" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1813,27 +1790,6 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-81" style="background:;">
-  <hgroup>
-    <h2>Principal Component Analysis</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">pca.df &lt;- prcomp(scaled_features)
-round(eigenvalues,10) == round((pca.df$sdev)^2,10)
-</code></pre>
-
-<pre><code> [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
       <slide class="" id="slide-82" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
@@ -1842,6 +1798,14 @@ round(eigenvalues,10) == round((pca.df$sdev)^2,10)
     <h1>Example</h1>
 
 <p><space></p>
+
+<pre><code class="r">pca.df &lt;- prcomp(scaled_features)  ## Built in R function
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matches R
+</code></pre>
+
+<pre><code> [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</code></pre>
 
 <pre><code class="r">round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
 </code></pre>
@@ -1852,12 +1816,6 @@ TPW.1 FSP.2 FSW.2 SSP.2 SSW.2 ACE.2 DBF.2 WNR.2 UFE.2 BPC.2 BPW.2 NPA.2
  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE 
 NPW.2 TPW.2 
  TRUE  TRUE 
-</code></pre>
-
-<pre><code class="r">sum((eigenvectors[,1])^2)
-</code></pre>
-
-<pre><code>[1] 1
 </code></pre>
 
   </article>
@@ -1874,7 +1832,7 @@ NPW.2 TPW.2
 <p><space></p>
 
 <ul>
-<li>Can Principal Components separate our data?</li>
+<li>Can the first two Principal Components separate our data?</li>
 </ul>
 
 <p><img src="figure/tennis_plot_gender.png" alt="plot of chunk tennis_plot_gender"> </p>
@@ -1898,7 +1856,7 @@ NPW.2 TPW.2
 
 <pre><code class="r">PC1 &lt;- pca.df$x[,1]
 mean_PC1 &lt;- mean(pca.df$x[,1])
-gen &lt;- ifelse(PC1 &gt; abs(mean_PC1)*2,&quot;F&quot;,&quot;M&quot;)
+gen &lt;- ifelse(PC1 &gt; mean_PC1,&quot;F&quot;,&quot;M&quot;)
 sum(diag(table(gen,as.character(data$Gender))))/rows
 </code></pre>
 
@@ -2220,114 +2178,6 @@ str(wine[,1:7])
     <h2>Clustering</h2>
   </hgroup>
   <article>
-    <h1>K-medoid</h1>
-
-<p><space></p>
-
-<ul>
-<li>Multiple distance metrics</li>
-<li>Robust medioids</li>
-<li>Computationally expensive</li>
-<li>Cluster center is one of the points itself</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-101" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>K-medoid</h1>
-
-<p><space></p>
-
-<ul>
-<li>Cluster each point based on the closest center</li>
-<li>Replace each center by the medioid of points in its cluster</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-102" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>K-medoid</h1>
-
-<p><space></p>
-
-<ul>
-<li>Selecting the optimal number of clusters</li>
-<li>For each point p, first find the average distance between p and all other points in the same cluster, \(A\)</li>
-<li>Then find the average distance between p and all points in the nearest cluster, \(B\)</li>
-<li>The silhouette coefficient for p is \(\frac{A - B}{\max(A,B)}\)
-
-<ul>
-<li>Values close to 1 mean points clearly belong to that cluster</li>
-<li>Values close to 0 mean points might belong in another cluster</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-103" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>K-medoid</h1>
-
-<p><space></p>
-
-<pre><code class="r">library(cluster)
-</code></pre>
-
-<pre><code>## Warning: package &#39;cluster&#39; was built under R version 3.0.2
-</code></pre>
-
-<pre><code class="r">pam.best &lt;- as.numeric()
-for (i in 2:20){
-  pam.best[i] &lt;- pam(s.wine, k=i)$silinfo$avg.width
-}
-best_k &lt;- which.max(pam.best)
-best_k
-</code></pre>
-
-<pre><code>## [1] 3
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-104" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
-    <h1>K-medoid</h1>
-
-<p><space></p>
-
-<p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-105" style="background:;">
-  <hgroup>
-    <h2>Clustering</h2>
-  </hgroup>
-  <article>
     <h1>DBSCAN</h1>
 
 <p><space></p>
@@ -2343,7 +2193,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-106" style="background:;">
+      <slide class="" id="slide-101" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2362,7 +2212,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-107" style="background:;">
+      <slide class="" id="slide-102" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2382,7 +2232,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-108" style="background:;">
+      <slide class="" id="slide-103" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2403,7 +2253,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-109" style="background:;">
+      <slide class="" id="slide-104" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2426,7 +2276,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-110" style="background:;">
+      <slide class="" id="slide-105" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2441,7 +2291,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-111" style="background:;">
+      <slide class="" id="slide-106" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2450,13 +2300,13 @@ best_k
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-3.png" alt="plot of chunk unnamed-chunk-3"> </p>
+<p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-112" style="background:;">
+      <slide class="" id="slide-107" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2464,13 +2314,6 @@ best_k
     <h1>DBSCAN</h1>
 
 <p><space></p>
-
-<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
-## Warning: package &#39;MASS&#39; was built under R version 3.0.2
-## Warning: package &#39;mclust&#39; was built under R version 3.0.2
-## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
-## Warning: package &#39;lattice&#39; was built under R version 3.0.2
-</code></pre>
 
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 
@@ -2478,7 +2321,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-113" style="background:;">
+      <slide class="" id="slide-108" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2502,7 +2345,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-114" style="background:;">
+      <slide class="" id="slide-109" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2517,7 +2360,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-115" style="background:;">
+      <slide class="" id="slide-110" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2532,7 +2375,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-116" style="background:;">
+      <slide class="" id="slide-111" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2555,7 +2398,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-117" style="background:;">
+      <slide class="" id="slide-112" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2576,7 +2419,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-118" style="background:;">
+      <slide class="" id="slide-113" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2611,7 +2454,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-119" style="background:;">
+      <slide class="" id="slide-114" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2633,7 +2476,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-120" style="background:;">
+      <slide class="" id="slide-115" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2662,7 +2505,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-121" style="background:;">
+      <slide class="" id="slide-116" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2683,7 +2526,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-122" style="background:;">
+      <slide class="" id="slide-117" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2709,7 +2552,7 @@ best_k
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-123" style="background:;">
+      <slide class="" id="slide-118" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2735,7 +2578,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-124" style="background:;">
+      <slide class="" id="slide-119" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2759,7 +2602,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-125" style="background:;">
+      <slide class="" id="slide-120" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2786,7 +2629,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-126" style="background:;">
+      <slide class="" id="slide-121" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2805,7 +2648,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-127" style="background:;">
+      <slide class="" id="slide-122" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2836,7 +2679,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-128" style="background:;">
+      <slide class="" id="slide-123" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2859,7 +2702,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-129" style="background:;">
+      <slide class="" id="slide-124" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2886,7 +2729,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-130" style="background:;">
+      <slide class="" id="slide-125" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2897,20 +2740,11 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
 
-<pre><code>## Warning: package &#39;C50&#39; was built under R version 3.0.2
-## Warning: package &#39;party&#39; was built under R version 3.0.2
-## Warning: package &#39;zoo&#39; was built under R version 3.0.2
-## Warning: package &#39;sandwich&#39; was built under R version 3.0.2
-## Warning: package &#39;strucchange&#39; was built under R version 3.0.2
-## Warning: package &#39;modeltools&#39; was built under R version 3.0.2
-## Warning: package &#39;gmodels&#39; was built under R version 3.0.2
-</code></pre>
-
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-131" style="background:;">
+      <slide class="" id="slide-126" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2921,15 +2755,15 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         89          1
-  republican        3         52
+  democrat         84          3
+  republican        1         57
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-132" style="background:;">
+      <slide class="" id="slide-127" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2942,19 +2776,19 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                97.92
-synfuels-corporation-cutback        42.91
-mx-missile                           9.69
-anti-satellite-test-ban              7.27
-adoption-of-the-budget-resolution    6.23
-handicapped-infants                  0.00
+physician-fee-freeze                96.54
+synfuels-corporation-cutback        40.83
+mx-missile                          12.46
+immigration                         10.03
+adoption-of-the-budget-resolution    5.19
+religious-groups-in-schools          2.42
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-133" style="background:;">
+      <slide class="" id="slide-128" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2972,7 +2806,7 @@ handicapped-infants                  0.00
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-134" style="background:;">
+      <slide class="" id="slide-129" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2989,15 +2823,15 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         88          2
-  republican        4         51
+  democrat         85          2
+  republican        3         55
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-135" style="background:;">
+      <slide class="" id="slide-130" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3015,7 +2849,7 @@ boosted_conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-136" style="background:;">
+      <slide class="" id="slide-131" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3033,15 +2867,15 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         86          4
-  republican        2         53
+  democrat         84          3
+  republican        1         57
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-137" style="background:;">
+      <slide class="" id="slide-132" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3056,7 +2890,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-138" style="background:;">
+      <slide class="" id="slide-133" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3083,7 +2917,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-139" style="background:;">
+      <slide class="" id="slide-134" style="background:;">
   <hgroup>
     <h2>Summary</h2>
   </hgroup>
@@ -3103,7 +2937,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-140" style="background:;">
+      <slide class="" id="slide-135" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -3120,7 +2954,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-141" style="background:;">
+      <slide class="" id="slide-136" style="background:;">
   <hgroup>
     
   </hgroup>

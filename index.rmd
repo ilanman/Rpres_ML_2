@@ -255,7 +255,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $cost(h_{\theta}(x), y) = -y \log(p) + (1-y) \log(1-p)$<br>
+- $cost(p, y) = -y \log(p) + (1-y) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
 - $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
@@ -280,7 +280,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Find parameters
 <space>
 
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
 - Minimize the cost
@@ -533,7 +533,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 <space>
 
 - Covariance matrix is square, symmetric
-- $\bf{C_{x}} = \bf{XX^{T}}$
+- $\bf{C_{x}} = \frac{1}{(n-1)}\bf{XX^{T}}$
 - Diagonals are variances, off-diagonals are covariances
   - Goal: maximize diagonals and minimize off-diagonals
 - The optimal $\bf{Y}$ would have a covariance matrix, $\bf{C_{Y}}$, with positive values on the diagonal and 0's on the off-diagonals
@@ -556,10 +556,10 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 <space>
 
 - Eigenvalues help uncover valuable insight into the underlying structure of a vector space
-- Eigenvalues/vectors come up extensively in physics, engineering, statistics
-- Eigenvalues are scalars derived from a square matrix, "characteristic roots" it
+- Eigenvalues/vectors come up extensively in physics, engineering, statistics<br><br>
+- Eigenvalues are scalars derived from a square matrix, "characteristic roots"
 - Eigenvectors are non-zero vectors associated with eigenvalues
-- Every square matrix has at least 1 eigenvalue/vector combo (otherwise its "degenerative")
+- Almost every square matrix has at least 1 eigenvalue/vector combo (otherwise its "degenerative")
 - Decomposing a square matrix into eigenvalues/vectors is eigen decomposition
 
 ----
@@ -577,11 +577,10 @@ $\bf{A}x = \lambda x$
 # Eigenwhat?
 <space>
 
+$\bf{A}x = \lambda x$<br>
 $\bf{A}x - \lambda Ix = 0$<br>
 $(\bf{A} - \lambda I)x = 0$<br>
-For this to be non-trivial then:<br>
-$\det(\bf{A} - \lambda I)$ = 0<br>
-  - singular
+For this to be non-trivial $\det(\bf{A} - \lambda I)$ = 0<br>
   - roots are eigenvalues of $\bf{A}$
   - characteristic polynomial of $\bf{A}$
   - ${\lambda}$ is called the spectrum
@@ -656,7 +655,7 @@ $\lambda = 3, 7$
 <space>
 
 - when $\lambda = 3$<br>
-$A\bf{x} = 3\bf{x}$<br>
+$\bf{Ax} = 3\bf{x}$<br>
 
 ----
 
@@ -727,7 +726,7 @@ $x_{1} = x_{2}$<br>
 # Eigencheck
 <space>
 
-$\bf{Ax} = \lambda \bf{x}$
+$\bf{Ax} = \bf{\lambdax}$
 ```{r eigen_proof, comment="",eval=FALSE}
 x1 = c(1,-1)
 x2 = c(1,1)
@@ -754,12 +753,12 @@ A %*% x2 == 7 * x2
 <space>
 
 - If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
-  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$, 
-  - $\bf{P}$ are rows of eigenvectors
+  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
+  - $\bf{P}$ is row matrix of eigenvectors
   - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
   - $\bf{A}$ is similar to $\bf{D}$
 - Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
-- If a eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
+- If the eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
 $\bf{A} = \bf{PD{P}^{T}}$
 
 ----
@@ -778,7 +777,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 ----
 
 ## Principal Component Analysis
-# EigenDecomposition
+# EigenDecomposition summary
 <space>
 
 - Eigenvalue and eigenvectors are important
@@ -797,7 +796,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
 - Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
 - Covariance matrix<br>
-$\bf{C_{X}} = \bf{XX}^{T}$
+$\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
   - Diagonals are the variances, off-diagonals are covariances
 
 ----
@@ -831,7 +830,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
 $=\frac{1}{(n-1)}\bf{PAP^{T}}$<br>
-- $\bf{P}$ is a matrix with columns that are eigenvectors
+- $\bf{P}$ is a matrix with rows that are eigenvectors
 - $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
 $\bf{A} = \bf{EDE^{T}}$
 
@@ -852,7 +851,7 @@ $\bf{A} = \bf{EDE^{T}}$
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 
 ----
@@ -863,7 +862,7 @@ $\bf{A} = \bf{P^{T}DP}$<br>
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
@@ -901,9 +900,15 @@ m <- length(data)
 for (i in 10:m){
   tennis[,i] <- ifelse(is.na(data[,i]),0,data[,i])
 }
+```
 
-str(tennis)
+----
 
+## Principal Component Analysis
+# Example
+<space>
+
+```{r tennis_data_2}
 features <- tennis[,10:m]
 
 head(features)
@@ -918,12 +923,18 @@ dim(features)
 <space>
 
 ```{r tennis_eigen_setup}
+## Manually Calculated PCs
 scaled_features <- as.matrix(scale(features))
 Cx <- cov(scaled_features)
 eigenvalues <- eigen(Cx)$values
 eigenvectors <- eigen(Cx)$vectors
 PC <- scaled_features %*% eigenvectors
+Cy <- cov(PC)
 ```
+
+- Cy should be diagonalized matrix
+  - diagonals of Cy should be the eigenvalues of Cx
+  - off diagonals should be 0
 
 ----
 
@@ -932,8 +943,7 @@ PC <- scaled_features %*% eigenvectors
 <space>
 
 ```{r tennis_proof}
-Cy <- cov(PC)
-sum_diff <- sum(diag(Cy) - eigenvalues)
+sum_diff <- (sum(diag(Cy) - eigenvalues))^2
 round(sum_diff,6)
 off_diag <- upper.tri(Cy)|lower.tri(Cy) ## remove diagonal elements
 round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
@@ -969,19 +979,9 @@ mtext("Cumulative Variance Explained",side=4,line=3)
 <space>
 
 ```{r tennis_check, comment=""}
-pca.df <- prcomp(scaled_features)
-round(eigenvalues,10) == round((pca.df$sdev)^2,10)
-```
-
-----
-
-## Principal Component Analysis
-# Example
-<space>
-
-```{r tennis_check_2, comment=""}
+pca.df <- prcomp(scaled_features)  ## Built in R function
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matches R
 round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
-sum((eigenvectors[,1])^2)
 ```
 
 ----
@@ -990,7 +990,7 @@ sum((eigenvectors[,1])^2)
 # Example
 <space>
 
-- Can Principal Components separate our data?
+- Can the first two Principal Components separate our data?
 
 ```{r tennis_plot_gender, echo=FALSE,fig.height=5,fig.width=5}
 rows <- nrow(tennis)
@@ -1010,7 +1010,7 @@ ggplot(data=pca.plot,aes(x=PC1,y=PC2,color=gender)) + geom_point()
 ```{r gender_pc_score, comment=""}
 PC1 <- pca.df$x[,1]
 mean_PC1 <- mean(pca.df$x[,1])
-gen <- ifelse(PC1 > abs(mean_PC1)*2,"F","M")
+gen <- ifelse(PC1 > mean_PC1,"F","M")
 sum(diag(table(gen,as.character(data$Gender))))/rows
 ```
 
@@ -1192,66 +1192,6 @@ barplot(best_k, xlab = "Number of clusters",
         names.arg = 1:num_k,
         ylab="Within groups sum of squares",
         main="Scree Plot for Wine dataset")
-```
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-- Multiple distance metrics
-- Robust medioids
-- Computationally expensive
-- Cluster center is one of the points itself
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-- Cluster each point based on the closest center
-- Replace each center by the medioid of points in its cluster
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-- Selecting the optimal number of clusters
-- For each point p, first find the average distance between p and all other points in the same cluster, $A$
-- Then find the average distance between p and all points in the nearest cluster, $B$
-- The silhouette coefficient for p is $\frac{A - B}{\max(A,B)}$
-  - Values close to 1 mean points clearly belong to that cluster
-  - Values close to 0 mean points might belong in another cluster
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-```{r kmedoid_example}
-library(cluster)
-
-pam.best <- as.numeric()
-for (i in 2:20){
-  pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
-}
-best_k <- which.max(pam.best)
-best_k
-```
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-```{r,echo=FALSE,eval=TRUE,results='asis'}
-clusplot(pam(s.wine,best_k), main="K-medoids with K = 3",sub=NULL)
 ```
 
 ----

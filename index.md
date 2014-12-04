@@ -238,7 +238,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $cost(h_{\theta}(x), y) = -y \log(p) + (1-y) \log(1-p)$<br>
+- $cost(p, y) = -y \log(p) + (1-y) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
 - $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
@@ -260,7 +260,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (
 # Find parameters
 <space>
 
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
 - Minimize the cost
@@ -369,11 +369,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1   15.000
+[2,]         2   10.000
+[3,]         3    6.667
+[4,]         4    4.446
+[5,]         5    2.968
 ```
 
 ```
@@ -537,7 +537,7 @@ $objective
 <space>
 
 - Covariance matrix is square, symmetric
-- $\bf{C_{x}} = \bf{XX^{T}}$
+- $\bf{C_{x}} = \frac{1}{(n-1)}\bf{XX^{T}}$
 - Diagonals are variances, off-diagonals are covariances
   - Goal: maximize diagonals and minimize off-diagonals
 - The optimal $\bf{Y}$ would have a covariance matrix, $\bf{C_{Y}}$, with positive values on the diagonal and 0's on the off-diagonals
@@ -560,10 +560,10 @@ $objective
 <space>
 
 - Eigenvalues help uncover valuable insight into the underlying structure of a vector space
-- Eigenvalues/vectors come up extensively in physics, engineering, statistics
-- Eigenvalues are scalars derived from a square matrix, "characteristic roots" it
+- Eigenvalues/vectors come up extensively in physics, engineering, statistics<br><br>
+- Eigenvalues are scalars derived from a square matrix, "characteristic roots"
 - Eigenvectors are non-zero vectors associated with eigenvalues
-- Every square matrix has at least 1 eigenvalue/vector combo (otherwise its "degenerative")
+- Almost every square matrix has at least 1 eigenvalue/vector combo (otherwise its "degenerative")
 - Decomposing a square matrix into eigenvalues/vectors is eigen decomposition
 
 ----
@@ -581,11 +581,10 @@ $\bf{A}x = \lambda x$
 # Eigenwhat?
 <space>
 
+$\bf{A}x = \lambda x$<br>
 $\bf{A}x - \lambda Ix = 0$<br>
 $(\bf{A} - \lambda I)x = 0$<br>
-For this to be non-trivial then:<br>
-$\det(\bf{A} - \lambda I)$ = 0<br>
-  - singular
+For this to be non-trivial $\det(\bf{A} - \lambda I)$ = 0<br>
   - roots are eigenvalues of $\bf{A}$
   - characteristic polynomial of $\bf{A}$
   - ${\lambda}$ is called the spectrum
@@ -665,7 +664,7 @@ $\lambda = 3, 7$
 <space>
 
 - when $\lambda = 3$<br>
-$A\bf{x} = 3\bf{x}$<br>
+$\bf{Ax} = 3\bf{x}$<br>
 
 ----
 
@@ -736,7 +735,7 @@ $x_{1} = x_{2}$<br>
 # Eigencheck
 <space>
 
-$\bf{Ax} = \lambda \bf{x}$
+$\bf{Ax} = \bf{\lambdax}$
 
 ```r
 x1 = c(1,-1)
@@ -758,7 +757,9 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-Error: non-conformable arguments
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ```r
@@ -766,7 +767,9 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-Error: object 'x2' not found
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ----
@@ -776,12 +779,12 @@ Error: object 'x2' not found
 <space>
 
 - If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
-  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$, 
-  - $\bf{P}$ are rows of eigenvectors
+  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
+  - $\bf{P}$ is row matrix of eigenvectors
   - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
   - $\bf{A}$ is similar to $\bf{D}$
 - Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
-- If a eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
+- If the eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
 $\bf{A} = \bf{PD{P}^{T}}$
 
 ----
@@ -794,32 +797,20 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)
-```
-
-```
-## Error: object 'x2' not found
-```
-
-```r
 m <- m/sqrt(norm(m))  ## normalize
-```
-
-```
-## Error: object 'm' not found
-```
-
-```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-## Error: object 'm' not found
+##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 ```
 
 ----
 
 ## Principal Component Analysis
-# EigenDecomposition
+# EigenDecomposition summary
 <space>
 
 - Eigenvalue and eigenvectors are important
@@ -838,7 +829,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
 - Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
 - Covariance matrix<br>
-$\bf{C_{X}} = \bf{XX}^{T}$
+$\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
   - Diagonals are the variances, off-diagonals are covariances
 
 ----
@@ -872,7 +863,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
 $=\frac{1}{(n-1)}\bf{PAP^{T}}$<br>
-- $\bf{P}$ is a matrix with columns that are eigenvectors
+- $\bf{P}$ is a matrix with rows that are eigenvectors
 - $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
 $\bf{A} = \bf{EDE^{T}}$
 
@@ -893,7 +884,7 @@ $\bf{A} = \bf{EDE^{T}}$
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 
 ----
@@ -904,7 +895,7 @@ $\bf{A} = \bf{P^{T}DP}$<br>
 
 - Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
-Since $\bf{A} = \bf{EDE^{T}}$
+Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
@@ -943,48 +934,14 @@ m <- length(data)
 for (i in 10:m){
   tennis[,i] <- ifelse(is.na(data[,i]),0,data[,i])
 }
-
-str(tennis)
 ```
 
-```
-## 'data.frame':	943 obs. of  35 variables:
-##  $ unique_ID : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Tournament: Factor w/ 4 levels "AUS","FRE","USA",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Gender    : Factor w/ 2 levels "F","M": 2 2 2 2 2 2 2 2 2 2 ...
-##  $ Player1   : chr  "LukasLacko" "LeonardoMayer" "MarcosBaghdatis" "DmitryTursunov" ...
-##  $ Player2   : chr  "NovakDjokovic" "AlbertMontanes" "DenisIstomin" "MichaelRussell" ...
-##  $ Round     : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ Result    : int  0 1 0 1 0 0 0 1 0 1 ...
-##  $ FNL1      : int  0 3 0 3 1 1 2 2 0 3 ...
-##  $ FNL2      : int  3 0 3 0 3 3 3 0 3 2 ...
-##  $ FSP.1     : int  61 61 52 53 76 65 68 47 64 77 ...
-##  $ FSW.1     : int  35 31 53 39 63 51 73 18 26 76 ...
-##  $ SSP.1     : int  39 39 48 47 24 35 32 53 36 23 ...
-##  $ SSW.1     : int  18 13 20 24 12 22 24 15 12 11 ...
-##  $ ACE.1     : num  5 13 8 8 0 9 5 3 3 6 ...
-##  $ DBF.1     : num  1 1 4 6 4 3 3 4 0 4 ...
-##  $ WNR.1     : num  17 13 37 8 16 35 41 21 20 6 ...
-##  $ UFE.1     : num  29 1 50 6 35 41 50 31 39 4 ...
-##  $ BPC.1     : num  1 7 1 6 3 2 9 6 3 7 ...
-##  $ BPW.1     : num  3 14 9 9 12 7 17 20 7 24 ...
-##  $ NPA.1     : num  8 0 16 0 9 6 14 6 5 0 ...
-##  $ NPW.1     : num  11 0 23 0 13 12 30 9 14 0 ...
-##  $ TPW.1     : num  70 80 106 104 128 108 173 78 67 162 ...
-##  $ FSP.2     : int  68 60 77 50 53 63 60 54 67 60 ...
-##  $ FSW.2     : int  45 23 57 24 59 60 66 26 42 68 ...
-##  $ SSP.2     : int  32 40 23 50 47 37 40 46 33 40 ...
-##  $ SSW.2     : int  17 9 15 19 32 22 34 13 14 25 ...
-##  $ ACE.2     : num  10 1 9 1 17 24 2 0 12 8 ...
-##  $ DBF.2     : num  0 4 1 8 11 4 6 11 0 12 ...
-##  $ WNR.2     : num  40 1 41 1 59 47 57 11 32 8 ...
-##  $ UFE.2     : num  30 4 41 8 79 45 72 46 20 12 ...
-##  $ BPC.2     : num  4 0 4 1 3 4 10 2 7 6 ...
-##  $ BPW.2     : num  8 0 13 7 5 7 17 6 10 14 ...
-##  $ NPA.2     : num  8 0 12 0 16 14 25 8 8 0 ...
-##  $ NPW.2     : num  9 0 16 0 28 17 36 12 11 0 ...
-##  $ TPW.2     : num  101 42 126 79 127 122 173 61 94 141 ...
-```
+----
+
+## Principal Component Analysis
+# Example
+<space>
+
 
 ```r
 features <- tennis[,10:m]
@@ -1066,12 +1023,18 @@ dim(features)
 
 
 ```r
+## Manually Calculated PCs
 scaled_features <- as.matrix(scale(features))
 Cx <- cov(scaled_features)
 eigenvalues <- eigen(Cx)$values
 eigenvectors <- eigen(Cx)$vectors
 PC <- scaled_features %*% eigenvectors
+Cy <- cov(PC)
 ```
+
+- Cy should be diagonalized matrix
+  - diagonals of Cy should be the eigenvalues of Cx
+  - off diagonals should be 0
 
 ----
 
@@ -1081,8 +1044,7 @@ PC <- scaled_features %*% eigenvectors
 
 
 ```r
-Cy <- cov(PC)
-sum_diff <- sum(diag(Cy) - eigenvalues)
+sum_diff <- (sum(diag(Cy) - eigenvalues))^2
 round(sum_diff,6)
 ```
 
@@ -1115,21 +1077,14 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 
 
 ```r
-pca.df <- prcomp(scaled_features)
-round(eigenvalues,10) == round((pca.df$sdev)^2,10)
+pca.df <- prcomp(scaled_features)  ## Built in R function
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matches R
 ```
 
 ```
  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 [15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 ```
-
-----
-
-## Principal Component Analysis
-# Example
-<space>
-
 
 ```r
 round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
@@ -1144,21 +1099,13 @@ NPW.2 TPW.2
  TRUE  TRUE 
 ```
 
-```r
-sum((eigenvectors[,1])^2)
-```
-
-```
-[1] 1
-```
-
 ----
 
 ## Principal Component Analysis
 # Example
 <space>
 
-- Can Principal Components separate our data?
+- Can the first two Principal Components separate our data?
 
 ![plot of chunk tennis_plot_gender](figure/tennis_plot_gender.png) 
 
@@ -1174,7 +1121,7 @@ sum((eigenvectors[,1])^2)
 ```r
 PC1 <- pca.df$x[,1]
 mean_PC1 <- mean(pca.df$x[,1])
-gen <- ifelse(PC1 > abs(mean_PC1)*2,"F","M")
+gen <- ifelse(PC1 > mean_PC1,"F","M")
 sum(diag(table(gen,as.character(data$Gender))))/rows
 ```
 
@@ -1355,75 +1302,6 @@ str(wine[,1:7])
 ----
 
 ## Clustering
-# K-medoid
-<space>
-
-- Multiple distance metrics
-- Robust medioids
-- Computationally expensive
-- Cluster center is one of the points itself
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-- Cluster each point based on the closest center
-- Replace each center by the medioid of points in its cluster
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-- Selecting the optimal number of clusters
-- For each point p, first find the average distance between p and all other points in the same cluster, $A$
-- Then find the average distance between p and all points in the nearest cluster, $B$
-- The silhouette coefficient for p is $\frac{A - B}{\max(A,B)}$
-  - Values close to 1 mean points clearly belong to that cluster
-  - Values close to 0 mean points might belong in another cluster
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-
-```r
-library(cluster)
-```
-
-```
-## Warning: package 'cluster' was built under R version 3.0.2
-```
-
-```r
-pam.best <- as.numeric()
-for (i in 2:20){
-  pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
-}
-best_k <- which.max(pam.best)
-best_k
-```
-
-```
-## [1] 3
-```
-
-----
-
-## Clustering
-# K-medoid
-<space>
-
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
-
-----
-
-## Clustering
 # DBSCAN
 <space>
 
@@ -1493,22 +1371,13 @@ best_k
 # DBSCAN
 <space>
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 ----
 
 ## Clustering
 # DBSCAN
 <space>
-
-
-```
-## Warning: package 'fpc' was built under R version 3.0.2
-## Warning: package 'MASS' was built under R version 3.0.2
-## Warning: package 'mclust' was built under R version 3.0.2
-## Warning: package 'flexmix' was built under R version 3.0.2
-## Warning: package 'lattice' was built under R version 3.0.2
-```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
 
@@ -1784,15 +1653,6 @@ voting_test <- voting_data[-train_ind,]
 
 <img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
 
-```
-## Warning: package 'C50' was built under R version 3.0.2
-## Warning: package 'party' was built under R version 3.0.2
-## Warning: package 'zoo' was built under R version 3.0.2
-## Warning: package 'sandwich' was built under R version 3.0.2
-## Warning: package 'strucchange' was built under R version 3.0.2
-## Warning: package 'modeltools' was built under R version 3.0.2
-## Warning: package 'gmodels' was built under R version 3.0.2
-```
 
 ----
 
@@ -1804,8 +1664,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         89          1
-  republican        3         52
+  democrat         84          3
+  republican        1         57
 ```
 
 ----
@@ -1821,12 +1681,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.92
-synfuels-corporation-cutback        42.91
-mx-missile                           9.69
-anti-satellite-test-ban              7.27
-adoption-of-the-budget-resolution    6.23
-handicapped-infants                  0.00
+physician-fee-freeze                96.54
+synfuels-corporation-cutback        40.83
+mx-missile                          12.46
+immigration                         10.03
+adoption-of-the-budget-resolution    5.19
+religious-groups-in-schools          2.42
 ```
 
 ----
@@ -1855,8 +1715,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         88          2
-  republican        4         51
+  democrat         85          2
+  republican        3         55
 ```
 
 ----
@@ -1886,8 +1746,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         86          4
-  republican        2         53
+  democrat         84          3
+  republican        1         57
 ```
 
 ----
