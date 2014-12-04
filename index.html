@@ -64,7 +64,7 @@
 
 <ol>
 <li>Logistic Regression</li>
-<li>Principle Component Analysis</li>
+<li>Principal Component Analysis</li>
 <li>Clustering</li>
 <li>Trees</li>
 </ol>
@@ -242,11 +242,6 @@
 <li>Output is \(P(Y=1\hspace{2 mm} |\hspace{2 mm} X)\)</li>
 <li>Typical threshold is 0.5</li>
 </ul></li>
-<li>Assumes error terms are Binomially distributed
-
-<ul>
-<li>Generates 1&#39;s and 0&#39;s as the error term</li>
-</ul></li>
 </ul>
 
   </article>
@@ -268,11 +263,6 @@
 <ul>
 <li>Output is \(P(Y=1\hspace{2 mm} |\hspace{2 mm} X)\)</li>
 <li>Typical threshold is 0.5</li>
-</ul></li>
-<li>Assumes error terms are Binomially distributed
-
-<ul>
-<li>Generates 1&#39;s and 0&#39;s as the error term</li>
 </ul></li>
 <li>Sigmoid (logistic) function: \(g(z) = \frac{1}{1+e^{-z}}\)
 
@@ -310,7 +300,7 @@
 <p><space></p>
 
 <ul>
-<li>The hypothesis function, \(h_{\theta}(x)\), is \(P(Y=1|X)\)</li>
+<li>The hypothesis function, \(h_{\theta}(x)\), is \(P(Y=1\hspace{2 mm} |\hspace{2 mm} X)\)</li>
 <li>Linear regression: \(h_{\theta}(x) = \theta x^{T}\)<br>
 (Recall that \(\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}\))</li>
 </ul>
@@ -329,7 +319,7 @@
 <p><space></p>
 
 <ul>
-<li>The hypothesis function, \(h_{\theta}(x)\), is \(P(Y=1|X)\)</li>
+<li>The hypothesis function, \(h_{\theta}(x)\), is \(P(Y=1\hspace{2 mm} |\hspace{2 mm} X)\)</li>
 <li>Linear regression: \(h_{\theta}(x) = \theta x^{T}\)<br>
 (Recall that \(\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}\))</li>
 <li>Logistic regression: \(h_{\theta}(x) = g(\theta x^{T})\) 
@@ -360,7 +350,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <ul>
 <li>Links the odds of \(Y\) (a probability) to a linear regression in \(X\)</li>
 <li>Logit ranges from -ve infite to +ve infinite</li>
-<li>When \(x_{1}\) increases by 1 unit, \(P(Y=1)\) increases by \(e^{\theta_{1}}\)</li>
+<li>When \(x_{1}\) increases by 1 unit, \(P(Y=1\hspace{2 mm} |\hspace{2 mm} X)\) increases by \(e^{\theta_{1}}\)</li>
 </ul></li>
 </ul>
 
@@ -441,11 +431,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <ul>
 <li>\(Y\) can be 1 or 0 (binary case)</li>
 <li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
-<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 
-
-<ul>
-<li>\(p = h_{\theta}(x)\)</li>
-</ul></li>
+<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 </li>
 <li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p\), when \(Y\) = 0</li>
 </ul>
 
@@ -465,11 +451,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <ul>
 <li>\(Y\) can be 1 or 0 (binary case)</li>
 <li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
-<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 
-
-<ul>
-<li>\(p = h_{\theta}(x)\)</li>
-</ul></li>
+<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 </li>
 <li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p\), when \(Y\) = 0</li>
 <li>\(P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}\)</li>
 <li>Taking the log of both sides...</li>
@@ -488,7 +470,11 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></p>
+<ul>
+<li>\(cost(h_{\theta}(x), y) = -y \log(p) + (1-y) \log(1-p)\)<br></li>
+<li>\(p = h_{\theta}(x)\)</li>
+<li>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
+</ul>
 
 <p><img src="figure/cost_curves1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves2.png" alt="plot of chunk cost_curves"> </p>
 
@@ -505,9 +491,8 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></p>
-
 <ul>
+<li>\(cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)<br></li>
 <li>Logistic regression cost function is then<br>
 \(cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))\)</li>
 </ul>
@@ -574,7 +559,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <ul>
 <li>Class of hill-climbing techniques</li>
 <li>Efficient</li>
-<li>Easier to calculate that gradient descent
+<li>Easier to calculate than gradient descent
 
 <ul>
 <li>Except for first and second derivatives</li>
@@ -708,11 +693,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1    99.00
-[2,]         2    66.00
-[3,]         3    44.00
-[4,]         4    29.33
-[5,]         5    19.56
+[1,]         1   18.000
+[2,]         2   12.000
+[3,]         3    8.000
+[4,]         4    5.334
+[5,]         5    3.558
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -798,7 +783,7 @@ $objective
 
       <slide class="" id="slide-36" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Motivation</h1>
@@ -818,7 +803,7 @@ $objective
 
       <slide class="" id="slide-37" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -833,7 +818,7 @@ $objective
 
       <slide class="" id="slide-38" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -848,7 +833,7 @@ $objective
 
       <slide class="" id="slide-39" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -863,7 +848,7 @@ $objective
 
       <slide class="" id="slide-40" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -878,7 +863,7 @@ $objective
 
       <slide class="" id="slide-41" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -893,7 +878,7 @@ $objective
 
       <slide class="" id="slide-42" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -908,7 +893,7 @@ $objective
 
       <slide class="" id="slide-43" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -923,7 +908,7 @@ $objective
 
       <slide class="" id="slide-44" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -938,7 +923,7 @@ $objective
 
       <slide class="" id="slide-45" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -953,7 +938,7 @@ $objective
 
       <slide class="" id="slide-46" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -968,10 +953,10 @@ $objective
 <li>\(\bf{X}\) is original dataset, \(\bf{P}\) is a transformation of \(\bf{X}\) into \(\bf{Y}\)</li>
 </ul></li>
 <li>How to choose \(\bf{P}\)?<br>
-1) Reduce noise (redundancy)<br>
-2) Maximize signal (variance)
 
 <ul>
+<li>Reduce noise (redundancy)<br></li>
+<li>Maximize signal (variance)</li>
 <li>Provides most information</li>
 </ul></li>
 </ul>
@@ -982,7 +967,7 @@ $objective
 
       <slide class="" id="slide-47" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Concepts</h1>
@@ -990,15 +975,12 @@ $objective
 <p><space></p>
 
 <ul>
-<li>Covariance matrix is square, symmetric
-
-<ul>
+<li>Covariance matrix is square, symmetric</li>
 <li>\(\bf{C_{x}} = \bf{XX^{T}}\)</li>
-</ul></li>
 <li>Diagonals are variances, off-diagonals are covariances
 
 <ul>
-<li>Want to maximize diagonals and minimize off-diagonals</li>
+<li>Goal: maximize diagonals and minimize off-diagonals</li>
 </ul></li>
 <li>The optimal \(\bf{Y}\) would have a covariance matrix, \(\bf{C_{Y}}\), with positive values on the diagonal and 0&#39;s on the off-diagonals
 
@@ -1013,7 +995,7 @@ $objective
 
       <slide class="" id="slide-48" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>The Objective</h1>
@@ -1024,7 +1006,7 @@ $objective
 <li>Find some matrix \(\bf{P}\) where \(\bf{PX}=\bf{Y}\) such that \(\bf{Y}\)&#39;s covariance matrix is diagonalized
 
 <ul>
-<li>The rows of \(\bf{P}\) are the principle components</li>
+<li>The rows of \(\bf{P}\) are the Principal components</li>
 <li>PCA by &quot;eigen decomposition&quot;</li>
 </ul></li>
 </ul>
@@ -1035,7 +1017,7 @@ $objective
 
       <slide class="" id="slide-49" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigenwhat?</h1>
@@ -1057,7 +1039,7 @@ $objective
 
       <slide class="" id="slide-50" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigenwhat?</h1>
@@ -1076,7 +1058,7 @@ $objective
 
       <slide class="" id="slide-51" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigenwhat?</h1>
@@ -1101,7 +1083,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-52" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1116,7 +1098,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-53" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1132,7 +1114,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-54" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1150,7 +1132,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-55" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1167,7 +1149,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-56" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1186,7 +1168,7 @@ For this to be non-trivial then:<br>
 
       <slide class="" id="slide-57" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenExample</h1>
@@ -1209,7 +1191,7 @@ roots
 
       <slide class="" id="slide-58" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1227,7 +1209,7 @@ roots
 
       <slide class="" id="slide-59" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1247,7 +1229,7 @@ roots
 
       <slide class="" id="slide-60" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1268,7 +1250,7 @@ roots
 
       <slide class="" id="slide-61" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1291,7 +1273,7 @@ roots
 
       <slide class="" id="slide-62" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1312,7 +1294,7 @@ roots
 
       <slide class="" id="slide-63" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1335,7 +1317,7 @@ roots
 
       <slide class="" id="slide-64" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1356,7 +1338,7 @@ A %*% x2 == 7 * x2
 
       <slide class="" id="slide-65" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Eigencheck</h1>
@@ -1368,17 +1350,13 @@ A %*% x2 == 7 * x2
 <pre><code class="r">A %*% x1 == 3 * x1
 </code></pre>
 
-<pre><code>     [,1]
-[1,] TRUE
-[2,] TRUE
+<pre><code>Error: non-conformable arguments
 </code></pre>
 
 <pre><code class="r">A %*% x2 == 7 * x2
 </code></pre>
 
-<pre><code>     [,1]
-[1,] TRUE
-[2,] TRUE
+<pre><code>Error: object &#39;x2&#39; not found
 </code></pre>
 
   </article>
@@ -1387,7 +1365,7 @@ A %*% x2 == 7 * x2
 
       <slide class="" id="slide-66" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Diagonalization</h1>
@@ -1414,7 +1392,7 @@ A %*% x2 == 7 * x2
 
       <slide class="" id="slide-67" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Diagonalization</h1>
@@ -1424,13 +1402,21 @@ A %*% x2 == 7 * x2
 <p>\(\bf{A} = \bf{PDP^{T}}\)</p>
 
 <pre><code class="r">m &lt;- matrix(c(x1,x2),ncol=2)
-m &lt;- m/sqrt(norm(m))  ## normalize
-as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
-<pre><code>##      [,1] [,2]
-## [1,]    5    2
-## [2,]    2    5
+<pre><code>## Error: object &#39;x2&#39; not found
+</code></pre>
+
+<pre><code class="r">m &lt;- m/sqrt(norm(m))  ## normalize
+</code></pre>
+
+<pre><code>## Error: object &#39;m&#39; not found
+</code></pre>
+
+<pre><code class="r">as.matrix(m %*% diag(roots) %*% t(m))
+</code></pre>
+
+<pre><code>## Error: object &#39;m&#39; not found
 </code></pre>
 
   </article>
@@ -1439,7 +1425,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-68" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>EigenDecomposition</h1>
@@ -1465,7 +1451,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-69" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Objective</h1>
@@ -1488,7 +1474,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-70" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Proof</h1>
@@ -1504,7 +1490,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-71" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Proof</h1>
@@ -1522,7 +1508,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-72" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Proof</h1>
@@ -1547,7 +1533,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-73" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Motivation</h1>
@@ -1565,7 +1551,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
       <slide class="" id="slide-74" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Motivation</h1>
@@ -1585,7 +1571,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)
 
       <slide class="" id="slide-75" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Motivation</h1>
@@ -1610,7 +1596,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)
 
       <slide class="" id="slide-76" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Assumptions</h1>
@@ -1635,7 +1621,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)
 
       <slide class="" id="slide-77" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1766,7 +1752,7 @@ head(features)
 
       <slide class="" id="slide-78" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1786,7 +1772,7 @@ PC &lt;- scaled_features %*% eigenvectors
 
       <slide class="" id="slide-79" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1814,7 +1800,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
 
       <slide class="" id="slide-80" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1829,7 +1815,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
 
       <slide class="" id="slide-81" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1850,7 +1836,7 @@ round(eigenvalues,10) == round((pca.df$sdev)^2,10)
 
       <slide class="" id="slide-82" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1880,7 +1866,7 @@ NPW.2 TPW.2
 
       <slide class="" id="slide-83" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1888,7 +1874,7 @@ NPW.2 TPW.2
 <p><space></p>
 
 <ul>
-<li>Can Principle Components separate our data?</li>
+<li>Can Principal Components separate our data?</li>
 </ul>
 
 <p><img src="figure/tennis_plot_gender.png" alt="plot of chunk tennis_plot_gender"> </p>
@@ -1899,7 +1885,7 @@ NPW.2 TPW.2
 
       <slide class="" id="slide-84" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Example</h1>
@@ -1925,7 +1911,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
       <slide class="" id="slide-85" style="background:;">
   <hgroup>
-    <h2>Principle Component Analysis</h2>
+    <h2>Principal Component Analysis</h2>
   </hgroup>
   <article>
     <h1>Summary</h1>
@@ -2302,8 +2288,12 @@ str(wine[,1:7])
 <p><space></p>
 
 <pre><code class="r">library(cluster)
+</code></pre>
 
-pam.best &lt;- as.numeric()
+<pre><code>## Warning: package &#39;cluster&#39; was built under R version 3.0.2
+</code></pre>
+
+<pre><code class="r">pam.best &lt;- as.numeric()
 for (i in 2:20){
   pam.best[i] &lt;- pam(s.wine, k=i)$silinfo$avg.width
 }
@@ -2474,6 +2464,13 @@ best_k
     <h1>DBSCAN</h1>
 
 <p><space></p>
+
+<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
+## Warning: package &#39;MASS&#39; was built under R version 3.0.2
+## Warning: package &#39;mclust&#39; was built under R version 3.0.2
+## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
+## Warning: package &#39;lattice&#39; was built under R version 3.0.2
+</code></pre>
 
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 
@@ -2900,6 +2897,15 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <p><img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" /></p>
 
+<pre><code>## Warning: package &#39;C50&#39; was built under R version 3.0.2
+## Warning: package &#39;party&#39; was built under R version 3.0.2
+## Warning: package &#39;zoo&#39; was built under R version 3.0.2
+## Warning: package &#39;sandwich&#39; was built under R version 3.0.2
+## Warning: package &#39;strucchange&#39; was built under R version 3.0.2
+## Warning: package &#39;modeltools&#39; was built under R version 3.0.2
+## Warning: package &#39;gmodels&#39; was built under R version 3.0.2
+</code></pre>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
@@ -2915,8 +2921,8 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         97          2
-  republican        3         43
+  democrat         89          1
+  republican        3         52
 </code></pre>
 
   </article>
@@ -2936,12 +2942,12 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                97.23
+physician-fee-freeze                97.92
 synfuels-corporation-cutback        42.91
-mx-missile                          11.42
-adoption-of-the-budget-resolution    9.69
+mx-missile                           9.69
+anti-satellite-test-ban              7.27
+adoption-of-the-budget-resolution    6.23
 handicapped-infants                  0.00
-water-project-cost-sharing           0.00
 </code></pre>
 
   </article>
@@ -2983,8 +2989,8 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         97          2
-  republican        2         44
+  democrat         88          2
+  republican        4         51
 </code></pre>
 
   </article>
@@ -3027,8 +3033,8 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         97          2
-  republican        1         45
+  democrat         86          4
+  republican        2         53
 </code></pre>
 
   </article>

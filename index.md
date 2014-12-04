@@ -24,7 +24,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 1. Logistic Regression
-2. Principle Component Analysis
+2. Principal Component Analysis
 3. Clustering
 4. Trees
 
@@ -118,8 +118,6 @@ mode        : selfcontained # {standalone, draft}
 - Type of regression to predict the probability of being in a class
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
-- Assumes error terms are Binomially distributed
-  - Generates 1's and 0's as the error term
 
 ----
 
@@ -130,8 +128,6 @@ mode        : selfcontained # {standalone, draft}
 - Type of regression to predict the probability of being in a class
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
-- Assumes error terms are Binomially distributed
-  - Generates 1's and 0's as the error term
 - Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
   - Bounded by 0 and 1
 
@@ -149,7 +145,7 @@ mode        : selfcontained # {standalone, draft}
 # Find parameters
 <space>
 
-- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
+- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
 - Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
 (Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
 
@@ -159,7 +155,7 @@ mode        : selfcontained # {standalone, draft}
 # Find parameters
 <space>
 
-- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1|X)$
+- The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
 - Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
 (Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
 - Logistic regression: $h_{\theta}(x) = g(\theta x^{T})$ 
@@ -179,7 +175,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
   - Logit ranges from -ve infite to +ve infinite
-  - When $x_{1}$ increases by 1 unit, $P(Y=1)$ increases by $e^{\theta_{1}}$
+  - When $x_{1}$ increases by 1 unit, $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$ increases by $e^{\theta_{1}}$
 
 ----
 
@@ -221,7 +217,6 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - $Y$ can be 1 or 0 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
-  - $p = h_{\theta}(x)$
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 
 ----
@@ -233,7 +228,6 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - $Y$ can be 1 or 0 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
-  - $p = h_{\theta}(x)$
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 - $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
 - Taking the log of both sides...
@@ -244,7 +238,9 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -y \log(p) + (1-y) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
 
@@ -254,7 +250,7 @@ $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<
 # Find parameters
 <space>
 
-$cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
 - Logistic regression cost function is then<br>
 $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
 
@@ -290,7 +286,7 @@ $cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i}))
 
 - Class of hill-climbing techniques
 - Efficient
-- Easier to calculate that gradient descent
+- Easier to calculate than gradient descent
   - Except for first and second derivatives
 - Fast
 
@@ -373,11 +369,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    99.00
-[2,]         2    66.00
-[3,]         3    44.00
-[4,]         4    29.33
-[5,]         5    19.56
+[1,]         1   18.000
+[2,]         2   12.000
+[3,]         3    8.000
+[4,]         4    5.334
+[5,]         5    3.558
 ```
 
 ```
@@ -439,7 +435,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Motivation
 <space>
 
@@ -450,7 +446,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -458,7 +454,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -466,7 +462,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -474,7 +470,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -482,7 +478,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -490,7 +486,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -498,7 +494,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -506,7 +502,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -514,7 +510,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -522,7 +518,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
@@ -530,36 +526,36 @@ $objective
 - $\bf{PX}=\bf{Y}$
   - $\bf{X}$ is original dataset, $\bf{P}$ is a transformation of $\bf{X}$ into $\bf{Y}$
 - How to choose $\bf{P}$?<br>
-  1) Reduce noise (redundancy)<br>
-  2) Maximize signal (variance)
+  - Reduce noise (redundancy)<br>
+  - Maximize signal (variance)
   - Provides most information
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Concepts
 <space>
 
 - Covariance matrix is square, symmetric
-  - $\bf{C_{x}} = \bf{XX^{T}}$
+- $\bf{C_{x}} = \bf{XX^{T}}$
 - Diagonals are variances, off-diagonals are covariances
-  - Want to maximize diagonals and minimize off-diagonals
+  - Goal: maximize diagonals and minimize off-diagonals
 - The optimal $\bf{Y}$ would have a covariance matrix, $\bf{C_{Y}}$, with positive values on the diagonal and 0's on the off-diagonals
   - Diagonalization
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # The Objective
 <space>
 
 - Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
-  - The rows of $\bf{P}$ are the principle components
+  - The rows of $\bf{P}$ are the Principal components
   - PCA by "eigen decomposition"
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigenwhat?
 <space>
 
@@ -572,7 +568,7 @@ $objective
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigenwhat?
 <space>
 
@@ -581,7 +577,7 @@ $\bf{A}x = \lambda x$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigenwhat?
 <space>
 
@@ -596,7 +592,7 @@ $\det(\bf{A} - \lambda I)$ = 0<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -604,7 +600,7 @@ $\det(\bf{A} - \lambda I)$ = 0<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -613,7 +609,7 @@ $\det(\bf{A} - \lambda I)$ = 0<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -624,7 +620,7 @@ $\det(\bf{A} - \lambda I)$ = 0<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -634,7 +630,7 @@ $\det(\bf{A} - \lambda I)$ = 0<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -646,7 +642,7 @@ $\lambda = ?$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenExample
 <space>
 
@@ -664,7 +660,7 @@ $\lambda = 3, 7$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -673,7 +669,7 @@ $A\bf{x} = 3\bf{x}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -684,7 +680,7 @@ $2x_{1} + 5x_{2} = 3x_{2}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -696,7 +692,7 @@ $x_{1} = -x_{2}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -710,7 +706,7 @@ $x_{1} = -x_{2}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -722,7 +718,7 @@ $x_{1} = x_{2}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -736,7 +732,7 @@ $x_{1} = x_{2}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -751,7 +747,7 @@ A %*% x2 == 7 * x2
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Eigencheck
 <space>
 
@@ -762,9 +758,7 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error: non-conformable arguments
 ```
 
 ```r
@@ -772,14 +766,12 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error: object 'x2' not found
 ```
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Diagonalization
 <space>
 
@@ -794,7 +786,7 @@ $\bf{A} = \bf{PD{P}^{T}}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Diagonalization
 <space>
 
@@ -802,19 +794,31 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)
+```
+
+```
+## Error: object 'x2' not found
+```
+
+```r
 m <- m/sqrt(norm(m))  ## normalize
+```
+
+```
+## Error: object 'm' not found
+```
+
+```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-##      [,1] [,2]
-## [1,]    5    2
-## [2,]    2    5
+## Error: object 'm' not found
 ```
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # EigenDecomposition
 <space>
 
@@ -828,7 +832,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Objective
 <space>
 
@@ -839,7 +843,7 @@ $\bf{C_{X}} = \bf{XX}^{T}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Proof
 <space>
 
@@ -848,7 +852,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Proof
 <space>
 
@@ -859,7 +863,7 @@ $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Proof
 <space>
 
@@ -874,7 +878,7 @@ $\bf{A} = \bf{EDE^{T}}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Motivation
 <space>
 
@@ -883,7 +887,7 @@ $\bf{A} = \bf{EDE^{T}}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Motivation
 <space>
 
@@ -894,7 +898,7 @@ $\bf{A} = \bf{P^{T}DP}$<br>
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Motivation
 <space>
 
@@ -910,7 +914,7 @@ $= \frac{1}{n-1}\bf{D}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Assumptions
 <space>
 
@@ -923,7 +927,7 @@ $= \frac{1}{n-1}\bf{D}$
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1056,7 +1060,7 @@ dim(features)
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1071,7 +1075,7 @@ PC <- scaled_features %*% eigenvectors
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1097,7 +1101,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1105,7 +1109,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1122,7 +1126,7 @@ round(eigenvalues,10) == round((pca.df$sdev)^2,10)
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1150,17 +1154,17 @@ sum((eigenvectors[,1])^2)
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
-- Can Principle Components separate our data?
+- Can Principal Components separate our data?
 
 ![plot of chunk tennis_plot_gender](figure/tennis_plot_gender.png) 
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Example
 <space>
 
@@ -1180,7 +1184,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 ----
 
-## Principle Component Analysis
+## Principal Component Analysis
 # Summary
 <space>
 
@@ -1390,7 +1394,13 @@ str(wine[,1:7])
 
 ```r
 library(cluster)
+```
 
+```
+## Warning: package 'cluster' was built under R version 3.0.2
+```
+
+```r
 pam.best <- as.numeric()
 for (i in 2:20){
   pam.best[i] <- pam(s.wine, k=i)$silinfo$avg.width
@@ -1490,6 +1500,15 @@ best_k
 ## Clustering
 # DBSCAN
 <space>
+
+
+```
+## Warning: package 'fpc' was built under R version 3.0.2
+## Warning: package 'MASS' was built under R version 3.0.2
+## Warning: package 'mclust' was built under R version 3.0.2
+## Warning: package 'flexmix' was built under R version 3.0.2
+## Warning: package 'lattice' was built under R version 3.0.2
+```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
 
@@ -1765,6 +1784,15 @@ voting_test <- voting_data[-train_ind,]
 
 <img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
 
+```
+## Warning: package 'C50' was built under R version 3.0.2
+## Warning: package 'party' was built under R version 3.0.2
+## Warning: package 'zoo' was built under R version 3.0.2
+## Warning: package 'sandwich' was built under R version 3.0.2
+## Warning: package 'strucchange' was built under R version 3.0.2
+## Warning: package 'modeltools' was built under R version 3.0.2
+## Warning: package 'gmodels' was built under R version 3.0.2
+```
 
 ----
 
@@ -1776,8 +1804,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         97          2
-  republican        3         43
+  democrat         89          1
+  republican        3         52
 ```
 
 ----
@@ -1793,12 +1821,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.23
+physician-fee-freeze                97.92
 synfuels-corporation-cutback        42.91
-mx-missile                          11.42
-adoption-of-the-budget-resolution    9.69
+mx-missile                           9.69
+anti-satellite-test-ban              7.27
+adoption-of-the-budget-resolution    6.23
 handicapped-infants                  0.00
-water-project-cost-sharing           0.00
 ```
 
 ----
@@ -1827,8 +1855,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         97          2
-  republican        2         44
+  democrat         88          2
+  republican        4         51
 ```
 
 ----
@@ -1858,8 +1886,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         97          2
-  republican        1         45
+  democrat         86          4
+  republican        2         53
 ```
 
 ----
