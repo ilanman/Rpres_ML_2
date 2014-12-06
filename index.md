@@ -14,9 +14,9 @@ mode        : selfcontained # {standalone, draft}
 ## Objectives 
 <space>
 
-1. Understand what's happening under the hood of some popular ML algorithms and techniques
-2. Learn how to tune parameters
-3. Practice R
+- Better understand popular ML algorithms and techniques
+- Less code, more insight
+- Familiarity with basic statistics concepts assumed
 
 ----
 
@@ -27,6 +27,16 @@ mode        : selfcontained # {standalone, draft}
 2. Principal Component Analysis
 3. Clustering
 4. Trees
+
+----
+
+## Logistic Regression 
+# Objectives
+<space>
+
+1. Motivation
+2. Concepts and key assumptions
+3. Popular approximation approach
 
 ----
 
@@ -369,11 +379,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   15.000
-[2,]         2   10.000
-[3,]         3    6.667
-[4,]         4    4.446
-[5,]         5    2.968
+[1,]         1    99.00
+[2,]         2    66.00
+[3,]         3    44.00
+[4,]         4    29.33
+[5,]         5    19.56
 ```
 
 ```
@@ -436,6 +446,17 @@ $objective
 ----
 
 ## Principal Component Analysis
+# Objectives
+<space>
+
+1. Motivation and examples
+2. Eigenvalues
+3. Derivation
+4. Example
+
+----
+
+## Principal Component Analysis
 # Motivation
 <space>
 
@@ -450,7 +471,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/original_data.png)
+![original_data](Rpres_ML_2/figure/original_data.png)
 
 ----
 
@@ -458,7 +479,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/calc_centroid.png)
+![calc_centroid](Rpres_ML_2/figure/calc_centroid.png)
 
 ----
 
@@ -466,7 +487,7 @@ $objective
 # Concepts
 <space>
 
-![sub_mean](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/sub_mean.png)
+![sub_mean](Rpres_ML_2/figure/sub_mean.png)
 
 ----
 
@@ -474,7 +495,7 @@ $objective
 # Concepts
 <space>
 
-![max_var_dir](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/max_var_dir.png)
+![max_var_dir](Rpres_ML_2/figure/max_var_dir.png)
 
 ----
 
@@ -482,7 +503,7 @@ $objective
 # Concepts
 <space>
 
-![second_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/second_PC.png)
+![second_PC](Rpres_ML_2/figure/second_PC.png)
 
 ----
 
@@ -490,7 +511,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_grid](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_grid.png)
+![rotated_grid](Rpres_ML_2/figure/rotated_grid.png)
 
 ----
 
@@ -498,7 +519,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_PCs](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/rotated_PCs.png)
+![rotated_PCs](Rpres_ML_2/figure/rotated_PCs.png)
 
 ----
 
@@ -506,7 +527,7 @@ $objective
 # Concepts
 <space>
 
-![new_axes](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/new_axes.png)
+![new_axes](Rpres_ML_2/figure/new_axes.png)
 
 ----
 
@@ -514,7 +535,7 @@ $objective
 # Concepts
 <space>
 
-![final_PC](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/final_PC.png)
+![final_PC](Rpres_ML_2/figure/final_PC.png)
 
 ----
 
@@ -735,7 +756,7 @@ $x_{1} = x_{2}$<br>
 # Eigencheck
 <space>
 
-$\bf{Ax} = \bf{\lambdax}$
+$\bf{Ax} = \bf{\lambda x}$
 
 ```r
 x1 = c(1,-1)
@@ -1145,6 +1166,16 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 ----
 
 ## Clustering
+# Objectives
+<space>
+
+1. Motivation and examples
+2. Kmeans
+3. DBSCAN
+
+----
+
+## Clustering
 # Motivation
 <space>
 
@@ -1248,7 +1279,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_density.png)
+![different_density](Rpres_ML_2/figure/different_density.png)
 
 ----
 
@@ -1256,7 +1287,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](Rpres_ML_2/figure/different_size_clusters.png)
 
 ----
 
@@ -1264,7 +1295,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/non-globular.png)
+![non-globular](Rpres_ML_2/figure/non-globular.png)
 
 ----
 
@@ -1329,7 +1360,7 @@ str(wine[,1:7])
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_structure.png)
+![density](Rpres_ML_2/figure/density_structure.png)
 
 ----
 
@@ -1363,7 +1394,7 @@ str(wine[,1:7])
 # DBSCAN
 <space>
 
-![density_win](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/density_ex_win.png)
+![density_win](Rpres_ML_2/figure/density_ex_win.png)
 
 ----
 
@@ -1396,10 +1427,20 @@ str(wine[,1:7])
 ----
 
 ## Trees
+# Objectives
+<space>
+
+1. Structure
+2. Entropy
+3. Boosting and error cost
+
+----
+
+## Trees
 # Motivation
 <space>
 
-![overview](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_example.png)
+![overview](Rpres_ML_2/figure/tree_example.png)
 
 ----
 
@@ -1407,7 +1448,7 @@ str(wine[,1:7])
 # Structure
 <space>
 
-![structure](/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/tree_structure.png)
+![structure](Rpres_ML_2/figure/tree_structure.png)
 
 ----
 
@@ -1651,7 +1692,7 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="/Users/ilanman/Desktop/Data/Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
 
 
 ----
@@ -1664,8 +1705,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         84          3
-  republican        1         57
+  democrat         97          2
+  republican        3         43
 ```
 
 ----
@@ -1681,12 +1722,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                96.54
-synfuels-corporation-cutback        40.83
-mx-missile                          12.46
-immigration                         10.03
-adoption-of-the-budget-resolution    5.19
-religious-groups-in-schools          2.42
+physician-fee-freeze                97.23
+synfuels-corporation-cutback        42.91
+mx-missile                          11.42
+adoption-of-the-budget-resolution    9.69
+handicapped-infants                  0.00
+water-project-cost-sharing           0.00
 ```
 
 ----
@@ -1715,8 +1756,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         85          2
-  republican        3         55
+  democrat         97          2
+  republican        2         44
 ```
 
 ----
@@ -1746,8 +1787,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         84          3
-  republican        1         57
+  democrat         97          2
+  republican        1         45
 ```
 
 ----
@@ -1784,7 +1825,7 @@ conf
 
 - Logistic regression
 - Math behind PCA
-- 3 types of clusters
+- Clustering basics
 - Trees and improvements
 
 ----
