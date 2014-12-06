@@ -467,7 +467,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![original_data](..Rpres_ML_2/figure/original_data.png)
+![original_data](..figure/original_data.png)
 
 ----
 
@@ -475,7 +475,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![calc_centroid](..Rpres_ML_2/figure/calc_centroid.png)
+![calc_centroid](/figure/calc_centroid.png)
 
 ----
 
@@ -483,7 +483,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![sub_mean](Rpres_ML_2/figure/sub_mean.png)
+![sub_mean](figure/sub_mean.png)
 
 ----
 
@@ -491,7 +491,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![max_var_dir](Rpres_ML_2/figure/max_var_dir.png)
+![max_var_dir](figure/max_var_dir.png)
 
 ----
 
@@ -499,7 +499,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![second_PC](Rpres_ML_2/figure/second_PC.png)
+![second_PC](figure/second_PC.png)
 
 ----
 
@@ -507,7 +507,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![rotated_grid](Rpres_ML_2/figure/rotated_grid.png)
+![rotated_grid](figure/rotated_grid.png)
 
 ----
 
@@ -515,7 +515,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![rotated_PCs](Rpres_ML_2/figure/rotated_PCs.png)
+![rotated_PCs](figure/rotated_PCs.png)
 
 ----
 
@@ -523,7 +523,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![new_axes](Rpres_ML_2/figure/new_axes.png)
+![new_axes](figure/new_axes.png)
 
 ----
 
@@ -531,7 +531,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![final_PC](Rpres_ML_2/figure/final_PC.png)
+![final_PC](figure/final_PC.png)
 
 ----
 
@@ -1174,7 +1174,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](Rpres_ML_2/figure/different_density.png)
+![different_density](figure/different_density.png)
 
 ----
 
@@ -1182,7 +1182,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](Rpres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](figure/different_size_clusters.png)
 
 ----
 
@@ -1190,7 +1190,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](Rpres_ML_2/figure/non-globular.png)
+![non-globular](figure/non-globular.png)
 
 ----
 
@@ -1255,7 +1255,7 @@ barplot(best_k, xlab = "Number of clusters",
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](Rpres_ML_2/figure/density_structure.png)
+![density](figure/density_structure.png)
 
 ----
 
@@ -1289,7 +1289,7 @@ barplot(best_k, xlab = "Number of clusters",
 # DBSCAN
 <space>
 
-![density_win](Rpres_ML_2/figure/density_ex_win.png)
+![density_win](figure/density_ex_win.png)
 
 ----
 
@@ -1344,7 +1344,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Motivation
 <space>
 
-![overview](Rpres_ML_2/figure/tree_example.png)
+![overview](figure/tree_example.png)
 
 ----
 
@@ -1352,7 +1352,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 # Structure
 <space>
 
-![structure](Rpres_ML_2/figure/tree_structure.png)
+![structure](figure/tree_structure.png)
 
 ----
 
@@ -1553,7 +1553,7 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="figure/real_tree_example.png" height="500px" width="500px" />
 ```{r tree_plot,message=FALSE,echo=FALSE, results='hide'}
 library(C50)
 library(party)

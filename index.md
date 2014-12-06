@@ -379,11 +379,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    54.00
-[2,]         2    36.00
-[3,]         3    24.00
-[4,]         4    16.00
-[5,]         5    10.67
+[1,]         1   28.000
+[2,]         2   18.667
+[3,]         3   12.445
+[4,]         4    8.297
+[5,]         5    5.532
 ```
 
 ```
@@ -471,7 +471,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](..Rpres_ML_2/figure/original_data.png)
+![original_data](..figure/original_data.png)
 
 ----
 
@@ -479,7 +479,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](..Rpres_ML_2/figure/calc_centroid.png)
+![calc_centroid](/figure/calc_centroid.png)
 
 ----
 
@@ -487,7 +487,7 @@ $objective
 # Concepts
 <space>
 
-![sub_mean](Rpres_ML_2/figure/sub_mean.png)
+![sub_mean](figure/sub_mean.png)
 
 ----
 
@@ -495,7 +495,7 @@ $objective
 # Concepts
 <space>
 
-![max_var_dir](Rpres_ML_2/figure/max_var_dir.png)
+![max_var_dir](figure/max_var_dir.png)
 
 ----
 
@@ -503,7 +503,7 @@ $objective
 # Concepts
 <space>
 
-![second_PC](Rpres_ML_2/figure/second_PC.png)
+![second_PC](figure/second_PC.png)
 
 ----
 
@@ -511,7 +511,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_grid](Rpres_ML_2/figure/rotated_grid.png)
+![rotated_grid](figure/rotated_grid.png)
 
 ----
 
@@ -519,7 +519,7 @@ $objective
 # Concepts
 <space>
 
-![rotated_PCs](Rpres_ML_2/figure/rotated_PCs.png)
+![rotated_PCs](figure/rotated_PCs.png)
 
 ----
 
@@ -527,7 +527,7 @@ $objective
 # Concepts
 <space>
 
-![new_axes](Rpres_ML_2/figure/new_axes.png)
+![new_axes](figure/new_axes.png)
 
 ----
 
@@ -535,7 +535,7 @@ $objective
 # Concepts
 <space>
 
-![final_PC](Rpres_ML_2/figure/final_PC.png)
+![final_PC](figure/final_PC.png)
 
 ----
 
@@ -1279,7 +1279,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_density](Rpres_ML_2/figure/different_density.png)
+![different_density](figure/different_density.png)
 
 ----
 
@@ -1287,7 +1287,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![different_size_clusters](Rpres_ML_2/figure/different_size_clusters.png)
+![different_size_clusters](figure/different_size_clusters.png)
 
 ----
 
@@ -1295,7 +1295,7 @@ $SSE(k) = \sum_{i=1}^{m}\sum_{j=1}^{n} (x_{ij} - \bar{x}_{kj})^2$
 # Kmean fails
 <space>
 
-![non-globular](Rpres_ML_2/figure/non-globular.png)
+![non-globular](figure/non-globular.png)
 
 ----
 
@@ -1360,7 +1360,7 @@ str(wine[,1:7])
 - Core points are located inside a cluster
 - Border points are on the borders between two clusters
 - Neighborhood of p are all points within some radius of p, $Eps$<br>
-![density](Rpres_ML_2/figure/density_structure.png)
+![density](figure/density_structure.png)
 
 ----
 
@@ -1394,7 +1394,7 @@ str(wine[,1:7])
 # DBSCAN
 <space>
 
-![density_win](Rpres_ML_2/figure/density_ex_win.png)
+![density_win](figure/density_ex_win.png)
 
 ----
 
@@ -1440,7 +1440,7 @@ str(wine[,1:7])
 # Motivation
 <space>
 
-![overview](Rpres_ML_2/figure/tree_example.png)
+![overview](figure/tree_example.png)
 
 ----
 
@@ -1448,7 +1448,7 @@ str(wine[,1:7])
 # Structure
 <space>
 
-![structure](Rpres_ML_2/figure/tree_structure.png)
+![structure](figure/tree_structure.png)
 
 ----
 
@@ -1692,7 +1692,7 @@ voting_test <- voting_data[-train_ind,]
 # Example
 <space>
 
-<img src="Rpres_ML_2/figure/real_tree_example.png" height="500px" width="500px" />
+<img src="figure/real_tree_example.png" height="500px" width="500px" />
 
 
 ----
@@ -1705,8 +1705,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         78          7
-  republican        1         59
+  democrat         75          6
+  republican        1         63
 ```
 
 ----
@@ -1722,7 +1722,7 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.58
+physician-fee-freeze                96.89
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 adoption-of-the-budget-resolution    0.00
@@ -1756,8 +1756,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         78          7
-  republican        1         59
+  democrat         75          6
+  republican        1         63
 ```
 
 ----
@@ -1787,8 +1787,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         75         10
-  republican        0         60
+  democrat         73          8
+  republican        1         63
 ```
 
 ----
