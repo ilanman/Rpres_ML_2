@@ -467,7 +467,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![original_data](..figure/original_data.png)
+![original_data](figure/original_data.png)
 
 ----
 
@@ -475,7 +475,7 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 # Concepts
 <space>
 
-![calc_centroid](/figure/calc_centroid.png)
+![calc_centroid](figure/calc_centroid.png)
 
 ----
 

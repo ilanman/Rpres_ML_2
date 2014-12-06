@@ -379,11 +379,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   28.000
-[2,]         2   18.667
-[3,]         3   12.445
-[4,]         4    8.297
-[5,]         5    5.532
+[1,]         1    55.00
+[2,]         2    36.67
+[3,]         3    24.44
+[4,]         4    16.30
+[5,]         5    10.86
 ```
 
 ```
@@ -471,7 +471,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](..figure/original_data.png)
+![original_data](figure/original_data.png)
 
 ----
 
@@ -479,7 +479,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](/figure/calc_centroid.png)
+![calc_centroid](figure/calc_centroid.png)
 
 ----
 
@@ -1705,8 +1705,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         75          6
-  republican        1         63
+  democrat         88          2
+  republican        5         50
 ```
 
 ----
@@ -1722,12 +1722,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                96.89
+physician-fee-freeze                97.58
+synfuels-corporation-cutback        41.18
+mx-missile                          11.07
+adoption-of-the-budget-resolution    9.69
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
-adoption-of-the-budget-resolution    0.00
-el-salvador-aid                      0.00
-religious-groups-in-schools          0.00
 ```
 
 ----
@@ -1756,8 +1756,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         75          6
-  republican        1         63
+  democrat         89          1
+  republican        5         50
 ```
 
 ----
@@ -1787,8 +1787,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         73          8
-  republican        1         63
+  democrat         85          5
+  republican        1         54
 ```
 
 ----
