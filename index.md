@@ -379,11 +379,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    99.00
-[2,]         2    66.00
-[3,]         3    44.00
-[4,]         4    29.33
-[5,]         5    19.56
+[1,]         1    54.00
+[2,]         2    36.00
+[3,]         3    24.00
+[4,]         4    16.00
+[5,]         5    10.67
 ```
 
 ```
@@ -471,7 +471,7 @@ $objective
 # Concepts
 <space>
 
-![original_data](Rpres_ML_2/figure/original_data.png)
+![original_data](..Rpres_ML_2/figure/original_data.png)
 
 ----
 
@@ -479,7 +479,7 @@ $objective
 # Concepts
 <space>
 
-![calc_centroid](Rpres_ML_2/figure/calc_centroid.png)
+![calc_centroid](..Rpres_ML_2/figure/calc_centroid.png)
 
 ----
 
@@ -1705,8 +1705,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         97          2
-  republican        3         43
+  democrat         78          7
+  republican        1         59
 ```
 
 ----
@@ -1722,12 +1722,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.23
-synfuels-corporation-cutback        42.91
-mx-missile                          11.42
-adoption-of-the-budget-resolution    9.69
+physician-fee-freeze                97.58
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
+adoption-of-the-budget-resolution    0.00
+el-salvador-aid                      0.00
+religious-groups-in-schools          0.00
 ```
 
 ----
@@ -1756,8 +1756,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         97          2
-  republican        2         44
+  democrat         78          7
+  republican        1         59
 ```
 
 ----
@@ -1787,8 +1787,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         97          2
-  republican        1         45
+  democrat         75         10
+  republican        0         60
 ```
 
 ----
