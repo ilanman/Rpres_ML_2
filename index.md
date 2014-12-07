@@ -250,6 +250,23 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
+
+\[f(x) = \left\{
+  \begin{array}{lr}
+    -log(h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 1
+  \end{array}
+\right.
+\]
+
+![plot of chunk cost_curves_1](figure/cost_curves_11.png) ![plot of chunk cost_curves_1](figure/cost_curves_12.png) 
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
 - $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 
@@ -270,13 +287,22 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 - Joint probability
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - Taking the log of both sides...
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 
 ----
 
@@ -418,11 +444,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   19.000
-[2,]         2   12.667
-[3,]         3    8.445
-[4,]         4    5.630
-[5,]         5    3.755
+[1,]         1    68.00
+[2,]         2    45.33
+[3,]         3    30.22
+[4,]         4    20.15
+[5,]         5    13.43
 ```
 
 ```
@@ -1744,8 +1770,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         85          3
-  republican        1         56
+  democrat         82         10
+  republican        2         51
 ```
 
 ----
@@ -1761,12 +1787,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.58
-synfuels-corporation-cutback        38.06
-mx-missile                          10.03
-adoption-of-the-budget-resolution    8.65
+physician-fee-freeze                97.92
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
+adoption-of-the-budget-resolution    0.00
+el-salvador-aid                      0.00
+religious-groups-in-schools          0.00
 ```
 
 ----
@@ -1795,8 +1821,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         84          4
-  republican        1         56
+  democrat         84          8
+  republican        2         51
 ```
 
 ----
@@ -1826,8 +1852,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         78         10
-  republican        0         57
+  democrat         79         13
+  republican        0         53
 ```
 
 ----

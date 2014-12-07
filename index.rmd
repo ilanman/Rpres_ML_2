@@ -267,6 +267,26 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
+
+\[cost function = \left\{
+  \begin{array}{lr}
+    -log(h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 1
+  \end{array}
+\right.
+\]
+
+```{r cost_curves_1, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
+curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
+curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=0")
+```
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
 - $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 
@@ -287,13 +307,22 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
 - Joint probability
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - Taking the log of both sides...
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 
 ----
 

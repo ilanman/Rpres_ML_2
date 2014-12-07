@@ -503,10 +503,15 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<ul>
-<li>\(Y\) can be Male or Female, 0 or 1 (binary case)</li>
-<li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
-</ul>
+<p>\[f(x) = \left\{
+  \begin{array}{lr}
+    -log(h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 1
+  \end{array}
+\right.
+\]</p>
+
+<p><img src="figure/cost_curves_11.png" alt="plot of chunk cost_curves_1"> <img src="figure/cost_curves_12.png" alt="plot of chunk cost_curves_1"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -524,8 +529,6 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <ul>
 <li>\(Y\) can be Male or Female, 0 or 1 (binary case)</li>
 <li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
-<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 </li>
-<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p\), when \(Y\) = 0</li>
 </ul>
 
   </article>
@@ -542,7 +545,27 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <p><space></p>
 
 <ul>
-<li>\(Y\) can be 1 or 0 (binary case)</li>
+<li>\(Y\) can be Male or Female, 0 or 1 (binary case)</li>
+<li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
+<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 </li>
+<li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p\), when \(Y\) = 0</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>\(Y\) can be Male or Female, 0 or 1 (binary case)</li>
 <li>\(Y \hspace{2 mm} | \hspace{2 mm} X\) ~ Bernoulli</li>
 <li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = p\), when \(Y\) = 1 </li>
 <li>\(P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p\), when \(Y\) = 0</li>
@@ -555,7 +578,25 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-26" style="background:;">
+      <slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+  </hgroup>
+  <article>
+    <h1>Find parameters</h1>
+
+<p><space></p>
+
+<ul>
+<li>\(P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}\) for many \(y_{i}'s\)</li>
+<li>\(P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -575,7 +616,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-27" style="background:;">
+      <slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -597,7 +638,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-28" style="background:;">
+      <slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -618,7 +659,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-29" style="background:;">
+      <slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -643,7 +684,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-30" style="background:;">
+      <slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -667,7 +708,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-31" style="background:;">
+      <slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -684,7 +725,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-32" style="background:;">
+      <slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -703,7 +744,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-33" style="background:;">
+      <slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -730,7 +771,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-34" style="background:;">
+      <slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -747,7 +788,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-35" style="background:;">
+      <slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -779,7 +820,7 @@ newton &lt;- function(num.its, dfn, d2fn){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-36" style="background:;">
+      <slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -789,11 +830,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1   19.000
-[2,]         2   12.667
-[3,]         3    8.445
-[4,]         4    5.630
-[5,]         5    3.755
+[1,]         1    68.00
+[2,]         2    45.33
+[3,]         3    30.22
+[4,]         4    20.15
+[5,]         5    13.43
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -811,7 +852,7 @@ newton &lt;- function(num.its, dfn, d2fn){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-37" style="background:;">
+      <slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -834,7 +875,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-38" style="background:;">
+      <slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -854,7 +895,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-39" style="background:;">
+      <slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Logistic Regression</h2>
   </hgroup>
@@ -877,7 +918,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-40" style="background:;">
+      <slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -897,7 +938,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-41" style="background:;">
+      <slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -917,7 +958,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-42" style="background:;">
+      <slide class="" id="slide-44" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -932,7 +973,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-43" style="background:;">
+      <slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -947,7 +988,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-44" style="background:;">
+      <slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -962,7 +1003,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-45" style="background:;">
+      <slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -977,7 +1018,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-46" style="background:;">
+      <slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -992,7 +1033,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-47" style="background:;">
+      <slide class="" id="slide-49" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1007,7 +1048,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-48" style="background:;">
+      <slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1022,7 +1063,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-49" style="background:;">
+      <slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1037,7 +1078,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-50" style="background:;">
+      <slide class="" id="slide-52" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1052,7 +1093,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-51" style="background:;">
+      <slide class="" id="slide-53" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1081,7 +1122,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-52" style="background:;">
+      <slide class="" id="slide-54" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1109,7 +1150,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-53" style="background:;">
+      <slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1131,7 +1172,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-54" style="background:;">
+      <slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1153,7 +1194,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-55" style="background:;">
+      <slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1172,7 +1213,7 @@ $objective
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-56" style="background:;">
+      <slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1196,7 +1237,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-57" style="background:;">
+      <slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1211,7 +1252,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-58" style="background:;">
+      <slide class="" id="slide-60" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1227,7 +1268,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-59" style="background:;">
+      <slide class="" id="slide-61" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1245,7 +1286,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-60" style="background:;">
+      <slide class="" id="slide-62" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1262,7 +1303,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-61" style="background:;">
+      <slide class="" id="slide-63" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1281,7 +1322,7 @@ For this to be non-trivial \(\det(\bf{A} - \lambda I)\) = 0<br></p>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-62" style="background:;">
+      <slide class="" id="slide-64" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1304,7 +1345,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-63" style="background:;">
+      <slide class="" id="slide-65" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1322,7 +1363,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-64" style="background:;">
+      <slide class="" id="slide-66" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1342,7 +1383,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-65" style="background:;">
+      <slide class="" id="slide-67" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1363,7 +1404,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-66" style="background:;">
+      <slide class="" id="slide-68" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1386,7 +1427,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-67" style="background:;">
+      <slide class="" id="slide-69" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1407,7 +1448,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-68" style="background:;">
+      <slide class="" id="slide-70" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1430,7 +1471,7 @@ roots
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-69" style="background:;">
+      <slide class="" id="slide-71" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1451,7 +1492,7 @@ A %*% x2 == 7 * x2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-70" style="background:;">
+      <slide class="" id="slide-72" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1482,7 +1523,7 @@ A %*% x2 == 7 * x2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-71" style="background:;">
+      <slide class="" id="slide-73" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1509,7 +1550,7 @@ A %*% x2 == 7 * x2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-72" style="background:;">
+      <slide class="" id="slide-74" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1534,7 +1575,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-73" style="background:;">
+      <slide class="" id="slide-75" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1560,7 +1601,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-74" style="background:;">
+      <slide class="" id="slide-76" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1583,7 +1624,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-75" style="background:;">
+      <slide class="" id="slide-77" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1599,7 +1640,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-76" style="background:;">
+      <slide class="" id="slide-78" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1617,7 +1658,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-77" style="background:;">
+      <slide class="" id="slide-79" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1642,7 +1683,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-78" style="background:;">
+      <slide class="" id="slide-80" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1660,7 +1701,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-79" style="background:;">
+      <slide class="" id="slide-81" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1680,7 +1721,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-80" style="background:;">
+      <slide class="" id="slide-82" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1705,7 +1746,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-81" style="background:;">
+      <slide class="" id="slide-83" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1730,7 +1771,7 @@ Since \(\bf{A} = \bf{EDE^{T}}\)<br>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-82" style="background:;">
+      <slide class="" id="slide-84" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1755,7 +1796,7 @@ for (i in 10:m){
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-83" style="background:;">
+      <slide class="" id="slide-85" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1834,7 +1875,7 @@ head(features)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-84" style="background:;">
+      <slide class="" id="slide-86" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1865,7 +1906,7 @@ Cy &lt;- cov(PC)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-85" style="background:;">
+      <slide class="" id="slide-87" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1892,7 +1933,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-86" style="background:;">
+      <slide class="" id="slide-88" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1907,7 +1948,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-87" style="background:;">
+      <slide class="" id="slide-89" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1939,7 +1980,7 @@ NPW.2 TPW.2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-88" style="background:;">
+      <slide class="" id="slide-90" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1958,7 +1999,7 @@ NPW.2 TPW.2
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-89" style="background:;">
+      <slide class="" id="slide-91" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -1984,7 +2025,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-90" style="background:;">
+      <slide class="" id="slide-92" style="background:;">
   <hgroup>
     <h2>Principal Component Analysis</h2>
   </hgroup>
@@ -2006,7 +2047,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-91" style="background:;">
+      <slide class="" id="slide-93" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2025,7 +2066,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-92" style="background:;">
+      <slide class="" id="slide-94" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2053,7 +2094,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-93" style="background:;">
+      <slide class="" id="slide-95" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2072,7 +2113,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-94" style="background:;">
+      <slide class="" id="slide-96" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2087,7 +2128,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-95" style="background:;">
+      <slide class="" id="slide-97" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2102,7 +2143,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-96" style="background:;">
+      <slide class="" id="slide-98" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2121,7 +2162,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-97" style="background:;">
+      <slide class="" id="slide-99" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2146,7 +2187,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-98" style="background:;">
+      <slide class="" id="slide-100" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2165,7 +2206,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-99" style="background:;">
+      <slide class="" id="slide-101" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2195,7 +2236,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-100" style="background:;">
+      <slide class="" id="slide-102" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2220,7 +2261,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-101" style="background:;">
+      <slide class="" id="slide-103" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2235,7 +2276,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-102" style="background:;">
+      <slide class="" id="slide-104" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2250,7 +2291,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-103" style="background:;">
+      <slide class="" id="slide-105" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2265,7 +2306,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-104" style="background:;">
+      <slide class="" id="slide-106" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2294,7 +2335,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-105" style="background:;">
+      <slide class="" id="slide-107" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2309,7 +2350,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-106" style="background:;">
+      <slide class="" id="slide-108" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2329,7 +2370,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-107" style="background:;">
+      <slide class="" id="slide-109" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2348,7 +2389,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-108" style="background:;">
+      <slide class="" id="slide-110" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2368,7 +2409,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-109" style="background:;">
+      <slide class="" id="slide-111" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2389,7 +2430,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-110" style="background:;">
+      <slide class="" id="slide-112" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2412,7 +2453,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-111" style="background:;">
+      <slide class="" id="slide-113" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2427,7 +2468,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-112" style="background:;">
+      <slide class="" id="slide-114" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2442,7 +2483,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-113" style="background:;">
+      <slide class="" id="slide-115" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2457,7 +2498,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-114" style="background:;">
+      <slide class="" id="slide-116" style="background:;">
   <hgroup>
     <h2>Clustering</h2>
   </hgroup>
@@ -2481,7 +2522,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-115" style="background:;">
+      <slide class="" id="slide-117" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2500,7 +2541,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-116" style="background:;">
+      <slide class="" id="slide-118" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2515,7 +2556,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-117" style="background:;">
+      <slide class="" id="slide-119" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2530,7 +2571,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-118" style="background:;">
+      <slide class="" id="slide-120" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2553,7 +2594,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-119" style="background:;">
+      <slide class="" id="slide-121" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2574,7 +2615,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-120" style="background:;">
+      <slide class="" id="slide-122" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2609,7 +2650,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-121" style="background:;">
+      <slide class="" id="slide-123" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2631,7 +2672,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-122" style="background:;">
+      <slide class="" id="slide-124" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2660,7 +2701,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-123" style="background:;">
+      <slide class="" id="slide-125" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2681,7 +2722,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-124" style="background:;">
+      <slide class="" id="slide-126" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2707,7 +2748,7 @@ str(wine[,1:7])
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-125" style="background:;">
+      <slide class="" id="slide-127" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2733,7 +2774,7 @@ entropy(fair)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-126" style="background:;">
+      <slide class="" id="slide-128" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2757,7 +2798,7 @@ entropy(biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-127" style="background:;">
+      <slide class="" id="slide-129" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2784,7 +2825,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-128" style="background:;">
+      <slide class="" id="slide-130" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2803,7 +2844,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-129" style="background:;">
+      <slide class="" id="slide-131" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2834,7 +2875,7 @@ entropy(most_biased)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-130" style="background:;">
+      <slide class="" id="slide-132" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2857,7 +2898,7 @@ names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;wa
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-131" style="background:;">
+      <slide class="" id="slide-133" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2884,7 +2925,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-132" style="background:;">
+      <slide class="" id="slide-134" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2899,7 +2940,7 @@ voting_test &lt;- voting_data[-train_ind,]
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-133" style="background:;">
+      <slide class="" id="slide-135" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2910,15 +2951,15 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         85          3
-  republican        1         56
+  democrat         82         10
+  republican        2         51
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-134" style="background:;">
+      <slide class="" id="slide-136" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2931,19 +2972,19 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                97.58
-synfuels-corporation-cutback        38.06
-mx-missile                          10.03
-adoption-of-the-budget-resolution    8.65
+physician-fee-freeze                97.92
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
+adoption-of-the-budget-resolution    0.00
+el-salvador-aid                      0.00
+religious-groups-in-schools          0.00
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-135" style="background:;">
+      <slide class="" id="slide-137" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2961,7 +3002,7 @@ water-project-cost-sharing           0.00
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-136" style="background:;">
+      <slide class="" id="slide-138" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -2978,15 +3019,15 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         84          4
-  republican        1         56
+  democrat         84          8
+  republican        2         51
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-137" style="background:;">
+      <slide class="" id="slide-139" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3004,7 +3045,7 @@ boosted_conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-138" style="background:;">
+      <slide class="" id="slide-140" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3022,15 +3063,15 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         78         10
-  republican        0         57
+  democrat         79         13
+  republican        0         53
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-139" style="background:;">
+      <slide class="" id="slide-141" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3045,7 +3086,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-140" style="background:;">
+      <slide class="" id="slide-142" style="background:;">
   <hgroup>
     <h2>Trees</h2>
   </hgroup>
@@ -3072,7 +3113,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-141" style="background:;">
+      <slide class="" id="slide-143" style="background:;">
   <hgroup>
     <h2>Summary</h2>
   </hgroup>
@@ -3092,7 +3133,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-142" style="background:;">
+      <slide class="" id="slide-144" style="background:;">
   <hgroup>
     <h2>Resources</h2>
   </hgroup>
@@ -3109,7 +3150,7 @@ conf
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-143" style="background:;">
+      <slide class="" id="slide-145" style="background:;">
   <hgroup>
     
   </hgroup>
