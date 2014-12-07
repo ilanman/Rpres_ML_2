@@ -26,7 +26,7 @@ mode        : selfcontained # {standalone, draft}
 1. Logistic Regression
 2. Principal Component Analysis
 3. Clustering
-4. Trees
+4. Decision Trees
 
 ----
 
@@ -36,7 +36,27 @@ mode        : selfcontained # {standalone, draft}
 
 1. Motivation
 2. Concepts and key assumptions
-3. Popular approximation approach
+3. Approximating parameters
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+- To model continuous response variables, often turn to linear regression
+  - Output is (usually) a number
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+- To model continuous response variables, often turn to linear regression
+  - Output is (usually) a number
+- What about non-continuous response variable?
+  - i.e. male or female, subscribe or not, ...
 
 ----
 
@@ -47,10 +67,10 @@ mode        : selfcontained # {standalone, draft}
 ```{r log_bad_fit, fig.height=5,fig.width=5,message=FALSE,echo=FALSE,warning=FALSE}
 library(ggplot2)
 x <- 1:10
-log_ex <- data.frame(Y=c(rnorm(5,0,0.05),rnorm(5,6,0.05)),X=x)
-log_ex$sig <- 6/(1+exp(-(log_ex$X-6)))
-pts <- ggplot(log_ex,aes(X,Y)) + geom_point(color='blue',size=3) +
-  scale_y_continuous(limits = c(-1, 7))
+log_ex <- data.frame(Y=c(rnorm(5,0,0.05),rnorm(5,1,0.05)),X=x)
+log_ex$sig <- 1/(1+exp(-(log_ex$X-5)))
+pts <- ggplot(log_ex,aes(X,Y+1)) + geom_point(color='blue',size=3) +
+  ylim("Male","Female") + ylab("Y")
 pts
 ```
 
@@ -72,7 +92,7 @@ bad_line
 <space>
 
 ```{r log_bad_fit3, fig.height=5,fig.width=5,message=FALSE,echo=FALSE,warning=FALSE}
-sig_curve <- bad_line + stat_smooth(data=log_ex,aes(X,sig),se=F,color='red',size=1,method='auto')
+sig_curve <- bad_line + stat_smooth(data=log_ex,aes(X,sig+1),se=F,color='red',size=1)
 sig_curve
 ```
 
@@ -105,6 +125,7 @@ sig_curve
 - Like Linear Regression with a categorical outcome
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ becomes<br>
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+  - "log odds"
 - Can be extended to multiple and/or ordered categories
 
 ----
@@ -113,7 +134,16 @@ sig_curve
 # Concepts
 <space>
 
-- Family of GLMs
+- Probability of rolling a 6 = 1/6
+- "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Family of General Linear Models - GLM
 <ol>
 <li>Random component <br>- Noise or Errors
 <li>Systematic Component <br>- Linear combination in $X_{i}$
@@ -127,9 +157,13 @@ sig_curve
 <space>
 
 - Data is I.I.D.
-  - $Y$'s assume to come from family of exponential distributions
+  - $Y_{i}$'s assume to come from family of exponential distributions
 - Uses MLE to determine parameters - Not OLS
+  - OLS: Minimize the SSE
+  - MLE: Maximize the (log) likelihood function
+  - "Given the data, what is the most likely model?"
   - MLE satisfies lots of nice properties (unbiased, consistent)
+  - Used for many types of non-linear regression models
   - Does not require transformation of $Y$'s to be Normal
   - Does not require constant variance
 
@@ -139,21 +173,9 @@ sig_curve
 # Concepts
 <space>
 
-- Type of regression to predict the probability of being in a class
+- Logistic regression outputs a probability not a numeric value
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
-
-----
-
-## Logistic Regression
-# Concepts
-<space>
-
-- Type of regression to predict the probability of being in a class
-  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
-- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Bounded by 0 and 1
 
 ----
 
@@ -165,6 +187,18 @@ sig_curve
 curve(1/(1+exp(-x)), from = -10, to = 10, ylab="P(Y=1|X)", col = 'red', lwd = 3.0)
 abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 ```
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
+  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
+  - Typical threshold is 0.5
+- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
+  - Bounded by 0 and 1
 
 ----
 
@@ -202,7 +236,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
   - Logit ranges from -ve infite to +ve infinite
-  - When $x_{1}$ increases by 1 unit, $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$ increases by $e^{\theta_{1}}$
+  - In Linear Regression, when $x_{1}$ increases by 1 unit, $Y$ increases by $\theta_{1}$
+  - In Logistic Regression, when $x_{1}$ increases by 1 unit, $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$ increases by $e^{\theta_{1}}$
 
 ----
 
@@ -211,8 +246,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 <space>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
-- Cost function?
-- Why can't we use the same cost function as for the linear hypothesis?
+- To find parameters, minimize cost function
+- Use same cost function as for the Linear Regression?
 
 ----
 
@@ -221,10 +256,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 <space>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
-- Cost function?
-- Why can't we use the same cost function as for the linear hypothesis?
-  - Logistic residuals are Binomially distributed
-  - Regression function is not linear in $X$
+- To find parameters, minimize cost function
+- Use same cost function as for the Linear Regression?
+  - Logistic residuals are Binomially distributed - not noise
+  - Regression function is not linear in $X$ leads to non-convex cost function
 
 ----
 
@@ -232,7 +267,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 
 ----
@@ -241,7 +276,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
@@ -256,7 +291,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
-- $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
+- Joint probability
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - Taking the log of both sides...
 
 ----
@@ -265,9 +301,21 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $cost(p, y) = -y \log(p) + (1-y) \log(1-p)$<br>
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
@@ -280,19 +328,10 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 # Find parameters
 <space>
 
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-- Logistic regression cost function is then<br>
-$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-- Logistic regression cost function is then<br>
-$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 - Minimize the cost
 
 ----

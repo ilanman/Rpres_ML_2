@@ -26,7 +26,7 @@ mode        : selfcontained # {standalone, draft}
 1. Logistic Regression
 2. Principal Component Analysis
 3. Clustering
-4. Trees
+4. Decision Trees
 
 ----
 
@@ -36,7 +36,27 @@ mode        : selfcontained # {standalone, draft}
 
 1. Motivation
 2. Concepts and key assumptions
-3. Popular approximation approach
+3. Approximating parameters
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+- To model continuous response variables, often turn to linear regression
+  - Output is (usually) a number
+
+----
+
+## Logistic Regression
+# Motivation
+<space>
+
+- To model continuous response variables, often turn to linear regression
+  - Output is (usually) a number
+- What about non-continuous response variable?
+  - i.e. male or female, subscribe or not, ...
 
 ----
 
@@ -91,6 +111,7 @@ mode        : selfcontained # {standalone, draft}
 - Like Linear Regression with a categorical outcome
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ becomes<br>
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+  - "log odds"
 - Can be extended to multiple and/or ordered categories
 
 ----
@@ -99,7 +120,16 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Family of GLMs
+- Probability of rolling a 6 = 1/6
+- "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Family of General Linear Models - GLM
 <ol>
 <li>Random component <br>- Noise or Errors
 <li>Systematic Component <br>- Linear combination in $X_{i}$
@@ -113,9 +143,13 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - Data is I.I.D.
-  - $Y$'s assume to come from family of exponential distributions
+  - $Y_{i}$'s assume to come from family of exponential distributions
 - Uses MLE to determine parameters - Not OLS
+  - OLS: Minimize the SSE
+  - MLE: Maximize the (log) likelihood function
+  - "Given the data, what is the most likely model?"
   - MLE satisfies lots of nice properties (unbiased, consistent)
+  - Used for many types of non-linear regression models
   - Does not require transformation of $Y$'s to be Normal
   - Does not require constant variance
 
@@ -125,21 +159,9 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Type of regression to predict the probability of being in a class
+- Logistic regression outputs a probability not a numeric value
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5
-
-----
-
-## Logistic Regression
-# Concepts
-<space>
-
-- Type of regression to predict the probability of being in a class
-  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
-- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Bounded by 0 and 1
 
 ----
 
@@ -148,6 +170,18 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 ![plot of chunk log_curve](figure/log_curve.png) 
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
+  - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
+  - Typical threshold is 0.5
+- Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
+  - Bounded by 0 and 1
 
 ----
 
@@ -185,7 +219,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
   - Logit ranges from -ve infite to +ve infinite
-  - When $x_{1}$ increases by 1 unit, $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$ increases by $e^{\theta_{1}}$
+  - In Linear Regression, when $x_{1}$ increases by 1 unit, $Y$ increases by $\theta_{1}$
+  - In Logistic Regression, when $x_{1}$ increases by 1 unit, $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$ increases by $e^{\theta_{1}}$
 
 ----
 
@@ -194,8 +229,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 <space>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
-- Cost function?
-- Why can't we use the same cost function as for the linear hypothesis?
+- To find parameters, minimize cost function
+- Use same cost function as for the Linear Regression?
 
 ----
 
@@ -204,10 +239,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 <space>
 
 - So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
-- Cost function?
-- Why can't we use the same cost function as for the linear hypothesis?
-  - Logistic residuals are Binomially distributed
-  - Regression function is not linear in $X$
+- To find parameters, minimize cost function
+- Use same cost function as for the Linear Regression?
+  - Logistic residuals are Binomially distributed - not noise
+  - Regression function is not linear in $X$ leads to non-convex cost function
 
 ----
 
@@ -215,7 +250,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 
 ----
@@ -224,7 +259,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $Y$ can be 1 or 0 (binary case)
+- $Y$ can be Male or Female, 0 or 1 (binary case)
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
@@ -239,7 +274,8 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - $Y \hspace{2 mm} | \hspace{2 mm} X$ ~ Bernoulli
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = p$, when $Y$ = 1 
 - $P(Y\hspace{2 mm} |\hspace{2 mm} X) = 1-p$, when $Y$ = 0
-- $P(Y = y_{i}|X) = p^{y_{i}}(1-p)^{1-y_{i}}$
+- Joint probability
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - Taking the log of both sides...
 
 ----
@@ -248,9 +284,21 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $cost(p, y) = -y \log(p) + (1-y) \log(1-p)$<br>
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
 
@@ -260,19 +308,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-- Logistic regression cost function is then<br>
-$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- $cost(h_{\theta}(x), y) = -y \log(h_{\theta}(x)) + (1-y) \log(1-h_{\theta}(x))$<br>
-- Logistic regression cost function is then<br>
-$cost(h_{\theta}(x), y)  = \frac{1}{m} \sum_{i=1}^{m} -y \log(h_{\theta}(x_{i})) + (1-y) \log(1-h_{\theta}(x_{i}))$
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 - Minimize the cost
 
 ----
@@ -379,11 +418,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    55.00
-[2,]         2    36.67
-[3,]         3    24.44
-[4,]         4    16.30
-[5,]         5    10.86
+[1,]         1   19.000
+[2,]         2   12.667
+[3,]         3    8.445
+[4,]         4    5.630
+[5,]         5    3.755
 ```
 
 ```
@@ -1705,8 +1744,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         88          2
-  republican        5         50
+  democrat         85          3
+  republican        1         56
 ```
 
 ----
@@ -1723,9 +1762,9 @@ head(C5imp(tree_model))   # most important variables
 ```
                                   Overall
 physician-fee-freeze                97.58
-synfuels-corporation-cutback        41.18
-mx-missile                          11.07
-adoption-of-the-budget-resolution    9.69
+synfuels-corporation-cutback        38.06
+mx-missile                          10.03
+adoption-of-the-budget-resolution    8.65
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 ```
@@ -1756,8 +1795,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         89          1
-  republican        5         50
+  democrat         84          4
+  republican        1         56
 ```
 
 ----
@@ -1787,8 +1826,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         85          5
-  republican        1         54
+  democrat         78         10
+  republican        0         57
 ```
 
 ----
