@@ -26,7 +26,6 @@ mode        : selfcontained # {standalone, draft}
 1. Logistic Regression
 2. Principal Component Analysis
 3. Clustering
-4. Decision Trees
 
 ----
 
@@ -45,7 +44,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
-  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
+  - $Price = 500X_{sqr} + 10X_{dist}$
   - Output is (usually) a number
 
 ----
@@ -263,7 +262,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 \right.
 \]
 
-```{r cost_curves_1, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
+```{r cost_curve, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
 curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=0")
 ```
@@ -1871,7 +1870,6 @@ plot(boost_acc,type='l')
 - Logistic regression
 - Math behind PCA
 - Clustering basics
-- Trees and improvements
 
 ----
 

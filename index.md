@@ -26,7 +26,6 @@ mode        : selfcontained # {standalone, draft}
 1. Logistic Regression
 2. Principal Component Analysis
 3. Clustering
-4. Decision Trees
 
 ----
 
@@ -45,7 +44,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
-  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
+  - $Price = 500X_{sqr} + 10X_{dist}$
   - Output is (usually) a number
 
 ----
@@ -246,7 +245,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 \right.
 \]
 
-![plot of chunk cost_curves_1](figure/cost_curves_11.png) ![plot of chunk cost_curves_1](figure/cost_curves_12.png) 
+![plot of chunk cost_curve](figure/cost_curve1.png) ![plot of chunk cost_curve](figure/cost_curve2.png) 
 
 ----
 
@@ -475,11 +474,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    64.00
-[2,]         2    42.67
-[3,]         3    28.44
-[4,]         4    18.96
-[5,]         5    12.64
+[1,]         1    57.00
+[2,]         2    38.00
+[3,]         3    25.33
+[4,]         4    16.89
+[5,]         5    11.26
 ```
 
 ```
@@ -1842,8 +1841,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         93          4
-  republican        0         48
+  democrat         85          2
+  republican        2         56
 ```
 
 ----
@@ -1859,10 +1858,10 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                96.89
-synfuels-corporation-cutback        42.21
-adoption-of-the-budget-resolution   10.73
-anti-satellite-test-ban              4.50
+physician-fee-freeze                96.19
+synfuels-corporation-cutback        40.14
+mx-missile                          12.80
+adoption-of-the-budget-resolution    9.69
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 ```
@@ -1893,8 +1892,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         94          3
-  republican        1         47
+  democrat         85          2
+  republican        1         57
 ```
 
 ----
@@ -1924,8 +1923,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         92          5
-  republican        0         48
+  democrat         83          4
+  republican        1         57
 ```
 
 ----
@@ -1963,7 +1962,6 @@ conf
 - Logistic regression
 - Math behind PCA
 - Clustering basics
-- Trees and improvements
 
 ----
 

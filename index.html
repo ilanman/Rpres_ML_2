@@ -66,7 +66,6 @@
 <li>Logistic Regression</li>
 <li>Principal Component Analysis</li>
 <li>Clustering</li>
-<li>Decision Trees</li>
 </ol>
 
   </article>
@@ -105,7 +104,7 @@
 <li>To model continuous response variables, often turn to linear regression
 
 <ul>
-<li>\(Price = 500X_{sqr_ft} + 10X_{dist_train}\)</li>
+<li>\(Price = 500X_{sqr} + 10X_{dist}\)</li>
 <li>Output is (usually) a number</li>
 </ul></li>
 </ul>
@@ -487,7 +486,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 \right.
 \]</p>
 
-<p><img src="figure/cost_curves_11.png" alt="plot of chunk cost_curves_1"> <img src="figure/cost_curves_12.png" alt="plot of chunk cost_curves_1"> </p>
+<p><img src="figure/cost_curve1.png" alt="plot of chunk cost_curve"> <img src="figure/cost_curve2.png" alt="plot of chunk cost_curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -887,11 +886,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1    64.00
-[2,]         2    42.67
-[3,]         3    28.44
-[4,]         4    18.96
-[5,]         5    12.64
+[1,]         1    57.00
+[2,]         2    38.00
+[3,]         3    25.33
+[4,]         4    16.89
+[5,]         5    11.26
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -3122,8 +3121,8 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         93          4
-  republican        0         48
+  democrat         85          2
+  republican        2         56
 </code></pre>
 
   </article>
@@ -3143,10 +3142,10 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                96.89
-synfuels-corporation-cutback        42.21
-adoption-of-the-budget-resolution   10.73
-anti-satellite-test-ban              4.50
+physician-fee-freeze                96.19
+synfuels-corporation-cutback        40.14
+mx-missile                          12.80
+adoption-of-the-budget-resolution    9.69
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 </code></pre>
@@ -3190,8 +3189,8 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         94          3
-  republican        1         47
+  democrat         85          2
+  republican        1         57
 </code></pre>
 
   </article>
@@ -3234,8 +3233,8 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         92          5
-  republican        0         48
+  democrat         83          4
+  republican        1         57
 </code></pre>
 
   </article>
@@ -3297,7 +3296,6 @@ conf
 <li>Logistic regression</li>
 <li>Math behind PCA</li>
 <li>Clustering basics</li>
-<li>Trees and improvements</li>
 </ul>
 
   </article>
