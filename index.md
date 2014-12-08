@@ -54,7 +54,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
-  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
+  - $Price = 500X_{sqr} + 10X_{dist}$
   - Output is (usually) a number
 - What about classification problems?
   - i.e. male or female, subscribe or not, ...
@@ -65,7 +65,7 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-![plot of chunk log_bad_fit](figure/log_bad_fit.png) 
+![plot of chunk log_bad_fit](figure/log_bad_fit-1.png) 
 
 ----
 
@@ -73,7 +73,7 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-![plot of chunk log_bad_fit2](figure/log_bad_fit2.png) 
+![plot of chunk log_bad_fit2](figure/log_bad_fit2-1.png) 
 
 ----
 
@@ -81,7 +81,7 @@ mode        : selfcontained # {standalone, draft}
 # Motivation
 <space>
 
-![plot of chunk log_bad_fit3](figure/log_bad_fit3.png) 
+![plot of chunk log_bad_fit3](figure/log_bad_fit3-1.png) 
 
 ----
 
@@ -89,7 +89,15 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression
 
 ----
@@ -110,6 +118,11 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
+- $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+  - "log odds"
+- Can be extended to multiple and/or ordered categories
 - Probability of rolling a 6 = $\frac{1}{6}$
 - "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
 
@@ -137,6 +150,7 @@ mode        : selfcontained # {standalone, draft}
   - "Given the data, what is the most likely model?"
 - MLE satisfies lots of nice properties (unbiased, consistent)
 - Used for many types of non-linear regression models
+  - Complex functions
 - Does not require transformation of $Y$'s to be Normal
 - Does not require constant variance
 
@@ -156,7 +170,7 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-![plot of chunk log_curve](figure/log_curve.png) 
+![plot of chunk log_curve](figure/log_curve-1.png) 
 
 ----
 
@@ -168,7 +182,7 @@ mode        : selfcontained # {standalone, draft}
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5...but it doesn't have to be
 - Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Bounded by 0 and 1
+  - Bounded by 0 and 1 (like a probability) for any X
 
 ----
 
@@ -192,6 +206,17 @@ mode        : selfcontained # {standalone, draft}
 - Logistic regression: $h_{\theta}(x) = g(\theta^{T}x)$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
+
+----
+
+## Logistic Regression
+# Notation
+<space>
+
+- Re-arranging $Y = \frac{1}{1+e^{-\theta^{T}x}}$ yields
+<br>
+$\log{\frac{Y}{1 - Y}} = \theta^{T}x$
+- Log odds are linear in $X$
 
 ----
 
@@ -245,7 +270,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 \right.
 \]
 
-![plot of chunk curve](figure/curve1.png) ![plot of chunk curve](figure/curve2.png) 
+![plot of chunk curve](figure/curve-1.png) ![plot of chunk curve](figure/curve-2.png) 
 
 ----
 
@@ -312,7 +337,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 - $p = h_{\theta}(x)$
 - $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
-![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
+![plot of chunk cost_curves](figure/cost_curves-1.png) ![plot of chunk cost_curves](figure/cost_curves-2.png) 
 
 ----
 
@@ -357,7 +382,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
 
 ----
 
@@ -365,7 +390,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 ----
 
@@ -373,7 +398,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 ----
 
@@ -381,7 +406,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 ----
 
@@ -389,6 +414,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
@@ -397,6 +423,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
@@ -407,6 +434,7 @@ $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
@@ -419,6 +447,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
@@ -436,7 +465,7 @@ $x_{1} = x_{0} − \frac{f'(x_{0})}{f￼''(x_{0})}$
 
 $f(x) = x^{4} - 3\log(x)$
 
-![plot of chunk newton_curve](figure/newton_curve.png) 
+![plot of chunk newton_curve](figure/newton_curve-1.png) 
 
 ----
 
@@ -473,25 +502,25 @@ newton <- function(num.its, dfn, d2fn){
 
 
 ```
-     iteration estimate
-[1,]         1   23.000
-[2,]         2   15.333
-[3,]         3   10.222
-[4,]         4    6.815
-[5,]         5    4.545
+     iteration  estimate
+[1,]         1 36.000000
+[2,]         2 24.000007
+[3,]         3 16.000029
+[4,]         4 10.666767
+[5,]         5  7.111453
 ```
 
 ```
-      iteration estimate
-[16,]        16   0.9306
-[17,]        17   0.9306
-[18,]        18   0.9306
-[19,]        19   0.9306
-[20,]        20   0.9306
+      iteration  estimate
+[16,]        16 0.9306049
+[17,]        17 0.9306049
+[18,]        18 0.9306049
+[19,]        19 0.9306049
+[20,]        20 0.9306049
 ```
 
 ```
-0.9658     ## value of f(x) at minimum
+0.9657616     ## value of f(x) at minimum
 ```
 
 ----
@@ -518,10 +547,10 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 
 ```
 $minimum
-[1] 0.9306
+[1] 0.9306008
 
 $objective
-[1] 0.9658
+[1] 0.9657616
 ```
 
 ----
@@ -882,9 +911,7 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error in eval(expr, envir, enclos): object 'x1' not found
 ```
 
 ```r
@@ -892,9 +919,7 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-     [,1]
-[1,] TRUE
-[2,] TRUE
+Error in eval(expr, envir, enclos): object 'x2' not found
 ```
 
 ----
@@ -934,14 +959,26 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)  ## x1, x2 are eigenvectors
+```
+
+```
+## Error in matrix(c(x1, x2), ncol = 2): object 'x1' not found
+```
+
+```r
 m <- m/sqrt(norm(m))  ## normalize
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'm' not found
+```
+
+```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-##      [,1] [,2]
-## [1,]    5    2
-## [2,]    2    5
+## Error in as.matrix(m %*% diag(roots) %*% t(m)): object 'm' not found
 ```
 
 ----
@@ -1195,7 +1232,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 # Example
 <space>
 
-![plot of chunk var_expl_plot](figure/var_expl_plot.png) 
+![plot of chunk var_expl_plot](figure/var_expl_plot-1.png) 
 
 ----
 
@@ -1236,7 +1273,7 @@ NPW.2 TPW.2
 
 - Can the first two Principal Components separate our data?
 
-![plot of chunk tennis_plot_gender](figure/tennis_plot_gender.png) 
+![plot of chunk tennis_plot_gender](figure/tennis_plot_gender-1.png) 
 
 ----
 
@@ -1255,7 +1292,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 ```
 
 ```
-[1] 0.7646
+[1] 0.7645811
 ```
 
 ----
@@ -1311,7 +1348,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 # Typical clustering problem
 <space>
 
-![plot of chunk cluster_plot_example](figure/cluster_plot_example.png) 
+![plot of chunk cluster_plot_example](figure/cluster_plot_example-1.png) 
 
 ----
 
@@ -1437,7 +1474,7 @@ str(wine[,1:7])
 # Kmeans - example
 <space>
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 ----
 
@@ -1511,7 +1548,7 @@ str(wine[,1:7])
 # DBSCAN
 <space>
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 ----
 
@@ -1519,7 +1556,7 @@ str(wine[,1:7])
 # DBSCAN
 <space>
 
-![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
+![plot of chunk dbscan_ex](figure/dbscan_ex-1.png) 
 
 ----
 
@@ -1694,7 +1731,7 @@ entropy(fair)
 ```
 
 ```
-[1] 2.585
+[1] 2.584963
 ```
 
 ```r
@@ -1702,7 +1739,7 @@ log2(6)
 ```
 
 ```
-[1] 2.585
+[1] 2.584963
 ```
 
 ----
@@ -1722,7 +1759,7 @@ entropy(biased)
 ```
 
 ```
-[1] 2.503
+[1] 2.503258
 ```
 
 ----
@@ -1738,7 +1775,7 @@ entropy(more_biased)
 ```
 
 ```
-[1] 2.235
+[1] 2.234985
 ```
 
 ```r
@@ -1747,7 +1784,7 @@ entropy(most_biased)
 ```
 
 ```
-[1] 0.4025
+[1] 0.4024934
 ```
 
 ----
@@ -1762,7 +1799,7 @@ curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "P(Heads)", ylab = "En
       lwd = 4, main='Entropy of a coin toss')
 ```
 
-![plot of chunk entropy_curve](figure/entropy_curve.png) 
+![plot of chunk entropy_curve](figure/entropy_curve-1.png) 
 
 ----
 
@@ -1812,7 +1849,7 @@ prop.table(table(voting_data[,1]))
 ```
 
   democrat republican 
-    0.6152     0.3848 
+ 0.6152074  0.3847926 
 ```
 
 ```r
@@ -1830,6 +1867,13 @@ voting_test <- voting_data[-train_ind,]
 
 <img src="figure/real_tree_example.png" height="500px" width="500px" />
 
+```
+## Error: package or namespace load failed for 'party'
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "ctree"
+```
 
 ----
 
@@ -1841,8 +1885,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         80          5
-  republican        1         59
+  democrat         89          6
+  republican        4         46
 ```
 
 ----
@@ -1858,12 +1902,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.92
-synfuels-corporation-cutback        38.06
-adoption-of-the-budget-resolution    9.69
-anti-satellite-test-ban              3.81
+physician-fee-freeze                97.58
+synfuels-corporation-cutback        43.60
+adoption-of-the-budget-resolution    8.30
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
+el-salvador-aid                      0.00
 ```
 
 ----
@@ -1892,8 +1936,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         78          7
-  republican        1         59
+  democrat         92          3
+  republican        2         48
 ```
 
 ----
@@ -1923,8 +1967,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         77          8
-  republican        0         60
+  democrat         88          7
+  republican        1         49
 ```
 
 ----
@@ -1933,7 +1977,7 @@ conf
 # Error Cost
 <space>
 
-![plot of chunk plot_boost_acc](figure/plot_boost_acc.png) 
+![plot of chunk plot_boost_acc](figure/plot_boost_acc-1.png) 
 
 ----
 
