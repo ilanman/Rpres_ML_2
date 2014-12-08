@@ -54,7 +54,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
-  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
+  - $Price = 500X_{sqr} + 10X_{dist}$
   - Output is (usually) a number
 - What about classification problems?
   - i.e. male or female, subscribe or not, ...
@@ -103,7 +103,15 @@ sig_curve
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
+
+----
+
+## Logistic Regression
+# Concepts
+<space>
+
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression
 
 ----
@@ -124,6 +132,11 @@ sig_curve
 # Concepts
 <space>
 
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
+- $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
+  - "log odds"
+- Can be extended to multiple and/or ordered categories
 - Probability of rolling a 6 = $\frac{1}{6}$
 - "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
 
@@ -151,6 +164,7 @@ sig_curve
   - "Given the data, what is the most likely model?"
 - MLE satisfies lots of nice properties (unbiased, consistent)
 - Used for many types of non-linear regression models
+  - Complex functions
 - Does not require transformation of $Y$'s to be Normal
 - Does not require constant variance
 
@@ -185,7 +199,7 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
   - Typical threshold is 0.5...but it doesn't have to be
 - Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
-  - Bounded by 0 and 1
+  - Bounded by 0 and 1 (like a probability) for any X
 
 ----
 
@@ -209,6 +223,17 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 - Logistic regression: $h_{\theta}(x) = g(\theta^{T}x)$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
+
+----
+
+## Logistic Regression
+# Notation
+<space>
+
+- Re-arranging $Y = \frac{1}{1+e^{-\theta^{T}x}}$ yields
+<br>
+$\log{\frac{Y}{1 - Y}} = \theta^{T}x$
+- Log odds are linear in $X$
 
 ----
 
@@ -435,6 +460,7 @@ points(0,pwr(0),col='red',pch=19)
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
@@ -443,6 +469,7 @@ points(0,pwr(0),col='red',pch=19)
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
@@ -453,6 +480,7 @@ $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
@@ -465,6 +493,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 # Newton-Raphson Method
 <space>
 
+- In general, when $f'(x)$ is $0$ and $f''(x) >0$, we've reach a minimum
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
