@@ -906,7 +906,7 @@ $x_{1} = x_{2}$<br>
 <space>
 
 $\bf{Ax} = \bf{\lambda x}$
-```{r eigen_proof, comment="",eval=FALSE}
+```{r eigen_proof, comment="",eval=TRUE,results='hide'}
 x1 = c(1,-1)
 x2 = c(1,1)
 A %*% x1 == 3 * x1

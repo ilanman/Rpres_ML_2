@@ -938,12 +938,12 @@ newton &lt;- function(num.its, dfn, d2fn){
 
 <p><space></p>
 
-<pre><code>     iteration estimate
-[1,]         1 92.00000
-[2,]         2 61.33333
-[3,]         3 40.88889
-[4,]         4 27.25927
-[5,]         5 18.17286
+<pre><code>     iteration  estimate
+[1,]         1 27.000000
+[2,]         2 18.000017
+[3,]         3 12.000068
+[4,]         4  8.000239
+[5,]         5  5.334143
 </code></pre>
 
 <pre><code>      iteration  estimate
@@ -1629,13 +1629,17 @@ A %*% x2 == 7 * x2
 <pre><code class="r">A %*% x1 == 3 * x1
 </code></pre>
 
-<pre><code>Error in eval(expr, envir, enclos): object &#39;x1&#39; not found
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
 <pre><code class="r">A %*% x2 == 7 * x2
 </code></pre>
 
-<pre><code>Error in eval(expr, envir, enclos): object &#39;x2&#39; not found
+<pre><code>     [,1]
+[1,] TRUE
+[2,] TRUE
 </code></pre>
 
   </article>
@@ -1705,21 +1709,13 @@ A %*% x2 == 7 * x2
 <p>\(\bf{A} = \bf{PDP^{T}}\)</p>
 
 <pre><code class="r">m &lt;- matrix(c(x1,x2),ncol=2)  ## x1, x2 are eigenvectors
+m &lt;- m/sqrt(norm(m))  ## normalize
+as.matrix(m %*% diag(roots) %*% t(m))
 </code></pre>
 
-<pre><code>## Error in matrix(c(x1, x2), ncol = 2): object &#39;x1&#39; not found
-</code></pre>
-
-<pre><code class="r">m &lt;- m/sqrt(norm(m))  ## normalize
-</code></pre>
-
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;m&#39; not found
-</code></pre>
-
-<pre><code class="r">as.matrix(m %*% diag(roots) %*% t(m))
-</code></pre>
-
-<pre><code>## Error in as.matrix(m %*% diag(roots) %*% t(m)): object &#39;m&#39; not found
+<pre><code>##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 </code></pre>
 
   </article>
@@ -3184,8 +3180,8 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         84          2
-  republican        2         57
+  democrat         93          1
+  republican        2         49
 </code></pre>
 
   </article>
@@ -3204,13 +3200,13 @@ voting_test &lt;- voting_data[-train_ind,]
 <pre><code class="r">head(C5imp(tree_model))   # most important variables
 </code></pre>
 
-<pre><code>                                  Overall
-physician-fee-freeze                98.27
-synfuels-corporation-cutback        39.10
-mx-missile                          11.42
-anti-satellite-test-ban              9.34
-adoption-of-the-budget-resolution    7.61
-handicapped-infants                  0.00
+<pre><code>                                       Overall
+physician-fee-freeze                     98.62
+synfuels-corporation-cutback             41.87
+mx-missile                                9.69
+export-administration-act-south-africa    6.57
+adoption-of-the-budget-resolution         4.15
+handicapped-infants                       0.00
 </code></pre>
 
   </article>
@@ -3252,8 +3248,8 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         84          2
-  republican        2         57
+  democrat         92          2
+  republican        3         48
 </code></pre>
 
   </article>
@@ -3296,8 +3292,8 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         78          8
-  republican        0         59
+  democrat         86          8
+  republican        1         50
 </code></pre>
 
   </article>

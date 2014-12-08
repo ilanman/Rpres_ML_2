@@ -502,12 +502,12 @@ newton <- function(num.its, dfn, d2fn){
 
 
 ```
-     iteration estimate
-[1,]         1 92.00000
-[2,]         2 61.33333
-[3,]         3 40.88889
-[4,]         4 27.25927
-[5,]         5 18.17286
+     iteration  estimate
+[1,]         1 27.000000
+[2,]         2 18.000017
+[3,]         3 12.000068
+[4,]         4  8.000239
+[5,]         5  5.334143
 ```
 
 ```
@@ -911,7 +911,9 @@ A %*% x1 == 3 * x1
 ```
 
 ```
-Error in eval(expr, envir, enclos): object 'x1' not found
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ```r
@@ -919,7 +921,9 @@ A %*% x2 == 7 * x2
 ```
 
 ```
-Error in eval(expr, envir, enclos): object 'x2' not found
+     [,1]
+[1,] TRUE
+[2,] TRUE
 ```
 
 ----
@@ -959,26 +963,14 @@ $\bf{A} = \bf{PDP^{T}}$
 
 ```r
 m <- matrix(c(x1,x2),ncol=2)  ## x1, x2 are eigenvectors
-```
-
-```
-## Error in matrix(c(x1, x2), ncol = 2): object 'x1' not found
-```
-
-```r
 m <- m/sqrt(norm(m))  ## normalize
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'm' not found
-```
-
-```r
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
 
 ```
-## Error in as.matrix(m %*% diag(roots) %*% t(m)): object 'm' not found
+##      [,1] [,2]
+## [1,]    5    2
+## [2,]    2    5
 ```
 
 ----
@@ -1885,8 +1877,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         84          2
-  republican        2         57
+  democrat         93          1
+  republican        2         49
 ```
 
 ----
@@ -1901,13 +1893,13 @@ head(C5imp(tree_model))   # most important variables
 ```
 
 ```
-                                  Overall
-physician-fee-freeze                98.27
-synfuels-corporation-cutback        39.10
-mx-missile                          11.42
-anti-satellite-test-ban              9.34
-adoption-of-the-budget-resolution    7.61
-handicapped-infants                  0.00
+                                       Overall
+physician-fee-freeze                     98.62
+synfuels-corporation-cutback             41.87
+mx-missile                                9.69
+export-administration-act-south-africa    6.57
+adoption-of-the-budget-resolution         4.15
+handicapped-infants                       0.00
 ```
 
 ----
@@ -1936,8 +1928,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         84          2
-  republican        2         57
+  democrat         92          2
+  republican        3         48
 ```
 
 ----
@@ -1967,8 +1959,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         78          8
-  republican        0         59
+  democrat         86          8
+  republican        1         50
 ```
 
 ----
