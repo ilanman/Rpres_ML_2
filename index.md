@@ -106,7 +106,7 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
@@ -118,7 +118,7 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
@@ -453,7 +453,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
 $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
-$x_{1} = x_{0} − \frac{f'(x_{0})}{f￼''(x_{0})}$
+$x_{1} = x_{0} − \frac{f'(x_{0})f''(x_{0})}$
   - $x_{1}$ is a better approximation for the minimum than $x_{0}$
   - and so on...
 
@@ -503,11 +503,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1 73.00000
-[2,]         2 48.66667
-[3,]         3 32.44445
-[4,]         4 21.62964
-[5,]         5 14.41979
+[1,]         1 92.00000
+[2,]         2 61.33333
+[3,]         3 40.88889
+[4,]         4 27.25927
+[5,]         5 18.17286
 ```
 
 ```
@@ -1885,8 +1885,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         95          6
-  republican        4         40
+  democrat         84          2
+  republican        2         57
 ```
 
 ----
@@ -1902,12 +1902,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.58
-el-salvador-aid                     46.71
-synfuels-corporation-cutback         2.77
+physician-fee-freeze                98.27
+synfuels-corporation-cutback        39.10
+mx-missile                          11.42
+anti-satellite-test-ban              9.34
+adoption-of-the-budget-resolution    7.61
 handicapped-infants                  0.00
-water-project-cost-sharing           0.00
-adoption-of-the-budget-resolution    0.00
 ```
 
 ----
@@ -1936,8 +1936,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         98          3
-  republican        3         41
+  democrat         84          2
+  republican        2         57
 ```
 
 ----
@@ -1967,8 +1967,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         93          8
-  republican        1         43
+  democrat         78          8
+  republican        0         59
 ```
 
 ----

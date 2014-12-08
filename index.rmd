@@ -120,7 +120,7 @@ sig_curve
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
@@ -132,7 +132,7 @@ sig_curve
 # Concepts
 <space>
 
-- Captures the relationship between a categorical output and continuous (or non) inputs
+- Captures the relationship between a categorical output and some inputs
 - $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
@@ -499,7 +499,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
 $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
-$x_{1} = x_{0} − \frac{f'(x_{0})}{f￼''(x_{0})}$
+$x_{1} = x_{0} − \frac{f'(x_{0})f''(x_{0})}$
   - $x_{1}$ is a better approximation for the minimum than $x_{0}$
   - and so on...
 
