@@ -262,7 +262,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 \right.
 \]
 
-```{r cost_curve, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
+```{r curve, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
 curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=0")
 ```

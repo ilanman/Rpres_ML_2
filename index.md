@@ -245,7 +245,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 \right.
 \]
 
-![plot of chunk cost_curve](figure/cost_curve1.png) ![plot of chunk cost_curve](figure/cost_curve2.png) 
+![plot of chunk curve](figure/curve1.png) ![plot of chunk curve](figure/curve2.png) 
 
 ----
 
@@ -474,11 +474,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    57.00
-[2,]         2    38.00
-[3,]         3    25.33
-[4,]         4    16.89
-[5,]         5    11.26
+[1,]         1   23.000
+[2,]         2   15.333
+[3,]         3   10.222
+[4,]         4    6.815
+[5,]         5    4.545
 ```
 
 ```
@@ -1841,8 +1841,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         85          2
-  republican        2         56
+  democrat         80          5
+  republican        1         59
 ```
 
 ----
@@ -1858,10 +1858,10 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                96.19
-synfuels-corporation-cutback        40.14
-mx-missile                          12.80
+physician-fee-freeze                97.92
+synfuels-corporation-cutback        38.06
 adoption-of-the-budget-resolution    9.69
+anti-satellite-test-ban              3.81
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 ```
@@ -1892,8 +1892,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         85          2
-  republican        1         57
+  democrat         78          7
+  republican        1         59
 ```
 
 ----
@@ -1923,8 +1923,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         83          4
-  republican        1         57
+  democrat         77          8
+  republican        0         60
 ```
 
 ----

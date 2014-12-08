@@ -486,7 +486,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 \right.
 \]</p>
 
-<p><img src="figure/cost_curve1.png" alt="plot of chunk cost_curve"> <img src="figure/cost_curve2.png" alt="plot of chunk cost_curve"> </p>
+<p><img src="figure/curve1.png" alt="plot of chunk curve"> <img src="figure/curve2.png" alt="plot of chunk curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -886,11 +886,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1    57.00
-[2,]         2    38.00
-[3,]         3    25.33
-[4,]         4    16.89
-[5,]         5    11.26
+[1,]         1   23.000
+[2,]         2   15.333
+[3,]         3   10.222
+[4,]         4    6.815
+[5,]         5    4.545
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -3121,8 +3121,8 @@ voting_test &lt;- voting_data[-train_ind,]
 
 <pre><code>            tree_predict
              democrat republican
-  democrat         85          2
-  republican        2         56
+  democrat         80          5
+  republican        1         59
 </code></pre>
 
   </article>
@@ -3142,10 +3142,10 @@ voting_test &lt;- voting_data[-train_ind,]
 </code></pre>
 
 <pre><code>                                  Overall
-physician-fee-freeze                96.19
-synfuels-corporation-cutback        40.14
-mx-missile                          12.80
+physician-fee-freeze                97.92
+synfuels-corporation-cutback        38.06
 adoption-of-the-budget-resolution    9.69
+anti-satellite-test-ban              3.81
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
 </code></pre>
@@ -3189,8 +3189,8 @@ boosted_conf
 
 <pre><code>            boosted_tennis_predict
              democrat republican
-  democrat         85          2
-  republican        1         57
+  democrat         78          7
+  republican        1         59
 </code></pre>
 
   </article>
@@ -3233,8 +3233,8 @@ conf
 
 <pre><code>            cost_predict
              democrat republican
-  democrat         83          4
-  republican        1         57
+  democrat         77          8
+  republican        0         60
 </code></pre>
 
   </article>
