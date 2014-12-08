@@ -502,12 +502,12 @@ newton <- function(num.its, dfn, d2fn){
 
 
 ```
-     iteration  estimate
-[1,]         1 36.000000
-[2,]         2 24.000007
-[3,]         3 16.000029
-[4,]         4 10.666767
-[5,]         5  7.111453
+     iteration estimate
+[1,]         1 73.00000
+[2,]         2 48.66667
+[3,]         3 32.44445
+[4,]         4 21.62964
+[5,]         5 14.41979
 ```
 
 ```
@@ -1885,8 +1885,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         89          6
-  republican        4         46
+  democrat         95          6
+  republican        4         40
 ```
 
 ----
@@ -1903,11 +1903,11 @@ head(C5imp(tree_model))   # most important variables
 ```
                                   Overall
 physician-fee-freeze                97.58
-synfuels-corporation-cutback        43.60
-adoption-of-the-budget-resolution    8.30
+el-salvador-aid                     46.71
+synfuels-corporation-cutback         2.77
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
-el-salvador-aid                      0.00
+adoption-of-the-budget-resolution    0.00
 ```
 
 ----
@@ -1936,8 +1936,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         92          3
-  republican        2         48
+  democrat         98          3
+  republican        3         41
 ```
 
 ----
@@ -1967,8 +1967,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         88          7
-  republican        1         49
+  democrat         93          8
+  republican        1         43
 ```
 
 ----
