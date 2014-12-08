@@ -14,9 +14,9 @@ mode        : selfcontained # {standalone, draft}
 ## Objectives 
 <space>
 
-- Better understand popular ML algorithms and techniques
+- Better understand particular details of popular ML algorithms and techniques
 - Less code, more insight
-- Familiarity with basic statistics concepts assumed
+- Familiarity with basic statistics and linear algebra concepts assumed
 
 ----
 
@@ -45,6 +45,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
+  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
   - Output is (usually) a number
 
 ----
@@ -54,8 +55,9 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
+  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
   - Output is (usually) a number
-- What about non-continuous response variable?
+- What about classification problems?
   - i.e. male or female, subscribe or not, ...
 
 ----
@@ -102,8 +104,8 @@ sig_curve
 # Concepts
 <space>
 
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression
 
 ----
 
@@ -111,19 +113,8 @@ sig_curve
 # Concepts
 <space>
 
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
-- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-
-----
-
-## Logistic Regression
-# Concepts
-<space>
-
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
-- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ becomes<br>
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
 - Can be extended to multiple and/or ordered categories
@@ -134,7 +125,7 @@ sig_curve
 # Concepts
 <space>
 
-- Probability of rolling a 6 = 1/6
+- Probability of rolling a 6 = $\frac{1}{6}$
 - "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
 
 ----
@@ -153,19 +144,16 @@ sig_curve
 ----
 
 ## Logistic Regression
-# Concepts
+# Maximum Likelihood Estimation
 <space>
 
-- Data is I.I.D.
-  - $Y_{i}$'s assume to come from family of exponential distributions
-- Uses MLE to determine parameters - Not OLS
-  - OLS: Minimize the SSE
-  - MLE: Maximize the (log) likelihood function
+- OLS: Minimize the SSE
+- MLE: Maximize the (log) likelihood function
   - "Given the data, what is the most likely model?"
-  - MLE satisfies lots of nice properties (unbiased, consistent)
-  - Used for many types of non-linear regression models
-  - Does not require transformation of $Y$'s to be Normal
-  - Does not require constant variance
+- MLE satisfies lots of nice properties (unbiased, consistent)
+- Used for many types of non-linear regression models
+- Does not require transformation of $Y$'s to be Normal
+- Does not require constant variance
 
 ----
 
@@ -173,9 +161,9 @@ sig_curve
 # Concepts
 <space>
 
-- Logistic regression outputs a probability not a numeric value
+- Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
+  - Typical threshold is 0.5...but it doesn't have to be
 
 ----
 
@@ -196,7 +184,7 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 
 - Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
+  - Typical threshold is 0.5...but it doesn't have to be
 - Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
   - Bounded by 0 and 1
 
@@ -207,8 +195,8 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
-(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
+- Linear regression: $h_{\theta}(x) = \theta^{T}x$<br>
+(Recall that $\theta^{T}x = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
 
 ----
 
@@ -217,9 +205,9 @@ abline(a=0.5, b=0, lty=2, col='blue', lwd = 3.0,main="Threshold = 0.5")
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
-(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
-- Logistic regression: $h_{\theta}(x) = g(\theta x^{T})$ 
+- Linear regression: $h_{\theta}(x) = \theta^{T}x$<br>
+(Recall that $\theta^{T}x = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
+- Logistic regression: $h_{\theta}(x) = g(\theta^{T}x)$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
 
@@ -229,9 +217,9 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 # Notation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
+- Re-arranging $Y = \frac{1}{1+e^{-\theta^{T}x}}$ yields
 <br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
+$\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 - Log odds are linear in $X$
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
@@ -245,7 +233,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
+- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta^{T}x}}$
 - To find parameters, minimize cost function
 - Use same cost function as for the Linear Regression?
 
@@ -255,11 +243,11 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
+- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta^{T}x}}$
 - To find parameters, minimize cost function
 - Use same cost function as for the Linear Regression?
   - Logistic residuals are Binomially distributed - not noise
-  - Regression function is not linear in $X$ leads to non-convex cost function
+  - Regression function is not linear in $X$; leads to non-convex cost function
 
 ----
 
@@ -267,11 +255,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-
-\[cost function = \left\{
+\[cost(h_{\theta}(x)) = \left\{
   \begin{array}{lr}
-    -log(h_{\theta}(x)) & : y = 0\\
-    -log(1-h_{\theta}(x)) & : y = 1
+    log(1-h_{\theta}(x)) & : y = 0\\
+    -log(h_{\theta}(x)) & : y = 1
   \end{array}
 \right.
 \]
@@ -394,6 +381,61 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 # Newton-Raphson Method
 <space>
 
+```{r, echo=FALSE,fig.height=5,fig.width=5}
+pwr <- function(x) x^2
+curve(pwr,from=-3,to=3,main="Curve with Global Minimum")
+points(-2,pwr(-2),col='red',pch=19)
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r, echo=FALSE,fig.height=5,fig.width=5}
+pwr <- function(x) x^2
+curve(pwr,from=-3,to=3,main="Curve with Global Minimum")
+points(-2,pwr(-2),col='red',pch=19)
+points(-1.2,pwr(-1.2),col='red',pch=19)
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r, echo=FALSE,fig.height=5,fig.width=5}
+pwr <- function(x) x^2
+curve(pwr,from=-3,to=3,main="Curve with Global Minimum")
+points(-2,pwr(-2),col='red',pch=19)
+points(-1.2,pwr(-1.2),col='red',pch=19)
+points(-0.6,pwr(-0.6),col='red',pch=19)
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r, echo=FALSE,fig.height=5,fig.width=5}
+pwr <- function(x) x^2
+curve(pwr,from=-3,to=3,main="Curve with Global Minimum")
+points(-2,pwr(-2),col='red',pch=19)
+points(-1.2,pwr(-1.2),col='red',pch=19)
+points(-0.6,pwr(-0.6),col='red',pch=19)
+points(-0.2,pwr(-0.2),col='red',pch=19)
+points(0,pwr(0),col='red',pch=19)
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
@@ -405,6 +447,18 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
+- Re-write $f(x)$ as its Taylor expansion:<br>
+$f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
+- Take the derivative w.r.t $x$ and set = 0<br>
+$0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 
 ----
 
@@ -478,7 +532,17 @@ cat(fn(rev(ans[,2])[1]),"    ## value of f(x) at minimum")
 # Newton-Raphson Method
 <space>
 
-```{r using_optimize,message=FALSE,comment="",warning=FALSE}
+```{r using_optimize,message=FALSE,comment="",warning=FALSE,results='hide' }
+optimize(fn,c(-100,100))  ## built-in R optimization function
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+```{r using_optimize_ans,message=FALSE,comment="",warning=FALSE}
 optimize(fn,c(-100,100))  ## built-in R optimization function
 ```
 
@@ -502,10 +566,8 @@ optimize(fn,c(-100,100))  ## built-in R optimization function
 - Very popular classification algorithm
 - Part of family of GLMs
 - Based on Binomial error terms, 1's and 0's
-- Usually requires large sample size
 - Assumes linearity between logit function and independent variables
 - Uses sigmoid to link the probabilities with regression
-- Does not work out of the box with correlated features...
 
 ----
 
@@ -844,8 +906,20 @@ A %*% x2 == 7 * x2
 - If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
   - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
   - $\bf{P}$ is row matrix of eigenvectors
-  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
-  - $\bf{A}$ is similar to $\bf{D}$
+  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$, off-diagonals are 0
+  - $\bf{A}$ is "similar"" to $\bf{D}$
+
+----
+
+## Principal Component Analysis
+# Diagonalization
+<space>
+
+- If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
+  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
+  - $\bf{P}$ is row matrix of eigenvectors
+  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$, off-diagonals are 0
+  - $\bf{A}$ is "similar"" to $\bf{D}$
 - Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
 - If the eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
 $\bf{A} = \bf{PD{P}^{T}}$
@@ -858,7 +932,7 @@ $\bf{A} = \bf{PD{P}^{T}}$
 
 $\bf{A} = \bf{PDP^{T}}$
 ```{r eigen_check}
-m <- matrix(c(x1,x2),ncol=2)
+m <- matrix(c(x1,x2),ncol=2)  ## x1, x2 are eigenvectors
 m <- m/sqrt(norm(m))  ## normalize
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
@@ -875,7 +949,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
  - 1) Set up characteristic equation
  - 2) Solve for eigenvalues by finding roots of equation
  - 3) Plug eigenvalues back in to find eigenvectors
-- There's a lot more to eigenvalues!
+- But...there's a lot more to eigenvalues!
 
 ----
 
@@ -883,10 +957,9 @@ as.matrix(m %*% diag(roots) %*% t(m))
 # Objective
 <space>
 
-- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
+- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{C_{Y}}$ is diagonalized
 - Covariance matrix<br>
-$\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
-  - Diagonals are the variances, off-diagonals are covariances
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY}^{T}$
 
 ----
 
@@ -895,6 +968,7 @@ $\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 
 ----
@@ -904,6 +978,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
@@ -915,13 +990,23 @@ $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
 $=\frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with rows that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
-$\bf{A} = \bf{EDE^{T}}$
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric...
+
+----
+
+## Principal Component Analysis
+# Proof
+<space>
+
+- From earlier, $\bf{AE} = \bf{ED}$
+- $\bf{A} = \bf{EDE^{-1}}$
+- Therefore $\bf{A} = \bf{EDE^{T}}$, because $\bf{E^{T}}=\bf{E^{-1}}$<br>
 
 ----
 
@@ -929,7 +1014,7 @@ $\bf{A} = \bf{EDE^{T}}$
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 
 ----
@@ -938,7 +1023,7 @@ $\bf{A} = \bf{EDE^{T}}$
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
@@ -949,15 +1034,24 @@ $\bf{A} = \bf{P^{T}DP}$<br>
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
-$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$, because $\bf{P^{T}}=\bf{P^{-1}}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$<br>
 $= \frac{1}{n-1}\bf{D}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
+
+----
+
+## Principal Component Analysis
+# Summary
+<space>
+
+- The principal components of $X$ are the eigenvectors of $XX^{T}$; or the rows of $P$
+- The $i^{th}$ diagonal value of $C_{Y}$ is the variance of $X$ along
 
 ----
 
@@ -999,10 +1093,9 @@ for (i in 10:m){
 
 ```{r tennis_data_2}
 features <- tennis[,10:m]
-
-head(features)
-str(features)
 dim(features)
+
+str(features)
 ```
 
 ----
@@ -1069,8 +1162,9 @@ mtext("Cumulative Variance Explained",side=4,line=3)
 
 ```{r tennis_check, comment=""}
 pca.df <- prcomp(scaled_features)  ## Built in R function
-round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matches R
-round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
+## Eigenvalues of Cx = Variance Explained by PCs
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)  
+round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10) ## Eigenvectors of Cx = PCs
 ```
 
 ----
@@ -1138,6 +1232,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 - Cluster for utility
   - Summarizing data for less expensive computation
   - Data compression
+- Very difficult to determine the "correct" number of clusters
 
 ----
 
@@ -1183,7 +1278,7 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
 
 - One of the simplest unsupervised learning algorithms
 - Group points into clusters; clusters center around a centroid
-- Minimize the distance between a points and its centroid
+- Minimize the distance between a point and its centroid
 
 ----
 
@@ -1196,7 +1291,7 @@ ggplot(clusters,aes(x=X1,y=X2,color=factor(X3))) + geom_point() +
   - Form K clusters by assigning each point to its closest centroid
   - Recompute the centroid of each cluster 
 - Until centroids do not change, or change very minimally, i.e. < 1%
-- Computatinal complexity: $O(nkI)$
+- Computational complexity: $O(nkI)$
 
 ----
 
@@ -1302,7 +1397,7 @@ barplot(best_k, xlab = "Number of clusters",
 - A cluster is a dense region of points separated by low-density regions
 - Group objects into one cluster if they are connected to one another by densely populated area
 - Used when the clusters are irregularly shaped, and when noise and outliers are present
-- computational complexity: $O(n\log{n})$
+- Computational complexity: $O(n\log{n})$
 
 ----
 
@@ -1398,7 +1493,34 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 ----
 
-## Trees
+## Summary
+# ML - Part II
+<space>
+
+- Logistic regression
+- Math behind PCA
+- Clustering basics
+
+----
+
+## Resources
+<space>
+
+- [Machine Learning with R](http://www.packtpub.com/machine-learning-with-r/book)
+- [Machine Learning for Hackers](http://shop.oreilly.com/product/0636920018483.do)
+- [Elements of Statistical Learning](http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf)
+
+----
+
+## THANK YOU!
+
+----
+
+----
+
+----
+
+## Decision Trees
 # Objectives
 <space>
 
@@ -1408,7 +1530,7 @@ plot(cluster_DBSCAN, cluster, main="Clustering using DBSCAN algorithm (eps=3, Mi
 
 ----
 
-## Trees
+## Decision Trees
 # Motivation
 <space>
 
@@ -1522,7 +1644,7 @@ entropy <- function(probs){
 # Entropy - example
 <space>
 
-```{r entropy_fair, comment=FALSE}
+```{r entropy_fair, comment=""}
 fair <- rep(1/6,6)
 entropy(fair)
 log2(6)
@@ -1564,7 +1686,7 @@ entropy(most_biased)
 <space>
 
 ```{r entropy_curve, fig.height=5, fig.width=5}
-curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
+curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "P(Heads)", ylab = "Entropy", 
       lwd = 4, main='Entropy of a coin toss')
 ```
 

@@ -14,9 +14,9 @@ mode        : selfcontained # {standalone, draft}
 ## Objectives 
 <space>
 
-- Better understand popular ML algorithms and techniques
+- Better understand particular details of popular ML algorithms and techniques
 - Less code, more insight
-- Familiarity with basic statistics concepts assumed
+- Familiarity with basic statistics and linear algebra concepts assumed
 
 ----
 
@@ -45,6 +45,7 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
+  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
   - Output is (usually) a number
 
 ----
@@ -54,8 +55,9 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - To model continuous response variables, often turn to linear regression
+  - $Price = 500X_{sqr_ft} + 10X_{dist_train}$
   - Output is (usually) a number
-- What about non-continuous response variable?
+- What about classification problems?
   - i.e. male or female, subscribe or not, ...
 
 ----
@@ -88,8 +90,8 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression
 
 ----
 
@@ -97,19 +99,8 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
-- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
-
-----
-
-## Logistic Regression
-# Concepts
-<space>
-
-- Binary response variable (Y = 1 or Y = 0) association to a set of explanatory variables
-- Like Linear Regression with a categorical outcome
-- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ becomes<br>
+- Captures the relationship between a categorical output and continuous (or non) inputs
+- $\hat{y} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$ << Linear Regression becomes
 - $\log{\frac{P(Y=1)}{1 - P(Y=1)}} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$
   - "log odds"
 - Can be extended to multiple and/or ordered categories
@@ -120,7 +111,7 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Probability of rolling a 6 = 1/6
+- Probability of rolling a 6 = $\frac{1}{6}$
 - "Odds for rolling a 6" = $\frac{P(Y)}{1 - P(Y)} = \frac{\frac{1}{6}}{1-\frac{1}{6}} = \frac{1}{5}$
 
 ----
@@ -139,19 +130,16 @@ mode        : selfcontained # {standalone, draft}
 ----
 
 ## Logistic Regression
-# Concepts
+# Maximum Likelihood Estimation
 <space>
 
-- Data is I.I.D.
-  - $Y_{i}$'s assume to come from family of exponential distributions
-- Uses MLE to determine parameters - Not OLS
-  - OLS: Minimize the SSE
-  - MLE: Maximize the (log) likelihood function
+- OLS: Minimize the SSE
+- MLE: Maximize the (log) likelihood function
   - "Given the data, what is the most likely model?"
-  - MLE satisfies lots of nice properties (unbiased, consistent)
-  - Used for many types of non-linear regression models
-  - Does not require transformation of $Y$'s to be Normal
-  - Does not require constant variance
+- MLE satisfies lots of nice properties (unbiased, consistent)
+- Used for many types of non-linear regression models
+- Does not require transformation of $Y$'s to be Normal
+- Does not require constant variance
 
 ----
 
@@ -159,9 +147,9 @@ mode        : selfcontained # {standalone, draft}
 # Concepts
 <space>
 
-- Logistic regression outputs a probability not a numeric value
+- Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
+  - Typical threshold is 0.5...but it doesn't have to be
 
 ----
 
@@ -179,7 +167,7 @@ mode        : selfcontained # {standalone, draft}
 
 - Type of regression to predict the probability of being in a class, say 1 = Female, 0 = Male
   - Output is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-  - Typical threshold is 0.5
+  - Typical threshold is 0.5...but it doesn't have to be
 - Sigmoid (logistic) function: $g(z) = \frac{1}{1+e^{-z}}$
   - Bounded by 0 and 1
 
@@ -190,8 +178,8 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
-(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
+- Linear regression: $h_{\theta}(x) = \theta^{T}x$<br>
+(Recall that $\theta^{T}x = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
 
 ----
 
@@ -200,9 +188,9 @@ mode        : selfcontained # {standalone, draft}
 <space>
 
 - The hypothesis function, $h_{\theta}(x)$, is $P(Y=1\hspace{2 mm} |\hspace{2 mm} X)$
-- Linear regression: $h_{\theta}(x) = \theta x^{T}$<br>
-(Recall that $\theta x^{T} = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
-- Logistic regression: $h_{\theta}(x) = g(\theta x^{T})$ 
+- Linear regression: $h_{\theta}(x) = \theta^{T}x$<br>
+(Recall that $\theta^{T}x = \beta_{0} + \beta_{1}x_{1} + ... + \beta_{n}x_{n}$)
+- Logistic regression: $h_{\theta}(x) = g(\theta^{T}x)$ 
 <br>
 where $g(z) = \frac{1}{1+e^{-z}}$
 
@@ -212,9 +200,9 @@ where $g(z) = \frac{1}{1+e^{-z}}$
 # Notation
 <space>
 
-- Re-arranging $Y = \frac{1}{1+e^{-\theta x^{T}}}$ yields
+- Re-arranging $Y = \frac{1}{1+e^{-\theta^{T}x}}$ yields
 <br>
-$\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
+$\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 - Log odds are linear in $X$
 - This is called the logit of $Y$
   - Links the odds of $Y$ (a probability) to a linear regression in $X$
@@ -228,7 +216,7 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
+- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta^{T}x}}$
 - To find parameters, minimize cost function
 - Use same cost function as for the Linear Regression?
 
@@ -238,11 +226,11 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta x^{T}}}$
+- So $h_{\theta}(x) = \frac{1}{1+e^{-\theta^{T}x}}$
 - To find parameters, minimize cost function
 - Use same cost function as for the Linear Regression?
   - Logistic residuals are Binomially distributed - not noise
-  - Regression function is not linear in $X$ leads to non-convex cost function
+  - Regression function is not linear in $X$; leads to non-convex cost function
 
 ----
 
@@ -250,11 +238,10 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Find parameters
 <space>
 
-
-\[f(x) = \left\{
+\[cost(h_{\theta}(x)) = \left\{
   \begin{array}{lr}
-    -log(h_{\theta}(x)) & : y = 0\\
-    -log(1-h_{\theta}(x)) & : y = 1
+    log(1-h_{\theta}(x)) & : y = 0\\
+    -log(h_{\theta}(x)) & : y = 1
   \end{array}
 \right.
 \]
@@ -371,6 +358,38 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 # Newton-Raphson Method
 <space>
 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 
 ----
@@ -382,6 +401,18 @@ $\log{\frac{Y}{1 - Y}} = \theta x^{T}$, "log odds"
 - Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
 - Re-write $f(x)$ as its Taylor expansion:<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+- Assume $f'(x_{0})$ is close to zero and $f''(x_{0})$ is positive
+- Re-write $f(x)$ as its Taylor expansion:<br>
+$f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
+- Take the derivative w.r.t $x$ and set = 0<br>
+$0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 
 ----
 
@@ -444,11 +475,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1    68.00
-[2,]         2    45.33
-[3,]         3    30.22
-[4,]         4    20.15
-[5,]         5    13.43
+[1,]         1    64.00
+[2,]         2    42.67
+[3,]         3    28.44
+[4,]         4    18.96
+[5,]         5    12.64
 ```
 
 ```
@@ -462,6 +493,17 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
 0.9658     ## value of f(x) at minimum
+```
+
+----
+
+## Logistic Regression
+# Newton-Raphson Method
+<space>
+
+
+```r
+optimize(fn,c(-100,100))  ## built-in R optimization function
 ```
 
 ----
@@ -503,10 +545,8 @@ $objective
 - Very popular classification algorithm
 - Part of family of GLMs
 - Based on Binomial error terms, 1's and 0's
-- Usually requires large sample size
 - Assumes linearity between logit function and independent variables
 - Uses sigmoid to link the probabilities with regression
-- Does not work out of the box with correlated features...
 
 ----
 
@@ -867,8 +907,20 @@ A %*% x2 == 7 * x2
 - If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
   - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
   - $\bf{P}$ is row matrix of eigenvectors
-  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$
-  - $\bf{A}$ is similar to $\bf{D}$
+  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$, off-diagonals are 0
+  - $\bf{A}$ is "similar"" to $\bf{D}$
+
+----
+
+## Principal Component Analysis
+# Diagonalization
+<space>
+
+- If $\bf{A}$ has n linearly independent eigenvectors, then it is diagonalizable
+  - Written in the form $\bf{A} = \bf{PD{P}^{-1}}$
+  - $\bf{P}$ is row matrix of eigenvectors
+  - $\bf{D}$ is diagonal matrix of eigenvalues of $\bf{A}$, off-diagonals are 0
+  - $\bf{A}$ is "similar"" to $\bf{D}$
 - Eigenvalues of a symmetric matrix can form a new basis (this is what we want!)
 - If the eigenvectors are orthonormal, then $\bf{{P}^{T} = {P}^{-1}}$<br>
 $\bf{A} = \bf{PD{P}^{T}}$
@@ -882,7 +934,7 @@ $\bf{A} = \bf{PD{P}^{T}}$
 $\bf{A} = \bf{PDP^{T}}$
 
 ```r
-m <- matrix(c(x1,x2),ncol=2)
+m <- matrix(c(x1,x2),ncol=2)  ## x1, x2 are eigenvectors
 m <- m/sqrt(norm(m))  ## normalize
 as.matrix(m %*% diag(roots) %*% t(m))
 ```
@@ -905,7 +957,7 @@ as.matrix(m %*% diag(roots) %*% t(m))
  - 1) Set up characteristic equation
  - 2) Solve for eigenvalues by finding roots of equation
  - 3) Plug eigenvalues back in to find eigenvectors
-- There's a lot more to eigenvalues!
+- But...there's a lot more to eigenvalues!
 
 ----
 
@@ -913,10 +965,9 @@ as.matrix(m %*% diag(roots) %*% t(m))
 # Objective
 <space>
 
-- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{Y}$'s covariance matrix is diagonalized
+- Find some matrix $\bf{P}$ where $\bf{PX}=\bf{Y}$ such that $\bf{C_{Y}}$ is diagonalized
 - Covariance matrix<br>
-$\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
-  - Diagonals are the variances, off-diagonals are covariances
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY}^{T}$
 
 ----
 
@@ -925,6 +976,7 @@ $\bf{C_{X}} = \frac{1}{(n-1)}\bf{XX}^{T}$
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 
 ----
@@ -934,6 +986,7 @@ $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
@@ -945,13 +998,23 @@ $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br>
 <space>
 
 $\bf{PX} = \bf{Y}$<br>
+<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{YY^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{PX(PX)^{T}}$<br>
 $=\frac{1}{(n-1)}\bf{P(XX^{T})P^{T}}$,  because $(AB)^{T} = B^{T}A^{T}$<br> 
 $=\frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 - $\bf{P}$ is a matrix with rows that are eigenvectors
-- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric<br>
-$\bf{A} = \bf{EDE^{T}}$
+- $\bf{A}$ is a diagonalized matrix of eigenvalues and is symmetric...
+
+----
+
+## Principal Component Analysis
+# Proof
+<space>
+
+- From earlier, $\bf{AE} = \bf{ED}$
+- $\bf{A} = \bf{EDE^{-1}}$
+- Therefore $\bf{A} = \bf{EDE^{T}}$, because $\bf{E^{T}}=\bf{E^{-1}}$<br>
 
 ----
 
@@ -959,7 +1022,7 @@ $\bf{A} = \bf{EDE^{T}}$
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 
 ----
@@ -968,7 +1031,7 @@ $\bf{A} = \bf{EDE^{T}}$
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
@@ -979,15 +1042,24 @@ $\bf{A} = \bf{P^{T}DP}$<br>
 # Motivation
 <space>
 
-- Each row of $\bf{P}$ should be an eigenvector of $\bf{A}$<br>
+- Choose each row of $\bf{P}$ to be an eigenvector of $\bf{A}$
 - Therefore we are forcing this relationship to hold $\bf{P} = \bf{E^{T}}$<br>
 Since $\bf{A} = \bf{EDE^{T}}$<br>
 $\bf{A} = \bf{P^{T}DP}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{PAP^{T}}$<br>
 $\bf{C_{Y}} = \frac{1}{(n-1)}\bf{P(P^{T}DP)P^{T}}$<br>
-$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$, because $\bf{P^{T}}=\bf{P^{-1}}$<br>
+$\bf{C_{Y}} = \frac{1}{(n-1)}\bf{(PP^{-1})D(PP^{-1})}$<br>
 $= \frac{1}{n-1}\bf{D}$
 - Therefore $\bf{C_{Y}}$ is diagonalized
+
+----
+
+## Principal Component Analysis
+# Summary
+<space>
+
+- The principal components of $X$ are the eigenvectors of $XX^{T}$; or the rows of $P$
+- The $i^{th}$ diagonal value of $C_{Y}$ is the variance of $X$ along
 
 ----
 
@@ -1031,32 +1103,11 @@ for (i in 10:m){
 
 ```r
 features <- tennis[,10:m]
-
-head(features)
+dim(features)
 ```
 
 ```
-##   FSP.1 FSW.1 SSP.1 SSW.1 ACE.1 DBF.1 WNR.1 UFE.1 BPC.1 BPW.1 NPA.1 NPW.1
-## 1    61    35    39    18     5     1    17    29     1     3     8    11
-## 2    61    31    39    13    13     1    13     1     7    14     0     0
-## 3    52    53    48    20     8     4    37    50     1     9    16    23
-## 4    53    39    47    24     8     6     8     6     6     9     0     0
-## 5    76    63    24    12     0     4    16    35     3    12     9    13
-## 6    65    51    35    22     9     3    35    41     2     7     6    12
-##   TPW.1 FSP.2 FSW.2 SSP.2 SSW.2 ACE.2 DBF.2 WNR.2 UFE.2 BPC.2 BPW.2 NPA.2
-## 1    70    68    45    32    17    10     0    40    30     4     8     8
-## 2    80    60    23    40     9     1     4     1     4     0     0     0
-## 3   106    77    57    23    15     9     1    41    41     4    13    12
-## 4   104    50    24    50    19     1     8     1     8     1     7     0
-## 5   128    53    59    47    32    17    11    59    79     3     5    16
-## 6   108    63    60    37    22    24     4    47    45     4     7    14
-##   NPW.2 TPW.2
-## 1     9   101
-## 2     0    42
-## 3    16   126
-## 4     0    79
-## 5    28   127
-## 6    17   122
+## [1] 943  26
 ```
 
 ```r
@@ -1091,14 +1142,6 @@ str(features)
 ##  $ NPA.2: num  8 0 12 0 16 14 25 8 8 0 ...
 ##  $ NPW.2: num  9 0 16 0 28 17 36 12 11 0 ...
 ##  $ TPW.2: num  101 42 126 79 127 122 173 61 94 141 ...
-```
-
-```r
-dim(features)
-```
-
-```
-## [1] 943  26
 ```
 
 ----
@@ -1164,7 +1207,8 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC's are orthogonal
 
 ```r
 pca.df <- prcomp(scaled_features)  ## Built in R function
-round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matches R
+## Eigenvalues of Cx = Variance Explained by PCs
+round(eigenvalues,10) == round((pca.df$sdev)^2,10)  
 ```
 
 ```
@@ -1173,7 +1217,7 @@ round(eigenvalues,10) == round((pca.df$sdev)^2,10)  ## Manual calculation matche
 ```
 
 ```r
-round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10)
+round(eigenvectors[,1],10) == round(pca.df$rotation[,1],10) ## Eigenvectors of Cx = PCs
 ```
 
 ```
@@ -1250,6 +1294,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 - Cluster for utility
   - Summarizing data for less expensive computation
   - Data compression
+- Very difficult to determine the "correct" number of clusters
 
 ----
 
@@ -1285,7 +1330,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 - One of the simplest unsupervised learning algorithms
 - Group points into clusters; clusters center around a centroid
-- Minimize the distance between a points and its centroid
+- Minimize the distance between a point and its centroid
 
 ----
 
@@ -1298,7 +1343,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
   - Form K clusters by assigning each point to its closest centroid
   - Recompute the centroid of each cluster 
 - Until centroids do not change, or change very minimally, i.e. < 1%
-- Computatinal complexity: $O(nkI)$
+- Computational complexity: $O(nkI)$
 
 ----
 
@@ -1393,7 +1438,7 @@ str(wine[,1:7])
 # Kmeans - example
 <space>
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 ----
 
@@ -1404,7 +1449,7 @@ str(wine[,1:7])
 - A cluster is a dense region of points separated by low-density regions
 - Group objects into one cluster if they are connected to one another by densely populated area
 - Used when the clusters are irregularly shaped, and when noise and outliers are present
-- computational complexity: $O(n\log{n})$
+- Computational complexity: $O(n\log{n})$
 
 ----
 
@@ -1467,7 +1512,7 @@ str(wine[,1:7])
 # DBSCAN
 <space>
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
 ----
 
@@ -1491,7 +1536,34 @@ str(wine[,1:7])
 
 ----
 
-## Trees
+## Summary
+# ML - Part II
+<space>
+
+- Logistic regression
+- Math behind PCA
+- Clustering basics
+
+----
+
+## Resources
+<space>
+
+- [Machine Learning with R](http://www.packtpub.com/machine-learning-with-r/book)
+- [Machine Learning for Hackers](http://shop.oreilly.com/product/0636920018483.do)
+- [Elements of Statistical Learning](http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf)
+
+----
+
+## THANK YOU!
+
+----
+
+----
+
+----
+
+## Decision Trees
 # Objectives
 <space>
 
@@ -1501,7 +1573,7 @@ str(wine[,1:7])
 
 ----
 
-## Trees
+## Decision Trees
 # Motivation
 <space>
 
@@ -1623,7 +1695,7 @@ entropy(fair)
 ```
 
 ```
-FALSE [1] 2.585
+[1] 2.585
 ```
 
 ```r
@@ -1631,7 +1703,7 @@ log2(6)
 ```
 
 ```
-FALSE [1] 2.585
+[1] 2.585
 ```
 
 ----
@@ -1687,7 +1759,7 @@ entropy(most_biased)
 
 
 ```r
-curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "x", ylab = "Entropy", 
+curve(-x*log2(x)-(1 - x)*log2(1 - x), col =" red", xlab = "P(Heads)", ylab = "Entropy", 
       lwd = 4, main='Entropy of a coin toss')
 ```
 
@@ -1770,8 +1842,8 @@ voting_test <- voting_data[-train_ind,]
 ```
             tree_predict
              democrat republican
-  democrat         82         10
-  republican        2         51
+  democrat         93          4
+  republican        0         48
 ```
 
 ----
@@ -1787,12 +1859,12 @@ head(C5imp(tree_model))   # most important variables
 
 ```
                                   Overall
-physician-fee-freeze                97.92
+physician-fee-freeze                96.89
+synfuels-corporation-cutback        42.21
+adoption-of-the-budget-resolution   10.73
+anti-satellite-test-ban              4.50
 handicapped-infants                  0.00
 water-project-cost-sharing           0.00
-adoption-of-the-budget-resolution    0.00
-el-salvador-aid                      0.00
-religious-groups-in-schools          0.00
 ```
 
 ----
@@ -1821,8 +1893,8 @@ boosted_conf
 ```
             boosted_tennis_predict
              democrat republican
-  democrat         84          8
-  republican        2         51
+  democrat         94          3
+  republican        1         47
 ```
 
 ----
@@ -1852,8 +1924,8 @@ conf
 ```
             cost_predict
              democrat republican
-  democrat         79         13
-  republican        0         53
+  democrat         92          5
+  republican        0         48
 ```
 
 ----
