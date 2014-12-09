@@ -529,7 +529,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p>\[cost(h_{\theta}(x)) = \left\{
   \begin{array}{lr}
-    log(1-h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 0\\
     -log(h_{\theta}(x)) & : y = 1
   \end{array}
 \right.
@@ -613,7 +613,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <ul>
 <li>\(P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}\) for many \(y_{i}'s\)</li>
-<li>\(P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
+<li>\(P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
 </ul>
 
   </article>
@@ -631,9 +631,9 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <ul>
 <li>\(P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}\) for many \(y_{i}'s\)</li>
-<li>\(P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
+<li>\(P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
 <li>\(p = h_{\theta}(x)\)</li>
-<li>\(cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
+<li>\(cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
 </ul>
 
   </article>
@@ -653,7 +653,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <li>\(P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}\) for many \(y_{i}'s\)</li>
 <li>\(P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
 <li>\(p = h_{\theta}(x)\)</li>
-<li>\(cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
+<li>\(cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
 </ul>
 
 <p><img src="figure/cost_curves1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves2.png" alt="plot of chunk cost_curves"> </p>
@@ -675,7 +675,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <li>\(P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}\) for many \(y_{i}'s\)</li>
 <li>\(P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)\)<br></li>
 <li>\(p = h_{\theta}(x)\)</li>
-<li>\(cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
+<li>\(cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
 <li>Minimize the cost</li>
 </ul>
 
@@ -868,7 +868,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 \(f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})\)</li>
 <li>Take the derivative w.r.t \(x\) and set = 0<br>
 \(0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})\)<br>
-\(x_{1} = x_{0} − \frac{f'(x_{0})f''(x_{0})}\)
+\(x_{1} = x_{0} − \frac{f'(x_{0})}{f''(x_{0})}\)
 
 <ul>
 <li>\(x_{1}\) is a better approximation for the minimum than \(x_{0}\)</li>
@@ -939,11 +939,11 @@ newton &lt;- function(num.its, dfn, d2fn){
 <p><space></p>
 
 <pre><code>     iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1   47.000
+[2,]         2   31.333
+[3,]         3   20.889
+[4,]         4   13.926
+[5,]         5    9.284
 </code></pre>
 
 <pre><code>      iteration estimate
@@ -2648,14 +2648,6 @@ str(wine[,1:7])
     <h1>DBSCAN</h1>
 
 <p><space></p>
-
-<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
-## Warning: package &#39;MASS&#39; was built under R version 3.0.2
-## Warning: package &#39;cluster&#39; was built under R version 3.0.2
-## Warning: package &#39;mclust&#39; was built under R version 3.0.2
-## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
-## Warning: package &#39;lattice&#39; was built under R version 3.0.2
-</code></pre>
 
 <p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 

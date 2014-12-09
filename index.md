@@ -264,7 +264,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 
 \[cost(h_{\theta}(x)) = \left\{
   \begin{array}{lr}
-    log(1-h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 0\\
     -log(h_{\theta}(x)) & : y = 1
   \end{array}
 \right.
@@ -313,7 +313,18 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 <space>
 
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
-- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ----
 
@@ -324,18 +335,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
-- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
-- $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ![plot of chunk cost_curves](figure/cost_curves1.png) ![plot of chunk cost_curves](figure/cost_curves2.png) 
 
@@ -348,7 +348,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 - Minimize the cost
 
 ----
@@ -453,7 +453,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
 $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
-$x_{1} = x_{0} − \frac{f'(x_{0})f''(x_{0})}$
+$x_{1} = x_{0} − \frac{f'(x_{0})}{f''(x_{0})}$
   - $x_{1}$ is a better approximation for the minimum than $x_{0}$
   - and so on...
 
@@ -503,11 +503,11 @@ newton <- function(num.its, dfn, d2fn){
 
 ```
      iteration estimate
-[1,]         1   18.000
-[2,]         2   12.000
-[3,]         3    8.000
-[4,]         4    5.334
-[5,]         5    3.558
+[1,]         1   47.000
+[2,]         2   31.333
+[3,]         3   20.889
+[4,]         4   13.926
+[5,]         5    9.284
 ```
 
 ```
@@ -1547,16 +1547,6 @@ str(wine[,1:7])
 ## Clustering
 # DBSCAN
 <space>
-
-
-```
-## Warning: package 'fpc' was built under R version 3.0.2
-## Warning: package 'MASS' was built under R version 3.0.2
-## Warning: package 'cluster' was built under R version 3.0.2
-## Warning: package 'mclust' was built under R version 3.0.2
-## Warning: package 'flexmix' was built under R version 3.0.2
-## Warning: package 'lattice' was built under R version 3.0.2
-```
 
 ![plot of chunk dbscan_ex](figure/dbscan_ex.png) 
 

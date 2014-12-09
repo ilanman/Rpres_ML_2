@@ -281,7 +281,7 @@ $\log{\frac{Y}{1 - Y}} = \theta^{T}x$
 
 \[cost(h_{\theta}(x)) = \left\{
   \begin{array}{lr}
-    log(1-h_{\theta}(x)) & : y = 0\\
+    -log(1-h_{\theta}(x)) & : y = 0\\
     -log(h_{\theta}(x)) & : y = 1
   \end{array}
 \right.
@@ -333,7 +333,18 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 <space>
 
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
-- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+
+----
+
+## Logistic Regression
+# Find parameters
+<space>
+
+- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
+- $P(Y = y_{i}|X) = cost(p, y) = - \sum_{i=1}^n y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
+- $p = h_{\theta}(x)$
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ----
 
@@ -344,18 +355,7 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
-
-----
-
-## Logistic Regression
-# Find parameters
-<space>
-
-- $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
-- $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
-- $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 
 ```{r cost_curves, echo=FALSE, message=FALSE, results='hide', fig.height=4, fig.width=4}
 curve(-log(x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actual Y=1")
@@ -371,7 +371,7 @@ curve(-log(1-x),from = 0, to = 1, xlab="h(x)", ylab = "Cost", main = "When actua
 - $P(Y = y_{i}|X) = \prod_{i=1}^n p^{y_{i}}(1-p)^{1-y_{i}}$ for many $y_{i}'s$
 - $P(Y = y_{i}|X) = cost(p, y) = \sum_{i=1}^n -y_{i} \log(p) + (1-y_{i}) \log(1-p)$<br>
 - $p = h_{\theta}(x)$
-- $cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
+- $cost(h_{\theta}(x), y) = -\frac{1}{n}\sum_{i=1}^n y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))$<br>
 - Minimize the cost
 
 ----
@@ -499,7 +499,7 @@ $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
 $f(x) = f(x_{0}) + (x-x_{0})f'(x_{0}) + \frac{1}{2}(x-x_{0})^{2}f''(x_{0})$
 - Take the derivative w.r.t $x$ and set = 0<br>
 $0 = f'(x_{0}) + \frac{1}{2}f''(x_{0})2(x_{1} − x_{0})$<br>
-$x_{1} = x_{0} − \frac{f'(x_{0})f''(x_{0})}$
+$x_{1} = x_{0} − \frac{f'(x_{0})}{f''(x_{0})}$
   - $x_{1}$ is a better approximation for the minimum than $x_{0}$
   - and so on...
 
