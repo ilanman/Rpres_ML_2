@@ -149,7 +149,7 @@
 
 <p><space></p>
 
-<p><img src="figure/log_bad_fit-1.png" alt="plot of chunk log_bad_fit"> </p>
+<p><img src="figure/log_bad_fit.png" alt="plot of chunk log_bad_fit"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -164,7 +164,7 @@
 
 <p><space></p>
 
-<p><img src="figure/log_bad_fit2-1.png" alt="plot of chunk log_bad_fit2"> </p>
+<p><img src="figure/log_bad_fit2.png" alt="plot of chunk log_bad_fit2"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -179,7 +179,7 @@
 
 <p><space></p>
 
-<p><img src="figure/log_bad_fit3-1.png" alt="plot of chunk log_bad_fit3"> </p>
+<p><img src="figure/log_bad_fit3.png" alt="plot of chunk log_bad_fit3"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -353,7 +353,7 @@
 
 <p><space></p>
 
-<p><img src="figure/log_curve-1.png" alt="plot of chunk log_curve"> </p>
+<p><img src="figure/log_curve.png" alt="plot of chunk log_curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -535,7 +535,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 \right.
 \]</p>
 
-<p><img src="figure/curve-1.png" alt="plot of chunk curve"> <img src="figure/curve-2.png" alt="plot of chunk curve"> </p>
+<p><img src="figure/curve1.png" alt="plot of chunk curve"> <img src="figure/curve2.png" alt="plot of chunk curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -656,7 +656,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 <li>\(cost(h_{\theta}(x), y) = \frac{1}{n}\sum_{i=1}^n -y_{i} \log(h_{\theta}(x)) + (1-y_{i}) \log(1-h_{\theta}(x))\)<br></li>
 </ul>
 
-<p><img src="figure/cost_curves-1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves-2.png" alt="plot of chunk cost_curves"> </p>
+<p><img src="figure/cost_curves1.png" alt="plot of chunk cost_curves"> <img src="figure/cost_curves2.png" alt="plot of chunk cost_curves"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -741,7 +741,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1"> </p>
+<p><img src="figure/unnamed-chunk-1.png" alt="plot of chunk unnamed-chunk-1"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -756,7 +756,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"> </p>
+<p><img src="figure/unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -771,7 +771,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"> </p>
+<p><img src="figure/unnamed-chunk-3.png" alt="plot of chunk unnamed-chunk-3"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -786,7 +786,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"> </p>
+<p><img src="figure/unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -891,7 +891,7 @@ where \(g(z) = \frac{1}{1+e^{-z}}\)</li>
 
 <p>\(f(x) = x^{4} - 3\log(x)\)</p>
 
-<p><img src="figure/newton_curve-1.png" alt="plot of chunk newton_curve"> </p>
+<p><img src="figure/newton_curve.png" alt="plot of chunk newton_curve"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -938,23 +938,23 @@ newton &lt;- function(num.its, dfn, d2fn){
 
 <p><space></p>
 
-<pre><code>     iteration  estimate
-[1,]         1 27.000000
-[2,]         2 18.000017
-[3,]         3 12.000068
-[4,]         4  8.000239
-[5,]         5  5.334143
+<pre><code>     iteration estimate
+[1,]         1   18.000
+[2,]         2   12.000
+[3,]         3    8.000
+[4,]         4    5.334
+[5,]         5    3.558
 </code></pre>
 
-<pre><code>      iteration  estimate
-[16,]        16 0.9306049
-[17,]        17 0.9306049
-[18,]        18 0.9306049
-[19,]        19 0.9306049
-[20,]        20 0.9306049
+<pre><code>      iteration estimate
+[16,]        16   0.9306
+[17,]        17   0.9306
+[18,]        18   0.9306
+[19,]        19   0.9306
+[20,]        20   0.9306
 </code></pre>
 
-<pre><code>0.9657616     ## value of f(x) at minimum
+<pre><code>0.9658     ## value of f(x) at minimum
 </code></pre>
 
   </article>
@@ -990,10 +990,10 @@ newton &lt;- function(num.its, dfn, d2fn){
 </code></pre>
 
 <pre><code>$minimum
-[1] 0.9306008
+[1] 0.9306
 
 $objective
-[1] 0.9657616
+[1] 0.9658
 </code></pre>
 
   </article>
@@ -2097,7 +2097,7 @@ round(sum(Cy[off_diag]),6)   ## off diagonals are 0 since PC&#39;s are orthogona
 
 <p><space></p>
 
-<p><img src="figure/var_expl_plot-1.png" alt="plot of chunk var_expl_plot"> </p>
+<p><img src="figure/var_expl_plot.png" alt="plot of chunk var_expl_plot"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2149,7 +2149,7 @@ NPW.2 TPW.2
 <li>Can the first two Principal Components separate our data?</li>
 </ul>
 
-<p><img src="figure/tennis_plot_gender-1.png" alt="plot of chunk tennis_plot_gender"> </p>
+<p><img src="figure/tennis_plot_gender.png" alt="plot of chunk tennis_plot_gender"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2174,7 +2174,7 @@ gen &lt;- ifelse(PC1 &gt; mean_PC1,&quot;F&quot;,&quot;M&quot;)
 sum(diag(table(gen,as.character(data$Gender))))/rows
 </code></pre>
 
-<pre><code>[1] 0.7645811
+<pre><code>[1] 0.7646
 </code></pre>
 
   </article>
@@ -2279,7 +2279,7 @@ sum(diag(table(gen,as.character(data$Gender))))/rows
 
 <p><space></p>
 
-<p><img src="figure/cluster_plot_example-1.png" alt="plot of chunk cluster_plot_example"> </p>
+<p><img src="figure/cluster_plot_example.png" alt="plot of chunk cluster_plot_example"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2501,7 +2501,7 @@ str(wine[,1:7])
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-5-1.png" alt="plot of chunk unnamed-chunk-5"> </p>
+<p><img src="figure/unnamed-chunk-5.png" alt="plot of chunk unnamed-chunk-5"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2634,7 +2634,7 @@ str(wine[,1:7])
 
 <p><space></p>
 
-<p><img src="figure/unnamed-chunk-6-1.png" alt="plot of chunk unnamed-chunk-6"> </p>
+<p><img src="figure/unnamed-chunk-6.png" alt="plot of chunk unnamed-chunk-6"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2649,7 +2649,15 @@ str(wine[,1:7])
 
 <p><space></p>
 
-<p><img src="figure/dbscan_ex-1.png" alt="plot of chunk dbscan_ex"> </p>
+<pre><code>## Warning: package &#39;fpc&#39; was built under R version 3.0.2
+## Warning: package &#39;MASS&#39; was built under R version 3.0.2
+## Warning: package &#39;cluster&#39; was built under R version 3.0.2
+## Warning: package &#39;mclust&#39; was built under R version 3.0.2
+## Warning: package &#39;flexmix&#39; was built under R version 3.0.2
+## Warning: package &#39;lattice&#39; was built under R version 3.0.2
+</code></pre>
+
+<p><img src="figure/dbscan_ex.png" alt="plot of chunk dbscan_ex"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -2726,659 +2734,6 @@ str(wine[,1:7])
 </slide>
 
       <slide class="" id="slide-130" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-131" style="background:;">
-  <hgroup>
-    
-  </hgroup>
-  <article>
-    
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-132" style="background:;">
-  <hgroup>
-    <h2>Decision Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Objectives</h1>
-
-<p><space></p>
-
-<ol>
-<li>Structure</li>
-<li>Entropy</li>
-<li>Boosting and error cost</li>
-</ol>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-133" style="background:;">
-  <hgroup>
-    <h2>Decision Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Motivation</h1>
-
-<p><space></p>
-
-<p><img src="figure/tree_example.png" alt="overview"></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-134" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Structure</h1>
-
-<p><space></p>
-
-<p><img src="figure/tree_structure.png" alt="structure"></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-135" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Structure</h1>
-
-<p><space></p>
-
-<ul>
-<li>Recursive partitioning -&gt; &quot;divide and conquer&quot;</li>
-<li>Going down, choose feature that is most <em>predictive</em> of target class
-
-<ul>
-<li>Split the data according to feature</li>
-<li>Continue...</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-136" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Structure</h1>
-
-<p><space></p>
-
-<p>Until...</p>
-
-<ul>
-<li>All examples at a node are in same class</li>
-<li>No more features left to distinguish (as a result, prone to overfitting)</li>
-<li>Tree has grown to some prespecified limit (called pruning)</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-137" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Algorithms</h1>
-
-<p><space></p>
-
-<ul>
-<li>ID3
-
-<ul>
-<li>Original, popular, DT implementation</li>
-</ul></li>
-<li>C4.5: Like ID3 +
-
-<ul>
-<li>Handles continuous cases</li>
-<li>Imputing missing values</li>
-<li>Weighing costs</li>
-<li>Pruning post creation</li>
-</ul></li>
-<li>C5.0: Like C4.5 + 
-
-<ul>
-<li>Faster, less memory usage</li>
-<li>Boosting</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-138" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Selecting features</h1>
-
-<p><space></p>
-
-<ul>
-<li>How to select feature?
-
-<ul>
-<li>Purity of resulting split</li>
-<li>After splitting, how homogenous are the resulting classes?</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-139" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Selecting features</h1>
-
-<p><space></p>
-
-<ul>
-<li>How to select feature?
-
-<ul>
-<li>Purity of resulting split</li>
-<li>After splitting, how homogenous are the resulting classes?</li>
-</ul></li>
-<li>Entropy: amount of information contained in a random variable
-
-<ul>
-<li>For a feature with N classes:<br>
-&nbsp;&nbsp;- 0 = purely homogenous<br>
-&nbsp;&nbsp;- \(\log_{2}(N)\) = completely mixed</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-140" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy</h1>
-
-<p><space></p>
-
-<p>\(Entropy(S) = \sum_{i=1}^{c} -p_{i}\log_{2}(p_{i})\)</p>
-
-<ul>
-<li>where \(S\) is a dataset</li>
-<li>\(c\) is the number of classes in that data</li>
-<li>\(p_{i}\) is the proportion of values in that class</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-141" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy - example</h1>
-
-<p><space></p>
-
-<p>What is the entropy of a fair, 6 sided die?</p>
-
-<pre><code class="r">entropy &lt;- function(probs){
-  # probs is a list of probabilities
-  ent &lt;- 0
-  for(i in probs){
-    ent_temp &lt;- -i*log2(i)
-    ent &lt;- ent + ent_temp
-  }
-  return(ent)
-}
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-142" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy - example</h1>
-
-<p><space></p>
-
-<pre><code class="r">fair &lt;- rep(1/6,6)
-entropy(fair)
-</code></pre>
-
-<pre><code>[1] 2.584963
-</code></pre>
-
-<pre><code class="r">log2(6)
-</code></pre>
-
-<pre><code>[1] 2.584963
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-143" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy - example</h1>
-
-<p><space></p>
-
-<p>What is the entropy of a biased, 6 sided die?<br>
-\(P(X=1) = P(X=2) = P(X=3) = 1/9\)<br>
-\(P(X=4) = P(X=5) = P(X=6) = 2/9\)</p>
-
-<pre><code class="r">biased &lt;- c(rep(1/9,3),rep(2/9,3))
-entropy(biased)
-</code></pre>
-
-<pre><code>[1] 2.503258
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-144" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy - example</h1>
-
-<p><space></p>
-
-<pre><code class="r">more_biased &lt;- c(rep(1/18,3),rep(5/18,3))
-entropy(more_biased)
-</code></pre>
-
-<pre><code>[1] 2.234985
-</code></pre>
-
-<pre><code class="r">most_biased &lt;- c(rep(1/100,5),rep(95/100,1))
-entropy(most_biased)
-</code></pre>
-
-<pre><code>[1] 0.4024934
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-145" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy - example</h1>
-
-<p><space></p>
-
-<pre><code class="r">curve(-x*log2(x)-(1 - x)*log2(1 - x), col =&quot; red&quot;, xlab = &quot;P(Heads)&quot;, ylab = &quot;Entropy&quot;, 
-      lwd = 4, main=&#39;Entropy of a coin toss&#39;)
-</code></pre>
-
-<p><img src="figure/entropy_curve-1.png" alt="plot of chunk entropy_curve"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-146" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Entropy</h1>
-
-<p><space></p>
-
-<ul>
-<li>C5.0 uses the change in entropy to determine the change in purity</li>
-<li>InfoGain = Entropy (pre split) - Entropy (post split)
-
-<ul>
-<li>Entropy (pre split) &gt;&gt; current Entropy</li>
-<li>Entropy (post split) &gt;&gt; need to consider Entropy of each possible split</li>
-<li>\(Entropy(post) = \sum_{i=1}^{n}w_{i}Entropy(P_{i})\)
-<br></li>
-</ul></li>
-<li>Notes:
-
-<ul>
-<li>The more a feature splits the data in obvious ways the less informative it is</li>
-<li>The more a feature splits the data - in general - the more information is gained by splitting at that feature</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-147" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">voting_data &lt;- read.csv(&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/voting-records/house-votes-84.data&#39;)
-names(voting_data) &lt;- c(&#39;party&#39;,&#39;handicapped-infants&#39;,&#39;water-project-cost-sharing&#39;,
-                        &#39;adoption-of-the-budget-resolution&#39;,&#39;physician-fee-freeze&#39;,
-                        &#39;el-salvador-aid&#39;,&#39;religious-groups-in-schools&#39;,
-                        &#39;anti-satellite-test-ban&#39;,&#39;aid-to-nicaraguan-contras&#39;,
-                        &#39;mx-missile&#39;,&#39;immigration&#39;,&#39;synfuels-corporation-cutback&#39;,
-                        &#39;education-spending&#39;,&#39;superfund-right-to-sue&#39;,&#39;crime&#39;,
-                        &#39;duty-free-exports&#39;,&#39;export-administration-act-south-africa&#39;)
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-148" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">prop.table(table(voting_data[,1]))
-</code></pre>
-
-<pre><code>
-  democrat republican 
- 0.6152074  0.3847926 
-</code></pre>
-
-<pre><code class="r">n &lt;- nrow(voting_data)
-train_ind &lt;- sample(n,2/3*n)
-voting_train &lt;- voting_data[train_ind,]
-voting_test &lt;- voting_data[-train_ind,]
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-149" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<p><img src="figure/real_tree_example.png" height="500px" width="500px" /></p>
-
-<pre><code>## Error: package or namespace load failed for &#39;party&#39;
-</code></pre>
-
-<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;ctree&quot;
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-150" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code>            tree_predict
-             democrat republican
-  democrat         93          1
-  republican        2         49
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-151" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">head(C5imp(tree_model))   # most important variables
-</code></pre>
-
-<pre><code>                                       Overall
-physician-fee-freeze                     98.62
-synfuels-corporation-cutback             41.87
-mx-missile                                9.69
-export-administration-act-south-africa    6.57
-adoption-of-the-budget-resolution         4.15
-handicapped-infants                       0.00
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-152" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Boosting</h1>
-
-<p><space></p>
-
-<ul>
-<li>Combine a bunch of weak learners to create a team that is much stronger</li>
-<li>This is where C5.0 improves on C4.5</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-153" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Boosting Example</h1>
-
-<p><space></p>
-
-<pre><code class="r">boosted_tree_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=25)
-boosted_tennis_predict &lt;- predict(boosted_tree_model,voting_test[,-1])
-boosted_conf &lt;- table(voting_test[,1], boosted_tennis_predict)
-boosted_conf
-</code></pre>
-
-<pre><code>            boosted_tennis_predict
-             democrat republican
-  democrat         92          2
-  republican        3         48
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-154" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Error Cost</h1>
-
-<p><space></p>
-
-<ul>
-<li>Still getting too many false positives (predict Republican but actually Democrat)</li>
-<li>Introduce higher cost to getting this wrong</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-155" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Error Cost</h1>
-
-<p><space></p>
-
-<pre><code class="r">error_cost &lt;- matrix(c(0,1,2,0),nrow=2)
-cost_model &lt;- C5.0(voting_train[,-1],voting_train[,1], trials=1, costs = error_cost)
-cost_predict &lt;- predict(cost_model, newdata=voting_test[,-1])
-conf &lt;- table(voting_test[,1], cost_predict)
-conf
-</code></pre>
-
-<pre><code>            cost_predict
-             democrat republican
-  democrat         86          8
-  republican        1         50
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-156" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Error Cost</h1>
-
-<p><space></p>
-
-<p><img src="figure/plot_boost_acc-1.png" alt="plot of chunk plot_boost_acc"> </p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-157" style="background:;">
-  <hgroup>
-    <h2>Trees</h2>
-  </hgroup>
-  <article>
-    <h1>Pros and Cons</h1>
-
-<p><space></p>
-
-<ul>
-<li>Trees are non-parametric, rule based classification or regression method</li>
-<li>Simple to understand and interpret</li>
-<li>Little data preparation</li>
-<li>Works well with small or large number of features
-<br></li>
-<li>Easy to overfit</li>
-<li>Biased towards splits on features with large number of levels</li>
-<li>Usually finds local optimum</li>
-<li>Difficult concepts are hard to learn</li>
-<li>Avoid pre-pruning</li>
-<li>Hard to know optimal length of tree without growing it there first</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-158" style="background:;">
-  <hgroup>
-    <h2>Summary</h2>
-  </hgroup>
-  <article>
-    <h1>ML - Part II</h1>
-
-<p><space></p>
-
-<ul>
-<li>Logistic regression</li>
-<li>Math behind PCA</li>
-<li>Clustering basics</li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-159" style="background:;">
-  <hgroup>
-    <h2>Resources</h2>
-  </hgroup>
-  <article>
-    <p><space></p>
-
-<ul>
-<li><a href="http://www.packtpub.com/machine-learning-with-r/book">Machine Learning with R</a></li>
-<li><a href="http://shop.oreilly.com/product/0636920018483.do">Machine Learning for Hackers</a></li>
-<li><a href="http://web.stanford.edu/%7Ehastie/local.ftp/Springer/OLD/ESLII_print4.pdf">Elements of Statistical Learning</a></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-160" style="background:;">
   <hgroup>
     
   </hgroup>
